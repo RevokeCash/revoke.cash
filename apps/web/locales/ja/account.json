@@ -58,6 +58,7 @@
       "shared": "The gas budget is shared by all wallets in the subscription.",
       "used": "{used} of {total} used this month"
     },
+    "load_failed": "Failed to load your Auto-Revoking configuration. Please refresh the page or try again later.",
     "metamask_not_connected": "MetaMask not connected",
     "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",
     "permissions": {
@@ -160,17 +161,26 @@
       "creating": "支払いの作成",
       "extend": "延長",
       "paying": "ウォレットで確認",
+      "renew": "Renew",
       "subscribe": "購読",
       "try_again": "もう一度やり直してください",
       "upgrade": "アップグレード"
     },
     "downgrade_not_supported": "有効なサブスクリプションをダウングレードすることはできません。",
+    "expired": "Expired",
+    "expired_on": "Expired on {date}.",
+    "expired_preserved": "Your wallet slots and Auto-Revoking rules are preserved. Renew to pick up where you left off.",
+    "expired_ultimate_stopped": "Auto-Revoking is no longer monitoring your wallets.",
+    "expires_in": "Expires in {days, plural, =1 {1 day} other {# days}} ({date})",
+    "expires_soon": "Expires soon",
     "granted_by": "Granted by {address}",
     "next_setup_auto_revoke": "Next step: set up Auto-Revoking",
     "no_subscription": "有効なプレミアムサブスクリプションはありません。以下から購読して始めましょう。",
     "optional_own_subscription": "You already have access through a granted subscription. You can still subscribe for your own plan if you'd like.",
     "payment_confirmed": "支払いが確認されました！プレミアムサブスクリプションが有効になりました。",
+    "payment_expired": "The payment window expired. If you already sent the full USDC amount, it will be credited automatically once it lands on-chain. Check your subscription status in a few minutes.",
     "payment_failed": "サブスクリプションの支払いが失敗した",
+    "payment_help": "Need help? <support-link>Chat with support</support-link>.",
     "payment_network": "決済ネットワーク",
     "payment_status_error": "Payment {status}",
     "payment_summary": "{days} 日間、{amount} {token} をお支払いいただき、{maxAddresses} {maxAddresses, plural, =1 {アドレス} other {アドレス}} までとなります。",
@@ -185,7 +195,8 @@
     "slots_summary": "{used}/{max} アドレス {max, plural, =1 {スロット} other {スロット}} 使用済み",
     "title": "マイプレミアムサブスクリプション",
     "valid_until": "{date} まで有効",
-    "wallet": "ウォレット"
+    "wallet": "ウォレット",
+    "wrong_wallet_error": "The payment must be sent from {address}. Please switch to that wallet and try again."
   },
   "tabs": {
     "auto_revoke": "Auto-Revoking",
@@ -201,6 +212,10 @@
       "manage_subscription": "Manage your Premium subscription",
       "title": "What you can do here"
     },
-    "description": "アカウントページにアクセスするには、Ethereumでサインインしてください。"
+    "description": "アカウントページにアクセスするには、Ethereumでサインインしてください。",
+    "selected_plan": {
+      "summary": "{price} per year with up to {maxAddresses} wallets included. Connect your wallet to continue.",
+      "title": "Subscribe to {planName}"
+    }
   }
 }

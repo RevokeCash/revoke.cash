@@ -7,32 +7,36 @@ import AddressDisplay from './AddressDisplay';
 import AddressExternalLinks from './AddressExternalLinks';
 import ConnectedLabel from './ConnectedLabel';
 import PremiumBadge from './PremiumBadge';
+import SubscriptionExpiryNotice from './SubscriptionExpiryNotice';
 import UltimateBadge from './UltimateBadge';
 
 const PremiumAddressHeader = () => {
   const { address, domainName, isUltimate } = useAddress();
 
   return (
-    <div className="flex flex-col sm:flex-row sm:justify-between gap-6 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-col gap-2">
-          <AddressDisplay
-            address={address}
-            domainName={domainName}
-            className="text-3xl font-bold"
-            copyButtonClassName="text-zinc-500 dark:text-zinc-400"
-            withCopyButton
-            withTooltip
-            as="h1"
-          />
-          <div className="flex items-center gap-2">
-            <ConnectedLabel address={address} />
-            {isUltimate ? <UltimateBadge /> : <PremiumBadge />}
+    <div className="flex flex-col gap-4">
+      <SubscriptionExpiryNotice />
+      <div className="flex flex-col sm:flex-row sm:justify-between gap-6 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2">
+            <AddressDisplay
+              address={address}
+              domainName={domainName}
+              className="text-3xl font-bold"
+              copyButtonClassName="text-zinc-500 dark:text-zinc-400"
+              withCopyButton
+              withTooltip
+              as="h1"
+            />
+            <div className="flex items-center gap-2">
+              <ConnectedLabel address={address} />
+              {isUltimate ? <UltimateBadge /> : <PremiumBadge />}
+            </div>
           </div>
+          <AddressExternalLinks address={address} chainId={ChainId.EthereumMainnet} />
         </div>
-        <AddressExternalLinks address={address} chainId={ChainId.EthereumMainnet} />
+        <WalletHealthSection isPremium />
       </div>
-      <WalletHealthSection isPremium />
     </div>
   );
 };

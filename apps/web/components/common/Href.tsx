@@ -38,7 +38,17 @@ const Href = ({ href, children, external, className, router, underline, html, un
 
   if (router) {
     return (
-      <Link {...props} className={unstyled ? className : classes} href={href} ref={ref} popover={undefined}>
+      <Link
+        {...props}
+        className={unstyled ? className : classes}
+        href={href}
+        ref={ref}
+        popover={undefined}
+        onClick={(e) => {
+          if (props.onClick) props.onClick(e);
+          analytics.track('Link Clicked', { href });
+        }}
+      >
         {children}
       </Link>
     );

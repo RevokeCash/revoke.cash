@@ -2,6 +2,8 @@ import { CheckIcon } from '@heroicons/react/24/solid';
 import Button from 'components/common/Button';
 import ContentPageHero from 'components/common/ContentPageHero';
 import ConnectButton from 'components/header/ConnectButton';
+import { usePremiumPlans } from 'lib/hooks/premium/usePremiumPlans';
+import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
 
@@ -13,10 +15,24 @@ interface Props {
 
 const UnauthenticatedView = ({ account, signIn, isAuthenticating }: Props) => {
   const t = useTranslations();
+  const preselectedTier = useSearchParams()?.get('plan');
+  const { plans } = usePremiumPlans('');
+
+  const selectedPlan = preselectedTier ? plans.find((plan) => plan.tier === preselectedTier) : undefined;
 
   return (
     <div className="flex flex-col items-center">
-      <ContentPageHero title={t('common.buttons.my_account')} subtitle={t('account.unauthenticated.description')} />
+      {selectedPlan ? (
+        <ContentPageHero
+          title={t('account.unauthenticated.selected_plan.title', { planName: selectedPlan.name })}
+          subtitle={t('account.unauthenticated.selected_plan.summary', {
+            price: `$${selectedPlan.priceUsd}`,
+            maxAddresses: selectedPlan.maxAddresses,
+          })}
+        />
+      ) : (
+        <ContentPageHero title={t('common.buttons.my_account')} subtitle={t('account.unauthenticated.description')} />
+      )}
 
       <div className="w-full max-w-md flex flex-col gap-6">
         {account ? (

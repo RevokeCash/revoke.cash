@@ -47,7 +47,7 @@ export const hasActiveUltimateEntitlement = async (address: Address): Promise<bo
 };
 
 // One retry, so a transient database hiccup doesn't surface as an error page
-const getActivePremiumEntitlementsWithSingleRetry = async (address: Address): Promise<PremiumEntitlement[]> => {
+export const getActivePremiumEntitlementsWithSingleRetry = async (address: Address): Promise<PremiumEntitlement[]> => {
   return getActivePremiumEntitlements(address).catch(() => getActivePremiumEntitlements(address));
 };
 

@@ -31,18 +31,19 @@ const PremiumSection = () => {
         <PremiumSectionCard
           title={t('landing.premium.premium_title')}
           badge={<Label className="bg-brand px-3 py-1 text-black">{t('landing.premium.premium_price')}</Label>}
+          topBadge={t('landing.premium.most_popular')}
+          topBadgeClassName="bg-brand text-zinc-900"
           className="border-2 border-brand/70"
         >
           <ul className="flex flex-col gap-2">
             <Highlight i18nKey="landing.premium.highlights.multichain_dashboard" />
-            <Highlight i18nKey="landing.premium.highlights.multichain_history" />
             <Highlight i18nKey="landing.premium.highlights.multichain_exploit_checker" />
             <Highlight i18nKey="landing.premium.highlights.unlimited_batch_revokes" />
             <Highlight i18nKey="landing.premium.highlights.time_machine" />
           </ul>
           <div className="mt-auto pt-2">
             <Button href="/premium" router style="secondary" size="md" className="w-full">
-              {t('landing.premium.view_pricing')}
+              {t('common.buttons.get_premium')}
             </Button>
           </div>
         </PremiumSectionCard>
@@ -53,19 +54,24 @@ const PremiumSection = () => {
               {t('landing.premium.ultimate_price')}
             </Label>
           }
+          topBadge={t('landing.premium.best_protection')}
+          topBadgeClassName="bg-zinc-900 text-white dark:bg-zinc-200 dark:text-zinc-900"
           className="border-2 border-zinc-800 dark:border-zinc-200"
         >
           <ul className="flex flex-col gap-2">
-            <Highlight i18nKey="landing.premium.ultimate_features.set_and_forget_protection" />
+            <li className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+              {t('landing.premium.includes_premium')}
+            </li>
             <Highlight i18nKey="landing.premium.ultimate_features.continuous_monitoring" />
             <Highlight
               i18nKey="landing.premium.ultimate_features.automated_revoking"
               tooltipKey="landing.premium.ultimate_features.automated_revoking_tooltip"
             />
+            <Highlight i18nKey="landing.premium.ultimate_features.gas_allowance" />
           </ul>
           <div className="mt-auto pt-2">
             <Button href="/premium" router style="primary" size="md" className="w-full">
-              {t('landing.premium.view_pricing')}
+              {t('common.buttons.get_ultimate')}
             </Button>
           </div>
         </PremiumSectionCard>
@@ -79,18 +85,30 @@ export default PremiumSection;
 interface PremiumSectionCardProps {
   title: string;
   badge?: ReactNode;
+  topBadge?: string;
+  topBadgeClassName?: string;
   className?: string;
   children: ReactNode;
 }
 
-const PremiumSectionCard = ({ title, badge, className, children }: PremiumSectionCardProps) => {
+const PremiumSectionCard = ({
+  title,
+  badge,
+  topBadge,
+  topBadgeClassName,
+  className,
+  children,
+}: PremiumSectionCardProps) => {
   return (
     <div
       className={twMerge(
-        'flex flex-col gap-5 rounded-xl p-6 border border-zinc-200/70 dark:border-zinc-800/70',
+        'relative flex flex-col gap-5 rounded-xl p-6 border border-zinc-200/70 dark:border-zinc-800/70',
         className,
       )}
     >
+      {topBadge && (
+        <Label className={twMerge('absolute -top-3 left-1/2 -translate-x-1/2', topBadgeClassName)}>{topBadge}</Label>
+      )}
       <div className="flex items-center justify-between gap-3">
         <h3 className="text-xl font-semibold">{title}</h3>
         {badge}

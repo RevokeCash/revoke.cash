@@ -30,6 +30,7 @@ export const FEATURES: PricingFeature[] = [
   { labelKey: 'multichain_dashboard', free: false, premium: true, ultimate: true },
   { labelKey: 'multichain_exploit_checker', free: false, premium: true, ultimate: true },
   { labelKey: 'time_machine', free: false, premium: true, ultimate: true },
+  { labelKey: 'priority_support', free: false, premium: true, ultimate: true },
   { labelKey: 'continuous_monitoring', free: false, premium: false, ultimate: true, upgradedIn: ['ultimate'] },
   {
     labelKey: 'automated_revoking',

@@ -29,7 +29,9 @@
     "download": "ダウンロードする",
     "expand_all": "すべて展開",
     "explorer_links": "エクスプローラーリンク",
+    "get_premium": "Get Premium",
     "get_started": "開始する",
+    "get_ultimate": "Get Ultimate",
     "increase": "増加",
     "loading": "読み込み中",
     "my_account": "マイアカウント",
@@ -53,7 +55,8 @@
     "understand": "理解しました",
     "update": "更新",
     "updating": "更新中",
-    "upgrade_to_premium": "プレミアムにアップグレード"
+    "upgrade_to_premium": "プレミアムにアップグレード",
+    "upgrade_to_ultimate": "Upgrade to Ultimate"
   },
   "chain_select": {
     "mainnets": "メインネット",
@@ -87,7 +90,8 @@
     "messages": {
       "chain_could_not_connect": "{chainName}に接続できませんでした。後でもう一度試してください。",
       "connect_wallet_to_supported_network": "Please connect your web3 wallet to a supported network",
-      "eip5792_batch_call_failed": "An error occurred related to EIP5792 batch calls"
+      "eip5792_batch_call_failed": "An error occurred related to EIP5792 batch calls",
+      "page_load_failed": "Something went wrong while loading this page. Please try again later."
     }
   },
   "footer": {
@@ -104,6 +108,7 @@
     "knowledgebase": "ナレッジベース",
     "learn": "学ぶ",
     "marketplace_bulk_delister": "マーケットプレイス一括削除",
+    "premium": "Premium",
     "privacy": "プライバシー ポリシー",
     "product": "製品",
     "terms": "利用規約",

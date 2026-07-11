@@ -124,6 +124,7 @@
     },
     "most_popular": "Más populares",
     "most_popular_label": "Más populares",
+    "payment_note": "Pay with USDC on Ethereum or other popular networks. One-time payment for a full year, no auto-renew, and no token approvals needed.",
     "per_year": "/año",
     "tiers": {
       "free": {

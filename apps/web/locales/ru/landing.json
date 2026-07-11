@@ -9,11 +9,11 @@
       "title": "Automated Revoking"
     },
     "dashboard": {
-      "description": "Get a clear overview of every token approval you've ever granted. Sort, filter, and revoke the ones you no longer need — all from one simple dashboard.",
+      "description": "Get a clear overview of every token approval you've ever granted. Sort, filter, and revoke the ones you no longer need all from one simple dashboard.",
       "title": "Approval Dashboard"
     },
     "exploit_checker": {
-      "description": "Automatically check your approvals against a database of known exploits and scams. Get a warning if any of your approvals are at risk.",
+      "description": "Automatically check your approvals against known exploits to see if any of your approvals are at risk.",
       "title": "Exploit Checker"
     },
     "title": "Built for Wallet Security"
@@ -38,6 +38,7 @@
     "title": "Как отменить доступы."
   },
   "premium": {
+    "best_protection": "Best Protection",
     "description": "Monitor and protect your token approvals across 100+ networks. Starting at $99/year.",
     "free_features": {
       "batch_revoke": "Batch revoke ($1.50/batch)",
@@ -49,11 +50,12 @@
     "highlights": {
       "multichain_dashboard": "Multichain dashboard",
       "multichain_exploit_checker": "Multichain exploit checker",
-      "multichain_history": "Multichain approval history",
       "priority_support": "Priority support",
       "time_machine": "Time machine for historical approvals",
       "unlimited_batch_revokes": "Unlimited batch revokes"
     },
+    "includes_premium": "Everything in Premium, plus:",
+    "most_popular": "Most Popular",
     "premium_price": "$99/year",
     "premium_title": "Premium",
     "title": "Revoke Premium",
@@ -61,11 +63,10 @@
       "automated_revoking": "Automated revoking",
       "automated_revoking_tooltip": "Supported on select networks and wallets.",
       "continuous_monitoring": "Continuous monitoring",
-      "set_and_forget_protection": "Set-and-forget protection"
+      "gas_allowance": "$5/month gas allowance included"
     },
     "ultimate_price": "$199/year",
-    "ultimate_title": "Ultimate",
-    "view_pricing": "View pricing"
+    "ultimate_title": "Ultimate"
   },
   "stats": {
     "approvals_revoked": "Approvals Revoked",

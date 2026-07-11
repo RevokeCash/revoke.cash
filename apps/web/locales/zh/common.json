@@ -29,7 +29,9 @@
     "download": "下载",
     "expand_all": "Expand All",
     "explorer_links": "浏览器链接",
+    "get_premium": "Get Premium",
     "get_started": "开始使用",
+    "get_ultimate": "Get Ultimate",
     "increase": "增加",
     "loading": "Loading",
     "my_account": "Account Settings",
@@ -53,7 +55,8 @@
     "understand": "我理解",
     "update": "更新",
     "updating": "更新中",
-    "upgrade_to_premium": "Upgrade to Premium"
+    "upgrade_to_premium": "Upgrade to Premium",
+    "upgrade_to_ultimate": "Upgrade to Ultimate"
   },
   "chain_select": {
     "mainnets": "主网",
@@ -87,7 +90,8 @@
     "messages": {
       "chain_could_not_connect": "无法连接到{chainName}，请稍后重试。",
       "connect_wallet_to_supported_network": "Please connect your web3 wallet to a supported network",
-      "eip5792_batch_call_failed": "An error occurred related to EIP5792 batch calls"
+      "eip5792_batch_call_failed": "An error occurred related to EIP5792 batch calls",
+      "page_load_failed": "Something went wrong while loading this page. Please try again later."
     }
   },
   "footer": {
@@ -104,6 +108,7 @@
     "knowledgebase": "知识库",
     "learn": "学习资源",
     "marketplace_bulk_delister": "Marketplace Bulk Delister",
+    "premium": "Premium",
     "privacy": "隐私政策",
     "product": "产品",
     "terms": "条款",

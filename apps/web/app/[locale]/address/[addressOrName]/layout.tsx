@@ -1,4 +1,5 @@
-import { hasActivePremiumEntitlement, hasActiveUltimateEntitlement } from '@revoke.cash/core/premium/entitlements';
+import { getActivePremiumEntitlementsWithSingleRetry } from '@revoke.cash/core/premium/entitlements';
+import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
 import { getAddressAndDomainName } from '@revoke.cash/core/whois';
 import CrispPremiumPageSync from 'app/CrispPremiumPageSync';
 import SharedLayout from 'app/layouts/SharedLayout';
@@ -33,10 +34,14 @@ const AddressPageLayout = async ({ params, children }: Props) => {
   if (!address) notFound();
 
   // The address page falls back to the free experience when the entitlement lookup fails
-  const [isPremium, isUltimate] = await Promise.all([
-    hasActivePremiumEntitlement(address).catch(() => false),
-    hasActiveUltimateEntitlement(address).catch(() => false),
-  ]);
+  const entitlements = await getActivePremiumEntitlementsWithSingleRetry(address).catch(() => []);
+  const isPremium = entitlements.length > 0;
+  const isUltimate = entitlements.some((entitlement) => isUltimatePlan(entitlement));
+
+  const premiumEndsAt = entitlements
+    .filter((entitlement) => entitlement.ownerAddress.toLowerCase() === address.toLowerCase())
+    .map((entitlement) => entitlement.endsAt)
+    .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())[0];
 
   return (
     <SharedLayout searchBar>
@@ -46,6 +51,7 @@ const AddressPageLayout = async ({ params, children }: Props) => {
           domainName={domainName}
           isPremium={isPremium}
           isUltimate={isUltimate}
+          premiumEndsAt={premiumEndsAt}
         >
           <NextIntlClientProvider
             messages={{ common: messages.common, address: messages.address, exploits: messages.exploits }}

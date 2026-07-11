@@ -29,7 +29,9 @@
     "download": "Скачать",
     "expand_all": "Expand All",
     "explorer_links": "Ссылки на блокчейн-обозреватели",
+    "get_premium": "Get Premium",
     "get_started": "Начать",
+    "get_ultimate": "Get Ultimate",
     "increase": "Увеличить",
     "loading": "Loading",
     "my_account": "Account Settings",
@@ -53,7 +55,8 @@
     "understand": "Понятно",
     "update": "Обновить",
     "updating": "Обновление…",
-    "upgrade_to_premium": "Upgrade to Premium"
+    "upgrade_to_premium": "Upgrade to Premium",
+    "upgrade_to_ultimate": "Upgrade to Ultimate"
   },
   "chain_select": {
     "mainnets": "Основные сети",
@@ -87,7 +90,8 @@
     "messages": {
       "chain_could_not_connect": "Не удалось подключиться к {chainName}, пожалуйста, повторите попытку позже.",
       "connect_wallet_to_supported_network": "Please connect your web3 wallet to a supported network",
-      "eip5792_batch_call_failed": "An error occurred related to EIP5792 batch calls"
+      "eip5792_batch_call_failed": "An error occurred related to EIP5792 batch calls",
+      "page_load_failed": "Something went wrong while loading this page. Please try again later."
     }
   },
   "footer": {
@@ -104,6 +108,7 @@
     "knowledgebase": "База знаний",
     "learn": "Учить",
     "marketplace_bulk_delister": "Marketplace Bulk Delister",
+    "premium": "Premium",
     "privacy": "Политика конфиденциальности",
     "product": "Продукт",
     "terms": "Условия",

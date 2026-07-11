@@ -58,6 +58,7 @@
       "shared": "The gas budget is shared by all wallets in the subscription.",
       "used": "{used} of {total} used this month"
     },
+    "load_failed": "Failed to load your Auto-Revoking configuration. Please refresh the page or try again later.",
     "metamask_not_connected": "MetaMask not connected",
     "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",
     "permissions": {
@@ -160,17 +161,26 @@
       "creating": "Creating payment",
       "extend": "Extend",
       "paying": "Confirm in wallet",
+      "renew": "Renew",
       "subscribe": "Subscribe",
       "try_again": "Try again",
       "upgrade": "Upgrade"
     },
     "downgrade_not_supported": "You cannot downgrade an active subscription.",
+    "expired": "Expired",
+    "expired_on": "Expired on {date}.",
+    "expired_preserved": "Your wallet slots and Auto-Revoking rules are preserved. Renew to pick up where you left off.",
+    "expired_ultimate_stopped": "Auto-Revoking is no longer monitoring your wallets.",
+    "expires_in": "Expires in {days, plural, =1 {1 day} other {# days}} ({date})",
+    "expires_soon": "Expires soon",
     "granted_by": "Granted by {address}",
     "next_setup_auto_revoke": "Next step: set up Auto-Revoking",
     "no_subscription": "You don't have an active premium subscription. Subscribe below to get started. <premium-link>Learn more about Premium</premium-link>.",
     "optional_own_subscription": "You already have access through a granted subscription. You can still subscribe for your own plan if you'd like.",
     "payment_confirmed": "Payment confirmed! Your premium subscription is now active.",
+    "payment_expired": "The payment window expired. If you already sent the full USDC amount, it will be credited automatically once it lands on-chain. Check your subscription status in a few minutes.",
     "payment_failed": "Subscription payment failed",
+    "payment_help": "Need help? <support-link>Chat with support</support-link>.",
     "payment_network": "Payment network",
     "payment_status_error": "Payment {status}",
     "payment_summary": "You will pay {amount} {token} for {days} days. Includes up to {maxAddresses} {maxAddresses, plural, =1 {wallet} other {wallets}}.",
@@ -185,7 +195,8 @@
     "slots_summary": "{used}/{max} wallet {max, plural, =1 {slot} other {slots}} used",
     "title": "Premium Subscription",
     "valid_until": "Valid until {date}",
-    "wallet": "Wallet"
+    "wallet": "Wallet",
+    "wrong_wallet_error": "The payment must be sent from {address}. Please switch to that wallet and try again."
   },
   "tabs": {
     "auto_revoke": "Auto-Revoking",
@@ -201,6 +212,10 @@
       "manage_subscription": "Manage your Premium subscription",
       "title": "What you can do here"
     },
-    "description": "Sign in to manage your Premium subscription, Auto-Revoking, wallet slots, and coverage."
+    "description": "Sign in to manage your Premium subscription, Auto-Revoking, wallet slots, and coverage.",
+    "selected_plan": {
+      "summary": "{price} per year with up to {maxAddresses} wallets included. Connect your wallet to continue.",
+      "title": "Subscribe to {planName}"
+    }
   }
 }

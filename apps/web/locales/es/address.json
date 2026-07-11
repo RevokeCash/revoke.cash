@@ -215,6 +215,10 @@
     "banner": {
       "cta": "Actualizar a Premium",
       "description": "¿Quieres tener una visión unificada de todas las redes?"
+    },
+    "subscription_expiry": {
+      "cta": "Extend",
+      "description": "Your premium subscription expires in {days, plural, =1 {1 day} other {# days}}."
     }
   },
   "risk_factors": {

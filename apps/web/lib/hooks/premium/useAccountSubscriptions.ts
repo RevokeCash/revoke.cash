@@ -21,6 +21,11 @@ export const useAccountSubscriptions = () => {
   const ultimateEntitlement = entitlements
     .filter((entitlement) => isUltimatePlan(entitlement))
     .sort((a, b) => new Date(b.endsAt).getTime() - new Date(a.endsAt).getTime())[0];
+  const latestExpiredSubscription = activeSubscription
+    ? undefined
+    : subscriptions
+        .filter((subscription) => new Date(subscription.endsAt).getTime() <= Date.now())
+        .sort((a, b) => new Date(b.endsAt).getTime() - new Date(a.endsAt).getTime())[0];
 
   return {
     account,
@@ -32,5 +37,6 @@ export const useAccountSubscriptions = () => {
     activeSubscription,
     activeUltimateSubscription,
     ultimateEntitlement,
+    latestExpiredSubscription,
   };
 };

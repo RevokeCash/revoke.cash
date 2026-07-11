@@ -4,7 +4,7 @@
       "button": "View plans",
       "title": "Ready for set-and-forget protection?"
     },
-    "description": "Everything you should know about Auto-Revoking before you subscribe — how it protects you, what it needs, and where its limits are.",
+    "description": "Everything you should know about Auto-Revoking before you subscribe: how it protects you, what it needs, and where its limits are.",
     "gas": {
       "description": "Your subscription includes a {budget} monthly gas allowance that pays for automated revoke transactions. When the allowance is used up, remaining revokes wait for the next monthly cycle, with exploit-triggered revokes still prioritized. To spend your allowance efficiently, individual revokes are capped at {cap} and may be deferred temporarily during gas spikes.",
       "title": "Gas fees are included"
@@ -77,7 +77,7 @@
         "title": "Automated Revoking"
       },
       "multichain_dashboard": {
-        "description": "View and manage all your token approvals across 100+ networks from a single unified dashboard — including your full approval history. No more switching chains one by one.",
+        "description": "View and manage all your token approvals across 100+ networks from a single unified dashboard, including your full approval history. No more switching chains one by one.",
         "title": "Multichain Dashboard"
       },
       "multichain_exploit_checker": {
@@ -124,6 +124,7 @@
     },
     "most_popular": "最も人気",
     "most_popular_label": "Most Popular",
+    "payment_note": "Pay with USDC on Ethereum or other popular networks. One-time payment for a full year, no auto-renew, and no token approvals needed.",
     "per_year": "/年",
     "tiers": {
       "free": {

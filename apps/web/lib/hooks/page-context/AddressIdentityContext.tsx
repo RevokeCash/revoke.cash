@@ -9,6 +9,7 @@ interface AddressIdentityContextValue {
   domainName?: string;
   isPremium: boolean;
   isUltimate: boolean;
+  premiumEndsAt?: string;
 }
 
 interface Props {
@@ -17,6 +18,7 @@ interface Props {
   domainName?: string | null;
   isPremium?: boolean;
   isUltimate?: boolean;
+  premiumEndsAt?: string;
 }
 
 export const AddressIdentityContext = createContext<AddressIdentityContextValue>(undefined as any);
@@ -27,13 +29,16 @@ export const AddressIdentityContextProvider = ({
   domainName: initialDomainName,
   isPremium = false,
   isUltimate = false,
+  premiumEndsAt,
 }: Props) => {
   const { domainName: resolvedDomainName } = useNameLookup(initialDomainName ? undefined : address);
 
   const domainName = initialDomainName ?? resolvedDomainName ?? undefined;
 
   return (
-    <AddressIdentityContext value={{ address, domainName, isPremium, isUltimate }}>{children}</AddressIdentityContext>
+    <AddressIdentityContext value={{ address, domainName, isPremium, isUltimate, premiumEndsAt }}>
+      {children}
+    </AddressIdentityContext>
   );
 };
 

@@ -2,6 +2,7 @@
 
 import { CsrLink } from 'lib/i18n/csr-navigation';
 import { Link } from 'lib/i18n/navigation';
+import analytics from 'lib/utils/analytics';
 import type { MouseEventHandler, Ref } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Href from './Href';
@@ -80,6 +81,11 @@ const Button = ({
   // Note: This code is repeated in Href.tsx for styling reasons
   if (href) {
     if (router) {
+      const trackedOnClick: MouseEventHandler = (event) => {
+        if (onClick) onClick(event);
+        analytics.track('Link Clicked', { href });
+      };
+
       if (retainSearchParams) {
         return (
           <CsrLink
@@ -88,7 +94,7 @@ const Button = ({
             href={href}
             ref={ref}
             retainSearchParams={retainSearchParams}
-            onClick={onClick}
+            onClick={trackedOnClick}
           >
             {children}
           </CsrLink>
@@ -96,7 +102,7 @@ const Button = ({
       }
 
       return (
-        <Link {...props} className={classes} href={href} ref={ref} onClick={onClick}>
+        <Link {...props} className={classes} href={href} ref={ref} onClick={trackedOnClick}>
           {children}
         </Link>
       );

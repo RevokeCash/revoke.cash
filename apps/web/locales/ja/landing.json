@@ -38,6 +38,7 @@
     "title": "許可をリボーク(取消)する方法。"
   },
   "premium": {
+    "best_protection": "Best Protection",
     "description": "1つのダッシュボードから100以上のネットワークの承認を一元管理できます。年間79ドルからご利用いただけます。",
     "free_features": {
       "batch_revoke": "バッチ取り消し（1.50ドル/バッチ）",
@@ -49,11 +50,12 @@
     "highlights": {
       "multichain_dashboard": "マルチチェーンダッシュボード — すべてのチェーンを一元管理",
       "multichain_exploit_checker": "マルチチェーンエクスプロイトチェッカー",
-      "multichain_history": "マルチチェーン承認履歴",
       "priority_support": "優先サポート",
       "time_machine": "過去の承認履歴を確認するタイムマシン",
       "unlimited_batch_revokes": "無制限のバッチ取り消し"
     },
+    "includes_premium": "Everything in Premium, plus:",
+    "most_popular": "Most Popular",
     "premium_price": "$99/year",
     "premium_title": "プレミアム",
     "title": "プレミアムを取り消す",
@@ -61,11 +63,10 @@
       "automated_revoking": "Automated revoking",
       "automated_revoking_tooltip": "Supported on select networks and wallets.",
       "continuous_monitoring": "Continuous monitoring",
-      "set_and_forget_protection": "Set-and-forget protection"
+      "gas_allowance": "$5/month gas allowance included"
     },
     "ultimate_price": "$199/year",
-    "ultimate_title": "Ultimate",
-    "view_pricing": "価格を表示"
+    "ultimate_title": "Ultimate"
   },
   "stats": {
     "approvals_revoked": "承認が取り消された",

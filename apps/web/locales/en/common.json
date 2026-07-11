@@ -29,7 +29,9 @@
     "download": "Download",
     "expand_all": "Expand All",
     "explorer_links": "Explorer Links",
+    "get_premium": "Get Premium",
     "get_started": "Get Started",
+    "get_ultimate": "Get Ultimate",
     "increase": "Increase",
     "loading": "Loading",
     "my_account": "Account Settings",
@@ -53,7 +55,8 @@
     "understand": "I Understand",
     "update": "Update",
     "updating": "Updating",
-    "upgrade_to_premium": "Upgrade to Premium"
+    "upgrade_to_premium": "Upgrade to Premium",
+    "upgrade_to_ultimate": "Upgrade to Ultimate"
   },
   "chain_select": {
     "mainnets": "Mainnets",
@@ -105,6 +108,7 @@
     "knowledgebase": "Knowledgebase",
     "learn": "Learn",
     "marketplace_bulk_delister": "Marketplace Bulk Delister",
+    "premium": "Premium",
     "privacy": "Privacy Policy",
     "product": "Product",
     "terms": "Terms",

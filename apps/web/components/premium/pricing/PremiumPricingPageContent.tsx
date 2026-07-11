@@ -39,6 +39,8 @@ const PremiumPricingPageContent = () => {
         />
       </div>
 
+      <p className="-mt-6 text-center text-sm text-zinc-500 dark:text-zinc-400">{t('premium.pricing.payment_note')}</p>
+
       <ComparisonTable />
 
       <div className="flex flex-col gap-8">

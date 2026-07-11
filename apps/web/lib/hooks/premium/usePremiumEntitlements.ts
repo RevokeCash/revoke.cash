@@ -5,6 +5,7 @@ import type { Address } from 'viem';
 
 interface EntitlementResponse {
   isPremium: boolean;
+  isUltimate: boolean;
 }
 
 export const getPremiumEntitlementsQueryKey = (address?: Address) => ['premium', 'entitlements', address] as const;
@@ -20,6 +21,7 @@ export const usePremiumEntitlements = (address: Address | undefined, enabled: bo
 
   return {
     isPremium: query.data?.isPremium ?? false,
+    isUltimate: query.data?.isUltimate ?? false,
     isLoading: query.isLoading,
     isError: query.isError,
   };

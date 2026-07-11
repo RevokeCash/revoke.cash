@@ -1,19 +1,24 @@
 'use client';
 
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { CRISP_WEBSITE_ID, DISCORD_URL } from '@revoke.cash/core/constants';
 import { PREMIUM_PAYMENT_CHAIN_IDS } from '@revoke.cash/core/premium/payment-config';
 import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
 import type { PremiumEntitlement, PremiumPlan, PremiumSubscription } from '@revoke.cash/core/premium/types';
+import { isNullish } from '@revoke.cash/core/utils';
 import { shortenAddress } from '@revoke.cash/core/utils/formatting';
+import { DAY } from '@revoke.cash/core/utils/time';
 import Button from 'components/common/Button';
 import Card, { CardTitle } from 'components/common/Card';
 import CardSelect, { type CardSelectOption } from 'components/common/CardSelect';
 import Href from 'components/common/Href';
 import StatusLabel from 'components/common/StatusLabel';
 import ChainSelect from 'components/common/select/ChainSelect';
+import { Crisp } from 'crisp-sdk-web';
 import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { usePremiumPlans } from 'lib/hooks/premium/usePremiumPlans';
 import { type SubscribeStatus, useSubscribe } from 'lib/hooks/premium/useSubscribe';
+import analytics from 'lib/utils/analytics';
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
@@ -24,16 +29,19 @@ import { useConnection } from 'wagmi';
 interface Props {
   account: Address;
   activeSubscription: PremiumSubscription | undefined;
+  expiredSubscription: PremiumSubscription | undefined;
   entitlements: PremiumEntitlement[];
 }
 
-const PremiumSubscriptionSection = ({ account, activeSubscription, entitlements }: Props) => {
+const PremiumSubscriptionSection = ({ account, activeSubscription, expiredSubscription, entitlements }: Props) => {
   const t = useTranslations();
   const { chainId } = useConnection();
   const { domainName } = useNameLookup(account);
   const preselectedTier = useSearchParams()?.get('plan');
 
-  const [selectedPlanId, setSelectedPlanId] = useState<string>(activeSubscription?.plan.id ?? 'premium_annual');
+  const [selectedPlanId, setSelectedPlanId] = useState<string>(
+    activeSubscription?.plan.id ?? expiredSubscription?.plan.id ?? 'premium_annual',
+  );
   const [selectedPaymentChainId, setSelectedPaymentChainId] = useState<number>(PREMIUM_PAYMENT_CHAIN_IDS[0]);
 
   const { plans, selectedPlan, isLoading: isLoadingPlans, isError: isPlansError } = usePremiumPlans(selectedPlanId);
@@ -63,14 +71,15 @@ const PremiumSubscriptionSection = ({ account, activeSubscription, entitlements 
     }
   }, [preselectedTier, plans]);
 
-  // Sync selected plan when active subscription loads, unless the pricing page chose a tier
+  // Sync selected plan when subscription data loads, unless the pricing page chose a tier
   useEffect(() => {
     if (preselectedTier) return;
 
-    if (activeSubscription?.plan.id) {
-      setSelectedPlanId(activeSubscription.plan.id);
+    const subscribedPlanId = activeSubscription?.plan.id ?? expiredSubscription?.plan.id;
+    if (subscribedPlanId) {
+      setSelectedPlanId(subscribedPlanId);
     }
-  }, [activeSubscription?.plan.id, preselectedTier]);
+  }, [activeSubscription?.plan.id, expiredSubscription?.plan.id, preselectedTier]);
 
   // Reset selected plan if loaded plans don't include it
   useEffect(() => {
@@ -83,11 +92,18 @@ const PremiumSubscriptionSection = ({ account, activeSubscription, entitlements 
   }, [plans, selectedPlanId]);
 
   const isFreeSelected = selectedPlanId === 'free';
-  const action = !activeSubscription
-    ? 'subscribe'
-    : activeSubscription.plan.id === selectedPlanId
-      ? 'extend'
-      : 'upgrade';
+
+  const getActionLabel = (): 'subscribe' | 'renew' | 'extend' | 'upgrade' => {
+    if (activeSubscription) {
+      if (activeSubscription.plan.id === selectedPlanId) return 'extend';
+      return 'upgrade';
+    }
+
+    if (expiredSubscription?.plan.id === selectedPlanId) return 'renew';
+    return 'subscribe';
+  };
+
+  const actionLabel = getActionLabel();
 
   return (
     <Card
@@ -98,7 +114,11 @@ const PremiumSubscriptionSection = ({ account, activeSubscription, entitlements 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="min-w-0 flex flex-col gap-4">
           <WalletInfo account={account} domainName={domainName} />
-          <SubscriptionBannerSection activeSubscription={activeSubscription} entitlements={entitlements} />
+          <SubscriptionBannerSection
+            activeSubscription={activeSubscription}
+            expiredSubscription={expiredSubscription}
+            entitlements={entitlements}
+          />
         </div>
 
         <div className="min-w-0 flex flex-col gap-4 border-t border-zinc-200 dark:border-zinc-800 pt-4 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-6">
@@ -127,7 +147,7 @@ const PremiumSubscriptionSection = ({ account, activeSubscription, entitlements 
                   selectedPlan={selectedPlan}
                   selectedPaymentChainId={selectedPaymentChainId}
                   onSelectPaymentChainId={setSelectedPaymentChainId}
-                  action={action}
+                  action={actionLabel}
                   status={status}
                   error={error}
                   isSubscribing={isSubscribing}
@@ -159,17 +179,22 @@ const WalletInfo = ({ account, domainName }: { account: Address; domainName: str
 
 interface SubscriptionBannerSectionProps {
   activeSubscription: PremiumSubscription | undefined;
+  expiredSubscription: PremiumSubscription | undefined;
   entitlements: PremiumEntitlement[];
 }
 
-const SubscriptionBannerSection = ({ activeSubscription, entitlements }: SubscriptionBannerSectionProps) => {
+const SubscriptionBannerSection = ({
+  activeSubscription,
+  expiredSubscription,
+  entitlements,
+}: SubscriptionBannerSectionProps) => {
   const t = useTranslations();
 
   const grantedEntitlements = entitlements.filter(
     (entitlement) => entitlement.ownerAddress.toLowerCase() !== activeSubscription?.ownerAddress?.toLowerCase(),
   );
 
-  if (!activeSubscription && grantedEntitlements.length === 0) {
+  if (!activeSubscription && !expiredSubscription && grantedEntitlements.length === 0) {
     return (
       <p className="text-sm text-zinc-600 dark:text-zinc-400">
         {t.rich('account.subscription.no_subscription', {
@@ -192,6 +217,7 @@ const SubscriptionBannerSection = ({ activeSubscription, entitlements }: Subscri
           slots={activeSubscription.slots}
         />
       )}
+      {!activeSubscription && expiredSubscription && <ExpiredSubscriptionBanner subscription={expiredSubscription} />}
       {grantedEntitlements.map((entitlement) => (
         <SubscriptionBanner
           key={entitlement.ownerAddress}
@@ -200,7 +226,7 @@ const SubscriptionBannerSection = ({ activeSubscription, entitlements }: Subscri
           grantedBy={entitlement.ownerAddress}
         />
       ))}
-      {!activeSubscription && grantedEntitlements.length > 0 && (
+      {!activeSubscription && !expiredSubscription && grantedEntitlements.length > 0 && (
         <p className="text-sm text-zinc-600 dark:text-zinc-400">
           {t('account.subscription.optional_own_subscription')}
         </p>
@@ -216,22 +242,55 @@ interface SubscriptionBannerProps {
   slots?: { used: number; max: number };
 }
 
+const EXPIRY_WARNING_DAYS = 30;
+
 const SubscriptionBanner = ({ planName, endsAt, grantedBy, slots }: SubscriptionBannerProps) => {
   const t = useTranslations();
 
+  const daysUntilExpiry = Math.max(Math.ceil((new Date(endsAt).getTime() - Date.now()) / DAY), 0);
+  const isExpiringSoon = daysUntilExpiry <= EXPIRY_WARNING_DAYS;
+
   const bannerStrings = [
     grantedBy && t('account.subscription.granted_by', { address: shortenAddress(grantedBy, 4) }),
-    t('account.subscription.valid_until', { date: endsAt.slice(0, 10) }),
+    isExpiringSoon
+      ? t('account.subscription.expires_in', { days: daysUntilExpiry, date: endsAt.slice(0, 10) })
+      : t('account.subscription.valid_until', { date: endsAt.slice(0, 10) }),
     slots && t('account.subscription.slots_summary', { used: slots.used, max: slots.max }),
   ];
 
+  const bannerClasses = isExpiringSoon
+    ? 'bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-900'
+    : 'bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-900';
+
   return (
-    <div className="flex flex-col gap-2 rounded-md bg-green-50 dark:bg-green-950/20 p-4 border border-green-200 dark:border-green-900">
+    <div className={twMerge('flex flex-col gap-2 rounded-md p-4 border', bannerClasses)}>
       <div className="flex items-center gap-2">
         <span className="font-medium">{planName}</span>
-        <StatusLabel status="success">{t('account.subscription.active')}</StatusLabel>
+        <StatusLabel status={isExpiringSoon ? 'warning' : 'success'}>
+          {isExpiringSoon ? t('account.subscription.expires_soon') : t('account.subscription.active')}
+        </StatusLabel>
       </div>
       <p className="text-sm text-zinc-600 dark:text-zinc-400">{bannerStrings.filter(Boolean).join(' · ')}</p>
+    </div>
+  );
+};
+
+const ExpiredSubscriptionBanner = ({ subscription }: { subscription: PremiumSubscription }) => {
+  const t = useTranslations();
+
+  const bannerStrings = [
+    t('account.subscription.expired_on', { date: subscription.endsAt.slice(0, 10) }),
+    isUltimatePlan(subscription.plan) && t('account.subscription.expired_ultimate_stopped'),
+    t('account.subscription.expired_preserved'),
+  ];
+
+  return (
+    <div className="flex flex-col gap-2 rounded-md bg-yellow-50 dark:bg-yellow-950/20 p-4 border border-yellow-200 dark:border-yellow-900">
+      <div className="flex items-center gap-2">
+        <span className="font-medium">{subscription.plan.name}</span>
+        <StatusLabel status="warning">{t('account.subscription.expired')}</StatusLabel>
+      </div>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">{bannerStrings.filter(Boolean).join(' ')}</p>
     </div>
   );
 };
@@ -240,7 +299,7 @@ interface PaymentFormProps {
   selectedPlan: PremiumPlan;
   selectedPaymentChainId: number;
   onSelectPaymentChainId: (chainId: number) => void;
-  action: 'subscribe' | 'extend' | 'upgrade';
+  action: 'subscribe' | 'renew' | 'extend' | 'upgrade';
   status: SubscribeStatus;
   error: string | null | undefined;
   isSubscribing: boolean;
@@ -303,6 +362,11 @@ const PaymentForm = ({
             size="md"
             className="w-fit"
             onClick={() => {
+              analytics.track('Subscribe Clicked', {
+                planId: selectedPlan.id,
+                chainId: selectedPaymentChainId,
+                action,
+              });
               if (status === 'failed') onReset();
               onSubscribe();
             }}
@@ -314,6 +378,27 @@ const PaymentForm = ({
 
         {error && <span className="text-sm text-red-600 dark:text-red-400">{error}</span>}
       </div>
+
+      {status === 'failed' && (
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          {t.rich('account.subscription.payment_help', {
+            'support-link': (children) =>
+              isNullish(CRISP_WEBSITE_ID) ? (
+                <Href href={DISCORD_URL} external underline="always">
+                  {children}
+                </Href>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => Crisp.chat.open()}
+                  className="cursor-pointer underline hover:underline decoration-brand"
+                >
+                  {children}
+                </button>
+              ),
+          })}
+        </p>
+      )}
     </>
   );
 };

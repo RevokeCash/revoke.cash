@@ -38,6 +38,7 @@
     "title": "Cómo Revocar Tus Autorizaciones"
   },
   "premium": {
+    "best_protection": "Best Protection",
     "description": "Gestiona las aprobaciones en más de 100 redes desde un único panel de control. A partir de $99/año.",
     "free_features": {
       "batch_revoke": "Revocación por lotes ($1,50/lote)",
@@ -49,11 +50,12 @@
     "highlights": {
       "multichain_dashboard": "Panel de control multicadena",
       "multichain_exploit_checker": "Comprobador de exploits multicadena",
-      "multichain_history": "Historial de aprobaciones de multicadena",
       "priority_support": "Soporte prioritario",
       "time_machine": "Máquina del tiempo para aprobaciones históricas",
       "unlimited_batch_revokes": "Revocaciones de lotes ilimitadas"
     },
+    "includes_premium": "Everything in Premium, plus:",
+    "most_popular": "Most Popular",
     "premium_price": "$99/año",
     "premium_title": "Prémium",
     "title": "Revoke Premium",
@@ -61,11 +63,10 @@
       "automated_revoking": "Revocación automática",
       "automated_revoking_tooltip": "Compatible con determinadas redes y carteras.",
       "continuous_monitoring": "Monitoreo continuo",
-      "set_and_forget_protection": "Protección que no tienes que volver a configurar"
+      "gas_allowance": "$5/month gas allowance included"
     },
     "ultimate_price": "$199/año",
-    "ultimate_title": "Lo mejor",
-    "view_pricing": "Ver precios"
+    "ultimate_title": "Lo mejor"
   },
   "stats": {
     "approvals_revoked": "Autorizaciones Revocadas",

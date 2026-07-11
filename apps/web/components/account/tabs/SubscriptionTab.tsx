@@ -10,7 +10,7 @@ import PremiumSubscriptionSection from '../PremiumSubscriptionSection';
 
 const SubscriptionTab = () => {
   const t = useTranslations();
-  const { account, activeSubscription, entitlements, isLoading } = useAccountSubscriptions();
+  const { account, activeSubscription, latestExpiredSubscription, entitlements, isLoading } = useAccountSubscriptions();
   const { setupNeeded } = useAutoRevokeSetupNeeded();
 
   if (isLoading) {
@@ -27,6 +27,7 @@ const SubscriptionTab = () => {
       <PremiumSubscriptionSection
         account={account!}
         activeSubscription={activeSubscription}
+        expiredSubscription={latestExpiredSubscription}
         entitlements={entitlements}
       />
       {activeSubscription && <PremiumAddressesSection activeSubscription={activeSubscription} account={account!} />}

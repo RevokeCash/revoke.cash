@@ -58,6 +58,7 @@
       "shared": "The gas budget is shared by all wallets in the subscription.",
       "used": "{used} de {total} utilizados este mes"
     },
+    "load_failed": "Failed to load your Auto-Revoking configuration. Please refresh the page or try again later.",
     "metamask_not_connected": "MetaMask not connected",
     "metamask_required": "La revocación automática requiere MetaMask. Por favor, conéctate con MetaMask para usar esta función.",
     "permissions": {
@@ -160,17 +161,26 @@
       "creating": "Creando pago",
       "extend": "Extender",
       "paying": "Confirmar en la cartera",
+      "renew": "Renew",
       "subscribe": "Suscribirse",
       "try_again": "Intentar otra vez",
       "upgrade": "Actualizar"
     },
     "downgrade_not_supported": "No puedes bajar de categoría una suscripción activa.",
+    "expired": "Expired",
+    "expired_on": "Expired on {date}.",
+    "expired_preserved": "Your wallet slots and Auto-Revoking rules are preserved. Renew to pick up where you left off.",
+    "expired_ultimate_stopped": "Auto-Revoking is no longer monitoring your wallets.",
+    "expires_in": "Expires in {days, plural, =1 {1 day} other {# days}} ({date})",
+    "expires_soon": "Expires soon",
     "granted_by": "Concedido por {address}",
     "next_setup_auto_revoke": "Next step: set up Auto-Revoking",
     "no_subscription": "No tienes una suscripción premium activa. Suscríbete a continuación para empezar. <premium-link>Más información sobre Premium</premium-link>.",
     "optional_own_subscription": "Ya tienes acceso gracias a una suscripción que te han concedido. Si quieres, aún puedes suscribirte a tu propio plan.",
     "payment_confirmed": "¡Pago confirmado! Tu suscripción premium ya está activa.",
+    "payment_expired": "The payment window expired. If you already sent the full USDC amount, it will be credited automatically once it lands on-chain. Check your subscription status in a few minutes.",
     "payment_failed": "El pago de la suscripción ha fallado",
+    "payment_help": "Need help? <support-link>Chat with support</support-link>.",
     "payment_network": "Red de pago",
     "payment_status_error": "Payment {status}",
     "payment_summary": "Pagarás {amount} {token} por {days} días. Incluye hasta {maxAddresses} {maxAddresses, plural, =1 {cartera} other {carteras}}.",
@@ -185,7 +195,8 @@
     "slots_summary": "{usado}/{max} {max, plural, =1 {espacio} other {espacios}} de cartera usado(s)",
     "title": "Suscripción Premium",
     "valid_until": "Válido hasta {date}",
-    "wallet": "Cartera"
+    "wallet": "Cartera",
+    "wrong_wallet_error": "The payment must be sent from {address}. Please switch to that wallet and try again."
   },
   "tabs": {
     "auto_revoke": "Revocación automática",
@@ -201,6 +212,10 @@
       "manage_subscription": "Gestiona tu suscripción Premium",
       "title": "Qué puedes hacer aquí"
     },
-    "description": "Inicia sesión para gestionar tu suscripción Premium, tus espacios de cartera y tu cobertura."
+    "description": "Inicia sesión para gestionar tu suscripción Premium, tus espacios de cartera y tu cobertura.",
+    "selected_plan": {
+      "summary": "{price} per year with up to {maxAddresses} wallets included. Connect your wallet to continue.",
+      "title": "Subscribe to {planName}"
+    }
   }
 }

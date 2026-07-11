@@ -4,7 +4,7 @@ Revoke.cash is a free and open-source public good. Our mission to provide essent
 
 ## Funding
 
-As a public good, we don't charge users - making external funding essential to our sustainability and impact. Without the funding we receive from larger organisations, we would not be able to continue to provide our services for free.
+Our core tools are free for everyone: approval inspection and one-by-one revoking remain free. Premium subscriptions add multichain convenience and proactive protection and help fund the free public tools, but external funding remains essential to our sustainability and impact. Without the funding we receive from larger organisations, we would not be able to continue to provide our core services for free.
 
 ::img{src="/assets/images/acknowledgements/optimism.jpg" alt="Optimism Banner" width="1800" height="900"}
 

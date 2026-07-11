@@ -215,6 +215,10 @@
     "banner": {
       "cta": "Upgrade to Premium",
       "description": "Multichain dashboard?"
+    },
+    "subscription_expiry": {
+      "cta": "Extend",
+      "description": "Your premium subscription expires in {days, plural, =1 {1 day} other {# days}}."
     }
   },
   "risk_factors": {

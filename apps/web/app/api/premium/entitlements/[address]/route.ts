@@ -1,4 +1,5 @@
-import { hasActivePremiumEntitlement } from '@revoke.cash/core/premium/entitlements';
+import { getActivePremiumEntitlementsWithSingleRetry } from '@revoke.cash/core/premium/entitlements';
+import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
 import { addressSchema } from '@revoke.cash/core/schemas';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
@@ -26,10 +27,12 @@ export async function GET(req: NextRequest, props: Props) {
     const { address } = params;
 
     try {
-      const isPremium = await hasActivePremiumEntitlement(address);
+      const entitlements = await getActivePremiumEntitlementsWithSingleRetry(address);
+      const isPremium = entitlements.length > 0;
+      const isUltimate = entitlements.some((entitlement) => isUltimatePlan(entitlement));
 
       return NextResponse.json(
-        { isPremium },
+        { isPremium, isUltimate },
         {
           headers: {
             'Cache-Control': `max-age=${60}`,
@@ -39,7 +42,7 @@ export async function GET(req: NextRequest, props: Props) {
       );
     } catch (error) {
       console.error('Error checking premium entitlement', error);
-      return NextResponse.json({ isPremium: false });
+      return NextResponse.json({ isPremium: false, isUltimate: false });
     }
   } catch (error) {
     return handleApiRouteError(error);
