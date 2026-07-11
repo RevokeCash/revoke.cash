@@ -1,5 +1,6 @@
 import { Composition, Folder } from 'remotion';
 import { ApprovalDashboardShowcase } from './landing-showcase/ApprovalDashboardShowcase';
+import { HeroShowcase } from './landing-showcase/HeroShowcase';
 import { SingleExploitCheckerShowcase } from './landing-showcase/SingleExploitCheckerShowcase';
 import { MAIN_DURATION_IN_FRAMES, Main } from './premium-announcement/Main';
 import { AutoRevokeScene } from './premium-announcement/scenes/AutoRevokeScene';
@@ -106,6 +107,16 @@ export const Root = () => {
             height={630}
           />
         ))}
+        {/* The hero animation renders at 4:3 instead of the showcase 1200x630, because it fills
+            the hero's tall media column instead of the feature cards' wide media half. */}
+        <Composition
+          id="HeroShowcase"
+          component={HeroShowcase}
+          durationInFrames={280}
+          fps={FPS}
+          width={1200}
+          height={900}
+        />
       </Folder>
     </>
   );

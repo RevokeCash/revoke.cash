@@ -15,7 +15,7 @@ const HeroSection = () => {
       <div className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0" />
         <div className="relative mx-auto grid max-w-7xl gap-10 p-6 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 max-w-xl w-full mx-auto lg:max-w-none lg:mx-0">
             <div className="flex flex-col gap-4">
               <h1 className="text-5xl font-semibold leading-tight tracking-tight sm:text-6xl">
                 {t.rich('landing.hero_section.title', {
@@ -30,17 +30,8 @@ const HeroSection = () => {
                 <ArrowRightIcon className="h-4 w-4" />
               </Button>
             </div>
-            {/* Hero image: shown here on mobile, hidden on desktop (shown in separate grid column) */}
             <div className="lg:hidden flex flex-col justify-center">
-              <Image
-                src="/assets/images/landing/hero.png"
-                alt={t('landing.features.dashboard.title')}
-                width={2000}
-                height={1500}
-                priority
-                fetchPriority="high"
-                className="h-auto w-full"
-              />
+              <HeroShowcaseMedia />
             </div>
             <div className="flex flex-col gap-6 max-w-xl mx-auto lg:mx-0">
               <TestimonialCarousel />
@@ -59,20 +50,39 @@ const HeroSection = () => {
               </div>
             </div>
           </div>
-          {/* Hero image: shown here on desktop in its own grid column, hidden on mobile */}
           <div className="hidden lg:flex flex-col justify-center">
-            <Image
-              src="/assets/images/landing/hero.png"
-              alt={t('landing.features.dashboard.title')}
-              width={2000}
-              height={1500}
-              className="h-auto w-full"
-              priority
-              fetchPriority="high"
-            />
+            <HeroShowcaseMedia />
           </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+const HeroShowcaseMedia = () => {
+  const t = useTranslations();
+
+  return (
+    <div className="overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800">
+      <video
+        src="/assets/videos/landing/hero.mp4"
+        poster="/assets/images/landing/hero.jpg"
+        aria-label={t('landing.features.dashboard.title')}
+        className="h-auto w-full motion-reduce:hidden"
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+      <Image
+        src="/assets/images/landing/hero.jpg"
+        alt={t('landing.features.dashboard.title')}
+        width={1200}
+        height={900}
+        priority
+        fetchPriority="high"
+        className="hidden h-auto w-full motion-reduce:block"
+      />
     </div>
   );
 };
