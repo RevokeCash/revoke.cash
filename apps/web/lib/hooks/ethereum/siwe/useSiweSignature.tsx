@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
+import ky from 'lib/ky';
 import type { Address } from 'viem';
-import { createSiweMessage, generateSiweNonce } from 'viem/siwe';
+import { createSiweMessage } from 'viem/siwe';
 import { useSignMessage } from 'wagmi';
 
 export const useSiweSignature = (address?: Address) => {
@@ -16,13 +17,14 @@ export const useSiweSignature = (address?: Address) => {
     queryFn: async () => {
       if (!address) return;
 
-      const siweNonce = generateSiweNonce();
+      // The nonce is issued by the server and doubles as a session-bound replay guard
+      const { nonce } = await ky.get('/api/auth/siwe/nonce').json<{ nonce: string }>();
 
       const message = createSiweMessage({
         address,
         chainId: 1,
         domain: window.location.host,
-        nonce: siweNonce,
+        nonce,
         uri: window.location.origin,
         version: '1',
         statement: 'Sign in with Ethereum to Revoke.cash',

@@ -41,6 +41,20 @@ export const SIWE_IRON_OPTIONS: SessionOptions = {
   },
 };
 
+export const SIWE_NONCE_IRON_OPTIONS: SessionOptions = {
+  cookieName: 'revoke_siwe_nonce',
+  password: process.env.IRON_SESSION_PASSWORD!,
+  ttl: 60 * 10, // The SIWE sign-in must complete within 10 minutes of the nonce being issued
+  cookieOptions: {
+    secure: true,
+    sameSite: 'none',
+  },
+};
+
+interface SiweNonceSession {
+  nonce?: string;
+}
+
 export const RateLimiters = {
   LOGS: new RateLimiterMemory({
     points: 200,
@@ -137,6 +151,30 @@ const unsealSiweCookie = async (sealedCookie: string): Promise<SiweFields | null
   } catch {
     return null;
   }
+};
+
+export const storeSiweNonceCookieEdge = async (req: NextRequest, res: NextResponse, nonce: string) => {
+  const session = await getIronSession<SiweNonceSession>(req, res, SIWE_NONCE_IRON_OPTIONS);
+  session.nonce = nonce;
+  await session.save();
+};
+
+export const getSiweNonceCookieEdge = async (req: NextRequest): Promise<string | null> => {
+  const nonceCookie = req.cookies.get(SIWE_NONCE_IRON_OPTIONS.cookieName)?.value;
+  if (!nonceCookie) return null;
+
+  try {
+    const { password, ttl } = SIWE_NONCE_IRON_OPTIONS;
+    const session = await unsealData<SiweNonceSession>(nonceCookie, { password, ttl });
+    return session.nonce ?? null;
+  } catch {
+    return null;
+  }
+};
+
+export const destroySiweNonceCookieEdge = async (req: NextRequest, res: NextResponse) => {
+  const session = await getIronSession<SiweNonceSession>(req, res, SIWE_NONCE_IRON_OPTIONS);
+  session.destroy();
 };
 
 export const destroySessionsEdge = async (req: NextRequest, res: NextResponse) => {
