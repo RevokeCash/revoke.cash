@@ -24,7 +24,7 @@ const AnnouncementsContainer = () => {
                 storageKey: 'introducing-revoke-premium-and-ultimate',
               })
             }
-            className="bg-black text-white dark:bg-black dark:text-white border-black dark:border-black dark:hover:bg-zinc-800"
+            className="bg-black text-white dark:bg-black dark:text-white dark:visited:text-white border-black dark:border-black dark:hover:bg-zinc-800"
           >
             View Pricing
           </Button>
@@ -39,7 +39,7 @@ const AnnouncementsContainer = () => {
                 storageKey: 'introducing-revoke-premium-and-ultimate',
               })
             }
-            className="border-none bg-brand text-black dark:text-black border-black/10 dark:border-black/40 hover:bg-black/10 dark:hover:bg-black/10"
+            className="border-none bg-brand dark:bg-brand text-black dark:text-black dark:visited:text-black hover:bg-black/10 dark:hover:bg-black/10"
           >
             Learn More
           </Button>
