@@ -71,7 +71,6 @@
     "plume": "Plume 是第 1 层（Layer 1）区块链，专注于现实世界资产（RWA），旨在将现实世界资产代币化，并创建一个网络，让用户可以像使用加密货币一样使用现实世界资产，例如交易、贷款、借款等。",
     "polygon": "Polygon PoS 是以太坊的侧链，由 Polygon 社区选组产生的一组验证者来维护安全。这是最受欢迎的智能合约区块链之一，尤其是在 NFT 领域。除了 Polygon PoS 网络，Polygon 也在开发一组其他第 2 层（L2）解决方案，例如 Polygon zkEVM。",
     "pulsechain": "PulseChain 是作为以太坊区块链的完整分叉而构建的第 1 层（Layer 1）区块链，也就是说在分叉网络启动之前，它与以太坊共享相同的交易历史记录。PulseChain 是由 HEX 社区创建的，旨在提供比以太坊更低的费用。",
-    "rari-chain": "RARI 链是建立在 Arbitrum Nova 第 2 层（Layer 2）扩展解决方案之上的 第 3 层区块链。RARI 链交易成本低，且在协议层面嵌入节点级别版税机制，旨在为创作者赋能并帮助他们进行变现。",
     "reya": "Reya is a Layer 2 blockchain purpose-built for trading and perpetuals. It offers a custom execution environment optimized for high-frequency trading, cross-margining and low latency order matching.",
     "rise": "RISE is an EVM-compatible Layer 2 blockchain built with Parallel EVM (PEVM) technology for high-throughput transaction processing. It aims to provide fast and scalable infrastructure for decentralized applications.",
     "robinhood-chain": "Robinhood Chain is a Layer 2 blockchain developed by trading platform Robinhood, built using Arbitrum's Orbit stack. It is focused on bringing real-world assets onchain, enabling users to trade tokenized stocks and other financial assets with self-custody and around-the-clock access.",

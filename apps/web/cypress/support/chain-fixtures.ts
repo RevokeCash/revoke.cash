@@ -71,7 +71,6 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.PlumeMainnet]: '0x5D2Fec7e07afbb002210760fc8Da9c3335e90826',
   [ChainId.PolygonMainnet]: '0xaa419d1331d6932ba23188C40eBF039aba931D96',
   [ChainId.PulseChain]: '0x9c128fFa923B251Fa40F58906034b2DeaE6C3146',
-  [ChainId.RARIChainMainnet]: '0x3633c7dE0aE55F6387E55824B006b51b7dbd8Dc1',
   [ChainId.ReyaNetwork]: '0x6E5f7Bd9B940287F6C9AE8A2Ecfb93224A09cba5',
   [ChainId.RISE]: '0x7Dd7B89c0f754EAE0198D480A28d4f83d486BaF1',
   [ChainId.RolluxMainnet]: '0x75CCD3a10D9325aE2BF7f59d23A892061952fAF3',

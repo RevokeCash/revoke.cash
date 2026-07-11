@@ -104,7 +104,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.GensynMainnet,
   ChainId.ShidoNetwork,
   ChainId.Matchain,
-  ChainId.RARIChainMainnet,
   ChainId.BitgertMainnet,
   202555, // Kasplex zkEVM
 ] as const;
@@ -1067,20 +1066,6 @@ export const CHAINS = {
     explorerUrl: 'https://otherscan.pulsechain.box',
     etherscanCompatibleApiUrl: 'https://api.scan.pulsechain.com/api',
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 14353601 } },
-  }),
-  [ChainId.RARIChainMainnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.RARIChainMainnet,
-    name: 'RARI Chain',
-    coingeckoNetworkId: 'rari',
-    logoUrl: '/assets/images/vendor/chains/rari.svg',
-    infoUrl: 'https://rarichain.org/',
-    explorerUrl: 'https://mainnet.explorer.rarichain.org',
-    etherscanCompatibleApiUrl: 'https://mainnet.explorer.rarichain.org/api',
-    rpc: {
-      main: 'https://mainnet.rpc.rarichain.org/http',
-    },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 2422957 } },
   }),
   [ChainId.ReyaNetwork]: new Chain({
     type: SupportType.BLOCKSCOUT,

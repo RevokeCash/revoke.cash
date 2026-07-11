@@ -71,7 +71,6 @@
     "plume": "Plumeは、リアルワールドアセット（RWA）スペースに焦点を当てたレイヤー1のブロックチェーンです。RWAをトークン化することだけでなく、取引、貸付、借入など、RWAを暗号通貨と同じように使用できるネットワークを構築することを目指しています。",
     "polygon": "Polygon PoSは、Polygonコミュニティーによって選出された一連のバリデーターによって保護されているEthereumのサイドチェーンです。特にNFT分野では、最も人気のあるスマートコントラクトブロックチェーンの1つです。Polygon PoSネットワーク以外にも、PolygonはPolygon zkEVMのような他のL2ソリューションの開発にも取り組んでいます。",
     "pulsechain": "PulseChainは、Ethereumブロックチェーンのフルフォークとして構築されたレイヤー1のブロックチェーンです。つまり、フォークされたネットワークが開始されるまで、同じ取引履歴を共有しているということです。PulseChainはHEXコミュニティーから生まれたもので、Ethereumよりも低い手数料を提供するために作られました。",
-    "rari-chain": "RARIチェーンは、Arbitrum Novaレイヤー2のスケーリングソリューションの上に構築されたレイヤー3のブロックチェーンです。RARI Chainは、低コストの取引とプロトコルレベルでの組み込みロイヤルティにより、作成者が作品を構築して収益化できるようにすることを目指しています。",
     "reya": "Reya is a Layer 2 blockchain purpose-built for trading and perpetuals. It offers a custom execution environment optimized for high-frequency trading, cross-margining and low latency order matching.",
     "rise": "RISEは、高スループットのトランザクション処理を実現するParallel EVM（PEVM）技術を用いて構築された、EVM互換のLayer 2ブロックチェーンです。分散型アプリケーション向けに、高速かつスケーラブルなインフラストラクチャの提供を目指しています。",
     "robinhood-chain": "Robinhood Chain is a Layer 2 blockchain developed by trading platform Robinhood, built using Arbitrum's Orbit stack. It is focused on bringing real-world assets onchain, enabling users to trade tokenized stocks and other financial assets with self-custody and around-the-clock access.",
