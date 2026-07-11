@@ -1,13 +1,22 @@
 import { ChainId } from '@revoke.cash/chains';
-import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
+import { createViemPublicClientForChain, isOpStackChain } from '@revoke.cash/core/chains';
 import { isNullish } from '@revoke.cash/core/utils';
 import { bigintMax } from '@revoke.cash/core/utils/math';
-import { type PublicClient, parseGwei } from 'viem';
+import {
+  type Address,
+  type Hex,
+  type PublicClient,
+  parseGwei,
+  serializeTransaction,
+  type TransactionReceipt,
+} from 'viem';
+import { chainConfig as opStackChainConfig } from 'viem/op-stack';
 
 export interface TransactionFees {
   maxFeePerGas: bigint;
   maxPriorityFeePerGas: bigint;
   expectedFeePerGas: bigint;
+  l1DataFeeWei: bigint;
 }
 
 export interface FeeQuoteParams {
@@ -15,9 +24,17 @@ export interface FeeQuoteParams {
   isUrgent: boolean;
   replacementCount: number;
   previousFees?: PreviousFees;
+  transaction: TransactionPayload;
 }
 
-type PreviousFees = Omit<TransactionFees, 'expectedFeePerGas'>;
+export interface TransactionPayload {
+  to: Address;
+  data: Hex;
+}
+
+type PreviousFees = Pick<TransactionFees, 'maxFeePerGas' | 'maxPriorityFeePerGas'>;
+
+type GasFees = Omit<TransactionFees, 'l1DataFeeWei'>;
 
 // Certain chains have a validator/protocol minimum tip, so we make sure to use the minimum floor
 const PRIORITY_FEE_FLOORS: Record<number, bigint> = {
@@ -30,17 +47,18 @@ const PRIORITY_FEE_FLOORS: Record<number, bigint> = {
 // Linea's eth_maxPriorityFeePerGas returns the protocol's dynamic profitability minimum
 const ORACLE_PRIORITY_FEE_CHAINS: number[] = [ChainId.Linea];
 
-// Gets the transaction fees based on fee history (falling back to the node oracle if the fee history is not available)
 export const getTransactionFees = async (params: FeeQuoteParams): Promise<TransactionFees> => {
   const publicClient = createViemPublicClientForChain(params.chainId);
-  const fees = await quoteFeesFromFeeHistory(publicClient, params).catch(() => quoteFeesFromNodeOracle(publicClient));
-  return applyPreviousFeeBumps(fees, params.previousFees);
+
+  const [gasFees, l1DataFeeWei] = await Promise.all([
+    quoteGasFeesFromHistory(publicClient, params).catch(() => quoteGasFeesFromNodeOracle(publicClient)),
+    estimateL1DataFeeWei(publicClient, params.chainId, params.transaction),
+  ]);
+
+  return { ...applyPreviousFeeBumps(gasFees, params.previousFees), l1DataFeeWei };
 };
 
-const quoteFeesFromFeeHistory = async (
-  publicClient: PublicClient,
-  params: FeeQuoteParams,
-): Promise<TransactionFees> => {
+const quoteGasFeesFromHistory = async (publicClient: PublicClient, params: FeeQuoteParams): Promise<GasFees> => {
   const rewardPercentiles = [getPriorityFeePercentile(params)];
   const feeHistory = await publicClient.getFeeHistory({ blockCount: 20, rewardPercentiles });
 
@@ -92,7 +110,7 @@ const getMedianReward = (reward: bigint[][] | undefined): bigint => {
 };
 
 // Last resort when eth_feeHistory is unavailable (e.g. a failover RPC without it)
-const quoteFeesFromNodeOracle = async (publicClient: PublicClient): Promise<TransactionFees> => {
+const quoteGasFeesFromNodeOracle = async (publicClient: PublicClient): Promise<GasFees> => {
   const estimatedFees = await publicClient.estimateFeesPerGas();
   if (estimatedFees.maxFeePerGas === undefined || estimatedFees.maxPriorityFeePerGas === undefined) {
     throw new Error('Auto-revoke chain did not return EIP-1559 fee data');
@@ -105,12 +123,23 @@ const quoteFeesFromNodeOracle = async (publicClient: PublicClient): Promise<Tran
   };
 };
 
+export class ReplacementFeeCeilingError extends Error {
+  constructor() {
+    super('Replacement fee would exceed the ceiling relative to the market fee quote');
+    this.name = 'ReplacementFeeCeilingError';
+  }
+}
+
 // When replacing a previous fee, we need to make sure that the new fee is strictly greater than the previous fee,
 // even if the new calculated fee is lower. We do this by bumping the fee by 12.5% + 1 wei.
-const applyPreviousFeeBumps = (fees: TransactionFees, previousFees?: PreviousFees): TransactionFees => {
+const applyPreviousFeeBumps = (fees: GasFees, previousFees?: PreviousFees): GasFees => {
   if (!previousFees) return fees;
 
   const maxPriorityFeePerGas = bigintMax(fees.maxPriorityFeePerGas, bumpFee(previousFees.maxPriorityFeePerGas));
+
+  const priorityFeeCeiling = 10n * bigintMax(fees.maxPriorityFeePerGas, 1n);
+  if (maxPriorityFeePerGas > priorityFeeCeiling) throw new ReplacementFeeCeilingError();
+
   const priorityFeeIncrease = maxPriorityFeePerGas - fees.maxPriorityFeePerGas;
 
   return {
@@ -122,3 +151,51 @@ const applyPreviousFeeBumps = (fees: TransactionFees, previousFees?: PreviousFee
 
 // +12.5% +1 wei (above the ~10% minimum replacement increment most nodes enforce).
 const bumpFee = (fee: bigint): bigint => (fee * 1125n) / 1000n + 1n;
+
+const GAS_PRICE_ORACLE_ABI = [
+  {
+    type: 'function',
+    name: 'getL1Fee',
+    stateMutability: 'view',
+    inputs: [{ name: '_data', type: 'bytes' }],
+    outputs: [{ name: '', type: 'uint256' }],
+  },
+] as const;
+
+const estimateL1DataFeeWei = async (
+  publicClient: PublicClient,
+  chainId: number,
+  transaction: TransactionPayload,
+): Promise<bigint> => {
+  if (!isOpStackChain(chainId)) return 0n;
+
+  try {
+    const serializedTransaction = serializeTransaction({
+      type: 'eip1559',
+      chainId,
+      to: transaction.to,
+      value: 0n,
+      data: transaction.data,
+      // Placeholders:
+      gas: 300_000n,
+      nonce: 1,
+      maxFeePerGas: parseGwei('5'),
+      maxPriorityFeePerGas: parseGwei('1'),
+    });
+
+    return await publicClient.readContract({
+      address: opStackChainConfig.contracts.gasPriceOracle.address,
+      abi: GAS_PRICE_ORACLE_ABI,
+      functionName: 'getL1Fee',
+      args: [serializedTransaction],
+    });
+  } catch (error) {
+    console.error(`Failed to estimate L1 data fee on chain ${chainId}, continuing without it:`, error);
+    return 0n;
+  }
+};
+
+export const getReceiptL1DataFeeWei = (receipt: TransactionReceipt): bigint => {
+  const { l1Fee } = receipt as TransactionReceipt & { l1Fee?: bigint | null };
+  return l1Fee ?? 0n;
+};

@@ -14,6 +14,7 @@ import {
   formatUnits,
   type Hex,
   type PublicClient,
+  type TransactionReceipt,
   TransactionReceiptNotFoundError,
 } from 'viem';
 import {
@@ -32,7 +33,7 @@ import {
 import { MAX_PENDING_ACTIONS_PER_CHAIN } from '../config';
 import { getPermissionById, type PermissionRecord } from '../permissions';
 import { checkActionCost, getNextBudgetRetryAt } from './budget';
-import { getTransactionFees, type TransactionFees } from './fees';
+import { getReceiptL1DataFeeWei, getTransactionFees, ReplacementFeeCeilingError, type TransactionFees } from './fees';
 import {
   type ExecutorSigners,
   findSignerByAddress,
@@ -249,7 +250,7 @@ const confirmSubmittedAction = async (action: Action, transaction: SubmittedTran
   for (const txHash of transaction.txHashes) {
     try {
       const receipt = await publicClient.getTransactionReceipt({ hash: txHash });
-      const finalCostUsd = await getFinalCostUsd(action, transaction, receipt.gasUsed, receipt.effectiveGasPrice);
+      const finalCostUsd = await getFinalCostUsd(action, transaction, receipt);
       const minedAt = await getMinedAt(publicClient, receipt.blockNumber);
       const succeeded = receipt.status === 'success';
 
@@ -334,7 +335,8 @@ const replaceAction = async (
     };
   } catch (error) {
     await rebroadcastAction(action, transaction, signer);
-    return { submitted: false, reason: 'replacement_failed', detail: parseErrorMessage(error) };
+    const reason = error instanceof ReplacementFeeCeilingError ? 'replacement_fee_ceiling' : 'replacement_failed';
+    return { submitted: false, reason, detail: parseErrorMessage(error) };
   }
 };
 
@@ -353,6 +355,7 @@ const planSameNonceReplacement = async (
       isUrgent,
       replacementCount: transaction.txHashes.length,
       previousFees: transaction,
+      transaction: { to: permission.delegationManager, data: calldata },
     }),
     getNativeTokenPriceUsd(action.observation.chainId),
   ]);
@@ -471,6 +474,7 @@ const planRevokeTransaction = async (
       chainId: action.observation.chainId,
       isUrgent,
       replacementCount: 0,
+      transaction: { to: permission.delegationManager, data: calldata },
     }),
     getNativeTokenPriceUsd(action.observation.chainId),
     deriveNextNonce(publicClient, action.observation.chainId, signer.address),
@@ -501,12 +505,9 @@ const buildRevokeTransactionPlan = (
   inputs: RevokeTransactionPlanInputs,
 ): RevokeTransactionPlan => {
   const decimals = getViemChainConfig(action.observation.chainId).nativeCurrency.decimals;
-  const calculatedCostUsd = calculateGasCostUsd(
-    inputs.gas,
-    inputs.transactionFees.expectedFeePerGas,
-    inputs.nativeTokenPriceUsd,
-    decimals,
-  );
+  const executionFeeWei = inputs.gas * inputs.transactionFees.expectedFeePerGas;
+  const totalFeeWei = executionFeeWei + inputs.transactionFees.l1DataFeeWei;
+  const calculatedCostUsd = convertNativeWeiToUsd(totalFeeWei, inputs.nativeTokenPriceUsd, decimals);
 
   return {
     estimatedCostUsd: calculatedCostUsd ?? inputs.fallbackCostUsd,
@@ -571,12 +572,12 @@ const getMinedAt = async (publicClient: PublicClient, blockNumber: bigint): Prom
 const getFinalCostUsd = async (
   action: Action,
   transaction: SubmittedTransaction,
-  gasUsed: bigint,
-  effectiveGasPrice: bigint,
+  receipt: TransactionReceipt,
 ): Promise<number> => {
   const nativeTokenPriceUsd = await getNativeTokenPriceUsd(action.observation.chainId);
   const chain = getViemChainConfig(action.observation.chainId);
-  const costUsd = calculateGasCostUsd(gasUsed, effectiveGasPrice, nativeTokenPriceUsd, chain.nativeCurrency.decimals);
+  const totalFeeWei = receipt.gasUsed * receipt.effectiveGasPrice + getReceiptL1DataFeeWei(receipt);
+  const costUsd = convertNativeWeiToUsd(totalFeeWei, nativeTokenPriceUsd, chain.nativeCurrency.decimals);
   return costUsd ?? transaction.estimatedCostUsd ?? 0;
 };
 
@@ -593,13 +594,12 @@ const addGasLimitBuffer = (gas: bigint): bigint => {
   return (gas * 120n) / 100n;
 };
 
-export const calculateGasCostUsd = (
-  gas: bigint,
-  feePerGas: bigint,
+const convertNativeWeiToUsd = (
+  nativeWei: bigint,
   nativeTokenPriceUsd: number | null,
   nativeTokenDecimals = 18,
 ): number | null => {
   if (!nativeTokenPriceUsd) return null;
-  const nativeCost = Number(formatUnits(gas * feePerGas, nativeTokenDecimals));
+  const nativeCost = Number(formatUnits(nativeWei, nativeTokenDecimals));
   return Math.ceil(nativeCost * nativeTokenPriceUsd * 1_000_000) / 1_000_000;
 };
