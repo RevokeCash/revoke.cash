@@ -120,6 +120,15 @@ export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChai
 
   const subscribeMutation = useMutation({
     mutationFn: async () => {
+      const pendingPaymentId = loadPendingPayment(ownerAddress);
+      if (pendingPaymentId) {
+        setStatus('confirming');
+        const resumedStatus = await pollPaymentStatus(pendingPaymentId);
+        clearPendingPayment();
+
+        if (resumedStatus.status === 'confirmed') return resumedStatus;
+      }
+
       // Step 1: Create payment
       setStatus('creating');
 

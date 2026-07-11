@@ -33,6 +33,7 @@ export const useSubscriptionAutoRevokeRules = (subscriptionId: string | undefine
   return {
     effectiveRules: query.data ?? null,
     isLoading: query.isLoading,
+    isError: query.isError,
     updateRules: updateRulesMutation.mutate,
     isUpdating: updateRulesMutation.isPending,
   };
@@ -101,6 +102,7 @@ export const useAddressAutoRevokeRules = (address: Address, enabled: boolean) =>
     rulesSource: query.data?.rulesSource ?? null,
     availableSubscriptions: query.data?.availableSubscriptions ?? [],
     isLoading: query.isLoading,
+    isError: query.isError,
     switchRulesSource: switchRulesSourceMutation.mutate,
     isSwitchingRulesSource: switchRulesSourceMutation.isPending,
     updateRules: updateRulesMutation.mutate,

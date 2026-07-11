@@ -82,11 +82,11 @@ The design goal was that no failure on our side can endanger user funds.
 
 **We still want to shut it down.** With a killswitch, the cold key can disable all delegations to our hot wallets on-chain, making a leaked hot key useless. User permissions are untouched, so protection resumes once new hot wallets are set up.
 
-**You change your mind.** Disable the permission in the UI (or directly on the DelegationManager) and it is dead on-chain, checked before every execution.
+**You change your mind.** Disable the permission in the UI (or directly on the DelegationManager contract) and it can no longer be used on-chain.
 
 **Your subscription lapses.** Monitoring stops and pending actions are parked. Your rules and permissions are preserved, so everything picks up where it left off when you resubscribe.
 
-One honest limitation: Auto-Revoking is best-effort. An exploit has to be identified before it can trigger a revoke, an attacker may act before we do, and chains can be congested at the worst possible moment. It meaningfully shortens your window of exposure, from "whenever you happen to check Twitter" to "minutes after an exploit is identified", but nobody can guarantee that losses are prevented, and you should be skeptical of anyone who claims otherwise.
+One honest limitation: Auto-Revoking is best-effort. An exploit has to be identified before it can trigger a revoke, an attacker may act before we do, and chains can be congested at the worst possible moment. It meaningfully shortens your window of exposure, from "whenever you happen to check Twitter" to "shortly after an exploit is identified", but nobody can guarantee that losses are prevented, and you should be skeptical of anyone who claims otherwise.
 
 ## Try It
 

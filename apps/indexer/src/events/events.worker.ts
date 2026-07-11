@@ -93,7 +93,11 @@ export class EventsWorker extends WorkerHost {
     }
 
     await this.allowancesQueue
-      .add('recompute', { address, chainId, eventsScanId }, { jobId: allowanceRecomputeJobId(chainId, address) })
+      .add(
+        'recompute',
+        { address, chainId, eventsScanId },
+        { jobId: allowanceRecomputeJobId(chainId, address, result.toBlock) },
+      )
       .catch((error) => {
         this.logger.warn({
           event: 'allowance_recompute_enqueue_failed',

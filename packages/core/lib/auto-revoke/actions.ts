@@ -485,6 +485,23 @@ export const settleAction = async (settlement: ActionSettlement): Promise<boolea
 // Wakes the subscription's actions that are parked until the month rollover, letting them retry
 // against the remaining budget immediately
 const wakeBudgetBlockedActions = async (writer: DatabaseWriter, subscriptionId: string): Promise<void> => {
+  await wakeParkedActions(writer, subscriptionId, 'monthly_budget');
+};
+
+// Wakes actions that are parked because no billable subscription covered their wallet, called when
+// a subscription is paid for or gains a wallet (without this they sleep out their day-long retry)
+export const wakeSubscriptionInactiveActions = async (
+  writer: DatabaseWriter,
+  subscriptionId: string,
+): Promise<void> => {
+  await wakeParkedActions(writer, subscriptionId, 'subscription_inactive');
+};
+
+const wakeParkedActions = async (
+  writer: DatabaseWriter,
+  subscriptionId: string,
+  errorCode: ActionErrorCode,
+): Promise<void> => {
   const memberObservationIds = writer
     .select({ id: autoRevokeObservations.id })
     .from(autoRevokeObservations)
@@ -497,7 +514,7 @@ const wakeBudgetBlockedActions = async (writer: DatabaseWriter, subscriptionId: 
     .where(
       and(
         eq(autoRevokeActions.status, 'blocked_budget'),
-        eq(autoRevokeActions.errorCode, 'monthly_budget'),
+        eq(autoRevokeActions.errorCode, errorCode),
         inArray(autoRevokeActions.observationId, memberObservationIds),
       ),
     );

@@ -9,11 +9,11 @@
       "title": "Automated Revoking"
     },
     "dashboard": {
-      "description": "Get a clear overview of every token approval you've ever granted. Sort, filter, and revoke the ones you no longer need — all from one simple dashboard.",
+      "description": "Get a clear overview of every token approval you've ever granted. Sort, filter, and revoke the ones you no longer need all from one simple dashboard.",
       "title": "Approval Dashboard"
     },
     "exploit_checker": {
-      "description": "Automatically check your approvals against a database of known exploits and scams. Get a warning if any of your approvals are at risk.",
+      "description": "Automatically check your approvals against known exploits to see if any of your approvals are at risk.",
       "title": "Exploit Checker"
     },
     "title": "Built for Wallet Security"

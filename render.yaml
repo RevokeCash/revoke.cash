@@ -77,6 +77,8 @@ services:
         sync: false
       - key: AUTO_REVOKE_URGENT_EXECUTOR_PRIVATE_KEY
         sync: false
+      - key: COINGECKO_API_KEY
+        sync: false
       - key: UPSTASH_REDIS_REST_URL
         sync: false
       - key: UPSTASH_REDIS_REST_TOKEN

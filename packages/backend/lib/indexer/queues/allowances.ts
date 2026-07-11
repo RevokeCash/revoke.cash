@@ -9,5 +9,5 @@ export interface AllowancesJobData {
 
 export const ALLOWANCES_QUEUE_NAME = 'indexer_allowances';
 
-export const allowanceRecomputeJobId = (chainId: number, address: Address): string =>
-  `recompute-allowances-${chainId}-${toLowercaseAddress(address)}`;
+export const allowanceRecomputeJobId = (chainId: number, address: Address, toBlock: number): string =>
+  `recompute-allowances-${chainId}-${toLowercaseAddress(address)}-${toBlock}`;

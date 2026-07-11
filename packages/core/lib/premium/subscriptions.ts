@@ -1,3 +1,4 @@
+import { wakeSubscriptionInactiveActions } from '@revoke.cash/core/auto-revoke/actions';
 import { type DatabaseTransaction, type DatabaseWriter, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import {
   premiumPayments,
@@ -217,6 +218,7 @@ export const addSubscriptionAddress = async ({
     });
 
     await registerAddressForIndexing(trx, address);
+    await wakeSubscriptionInactiveActions(trx, subscription.id);
 
     return { success: true };
   });
@@ -337,6 +339,10 @@ export const rebuildSubscriptionFromPayments = async (
       endsAt: rebuiltSubscription.endsAt,
     })
     .where(eq(premiumSubscriptions.id, subscriptionId));
+
+  if (rebuiltSubscription.endsAt.getTime() > Date.now()) {
+    await wakeSubscriptionInactiveActions(trx, subscriptionId);
+  }
 };
 
 const applyPaymentToSubscription = (current: SubscriptionPlanState, payment: AppliedPayment): SubscriptionPlanState => {
