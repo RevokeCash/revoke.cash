@@ -21,7 +21,7 @@ const PremiumPricingPageContent = () => {
         <TierCard
           tierKey="premium"
           price="$99"
-          href="/account"
+          href="/account?plan=premium"
           className="border-2 border-brand/70"
           badgeLabel={t('premium.pricing.most_popular_label')}
           badgeClassName="bg-brand text-zinc-900"
@@ -30,7 +30,7 @@ const PremiumPricingPageContent = () => {
         <TierCard
           tierKey="ultimate"
           price="$199"
-          href="/account"
+          href="/account?plan=ultimate"
           className="border-2 border-zinc-900 dark:border-zinc-200"
           badgeLabel={t('premium.pricing.best_protection')}
           badgeClassName="bg-zinc-900 text-white dark:bg-zinc-200 dark:text-zinc-900"

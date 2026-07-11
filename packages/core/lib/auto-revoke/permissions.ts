@@ -14,6 +14,7 @@ import { AUTO_REVOKE_DELEGATION_ADDRESS } from '@revoke.cash/core/constants';
 import { type DatabaseTransaction, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { autoRevokePermissions } from '@revoke.cash/core/db/schema/auto-revoke';
 import { premiumSubscriptionAddresses } from '@revoke.cash/core/db/schema/premium';
+import { acquireAdvisoryLock } from '@revoke.cash/core/db/utils';
 import { deduplicateArray } from '@revoke.cash/core/utils';
 import { filterAsync } from '@revoke.cash/core/utils/promises';
 import { SECOND } from '@revoke.cash/core/utils/time';
@@ -219,6 +220,8 @@ const applyPermissionBatch = async (
   items: Array<Omit<AutoRevokePermission, 'address' | 'isActive'>>,
 ): Promise<Array<{ id: string }>> => {
   if (items.length === 0) return [];
+
+  await acquireAdvisoryLock(trx, `auto_revoke_permissions:${address.toLowerCase()}`);
 
   const uniqueItems = deduplicateArray(items, (item) => String(item.chainId));
   const chainIds = uniqueItems.map((item) => item.chainId);

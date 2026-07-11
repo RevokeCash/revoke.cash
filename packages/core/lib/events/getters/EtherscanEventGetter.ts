@@ -10,11 +10,12 @@ import {
 import type { Filter, Log } from '@revoke.cash/core/events';
 import { EventLogsUnavailableError, LatestBlockUnavailableError } from '@revoke.cash/core/events/errors';
 import { ViemLogsProvider } from '@revoke.cash/core/events/providers';
-import ky, { retryOn429 } from '@revoke.cash/core/ky';
+import ky, { kyQueue } from '@revoke.cash/core/ky';
 import { RequestQueue } from '@revoke.cash/core/request-queue';
 import type { EtherscanPlatform } from '@revoke.cash/core/types';
 import { isNullish } from '@revoke.cash/core/utils';
 import { isLogResponseSizeError } from '@revoke.cash/core/utils/errors';
+import type { KyInstance } from 'ky';
 import { type Address, getAddress, type Hash, type Hex } from 'viem';
 import type { EventGetter } from './EventGetter';
 
@@ -41,38 +42,22 @@ interface LatestBlockResponse {
   result: string;
 }
 
-// Some explorer APIs (e.g. PulseChain) sit behind a WAF that returns 502 for requests that lack the
-// browser fetch-metadata headers, since server-side fetch does not send them. Including this header
-// makes the request look like a browser request and is harmless for explorers that do not check it.
-export const EXPLORER_REQUEST_HEADERS = { 'Sec-Fetch-Site': 'none' };
-
 export class EtherscanEventGetter implements EventGetter {
-  protected queues: { [chainId: number]: RequestQueue };
+  protected clients: { [chainId: number]: KyInstance };
 
   constructor() {
-    const queueEntries = ETHERSCAN_SUPPORTED_CHAINS.map((chainId) => [
-      chainId,
-      new RequestQueue(getChainApiIdentifer(chainId), getChainApiRateLimit(chainId)),
-    ]);
-
-    this.queues = Object.fromEntries(queueEntries);
+    this.clients = createExplorerClients(ETHERSCAN_SUPPORTED_CHAINS);
   }
 
   async getLatestBlock(chainId: number): Promise<number> {
     const apiUrl = getChainApiUrl(chainId)!;
     const apiKey = getChainApiKey(chainId);
     const platform = getChainEtherscanCompatiblePlatformNames(chainId);
-    const queue = this.queues[chainId]!;
+    const client = this.clients[chainId]!;
 
     const searchParams = prepareGetLatestBlockQuery(chainId, apiKey, platform);
 
-    const result = await retryOn429(() =>
-      queue.add(() =>
-        ky
-          .get(apiUrl, { searchParams, headers: EXPLORER_REQUEST_HEADERS, retry: 3, timeout: false })
-          .json<LatestBlockResponse>(),
-      ),
-    );
+    const result = await client.get(apiUrl, { searchParams }).json<LatestBlockResponse>();
 
     const blockNumber = Number(result.result);
     if (!blockNumber) {
@@ -86,19 +71,13 @@ export class EtherscanEventGetter implements EventGetter {
     const apiUrl = getChainApiUrl(chainId)!;
     const apiKey = getChainApiKey(chainId);
     const platform = getChainEtherscanCompatiblePlatformNames(chainId);
-    const queue = this.queues[chainId]!;
+    const client = this.clients[chainId]!;
 
     const searchParams = prepareGetLogsQuery(chainId, filter, apiKey, platform);
 
     let data: LogsResponse;
     try {
-      data = await retryOn429(() =>
-        queue.add(() =>
-          ky
-            .get(apiUrl, { searchParams, headers: EXPLORER_REQUEST_HEADERS, retry: 3, timeout: false })
-            .json<LogsResponse>(),
-        ),
-      );
+      data = await client.get(apiUrl, { searchParams }).json<LogsResponse>();
     } catch (e) {
       console.log(e);
       console.log(`${apiUrl}?${new URLSearchParams(searchParams).toString()}`);
@@ -109,15 +88,6 @@ export class EtherscanEventGetter implements EventGetter {
     }
 
     if (typeof data.result === 'string') {
-      // If we somehow hit the rate limit, we try again
-      if (
-        data.result.includes('Max rate limit reached') ||
-        data.result.includes('Max calls per sec rate limit reached')
-      ) {
-        console.error('Etherscan: Rate limit reached, retrying...');
-        return this.getEvents(chainId, filter);
-      }
-
       // If the query times out, this indicates that we should try again with a smaller block range
       if (data.result.includes('Query Timeout occurred')) {
         throw new Error('Log response size exceeded');
@@ -216,3 +186,50 @@ const formatEtherscanEvent = (etherscanLog: EtherscanLog): Log => ({
   logIndex: Number(etherscanLog.logIndex) || 0,
   timestamp: Number(etherscanLog.timeStamp) || undefined,
 });
+
+// One rate-paced explorer client per chain; retries re-enter the chain's request queue
+export const createExplorerClients = (chainIds: readonly number[]): { [chainId: number]: KyInstance } => {
+  const clientEntries = chainIds.map((chainId) => [
+    chainId,
+    createExplorerKy(new RequestQueue(getChainApiIdentifer(chainId), getChainApiRateLimit(chainId))),
+  ]);
+
+  return Object.fromEntries(clientEntries);
+};
+
+// Some explorer APIs (e.g. PulseChain) sit behind a WAF that returns 502 for requests that lack the
+// browser fetch-metadata headers, since server-side fetch does not send them. Including this header
+// makes the request look like a browser request and is harmless for explorers that do not check it.
+const EXPLORER_REQUEST_HEADERS = { 'Sec-Fetch-Site': 'none' };
+
+export const createExplorerKy = (queue: RequestQueue): KyInstance => {
+  return ky.extend({
+    retry: { limit: 5 },
+    headers: EXPLORER_REQUEST_HEADERS,
+    fetch: (input, options) => queue.add(() => kyQueue.add(() => fetch(input, options))),
+    hooks: {
+      afterResponse: [convertRateLimitBodyTo429],
+    },
+  });
+};
+
+// Rate-limit messages are tiny, so anything larger cannot be one; this avoids reading
+// multi-megabyte log responses a second time just to sniff them.
+const RATE_LIMIT_BODY_SNIFF_MAX_BYTES = 4096;
+
+const RATE_LIMIT_BODY_MARKERS = ['max rate limit reached', 'max calls per sec rate limit reached', 'too many requests'];
+
+const convertRateLimitBodyTo429 = async ({ response }: { response: Response }): Promise<Response | undefined> => {
+  if (!response.ok) return;
+
+  const contentLength = Number(response.headers.get('content-length') ?? 0);
+  if (contentLength > RATE_LIMIT_BODY_SNIFF_MAX_BYTES) return;
+
+  const body = await response.clone().text();
+  if (body.length > RATE_LIMIT_BODY_SNIFF_MAX_BYTES) return;
+
+  const lowercaseBody = body.toLowerCase();
+  if (RATE_LIMIT_BODY_MARKERS.some((marker) => lowercaseBody.includes(marker))) {
+    return new Response(body, { status: 429, statusText: 'Too Many Requests', headers: response.headers });
+  }
+};

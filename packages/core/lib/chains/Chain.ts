@@ -12,6 +12,7 @@ import {
   type PublicClient,
   type Chain as ViemChain,
 } from 'viem';
+import { chainConfig as opStackChainConfig } from 'viem/op-stack';
 
 export interface ChainOptions {
   type: SupportType;
@@ -33,6 +34,7 @@ export interface ChainOptions {
   deployedContracts?: DeployedContracts;
   isTestnet?: boolean;
   isCanary?: boolean;
+  isOpStack?: boolean;
   correspondingMainnetChainId?: number;
 }
 
@@ -89,6 +91,10 @@ export class Chain {
 
   isCanary(): boolean {
     return this.options.isCanary ?? false;
+  }
+
+  isOpStack(): boolean {
+    return this.options.isOpStack ?? false;
   }
 
   getLogoUrl(): string | undefined {
@@ -206,7 +212,10 @@ export class Chain {
     const chainName = this.getName();
     const fallbackNativeCurrency = { name: chainName, symbol: this.getNativeToken(), decimals: 18 };
 
+    const stackSpecificChainConfig = this.isOpStack() ? opStackChainConfig : undefined;
+
     return defineChain({
+      ...stackSpecificChainConfig,
       id: this.chainId,
       name: chainName,
       network: this.getSlug(),
@@ -221,7 +230,7 @@ export class Chain {
           url: this.getExplorerUrl(),
         },
       },
-      contracts: this.getDeployedContracts(),
+      contracts: { ...stackSpecificChainConfig?.contracts, ...this.getDeployedContracts() },
       testnet: this.isTestnet(),
     });
   }

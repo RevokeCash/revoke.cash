@@ -1,6 +1,7 @@
 import { type DatabaseTransaction, type DatabaseWriter, getDb } from '@revoke.cash/core/db/client';
 import { autoRevokeActions } from '@revoke.cash/core/db/schema/auto-revoke';
 import { premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
+import { acquireAdvisoryLock } from '@revoke.cash/core/db/utils';
 import { activeSubscriptionsQuery } from '@revoke.cash/core/premium/subscriptions';
 import { HOUR, MINUTE } from '@revoke.cash/core/utils/time';
 import { and, asc, eq, gte, inArray, lt, sql } from 'drizzle-orm';
@@ -120,9 +121,7 @@ export const lockAndCheckBudget = async (
   estimatedCostUsd: number | null,
   isUrgent: boolean,
 ): Promise<BudgetDecision> => {
-  await trx.execute(
-    sql`SELECT pg_advisory_xact_lock(hashtextextended(${`auto_revoke_budget:${subscriptionId}`}, 0::bigint))`,
-  );
+  await acquireAdvisoryLock(trx, `auto_revoke_budget:${subscriptionId}`);
 
   const monthlyBudget = await getMonthlyBudget(subscriptionId, trx);
   const withinCeiling = monthlyBudget.committedUsd < monthlyBudget.budgetUsd * BUDGET_CEILING_MULTIPLIER;

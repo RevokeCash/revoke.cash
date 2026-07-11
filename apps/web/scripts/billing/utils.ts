@@ -87,7 +87,8 @@ export const fetchPremiumFeeRecords = async (from: Date, to: Date): Promise<FeeR
     .map((r) => ({
       chainId: r.chainId,
       feeTransactionHash: r.matchedTxHash,
-      feePaid: r.amountUsd,
+      // Premium payments store whole dollars, while FeeRecord amounts are in cents (like batch revokes)
+      feePaid: r.amountUsd * 100,
       vatRegion: r.vatRegion,
       timestamp: r.confirmedAt!,
     }));

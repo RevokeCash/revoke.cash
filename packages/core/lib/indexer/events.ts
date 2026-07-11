@@ -8,6 +8,7 @@ import {
 import { hasChainActivity } from '@revoke.cash/core/chains/events';
 import { type DatabaseTransaction, type DatabaseWriter, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { indexerEvents, indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
+import { acquireAdvisoryLock } from '@revoke.cash/core/db/utils';
 import { ERC721_TRANSFER_TOPIC, type Filter, type Log } from '@revoke.cash/core/events';
 import {
   DivideAndConquerLogsProvider,
@@ -257,9 +258,7 @@ const acquireEventsIndexingLock = async (
   address: Address,
   chainId: DocumentedChainId,
 ): Promise<void> => {
-  await writer.execute(
-    sql`SELECT pg_advisory_xact_lock(hashtextextended(${`events:${chainId}:${address}`}, 0::bigint))`,
-  );
+  await acquireAdvisoryLock(writer, `events:${chainId}:${address}`);
 };
 
 const eventScanWasSuperseded = (

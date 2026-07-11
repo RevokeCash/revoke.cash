@@ -32,9 +32,10 @@ const AddressPageLayout = async ({ params, children }: Props) => {
   const { address, domainName } = await getAddressAndDomainName(addressOrName);
   if (!address) notFound();
 
+  // The address page falls back to the free experience when the entitlement lookup fails
   const [isPremium, isUltimate] = await Promise.all([
-    hasActivePremiumEntitlement(address),
-    hasActiveUltimateEntitlement(address),
+    hasActivePremiumEntitlement(address).catch(() => false),
+    hasActiveUltimateEntitlement(address).catch(() => false),
   ]);
 
   return (

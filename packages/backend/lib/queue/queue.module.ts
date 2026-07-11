@@ -16,16 +16,20 @@ export const DEFAULT_JOB_OPTIONS = {
 interface RegisterOptions {
   name: string;
   limiter?: { groupId: string; maxConcurrent: number; overflow: OverflowBehavior };
+  jobOptions?: Partial<JobsOptions>;
 }
 
 @Module({})
 export class QueueModule {
-  static register({ name, limiter }: RegisterOptions): DynamicModule {
+  static register({ name, limiter, jobOptions }: RegisterOptions): DynamicModule {
     const bullRoot = BullModule.forRootAsync({
       inject: [REDIS_CONNECTION],
       useFactory: (connection: Redis) => ({ connection }),
     });
-    const bullQueue = BullModule.registerQueue({ name, defaultJobOptions: DEFAULT_JOB_OPTIONS });
+    const bullQueue = BullModule.registerQueue({
+      name,
+      defaultJobOptions: { ...DEFAULT_JOB_OPTIONS, ...jobOptions },
+    });
     const limiterModule = limiter ? [GroupLimiterModule.register(limiter)] : [];
 
     return {

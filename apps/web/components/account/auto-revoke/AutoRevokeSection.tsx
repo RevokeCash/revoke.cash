@@ -1,10 +1,8 @@
 'use client';
 
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import type { PremiumSubscription } from '@revoke.cash/core/premium/subscriptions';
-import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import Card, { CardTitle } from 'components/common/Card';
-import Divider from 'components/common/Divider';
 import {
   useAddressAutoRevokePermissions,
   useSubscriptionAutoRevokePermissions,
@@ -12,11 +10,7 @@ import {
 import { useAddressAutoRevokeRules, useSubscriptionAutoRevokeRules } from 'lib/hooks/auto-revoke/useAutoRevokeRules';
 import { useTranslations } from 'next-intl';
 import { type Address, isAddressEqual } from 'viem';
-import { useConnection } from 'wagmi';
-import AutoRevokePermissions from './AutoRevokePermissions';
-import AutoRevokeRulesEditor from './AutoRevokeRulesEditor';
-import AutoRevokeRulesSourceSelect from './AutoRevokeRulesSourceSelect';
-import MetaMaskRequiredBanner from './MetaMaskRequiredBanner';
+import AutoRevokeSectionContent from './AutoRevokeSectionContent';
 
 interface Props {
   activeSubscription?: PremiumSubscription;
@@ -25,8 +19,6 @@ interface Props {
 
 const AutoRevokeSection = ({ activeSubscription, account }: Props) => {
   const t = useTranslations();
-  const { connector } = useConnection();
-  const isMetaMask = connector?.id === 'io.metamask';
   const isAdmin = Boolean(activeSubscription && isAddressEqual(account, activeSubscription.ownerAddress));
 
   const subscriptionPermissions = useSubscriptionAutoRevokePermissions(activeSubscription?.id, isAdmin);
@@ -39,19 +31,8 @@ const AutoRevokeSection = ({ activeSubscription, account }: Props) => {
   const isUserLoading = !isAdmin && (addressPermissions.isLoading || addressRules.isLoading);
   const isLoading = isAdminLoading || isUserLoading;
 
-  const { permissions } = isAdmin ? subscriptionPermissions : addressPermissions;
+  const { permissions, isError: hasPermissionsError } = isAdmin ? subscriptionPermissions : addressPermissions;
   const { effectiveRules, updateRules } = isAdmin ? subscriptionRules : addressRules;
-  const isUsingSubscriptionDefaults = !isAdmin && addressRules.rulesSource?.type === 'subscription';
-  const addresses = activeSubscription?.addresses ?? [account];
-
-  const managedByLabel =
-    isUsingSubscriptionDefaults && addressRules.rulesSource?.type === 'subscription'
-      ? t('account.auto_revoke.rules.managed_by', { owner: shortenAddress(addressRules.rulesSource.ownerAddress, 4) })
-      : undefined;
-
-  const connectedWalletNeedsSetup = !permissions.some(
-    (permission) => isAddressEqual(permission.address, account) && permission.isActive,
-  );
 
   return (
     <Card
@@ -59,49 +40,22 @@ const AutoRevokeSection = ({ activeSubscription, account }: Props) => {
       isLoading={isLoading}
       className={isLoading ? 'h-48' : undefined}
     >
-      <div className="flex flex-col gap-4">
-        {!isMetaMask && <MetaMaskRequiredBanner />}
-
-        {connectedWalletNeedsSetup && (
-          <div className="rounded-lg border border-brand/50 bg-brand/5 p-4 flex items-center gap-3">
-            <InformationCircleIcon className="h-6 w-6 shrink-0 text-brand" />
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.auto_revoke.setup.get_started')}</p>
-          </div>
-        )}
-
-        <div className="grid gap-6 lg:grid-cols-2">
-          <AutoRevokePermissions
-            addresses={addresses}
-            connectedAddress={account}
-            permissions={permissions}
-            isAdmin={isAdmin}
-          />
-
-          <div className="min-w-0 flex flex-col gap-4 border-t border-zinc-200 dark:border-zinc-800 pt-4 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-6">
-            {!isAdmin && addressRules.rulesSource && (
-              <>
-                <AutoRevokeRulesSourceSelect
-                  rulesSource={addressRules.rulesSource}
-                  availableSubscriptions={addressRules.availableSubscriptions}
-                  onSwitchRulesSource={addressRules.switchRulesSource}
-                  isSwitching={addressRules.isSwitchingRulesSource}
-                />
-                <Divider />
-              </>
-            )}
-
-            {effectiveRules && (
-              <AutoRevokeRulesEditor
-                rules={effectiveRules}
-                onUpdate={updateRules}
-                isAdmin={isAdmin}
-                readOnly={isUsingSubscriptionDefaults}
-                managedByLabel={managedByLabel}
-              />
-            )}
-          </div>
+      {hasPermissionsError ? (
+        <div className="rounded-lg border border-yellow-500/50 bg-yellow-50 dark:bg-yellow-950/20 p-4 flex items-center gap-3">
+          <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-yellow-500" />
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.auto_revoke.load_failed')}</p>
         </div>
-      </div>
+      ) : (
+        <AutoRevokeSectionContent
+          account={account}
+          addresses={activeSubscription?.addresses ?? [account]}
+          permissions={permissions}
+          isAdmin={isAdmin}
+          addressRules={addressRules}
+          effectiveRules={effectiveRules}
+          updateRules={updateRules}
+        />
+      )}
     </Card>
   );
 };

@@ -6,7 +6,7 @@
   "scripts": {
     "env": "dotenvx run -f ../../.env --",
     "allow-scripts": "cd ../.. && yarn run allow-scripts",
-    "dev": "yarn env next dev",
+    "dev": "NODE_OPTIONS=--max-old-space-size=8192 yarn env next dev",
     "build": "yarn env next build && yarn env next-sitemap",
     "build:preview": "yarn env next build --profile && yarn env next-sitemap",
     "trim-sitemap": "sed 's,<urlset.*,<urlset xmlns=\"https://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">,g' public/sitemap.xml",

@@ -92,7 +92,7 @@ const fetchAddressData = async (
 ): Promise<AddressData> => {
   const response = await dtoKy(`/api/${chainId}/allowances/${address}`, {
     method,
-    retry: 0,
+    retry: { limit: 3, statusCodes: [429] },
   }).json<AddressData>();
   analytics.track(method === 'GET' ? 'Fetched Cached Address Data' : 'Refreshed Cached Address Data', {
     account: address,

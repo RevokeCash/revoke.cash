@@ -6,6 +6,7 @@ import {
 } from '@revoke.cash/core/db/schema/auto-revoke';
 import { premiumSubscriptionAddresses } from '@revoke.cash/core/db/schema/premium';
 import type { AutoRevokeActionTransaction } from '@revoke.cash/core/db/types/auto-revoke-transaction';
+import { acquireAdvisoryLock } from '@revoke.cash/core/db/utils';
 import { MINUTE } from '@revoke.cash/core/utils/time';
 import { and, asc, eq, getTableColumns, gt, inArray, isNotNull, isNull, lte, or, sql } from 'drizzle-orm';
 import type { Address, Hash } from 'viem';
@@ -243,9 +244,7 @@ export const markActionSubmitted = async (
   return getTransactionalDb().transaction(async (trx) => {
     // The pipeline (depth + nonce sequence) is per signing wallet, so the lock is too: the urgent
     // and normal lanes submit on the same chain without serializing against each other.
-    await trx.execute(
-      sql`SELECT pg_advisory_xact_lock(hashtextextended(${`auto_revoke_chain:${chainId}:${signerAddress.toLowerCase()}`}, 0::bigint))`,
-    );
+    await acquireAdvisoryLock(trx, `auto_revoke_chain:${chainId}:${signerAddress.toLowerCase()}`);
 
     const pipeline = await getChainPipelineState(chainId, signerAddress, trx);
     if (pipeline.count >= MAX_PENDING_ACTIONS_PER_CHAIN) return 'pipeline_full';
@@ -336,6 +335,30 @@ export const requeueRulesBlockedActions = async (addresses: Address[]): Promise<
     );
 };
 
+export const requeueObservationActions = async (writer: DatabaseWriter, observationIds: string[]): Promise<void> => {
+  if (observationIds.length === 0) return;
+
+  await writer
+    .update(autoRevokeActions)
+    .set({
+      status: 'queued',
+      nextRetryAt: null,
+      submittedAt: null,
+      completedAt: null,
+      transaction: null,
+      costUsd: null,
+      billedSubscriptionId: null,
+      errorCode: null,
+      costDeferredAt: null,
+    })
+    .where(
+      and(
+        inArray(autoRevokeActions.observationId, observationIds),
+        inArray(autoRevokeActions.status, ['queued', 'blocked_budget', 'blocked_rules', 'failed', 'skipped']),
+      ),
+    );
+};
+
 export const requeueActionAfterNonceConsumed = async (actionId: string): Promise<boolean> => {
   return getTransactionalDb().transaction(async (trx) => {
     // Locks the row and captures the billed subscription before it is cleared below.
@@ -387,6 +410,7 @@ export const markActionReplacementSubmitted = async (
     await trx
       .update(autoRevokeActions)
       .set({
+        submittedAt: new Date(),
         transaction: {
           ...params,
           txHashes: [...(current.transaction?.txHashes ?? []), params.txHash],

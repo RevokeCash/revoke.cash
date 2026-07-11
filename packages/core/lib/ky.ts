@@ -1,28 +1,23 @@
-import kyBase from 'ky';
+import kyBase, { HTTPError } from 'ky';
 import PQueue from 'p-queue';
-import { isRateLimitError } from './utils/errors';
 
-const kyQueue = new PQueue({ concurrency: 50 });
+export const kyQueue = new PQueue({ concurrency: 50 });
 
+// POST requests are only retried if they are 429 (rate limited)
 const ky = kyBase.extend({
   timeout: false,
   fetch: (input, options) => kyQueue.add(() => fetch(input, options)),
+  retry: {
+    methods: ['get', 'put', 'head', 'delete', 'options', 'trace', 'post'],
+  },
+  hooks: {
+    beforeRetry: [
+      ({ request, error }) => {
+        const isRateLimited = error instanceof HTTPError && error.response.status === 429;
+        if (request.method === 'POST' && !isRateLimited) throw error;
+      },
+    ],
+  },
 });
-
-export const retryOn429 = async <T>(fn: () => Promise<T>, retries = 3): Promise<T> => {
-  try {
-    return await fn();
-  } catch (e) {
-    if (retries <= 0) throw e;
-
-    if (isRateLimitError(e)) {
-      console.warn('Rate limit reached, retrying...');
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return retryOn429(fn, retries - 1);
-    }
-
-    throw e;
-  }
-};
 
 export default ky;

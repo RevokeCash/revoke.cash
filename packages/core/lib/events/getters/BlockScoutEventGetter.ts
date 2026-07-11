@@ -1,17 +1,13 @@
 import {
   BLOCKSCOUT_SUPPORTED_CHAINS,
-  getChainApiIdentifer,
   getChainApiKey,
-  getChainApiRateLimit,
   getChainApiUrl,
   getChainEtherscanCompatiblePlatformNames,
 } from '@revoke.cash/core/chains';
 import { EventDataSourceOutOfSyncError, LatestBlockUnavailableError } from '@revoke.cash/core/events/errors';
-import ky, { retryOn429 } from '@revoke.cash/core/ky';
-import { RequestQueue } from '@revoke.cash/core/request-queue';
 import type { EtherscanPlatform } from '@revoke.cash/core/types';
 import type { Hex } from 'viem';
-import { EtherscanEventGetter, EXPLORER_REQUEST_HEADERS } from './EtherscanEventGetter';
+import { createExplorerClients, EtherscanEventGetter } from './EtherscanEventGetter';
 import type { EventGetter } from './EventGetter';
 
 interface LatestBlockResponse {
@@ -31,37 +27,20 @@ export class BlockScoutEventGetter extends EtherscanEventGetter implements Event
   constructor() {
     super();
 
-    const queueEntries = BLOCKSCOUT_SUPPORTED_CHAINS.map((chainId) => [
-      chainId,
-      new RequestQueue(getChainApiIdentifer(chainId), getChainApiRateLimit(chainId)),
-    ]);
-
-    this.queues = Object.fromEntries(queueEntries);
+    this.clients = createExplorerClients(BLOCKSCOUT_SUPPORTED_CHAINS);
   }
 
   async getLatestBlock(chainId: number): Promise<number> {
     const apiUrl = getChainApiUrl(chainId)!;
     const apiKey = getChainApiKey(chainId);
     const platform = getChainEtherscanCompatiblePlatformNames(chainId);
-    const queue = this.queues[chainId]!;
+    const client = this.clients[chainId]!;
 
     const searchParams = prepareGetLatestBlockQuery(apiKey, platform);
 
-    const latestBlockPromise = retryOn429(() =>
-      queue.add(() =>
-        ky
-          .get(apiUrl, { searchParams, headers: EXPLORER_REQUEST_HEADERS, retry: 3, timeout: false })
-          .json<LatestBlockResponse>(),
-      ),
-    );
+    const latestBlockPromise = client.get(apiUrl, { searchParams }).json<LatestBlockResponse>();
 
-    const indexingStatusPromise = retryOn429(() =>
-      queue.add(() =>
-        ky
-          .get(`${apiUrl}/v2/main-page/indexing-status`, { headers: EXPLORER_REQUEST_HEADERS })
-          .json<IndexingStatusResponse>(),
-      ),
-    );
+    const indexingStatusPromise = client.get(`${apiUrl}/v2/main-page/indexing-status`).json<IndexingStatusResponse>();
 
     const [latestBlock, indexingStatus] = await Promise.allSettled([latestBlockPromise, indexingStatusPromise]);
 

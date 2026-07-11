@@ -8,8 +8,8 @@ export const useAutoRevokeSetupNeeded = () => {
   const { account, isAuthenticated, activeUltimateSubscription, ultimateEntitlement } = useAccountSubscriptions();
   const hasUltimate = Boolean(activeUltimateSubscription || ultimateEntitlement);
 
-  const { permissions, isLoading } = useAddressAutoRevokePermissions(account!, isAuthenticated && hasUltimate);
+  const { permissions, isLoading, isError } = useAddressAutoRevokePermissions(account!, isAuthenticated && hasUltimate);
   const hasActivePermissions = permissions.some((permission) => permission.isActive);
 
-  return { setupNeeded: hasUltimate && !isLoading && !hasActivePermissions };
+  return { setupNeeded: hasUltimate && !isLoading && !isError && !hasActivePermissions };
 };

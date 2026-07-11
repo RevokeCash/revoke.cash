@@ -12,7 +12,7 @@ import ky from 'lib/ky';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { type Address, parseUnits } from 'viem';
+import { type Address, isAddressEqual, parseUnits } from 'viem';
 import { getSubscriptionsQueryKey } from './usePremiumSubscriptions';
 
 export type SubscribeStatus = 'idle' | 'creating' | 'paying' | 'confirming' | 'confirmed' | 'failed';
@@ -132,6 +132,11 @@ export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChai
 
       const walletClient = await ensureWalletClient(payment.chainId);
 
+      const connectedAddress = walletClient.account?.address;
+      if (!connectedAddress || !isAddressEqual(connectedAddress, ownerAddress)) {
+        throw new Error(t('account.subscription.wrong_wallet_error', { address: ownerAddress }));
+      }
+
       const hash = await walletClient.writeContract({
         account: walletClient.account!,
         chain: walletClient.chain,
@@ -167,7 +172,6 @@ export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChai
     },
     onError: (error) => {
       setStatus('failed');
-      clearPendingPayment();
       toast.error(parseErrorMessage(error) || t('account.subscription.payment_failed'));
     },
   });

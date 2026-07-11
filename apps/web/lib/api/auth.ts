@@ -314,8 +314,9 @@ export const requireUltimateEntitlement = async (address: Address) => {
 };
 
 export const requireCronSecret = (req: NextRequest) => {
+  const cronSecret = process.env.CRON_SECRET;
   const authHeader = req.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
     throw new ApiError(401, 'Unauthorized');
   }
 };

@@ -37,23 +37,18 @@ export const getActivePremiumEntitlements = async (address: Address): Promise<Pr
 };
 
 export const hasActivePremiumEntitlement = async (address: Address): Promise<boolean> => {
-  try {
-    const entitlements = await getActivePremiumEntitlements(address);
-    return entitlements.length > 0;
-  } catch (e) {
-    console.error('Failed to check premium entitlement, falling back to free experience', e);
-    return false;
-  }
+  const entitlements = await getActivePremiumEntitlementsWithSingleRetry(address);
+  return entitlements.length > 0;
 };
 
 export const hasActiveUltimateEntitlement = async (address: Address): Promise<boolean> => {
-  try {
-    const entitlements = await getActivePremiumEntitlements(address);
-    return entitlements.some((entitlement) => isUltimatePlan(entitlement));
-  } catch (e) {
-    console.error('Failed to check ultimate entitlement, denying access', e);
-    return false;
-  }
+  const entitlements = await getActivePremiumEntitlementsWithSingleRetry(address);
+  return entitlements.some((entitlement) => isUltimatePlan(entitlement));
+};
+
+// One retry, so a transient database hiccup doesn't surface as an error page
+const getActivePremiumEntitlementsWithSingleRetry = async (address: Address): Promise<PremiumEntitlement[]> => {
+  return getActivePremiumEntitlements(address).catch(() => getActivePremiumEntitlements(address));
 };
 
 // Exclude the owner's own entitlements from the list.

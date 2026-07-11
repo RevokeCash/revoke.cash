@@ -1,13 +1,16 @@
 import { type AllowancePayload, AllowanceType, type TokenAllowanceData } from '@revoke.cash/core/allowances';
-import { getTransactionalDb } from '@revoke.cash/core/db/client';
+import { type DatabaseTransaction, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { autoRevokeObservations } from '@revoke.cash/core/db/schema/auto-revoke';
 import type { indexerAllowances } from '@revoke.cash/core/db/schema/indexer';
 import { toLowercaseAddress } from '@revoke.cash/core/utils';
-import { inArray } from 'drizzle-orm';
+import { and, eq, inArray, ne } from 'drizzle-orm';
+import { requeueObservationActions } from '../actions';
 import type { RuleContext, TriggerDetails } from './rules';
 
 export type Observation = typeof autoRevokeObservations.$inferSelect;
 export type IndexedAllowance = typeof indexerAllowances.$inferSelect;
+
+type ObservationInsert = typeof autoRevokeObservations.$inferInsert;
 
 interface ObservationCandidate {
   triggerType: Observation['triggerType'];
@@ -65,11 +68,44 @@ export const createObservations = async (candidates: ObservationCandidate[]): Pr
 
   const allowanceFingerprints = observationValues.map((observation) => observation.allowanceFingerprint);
 
+  const exploitObservationValues = observationValues.filter((observation) => observation.triggerType === 'exploit');
+
   return getTransactionalDb().transaction(async (trx) => {
     await trx.insert(autoRevokeObservations).values(observationValues).onConflictDoNothing();
+
+    // A previously observed allowance can later be affected by an exploit
+    const escalatedObservationIds = await escalateExploitObservations(trx, exploitObservationValues);
+    await requeueObservationActions(trx, escalatedObservationIds);
 
     return trx.query.autoRevokeObservations.findMany({
       where: inArray(autoRevokeObservations.allowanceFingerprint, allowanceFingerprints),
     });
   });
+};
+
+// Flips stored non-exploit observations to exploit when the same allowance is re-observed with an exploit trigger
+const escalateExploitObservations = async (
+  trx: DatabaseTransaction,
+  exploitObservationValues: Array<Pick<ObservationInsert, 'allowanceFingerprint' | 'triggerDetails' | 'ruleSnapshot'>>,
+): Promise<string[]> => {
+  const escalatedObservations = await Promise.all(
+    exploitObservationValues.map((observation) =>
+      trx
+        .update(autoRevokeObservations)
+        .set({
+          triggerType: 'exploit',
+          triggerDetails: observation.triggerDetails,
+          ruleSnapshot: observation.ruleSnapshot,
+        })
+        .where(
+          and(
+            eq(autoRevokeObservations.allowanceFingerprint, observation.allowanceFingerprint),
+            ne(autoRevokeObservations.triggerType, 'exploit'),
+          ),
+        )
+        .returning({ id: autoRevokeObservations.id }),
+    ),
+  );
+
+  return escalatedObservations.flat().map((observation) => observation.id);
 };

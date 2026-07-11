@@ -58,6 +58,7 @@
       "shared": "The gas budget is shared by all wallets in the subscription.",
       "used": "{used} of {total} used this month"
     },
+    "load_failed": "Failed to load your Auto-Revoking configuration. Please refresh the page or try again later.",
     "metamask_not_connected": "MetaMask not connected",
     "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",
     "permissions": {
@@ -185,7 +186,8 @@
     "slots_summary": "{used}/{max} wallet {max, plural, =1 {slot} other {slots}} used",
     "title": "Premium Subscription",
     "valid_until": "Valid until {date}",
-    "wallet": "Wallet"
+    "wallet": "Wallet",
+    "wrong_wallet_error": "The payment must be sent from {address}. Please switch to that wallet and try again."
   },
   "tabs": {
     "auto_revoke": "Auto-Revoking",

@@ -6,7 +6,7 @@ export interface PaymentConfig {
   token: {
     symbol: 'USDC';
     address: Address;
-    decimals: 6;
+    decimals: number;
   };
   paymentAddress: Address;
 }
@@ -26,18 +26,18 @@ export const PREMIUM_PAYMENT_CHAIN_IDS = [
 
 export type PremiumPaymentChainId = (typeof PREMIUM_PAYMENT_CHAIN_IDS)[number];
 
-const withUsdc = (tokenAddress: Address): PaymentConfig => ({
+const withUsdc = (tokenAddress: Address, decimals: number = 6): PaymentConfig => ({
   token: {
     symbol: 'USDC',
     address: getAddress(tokenAddress),
-    decimals: 6,
+    decimals,
   },
   paymentAddress: SUBSCRIPTIONS_ADDRESS,
 });
 
 export const PAYMENT_CONFIG_BY_CHAIN_ID: Record<PremiumPaymentChainId, PaymentConfig> = {
   [ChainId.EthereumMainnet]: withUsdc('0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'),
-  [ChainId.BNBSmartChainMainnet]: withUsdc('0x8AC76a51cc950d9822D68b83Fe1Ad97B32Cd580d'),
+  [ChainId.BNBSmartChainMainnet]: withUsdc('0x8AC76a51cc950d9822D68b83Fe1Ad97B32Cd580d', 18),
   [ChainId.PolygonMainnet]: withUsdc('0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'),
   [ChainId.Base]: withUsdc('0x833589fCD6eDb6E08f4c7C32D4f71b54bDa02913'),
   [ChainId.OPMainnet]: withUsdc('0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85'),

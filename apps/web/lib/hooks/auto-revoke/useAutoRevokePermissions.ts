@@ -10,7 +10,7 @@ const getSubscriptionPermissionsQueryKey = (subscriptionId?: string) =>
   ['auto-revoke', 'subscription-permissions', subscriptionId] as const;
 
 export const useAddressAutoRevokePermissions = (address: Address, enabled: boolean) => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: getAddressPermissionsQueryKey(address),
     queryFn: async () => ky.get('/api/auto-revoke/permissions').json<AutoRevokePermission[]>(),
     enabled,
@@ -19,11 +19,12 @@ export const useAddressAutoRevokePermissions = (address: Address, enabled: boole
   return {
     permissions: data ?? [],
     isLoading,
+    isError,
   };
 };
 
 export const useSubscriptionAutoRevokePermissions = (subscriptionId: string | undefined, enabled: boolean) => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: getSubscriptionPermissionsQueryKey(subscriptionId),
     queryFn: async () =>
       ky.get(`/api/auto-revoke/subscriptions/${subscriptionId}/permissions`).json<AutoRevokePermission[]>(),
@@ -33,5 +34,6 @@ export const useSubscriptionAutoRevokePermissions = (subscriptionId: string | un
   return {
     permissions: data ?? [],
     isLoading,
+    isError,
   };
 };

@@ -588,7 +588,7 @@ export const CHAINS = {
     type: SupportType.ETHERSCAN,
     chainId: ChainId.Fraxtal,
     name: 'Fraxtal',
-    nativeTokenCoingeckoId: 'frax-ether',
+    nativeTokenCoingeckoId: 'frax-share',
     coingeckoNetworkId: 'fraxtal',
     logoUrl: '/assets/images/vendor/chains/fraxtal.svg',
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },

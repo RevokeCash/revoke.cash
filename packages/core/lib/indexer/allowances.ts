@@ -8,6 +8,7 @@ import blocksCache from '@revoke.cash/core/cache/blocks';
 import { createViemPublicClientForChain, type DocumentedChainId } from '@revoke.cash/core/chains';
 import { type DatabaseWriter, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { indexerAllowanceState, indexerAllowances, indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
+import { acquireAdvisoryLock } from '@revoke.cash/core/db/utils';
 import {
   type EnrichedTokenEvent,
   ERC721_APPROVAL_FOR_ALL_TOPIC,
@@ -136,9 +137,7 @@ const acquireAllowanceRecomputeLock = async (
   address: Address,
   chainId: DocumentedChainId,
 ): Promise<void> => {
-  await writer.execute(
-    sql`SELECT pg_advisory_xact_lock(hashtextextended(${`allowances:${chainId}:${address}`}, 0::bigint))`,
-  );
+  await acquireAdvisoryLock(writer, `allowances:${chainId}:${address}`);
 };
 
 export type CachedAllowanceRow = typeof indexerAllowances.$inferSelect;

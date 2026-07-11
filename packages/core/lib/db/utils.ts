@@ -1,4 +1,11 @@
-import { type Column, eq, type GetColumnData, isNull, type SQL } from 'drizzle-orm';
+import { type Column, eq, type GetColumnData, isNull, type SQL, sql } from 'drizzle-orm';
+import type { DatabaseWriter } from './client';
+
+// Serializes concurrent transactions on the same key: the advisory lock is acquired for the
+// remainder of the surrounding transaction and released automatically at commit or rollback.
+export const acquireAdvisoryLock = async (writer: DatabaseWriter, key: string): Promise<void> => {
+  await writer.execute(sql`SELECT pg_advisory_xact_lock(hashtextextended(${key}, 0::bigint))`);
+};
 
 // Null-safe equality for nullable columns: SQL's `col = NULL` never matches anything (three-valued
 // logic), and drizzle's eq() deliberately rejects null comparison values at the type level, so a null

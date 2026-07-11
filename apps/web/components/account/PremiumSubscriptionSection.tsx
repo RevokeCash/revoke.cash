@@ -14,6 +14,7 @@ import ChainSelect from 'components/common/select/ChainSelect';
 import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { usePremiumPlans } from 'lib/hooks/premium/usePremiumPlans';
 import { type SubscribeStatus, useSubscribe } from 'lib/hooks/premium/useSubscribe';
+import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
@@ -30,6 +31,7 @@ const PremiumSubscriptionSection = ({ account, activeSubscription, entitlements 
   const t = useTranslations();
   const { chainId } = useConnection();
   const { domainName } = useNameLookup(account);
+  const preselectedTier = useSearchParams()?.get('plan');
 
   const [selectedPlanId, setSelectedPlanId] = useState<string>(activeSubscription?.plan.id ?? 'premium_annual');
   const [selectedPaymentChainId, setSelectedPaymentChainId] = useState<number>(PREMIUM_PAYMENT_CHAIN_IDS[0]);
@@ -51,12 +53,24 @@ const PremiumSubscriptionSection = ({ account, activeSubscription, entitlements 
     }
   }, [chainId]);
 
-  // Sync selected plan when active subscription loads
+  // Preselect the tier chosen on the pricing page once the plans load
   useEffect(() => {
+    if (!preselectedTier) return;
+
+    const preselectedPlan = plans.find((plan) => plan.tier === preselectedTier);
+    if (preselectedPlan) {
+      setSelectedPlanId(preselectedPlan.id);
+    }
+  }, [preselectedTier, plans]);
+
+  // Sync selected plan when active subscription loads, unless the pricing page chose a tier
+  useEffect(() => {
+    if (preselectedTier) return;
+
     if (activeSubscription?.plan.id) {
       setSelectedPlanId(activeSubscription.plan.id);
     }
-  }, [activeSubscription?.plan.id]);
+  }, [activeSubscription?.plan.id, preselectedTier]);
 
   // Reset selected plan if loaded plans don't include it
   useEffect(() => {

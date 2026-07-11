@@ -60,8 +60,9 @@ const MainLayout = async ({ children, params }: Props) => {
 
   const messages = await getMessages({ locale });
 
+  // suppressHydrationWarning is needed because ThemeScript adds the 'dark' class to <html> before hydration
   return (
-    <html lang={locale} className={`${outfit.variable} ${jetbrainsMono.variable}`}>
+    <html lang={locale} className={`${outfit.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <head>
         <NextIntlClientProvider>
           <Analytics />

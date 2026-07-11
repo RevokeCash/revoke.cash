@@ -129,6 +129,8 @@ const recordLastEvaluatedAt = async (address: Address, chainId: number, computed
 // risk, then return every address with allowances to the exploit's spenders. The caller pushes each
 // one back through the indexing pipeline so it is re-evaluated against freshly indexed allowances.
 export const prepareExploitEvaluation = async (exploit: Exploit): Promise<AddressOnChain[]> => {
+  if (exploit.addresses.length === 0) return [];
+
   await addSpenderRiskFactor(exploit.addresses, { type: 'exploit', source: 'whois', data: exploit.name });
 
   const affectedAddresses = getDb()

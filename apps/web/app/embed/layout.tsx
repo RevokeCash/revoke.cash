@@ -24,8 +24,9 @@ const EmbedRootLayout = async ({ children }: Props) => {
   setRequestLocale('en');
   const messages = await getMessages({ locale: 'en' });
 
+  // suppressHydrationWarning is needed because EmbedThemeScript adds the 'dark' class to <html> before hydration
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <NextIntlClientProvider>
           <Analytics />

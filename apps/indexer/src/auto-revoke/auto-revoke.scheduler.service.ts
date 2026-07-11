@@ -93,11 +93,14 @@ export class AutoRevokeSchedulerService {
 
   // Adding with a deterministic jobId is a no-op when the job is already queued or running.
   private async enqueueExecuteJob(action: Action): Promise<EnqueueOutcome> {
+    const lane = getExecutionLaneHint(action);
+    const priority = getLanePriority(lane);
+
     return this.executeQueue
       .add(
         'execute',
-        { actionId: action.id, chainId: action.observation.chainId, lane: getExecutionLaneHint(action) },
-        { jobId: autoRevokeExecuteJobId(action.id) },
+        { actionId: action.id, chainId: action.observation.chainId, lane },
+        { jobId: autoRevokeExecuteJobId(action.id), priority },
       )
       .then(() => 'added' as const)
       .catch((error) => {
@@ -122,3 +125,6 @@ const countOutcomes = (outcomes: EnqueueOutcome[]) => ({
 // authoritative lane is picked at execution time from freshly re-derived urgency.
 const getExecutionLaneHint = (action: Action): ExecutionLane =>
   action.observation.triggerType === 'exploit' ? 'urgent' : 'normal';
+
+// Deprioritise normal jobs so urgent jobs jump ahead of a queued backlog. Urgent jobs are always
+const getLanePriority = (lane: ExecutionLane): number | undefined => (lane === 'urgent' ? undefined : 10);
