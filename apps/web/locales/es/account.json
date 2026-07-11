@@ -70,6 +70,7 @@
       "networks_enabled": "{enabled}/{total} redes habilitadas",
       "no_active_permission_returned": "No active permission returned",
       "revoke_failed": "No se ha podido revocar el permiso de revocación automática.",
+      "revoke_transaction_reverted": "La transacción para desactivar el permiso se ha revertido en la cadena de bloques. Sincroniza desde la cartera y vuelve a intentarlo.",
       "sync": "Sincronizar desde la cartera",
       "sync_failed": "No se han podido sincronizar los permisos de revocación automática desde la cartera.",
       "sync_success": "Revoke automáticamente los permisos sincronizados desde la cartera.",

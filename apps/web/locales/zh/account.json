@@ -70,6 +70,7 @@
       "networks_enabled": "{enabled}/{total} networks enabled",
       "no_active_permission_returned": "No active permission returned",
       "revoke_failed": "Failed to revoke auto-revoke permission.",
+      "revoke_transaction_reverted": "The transaction to disable the permission failed onchain. Sync from wallet and try again.",
       "sync": "Sync from wallet",
       "sync_failed": "Failed to sync auto-revoke permissions from wallet.",
       "sync_success": "Auto-revoke permissions synced from wallet.",

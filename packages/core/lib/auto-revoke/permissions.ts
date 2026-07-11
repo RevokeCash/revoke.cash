@@ -96,23 +96,45 @@ export const syncPermissions = async (
   const db = getTransactionalDb();
   const syncedChainIds = items.map((item) => item.chainId);
 
+  const candidates = await getDb().query.autoRevokePermissions.findMany({
+    where: and(
+      eq(autoRevokePermissions.address, address),
+      isNull(autoRevokePermissions.revokedAt),
+      syncedChainIds.length > 0 ? notInArray(autoRevokePermissions.chainId, syncedChainIds) : undefined,
+    ),
+  });
+
+  const permissionIdsToRevoke = (await filterAsync(candidates, isPermissionDisabledOrExpired)).map((row) => row.id);
+
   return db.transaction(async (trx) => {
     const results = await applyPermissionBatch(trx, address, items);
 
-    // Revoke any active DB permissions for chains not present in the synced set.
-    await trx
-      .update(autoRevokePermissions)
-      .set({ revokedAt: new Date() })
-      .where(
-        and(
-          eq(autoRevokePermissions.address, address),
-          isNull(autoRevokePermissions.revokedAt),
-          syncedChainIds.length > 0 ? notInArray(autoRevokePermissions.chainId, syncedChainIds) : undefined,
-        ),
-      );
+    if (permissionIdsToRevoke.length > 0) {
+      await trx
+        .update(autoRevokePermissions)
+        .set({ revokedAt: new Date() })
+        .where(and(inArray(autoRevokePermissions.id, permissionIdsToRevoke), isNull(autoRevokePermissions.revokedAt)));
+    }
 
     return results;
   });
+};
+
+const isPermissionDisabledOrExpired = async (row: PermissionRecord): Promise<boolean> => {
+  if (row.expiresAt.getTime() <= Date.now()) return true;
+
+  try {
+    const isEnabled = await isPermissionEnabledOnChain({
+      chainId: row.chainId,
+      delegationManager: row.delegationManager,
+      permissionContext: row.permissionContext as Hex,
+    });
+
+    return !isEnabled;
+  } catch (error) {
+    console.error('Failed to verify onchain permission status, keeping permission active:', error);
+    return false;
+  }
 };
 
 export const revokePermission = async (address: Address, chainId: number): Promise<void> => {

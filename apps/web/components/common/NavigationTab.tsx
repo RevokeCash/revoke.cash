@@ -25,20 +25,18 @@ const NavigationTab = ({ name, href, retainSearchParams, attention }: Props) => 
   );
 
   return (
-    <div className="relative">
-      <Button
-        id={name}
-        style="none"
-        size="none"
-        href={href}
-        router
-        retainSearchParams={retainSearchParams}
-        className={classes}
-      >
-        {name}
-      </Button>
-      {attention && <span className="absolute -top-0.5 -right-0.5 h-1.5 w-1.5 rounded-full bg-brand" />}
-    </div>
+    <Button
+      id={name}
+      style="none"
+      size="none"
+      href={href}
+      router
+      retainSearchParams={retainSearchParams}
+      className={classes}
+    >
+      {name}
+      {attention && <span className="ml-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />}
+    </Button>
   );
 };
 
