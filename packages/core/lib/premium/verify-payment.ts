@@ -14,7 +14,7 @@ import {
   type PremiumPaymentStatus,
   toPaymentStatusResponse,
 } from './payments';
-import { extendOrCreateSubscription } from './subscriptions';
+import { findOrCreateSubscriptionForOwner, rebuildSubscriptionFromPayments } from './subscriptions';
 
 interface SetPaymentStatusParams {
   paymentId: string;
@@ -31,6 +31,7 @@ interface ReconcilePendingPaymentsResult {
   confirmed: number;
   expired: number;
   failed: number;
+  reversed: number;
   errors: number;
 }
 
@@ -52,6 +53,7 @@ export const reconcilePendingPayments = async (limit = 20): Promise<ReconcilePen
     confirmed: 0,
     expired: 0,
     failed: 0,
+    reversed: 0,
     errors: 0,
   };
 
@@ -84,9 +86,11 @@ export const reconcilePaymentByOwner = async (
 
   // Use a transaction for all status updates to prevent TOCTOU races
   return db.transaction(async (trx) => {
-    if (payment.expiresAt.getTime() <= Date.now()) {
-      await setPaymentStatus(trx, { paymentId: payment.id, status: 'expired' });
-      return { ...toPaymentStatusResponse(payment), status: 'expired' as const };
+    const lockedPayment = await lockPendingPayment(trx, payment.id);
+    if (!lockedPayment) return toPaymentStatusResponse(payment);
+
+    if (lockedPayment.status !== 'pending') {
+      return { paymentId: payment.id, status: lockedPayment.status, matchedTxHash: lockedPayment.matchedTxHash };
     }
 
     const paymentConfig = getPaymentConfig(payment.chainId);
@@ -97,6 +101,11 @@ export const reconcilePaymentByOwner = async (
 
     const matchedTxHash = await findMatchingTransferTxHash(payment, ownerAddress, paymentConfig.paymentAddress);
     if (!matchedTxHash) {
+      if (payment.expiresAt.getTime() <= Date.now()) {
+        await setPaymentStatus(trx, { paymentId: payment.id, status: 'expired' });
+        return { ...toPaymentStatusResponse(payment), status: 'expired' as const };
+      }
+
       return toPaymentStatusResponse(payment);
     }
 
@@ -109,7 +118,20 @@ export const reconcilePaymentByOwner = async (
   });
 };
 
-const findMatchingTransferTxHash = async (
+const lockPendingPayment = async (
+  trx: DatabaseTransaction,
+  paymentId: string,
+): Promise<{ status: PremiumPaymentStatus; matchedTxHash: Hash | null } | null> => {
+  const [lockedPayment] = await trx
+    .select({ status: premiumPayments.status, matchedTxHash: premiumPayments.matchedTxHash })
+    .from(premiumPayments)
+    .where(eq(premiumPayments.id, paymentId))
+    .for('update', { skipLocked: true });
+
+  return lockedPayment ?? null;
+};
+
+export const findMatchingTransferTxHash = async (
   payment: PremiumPaymentRecord,
   ownerAddress: Address,
   recipientAddress: Address,
@@ -130,14 +152,44 @@ const findMatchingTransferTxHash = async (
   });
 
   const expectedAmount = getExpectedTokenAmount(payment);
+  const siblingPaymentAmounts = await getSiblingPendingPaymentAmounts(payment);
 
   // Since sender/receiver are topic-matched, we only need an amount check.
-  // We intentionally accept >= expectedAmount to allow overpayments.
+  // We intentionally accept >= expectedAmount to allow overpayments, but a transfer that exactly
+  // matches another pending payment's amount belongs to that payment (e.g. a pending $99 Premium
+  // quote must not consume the $199 transfer paying for a newer Ultimate quote).
   const matchedTransfer = logs
     .map((log) => parseTransferLog(log, payment.chainId, ownerAddress))
-    .find((transfer) => transfer?.type === TokenEventType.TRANSFER_ERC20 && transfer.payload.amount >= expectedAmount);
+    .find(
+      (transfer) =>
+        transfer?.type === TokenEventType.TRANSFER_ERC20 &&
+        transfer.payload.amount >= expectedAmount &&
+        !siblingPaymentAmounts.includes(transfer.payload.amount),
+    );
 
   return matchedTransfer?.rawLog.transactionHash ?? null;
+};
+
+// Expected amounts of the owner's other pending payments for the same token. Amounts equal to this
+// payment's own expected amount are not reserved: identical quotes may race for the same transfer,
+// and the unique index on the matched transaction hash ensures only one of them confirms with it.
+const getSiblingPendingPaymentAmounts = async (payment: PremiumPaymentRecord): Promise<bigint[]> => {
+  const siblingPayments = await getDb().query.premiumPayments.findMany({
+    where: and(
+      eq(premiumPayments.ownerAddress, payment.ownerAddress),
+      eq(premiumPayments.chainId, payment.chainId),
+      eq(premiumPayments.tokenAddress, payment.tokenAddress),
+      eq(premiumPayments.status, 'pending'),
+      ne(premiumPayments.id, payment.id),
+    ),
+    columns: { amountUsd: true, tokenDecimals: true },
+  });
+
+  const expectedAmount = getExpectedTokenAmount(payment);
+
+  return siblingPayments
+    .map((sibling) => parseUnits(String(sibling.amountUsd), sibling.tokenDecimals))
+    .filter((amount) => amount !== expectedAmount);
 };
 
 const finalizeMatchedPaymentInTransaction = async (
@@ -164,7 +216,7 @@ const finalizeMatchedPaymentInTransaction = async (
   }
 
   const now = new Date();
-  const subscriptionId = await extendOrCreateSubscription(trx, { ...lockedPayment, now });
+  const subscriptionId = await findOrCreateSubscriptionForOwner(trx, { ...lockedPayment, now });
 
   await setPaymentStatus(trx, {
     paymentId: lockedPayment.id,
@@ -174,6 +226,8 @@ const finalizeMatchedPaymentInTransaction = async (
     updatedAt: now,
     subscriptionId,
   });
+
+  await rebuildSubscriptionFromPayments(trx, subscriptionId);
 };
 
 const setPaymentStatus = async (

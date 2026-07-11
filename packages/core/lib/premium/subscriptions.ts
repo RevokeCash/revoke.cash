@@ -1,10 +1,16 @@
 import { type DatabaseTransaction, type DatabaseWriter, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
-import { premiumPlans, premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
+import {
+  premiumPayments,
+  premiumPlans,
+  premiumSubscriptionAddresses,
+  premiumSubscriptions,
+} from '@revoke.cash/core/db/schema/premium';
+import { acquireAdvisoryLock } from '@revoke.cash/core/db/utils';
 import { registerAddressForIndexing } from '@revoke.cash/core/indexer/register';
 import { isNullish } from '@revoke.cash/core/utils';
 import { ExportableError } from '@revoke.cash/core/utils/errors';
 import { DAY } from '@revoke.cash/core/utils/time';
-import { and, count, eq, gt, lte, sql } from 'drizzle-orm';
+import { and, count, eq, gt, isNotNull, lte, sql } from 'drizzle-orm';
 import type { AnyPgColumn } from 'drizzle-orm/pg-core';
 import type { Address } from 'viem';
 import { isUltimatePlan, type PremiumPlan } from './plans';
@@ -179,6 +185,8 @@ export const addSubscriptionAddress = async ({
   const db = getTransactionalDb();
 
   return db.transaction(async (trx) => {
+    await acquireAdvisoryLock(trx, `premium_subscription_addresses:${subscriptionId}`);
+
     const subscription = await findActiveSubscriptionForOwner(trx, subscriptionId, ownerAddress);
 
     const [{ count: usedSlots }] = await trx
@@ -241,7 +249,7 @@ export const removeSubscriptionAddress = async ({
   });
 };
 
-export interface ExtendOrCreateSubscriptionParams {
+export interface CreateSubscriptionParams {
   ownerAddress: Address;
   planId: string;
   planVersion: number;
@@ -249,53 +257,111 @@ export interface ExtendOrCreateSubscriptionParams {
   now: Date;
 }
 
-interface ExistingSubscriptionForUpsert {
-  id: string;
+interface SubscriptionPlanState {
   planId: string;
-  plan: Pick<PremiumPlan, 'priceUsd'>;
+  planVersion: number;
+  priceUsd: number;
+  endsAt: Date;
 }
 
-export const extendOrCreateSubscription = async (
+interface AppliedPayment {
+  planId: string;
+  planVersion: number;
+  plan: Pick<PremiumPlan, 'durationDays' | 'priceUsd'>;
+  paidAt: Date;
+}
+
+export const findOrCreateSubscriptionForOwner = async (
   trx: DatabaseTransaction,
-  params: ExtendOrCreateSubscriptionParams,
+  params: CreateSubscriptionParams,
 ): Promise<string> => {
+  await acquireAdvisoryLock(trx, `premium_subscription_owner:${params.ownerAddress.toLowerCase()}`);
+
   const existing = await trx.query.premiumSubscriptions.findFirst({
-    where: and(eq(premiumSubscriptions.ownerAddress, params.ownerAddress), gt(premiumSubscriptions.endsAt, params.now)),
+    where: eq(premiumSubscriptions.ownerAddress, params.ownerAddress),
     orderBy: (sub, { desc }) => [desc(sub.endsAt)],
-    columns: { id: true, planId: true },
-    with: { plan: { columns: { priceUsd: true } } },
+    columns: { id: true },
   });
 
-  if (existing) {
-    return extendExistingSubscription(trx, existing, params);
-  }
+  if (existing) return existing.id;
 
   return createSubscription(trx, params);
 };
 
-// Note that this allows upgrading to a more expensive plan (converts the entire subscription to the new plan)
-const extendExistingSubscription = async (
+// Recomputes the subscription's plan and end date by replaying its confirmed payments in order
+export const rebuildSubscriptionFromPayments = async (
   trx: DatabaseTransaction,
-  existing: ExistingSubscriptionForUpsert,
-  params: ExtendOrCreateSubscriptionParams,
-): Promise<string> => {
-  const isUpgrade = params.planId !== existing.planId && params.plan.priceUsd > existing.plan.priceUsd;
+  subscriptionId: string,
+): Promise<void> => {
+  const subscription = await trx.query.premiumSubscriptions.findFirst({
+    where: eq(premiumSubscriptions.id, subscriptionId),
+    columns: { id: true, startsAt: true },
+  });
+  if (!subscription) return;
+
+  const confirmedPayments = await trx.query.premiumPayments.findMany({
+    where: and(
+      eq(premiumPayments.subscriptionId, subscriptionId),
+      eq(premiumPayments.status, 'confirmed'),
+      isNotNull(premiumPayments.confirmedAt),
+    ),
+    orderBy: (payments, { asc }) => [asc(payments.confirmedAt)],
+    with: { plan: { columns: { durationDays: true, priceUsd: true } } },
+  });
+
+  // With no confirmed payments left, the subscription collapses to a zero-length period
+  if (confirmedPayments.length === 0) {
+    await trx
+      .update(premiumSubscriptions)
+      .set({ endsAt: subscription.startsAt })
+      .where(eq(premiumSubscriptions.id, subscriptionId));
+    return;
+  }
+
+  const rebuiltSubscription = confirmedPayments.reduce(
+    (state, payment) =>
+      applyPaymentToSubscription(state, {
+        planId: payment.planId,
+        planVersion: payment.planVersion,
+        plan: payment.plan,
+        paidAt: payment.confirmedAt!,
+      }),
+    { planId: '', planVersion: 0, priceUsd: 0, endsAt: new Date(0) },
+  );
 
   await trx
     .update(premiumSubscriptions)
     .set({
-      endsAt: sql`${premiumSubscriptions.endsAt} + make_interval(days => ${params.plan.durationDays})`,
-      ...(isUpgrade ? { planId: params.planId, planVersion: params.planVersion } : {}),
+      planId: rebuiltSubscription.planId,
+      planVersion: rebuiltSubscription.planVersion,
+      endsAt: rebuiltSubscription.endsAt,
     })
-    .where(eq(premiumSubscriptions.id, existing.id));
-
-  return existing.id;
+    .where(eq(premiumSubscriptions.id, subscriptionId));
 };
 
-const createSubscription = async (
-  trx: DatabaseTransaction,
-  params: ExtendOrCreateSubscriptionParams,
-): Promise<string> => {
+const applyPaymentToSubscription = (current: SubscriptionPlanState, payment: AppliedPayment): SubscriptionPlanState => {
+  const isExpired = current.endsAt.getTime() <= payment.paidAt.getTime();
+
+  if (isExpired) {
+    return {
+      planId: payment.planId,
+      planVersion: payment.planVersion,
+      priceUsd: payment.plan.priceUsd,
+      endsAt: new Date(payment.paidAt.getTime() + payment.plan.durationDays * DAY),
+    };
+  }
+
+  const isUpgrade = payment.planId !== current.planId && payment.plan.priceUsd > current.priceUsd;
+
+  return {
+    planId: isUpgrade ? payment.planId : current.planId,
+    planVersion: isUpgrade ? payment.planVersion : current.planVersion,
+    priceUsd: isUpgrade ? payment.plan.priceUsd : current.priceUsd,
+    endsAt: new Date(current.endsAt.getTime() + payment.plan.durationDays * DAY),
+  };
+};
+
+const createSubscription = async (trx: DatabaseTransaction, params: CreateSubscriptionParams): Promise<string> => {
   const [subscription] = await trx
     .insert(premiumSubscriptions)
     .values({

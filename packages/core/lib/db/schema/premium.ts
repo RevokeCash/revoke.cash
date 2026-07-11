@@ -23,6 +23,7 @@ export const premiumPaymentStatusEnum = premiumSchema.enum('payment_status', [
   'confirmed',
   'expired',
   'failed',
+  'reversed',
 ]);
 export const premiumPlanTierEnum = premiumSchema.enum('plan_tier', ['premium', 'ultimate']);
 
