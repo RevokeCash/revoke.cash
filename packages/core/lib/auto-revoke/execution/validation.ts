@@ -21,6 +21,18 @@ export type EligibilityResult = { failure: ActionFailure } | { permission: Permi
 
 // Returns the permission to execute with, or the failure that parks the action
 export const checkExecutionEligibility = async (observation: Observation): Promise<EligibilityResult> => {
+  // The permission is checked before anything else: unlike blocked_budget and queued, that state is hidden from
+  // the activity feed and only wakes when the user grants the permission.
+  const permission = await findActivePermission(observation.address, observation.chainId);
+  if (!permission) {
+    return { failure: { status: 'blocked_permission', errorCode: 'missing_permission' } };
+  }
+
+  if (!(await isPermissionEnabledOnChain(permission))) {
+    await markPermissionRevoked(permission.id);
+    return { failure: { status: 'blocked_permission', errorCode: 'permission_disabled' } };
+  }
+
   // No billable subscription is a waiting state, not a terminal one: a subscription can lapse and
   // renew, or the address can be re-added to one, so the action resumes through the normal retry loop.
   const billingSubscriptionIds = await findBillingSubscriptionIds(getDb(), observation.address);
@@ -53,16 +65,6 @@ export const checkExecutionEligibility = async (observation: Observation): Promi
   const matchedTriggers = getMatchedTriggers(allowance, rules);
   if (matchedTriggers.length === 0) {
     return { failure: { status: 'blocked_rules', errorCode: 'rules_no_longer_match' } };
-  }
-
-  const permission = await findActivePermission(observation.address, observation.chainId);
-  if (!permission) {
-    return { failure: { status: 'blocked_permission', errorCode: 'missing_permission' } };
-  }
-
-  if (!(await isPermissionEnabledOnChain(permission))) {
-    await markPermissionRevoked(permission.id);
-    return { failure: { status: 'blocked_permission', errorCode: 'permission_disabled' } };
   }
 
   const isUrgent = matchedTriggers.some((trigger) => trigger.type === 'exploit');

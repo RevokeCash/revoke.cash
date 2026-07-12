@@ -8,7 +8,21 @@ import { premiumSubscriptionAddresses } from '@revoke.cash/core/db/schema/premiu
 import type { AutoRevokeActionTransaction } from '@revoke.cash/core/db/types/auto-revoke-transaction';
 import { acquireAdvisoryLock } from '@revoke.cash/core/db/utils';
 import { MINUTE } from '@revoke.cash/core/utils/time';
-import { and, asc, eq, getTableColumns, gt, inArray, isNotNull, isNull, lte, or, sql } from 'drizzle-orm';
+import {
+  and,
+  asc,
+  eq,
+  exists,
+  getTableColumns,
+  gt,
+  inArray,
+  isNotNull,
+  isNull,
+  lte,
+  notExists,
+  or,
+  sql,
+} from 'drizzle-orm';
 import type { Address, Hash } from 'viem';
 import { MAX_PENDING_ACTIONS_PER_CHAIN } from './config';
 import type { Observation } from './evaluation/observations';
@@ -315,9 +329,28 @@ const findSubscriptionWithRemainingBudget = async (
 export const requeueRulesBlockedActions = async (addresses: Address[]): Promise<void> => {
   if (addresses.length === 0) return;
 
+  const db = getDb();
   const coolingRetryAt = new Date(Date.now() + NON_URGENT_ACTION_COOLING_MS);
 
-  await getDb()
+  const rulesBlockedFilter = and(
+    eq(autoRevokeActions.status, 'blocked_rules'),
+    eq(autoRevokeObservations.id, autoRevokeActions.observationId),
+    inArray(autoRevokeObservations.address, addresses),
+  );
+
+  const activePermissionQuery = db
+    .select({ id: autoRevokePermissions.id })
+    .from(autoRevokePermissions)
+    .where(
+      and(
+        eq(autoRevokePermissions.address, autoRevokeObservations.address),
+        eq(autoRevokePermissions.chainId, autoRevokeActions.chainId),
+        isNull(autoRevokePermissions.revokedAt),
+        gt(autoRevokePermissions.expiresAt, new Date()),
+      ),
+    );
+
+  await db
     .update(autoRevokeActions)
     .set({
       status: 'queued',
@@ -326,13 +359,20 @@ export const requeueRulesBlockedActions = async (addresses: Address[]): Promise<
       costDeferredAt: null,
     })
     .from(autoRevokeObservations)
-    .where(
-      and(
-        eq(autoRevokeActions.status, 'blocked_rules'),
-        eq(autoRevokeObservations.id, autoRevokeActions.observationId),
-        inArray(autoRevokeObservations.address, addresses),
-      ),
-    );
+    .where(and(rulesBlockedFilter, exists(activePermissionQuery)));
+
+  // Without an active permission the action parks as blocked_permission instead of blocked_rules,
+  // so it stays hidden from the activity feed and a later permission grant wakes it via unblockActions.
+  await db
+    .update(autoRevokeActions)
+    .set({
+      status: 'blocked_permission',
+      nextRetryAt: null,
+      errorCode: 'missing_permission',
+      costDeferredAt: null,
+    })
+    .from(autoRevokeObservations)
+    .where(and(rulesBlockedFilter, notExists(activePermissionQuery)));
 };
 
 export const requeueObservationActions = async (writer: DatabaseWriter, observationIds: string[]): Promise<void> => {
