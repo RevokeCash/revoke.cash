@@ -1,12 +1,15 @@
 import { randomUUID } from 'node:crypto';
 import { InjectQueue } from '@nestjs/bullmq';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, type OnApplicationBootstrap } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
 import {
   EVENTS_QUEUE_NAME,
   type EventsJobData,
   scheduledEventsJobId,
 } from '@revoke.cash/backend/indexer/queues/events';
+import { getDb } from '@revoke.cash/core/db/client';
+import { disableIndexingForRemovedChains } from '@revoke.cash/core/indexer/register';
+import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { MINUTE } from '@revoke.cash/core/utils/time';
 import type { Queue } from 'bullmq';
 import type { Address } from 'viem';
@@ -16,7 +19,7 @@ import { SubscribersService } from '../subscribers/subscribers.service';
 const TICK_INTERVAL_MS = 1 * MINUTE;
 
 @Injectable()
-export class EventsSchedulerService {
+export class EventsSchedulerService implements OnApplicationBootstrap {
   private readonly logger = new Logger(EventsSchedulerService.name);
 
   constructor(
@@ -24,6 +27,23 @@ export class EventsSchedulerService {
     private readonly config: ConfigService,
     private readonly subscribers: SubscribersService,
   ) {}
+
+  async onApplicationBootstrap(): Promise<void> {
+    if (!this.config.isManager) return;
+
+    try {
+      const disabledCount = await disableIndexingForRemovedChains(getDb());
+      if (disabledCount > 0) {
+        this.logger.log({ event: 'events_state_removed_chains_disabled', outcome: 'disabled', disabledCount });
+      }
+    } catch (error) {
+      this.logger.warn({
+        event: 'events_state_removed_chains_sweep_failed',
+        outcome: 'failed',
+        error: parseErrorMessage(error),
+      });
+    }
+  }
 
   @Interval(TICK_INTERVAL_MS)
   async tick(): Promise<void> {
