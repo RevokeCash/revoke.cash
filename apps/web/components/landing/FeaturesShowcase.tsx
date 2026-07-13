@@ -94,7 +94,7 @@ export const Feature = ({
       </div>
       <div className="flex flex-col justify-center gap-4 p-6 md:p-8">
         <div className="flex items-center gap-2">
-          <h3 className="text-2xl font-semibold">{t(`${translationPrefix}.${featureKey}.title`)}</h3>
+          <h3 className="text-2xl font-semibold font-heading">{t(`${translationPrefix}.${featureKey}.title`)}</h3>
           {badge && <Label className="w-fit bg-zinc-900 text-white dark:bg-zinc-200 dark:text-zinc-900">{badge}</Label>}
         </div>
         <p className="text-base leading-7 text-zinc-600 dark:text-zinc-400">

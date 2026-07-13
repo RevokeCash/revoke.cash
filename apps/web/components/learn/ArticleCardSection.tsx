@@ -6,7 +6,7 @@ const ArticleCardSection = ({ title, children }: Omit<ISidebarEntry, 'title' | '
 
   return (
     <div className="mb-8 last:mb-0">
-      {title ? <h2>{title}</h2> : null}
+      {title ? <h2 className="font-semibold font-heading">{title}</h2> : null}
       <div className="grid md:grid-cols-2 gap-4 items-stretch justify-center not-prose">
         {children.map((child) => (
           <ArticleCard key={child.title} {...child} />

@@ -13,7 +13,8 @@ import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { locales } from 'lib/i18n/routing';
 import type { Metadata } from 'next';
-import { JetBrains_Mono, Outfit } from 'next/font/google';
+import { JetBrains_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 import '../../styles/index.css';
@@ -28,7 +29,12 @@ interface Params {
   locale: string;
 }
 
-const outfit = Outfit({ subsets: ['latin'], variable: '--font-heading', display: 'swap' });
+const outfitRevoke = localFont({
+  src: '../../public/assets/fonts/Outfit-Revoke-SemiBold.ttf',
+  variable: '--font-heading',
+  display: 'swap',
+  weight: '600',
+});
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' });
 
 export const dynamicParams = false;
@@ -62,7 +68,7 @@ const MainLayout = async ({ children, params }: Props) => {
 
   // suppressHydrationWarning is needed because ThemeScript adds the 'dark' class to <html> before hydration
   return (
-    <html lang={locale} className={`${outfit.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+    <html lang={locale} className={`${outfitRevoke.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <head>
         <NextIntlClientProvider>
           <Analytics />

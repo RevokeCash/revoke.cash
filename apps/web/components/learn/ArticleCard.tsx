@@ -16,7 +16,7 @@ const ArticleCard = ({ featured, ...entry }: Props) => {
   return (
     <Href href={entry.path} router underline="none">
       <div className="h-full flex flex-col gap-3 p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-brand dark:hover:border-brand hover:bg-zinc-50/50 dark:hover:bg-zinc-900/50 transition">
-        <h3 className="text-lg font-semibold">{entry.title}</h3>
+        <h3 className="text-lg font-semibold font-heading">{entry.title}</h3>
         <p className="text-sm text-zinc-600 dark:text-zinc-400 grow">{entry.description}</p>
         <ArticleCardMeta date={entry.date} readingTime={entry.readingTime} author={entry.author} />
       </div>
@@ -42,7 +42,7 @@ const FeaturedArticleCard = ({ title, description, path, date, readingTime, auth
           />
         </div>
         <div className="flex flex-col gap-3 justify-center p-6">
-          <h3 className="text-xl font-semibold">{title}</h3>
+          <h3 className="text-xl font-semibold font-heading">{title}</h3>
           <p className="text-sm text-zinc-600 dark:text-zinc-400">{description}</p>
           <ArticleCardMeta date={date} readingTime={readingTime} author={author} />
         </div>

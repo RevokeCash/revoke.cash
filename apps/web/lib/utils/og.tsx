@@ -1,4 +1,4 @@
-import ky from 'lib/ky';
+import { getInterBoldFontData, getOutfitRevokeSemiBoldFontData } from 'lib/utils/fonts.server';
 import { ImageResponse } from 'next/og';
 
 interface OgImageProps {
@@ -18,6 +18,10 @@ export const generateOgImage = async ({ title, readingTime, author, background }
     .join(', ');
 
   const titleFontSize = title && title.length > 50 ? 80 : 108;
+  const [interBoldFontData, outfitRevokeSemiBoldFontData] = await Promise.all([
+    getInterBoldFontData(),
+    getOutfitRevokeSemiBoldFontData(),
+  ]);
 
   const response = (
     <div tw="relative bg-black w-full h-full flex flex-col">
@@ -29,7 +33,8 @@ export const generateOgImage = async ({ title, readingTime, author, background }
         {title ? (
           <div
             style={{
-              fontFamily: 'Outfit SemiBold',
+              fontFamily: 'Outfit Revoke',
+              fontWeight: 600,
               fontSize: titleFontSize,
               color: 'white',
               letterSpacing: '-3px',
@@ -55,13 +60,12 @@ export const generateOgImage = async ({ title, readingTime, author, background }
     fonts: [
       {
         name: 'Inter Bold',
-        data: await ky.get('https://revoke.cash/assets/fonts/Inter-Bold.ttf').arrayBuffer(),
+        data: interBoldFontData,
       },
       {
-        name: 'Outfit SemiBold',
-        data: await ky
-          .get('https://fonts.gstatic.com/s/outfit/v15/QGYyz_MVcBeNP4NjuGObqx1XmO1I4e6yC4E.ttf') // TODO: update URL after production deployment
-          .arrayBuffer(),
+        name: 'Outfit Revoke',
+        data: outfitRevokeSemiBoldFontData,
+        weight: 600,
       },
     ],
   });

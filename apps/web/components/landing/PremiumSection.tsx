@@ -110,7 +110,7 @@ const PremiumSectionCard = ({
         <Label className={twMerge('absolute -top-3 left-1/2 -translate-x-1/2', topBadgeClassName)}>{topBadge}</Label>
       )}
       <div className="flex items-center justify-between gap-3">
-        <h3 className="text-xl font-semibold">{title}</h3>
+        <h3 className="text-xl font-semibold font-heading">{title}</h3>
         {badge}
       </div>
       {children}

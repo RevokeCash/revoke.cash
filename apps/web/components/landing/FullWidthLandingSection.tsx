@@ -19,7 +19,7 @@ const FullWidthLandingSection = ({ title, children, inverted, size = 'lg', class
   return (
     <div className={twMerge('w-full px-4', inverted && 'bg-black dark:bg-zinc-800/50 text-zinc-100 py-12', className)}>
       <div className={twMerge('mx-auto flex flex-col gap-8', SIZE_CLASSES[size])}>
-        {title && <h2 className="text-center">{title}</h2>}
+        {title && <h2 className="text-center font-semibold font-heading">{title}</h2>}
         {children}
       </div>
     </div>

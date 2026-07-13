@@ -42,7 +42,7 @@ const TierCard = ({
 
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
-          <h2 className="text-lg font-semibold">{t(`premium.pricing.tiers.${tierKey}.name`)}</h2>
+          <h2 className="text-lg font-semibold font-heading">{t(`premium.pricing.tiers.${tierKey}.name`)}</h2>
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
             <span className="text-3xl font-bold">{price}</span>
             {tierKey !== 'free' && (

@@ -21,7 +21,9 @@ const AutomatedRevokingPageContent = () => {
       />
 
       <div className="flex flex-col gap-8">
-        <h2 className="text-3xl font-bold text-center">{t('premium.automated_revoking.steps.title')}</h2>
+        <h2 className="text-3xl font-semibold font-heading text-center">
+          {t('premium.automated_revoking.steps.title')}
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Step number={1} stepKey="permission" />
           <Step number={2} stepKey="rules" />
@@ -31,7 +33,9 @@ const AutomatedRevokingPageContent = () => {
       </div>
 
       <div className="flex flex-col gap-6">
-        <h2 className="text-3xl font-bold text-center">{t('premium.automated_revoking.networks.title')}</h2>
+        <h2 className="text-3xl font-semibold font-heading text-center">
+          {t('premium.automated_revoking.networks.title')}
+        </h2>
         <p className="mx-auto max-w-3xl text-center text-base leading-7 text-zinc-600 dark:text-zinc-400">
           {t('premium.automated_revoking.networks.description', { count: AUTO_REVOKE_SUPPORTED_CHAINS.length })}
         </p>
@@ -49,7 +53,7 @@ const AutomatedRevokingPageContent = () => {
       </div>
 
       <div className="flex flex-col gap-6">
-        <h2 className="text-3xl font-bold text-center">{t('premium.automated_revoking.gas.title')}</h2>
+        <h2 className="text-3xl font-semibold font-heading text-center">{t('premium.automated_revoking.gas.title')}</h2>
         <p className="mx-auto max-w-3xl text-center text-base leading-7 text-zinc-600 dark:text-zinc-400">
           {t('premium.automated_revoking.gas.description', {
             budget: `$${AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD}`,
@@ -59,7 +63,9 @@ const AutomatedRevokingPageContent = () => {
       </div>
 
       <div className="flex flex-col gap-6">
-        <h2 className="text-3xl font-bold text-center">{t('premium.automated_revoking.limitations.title')}</h2>
+        <h2 className="text-3xl font-semibold font-heading text-center">
+          {t('premium.automated_revoking.limitations.title')}
+        </h2>
         <p className="mx-auto max-w-3xl text-center text-base leading-7 text-zinc-600 dark:text-zinc-400">
           {t.rich('premium.automated_revoking.limitations.description', {
             'terms-link': (children) => (
@@ -72,7 +78,7 @@ const AutomatedRevokingPageContent = () => {
       </div>
 
       <div className="flex flex-col items-center gap-6 pb-8">
-        <h2 className="text-3xl font-bold text-center">{t('premium.automated_revoking.cta.title')}</h2>
+        <h2 className="text-3xl font-semibold font-heading text-center">{t('premium.automated_revoking.cta.title')}</h2>
         <Button href="/premium" router style="primary" size="lg">
           {t('premium.automated_revoking.cta.button')}
         </Button>
