@@ -73,10 +73,10 @@ export const createPayment = async ({ ownerAddress, planId, chainId, vatRegion }
   const activeSubscription = await db.query.premiumSubscriptions.findFirst({
     where: and(eq(premiumSubscriptions.ownerAddress, ownerAddress), gt(premiumSubscriptions.endsAt, new Date())),
     columns: { planId: true },
-    with: { plan: { columns: { priceUsd: true } } },
+    with: { plan: { columns: { priceUsdCents: true } } },
   });
 
-  if (activeSubscription && plan.priceUsd < activeSubscription.plan.priceUsd) {
+  if (activeSubscription && plan.priceUsdCents < activeSubscription.plan.priceUsdCents) {
     throw new PremiumPaymentError('Cannot renew with a lower-tier plan. Please select the same plan or upgrade.');
   }
 
@@ -104,7 +104,7 @@ export const createPayment = async ({ ownerAddress, planId, chainId, vatRegion }
       tokenAddress: paymentConfig.token.address,
       tokenSymbol: paymentConfig.token.symbol,
       tokenDecimals: paymentConfig.token.decimals,
-      amountUsd: plan.priceUsd,
+      amountUsdCents: plan.priceUsdCents,
       status: 'pending',
       expiresAt,
       scanFromBlock: currentBlock,
@@ -113,7 +113,7 @@ export const createPayment = async ({ ownerAddress, planId, chainId, vatRegion }
     .returning({
       id: premiumPayments.id,
       chainId: premiumPayments.chainId,
-      amountUsd: premiumPayments.amountUsd,
+      amountUsdCents: premiumPayments.amountUsdCents,
       expiresAt: premiumPayments.expiresAt,
     });
 
@@ -123,7 +123,7 @@ export const createPayment = async ({ ownerAddress, planId, chainId, vatRegion }
     chainId: insertedPayment.chainId,
     token: paymentConfig.token,
     recipientAddress: paymentConfig.paymentAddress,
-    amountUsd: insertedPayment.amountUsd,
+    amountUsdCents: insertedPayment.amountUsdCents,
     expiresAt: insertedPayment.expiresAt.toISOString(),
   };
 };

@@ -17,7 +17,7 @@ const schemas = {
   body: z.strictObject({
     transactionHash: transactionHashSchema.nullable(),
     userAddress: addressSchema,
-    feePaid: z.number().nonnegative(),
+    feeUsdCents: z.number().int().nonnegative(),
     sponsor: z.string().nullable(),
   }),
 };
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest, props: Props) {
       chainId: params.chainId,
       feeTransactionHash: body.transactionHash,
       userAddress: body.userAddress,
-      feePaid: Math.round(body.feePaid * 100),
+      feeUsdCents: body.feeUsdCents,
       isTestnet: isTestnetChain(params.chainId),
       vatRegion: getClientCountryEdge(req),
       sponsor: body.sponsor,

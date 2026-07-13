@@ -1,6 +1,7 @@
 'use client';
 
 import { ERC20_ABI } from '@revoke.cash/core/abis';
+import { usdCentsToTokenUnits } from '@revoke.cash/core/premium/payment-config';
 import type { PaymentStatus, PendingPayment } from '@revoke.cash/core/premium/types';
 import { delay } from '@revoke.cash/core/utils';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
@@ -13,7 +14,7 @@ import analytics from 'lib/utils/analytics';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { type Address, isAddressEqual, parseUnits } from 'viem';
+import { type Address, isAddressEqual } from 'viem';
 import { getSubscriptionsQueryKey } from './usePremiumSubscriptions';
 
 export type SubscribeStatus = 'idle' | 'creating' | 'paying' | 'confirming' | 'confirmed' | 'failed';
@@ -150,7 +151,7 @@ export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChai
         paymentId: payment.paymentId,
         planId: payment.planId,
         chainId: payment.chainId,
-        amountUsd: payment.amountUsd,
+        amountUsd: payment.amountUsdCents / 100,
       });
 
       // Step 2: Switch chain and send ERC20 transfer
@@ -169,7 +170,7 @@ export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChai
         address: payment.token.address,
         abi: ERC20_ABI,
         functionName: 'transfer',
-        args: [payment.recipientAddress, parseUnits(String(payment.amountUsd), payment.token.decimals)],
+        args: [payment.recipientAddress, usdCentsToTokenUnits(payment.amountUsdCents, payment.token.decimals)],
         kzg: undefined,
       });
 
@@ -204,7 +205,7 @@ export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChai
         paymentId: payment.paymentId,
         planId: payment.planId,
         chainId: payment.chainId,
-        amountUsd: payment.amountUsd,
+        amountUsd: payment.amountUsdCents / 100,
       });
 
       return finalStatus;

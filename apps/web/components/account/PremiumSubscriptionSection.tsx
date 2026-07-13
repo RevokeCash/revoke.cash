@@ -337,7 +337,7 @@ const PaymentForm = ({
 
       <p className="text-sm text-zinc-600 dark:text-zinc-400">
         {t('account.subscription.payment_summary', {
-          amount: selectedPlan.priceUsd,
+          amount: selectedPlan.priceUsdCents / 100,
           token: selectedPlan.tokenSymbol,
           days: selectedPlan.durationDays,
           maxAddresses: selectedPlan.maxAddresses,
@@ -410,10 +410,11 @@ const usePlanCardOptions = (
   const t = useTranslations();
 
   const currentPlanId = activeSubscription?.plan.id;
-  const currentPlanPriceUsd = activeSubscription?.plan.priceUsd ?? 0;
+  const currentPlanPriceUsdCents = activeSubscription?.plan.priceUsdCents ?? 0;
 
   return useMemo<CardSelectOption<string>[]>(() => {
-    const isDowngrade = (priceUsd: number) => Boolean(activeSubscription && priceUsd < currentPlanPriceUsd);
+    const isDowngrade = (priceUsdCents: number) =>
+      Boolean(activeSubscription && priceUsdCents < currentPlanPriceUsdCents);
     const downgradeTooltip = t('account.subscription.downgrade_not_supported');
 
     const freeOption: CardSelectOption<string> = {
@@ -429,14 +430,14 @@ const usePlanCardOptions = (
       value: plan.id,
       label: plan.name,
       description: t('account.subscription.plan_description', {
-        price: plan.priceUsd,
+        price: plan.priceUsdCents / 100,
         maxAddresses: plan.maxAddresses,
       }),
       tag: plan.id === currentPlanId ? t('account.subscription.plan_options.current') : undefined,
-      disabled: isDowngrade(plan.priceUsd),
-      tooltip: isDowngrade(plan.priceUsd) ? downgradeTooltip : undefined,
+      disabled: isDowngrade(plan.priceUsdCents),
+      tooltip: isDowngrade(plan.priceUsdCents) ? downgradeTooltip : undefined,
     }));
 
     return [freeOption, ...premiumOptions];
-  }, [plans, currentPlanId, activeSubscription, currentPlanPriceUsd, t]);
+  }, [plans, currentPlanId, activeSubscription, currentPlanPriceUsdCents, t]);
 };

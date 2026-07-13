@@ -40,7 +40,7 @@ export const EU_COUNTRY_CODES = new Set(Object.keys(EU_VAT_RATES));
 export interface FeeRecord {
   chainId: number;
   feeTransactionHash: string | null;
-  feePaid: number; // cents
+  feeUsdCents: number;
   vatRegion: string | null;
   timestamp: Date;
 }
@@ -66,7 +66,7 @@ export const fetchBatchRevokeFeeRecords = async (from: Date, to: Date): Promise<
     orderBy: asc(batchRevokes.timestamp),
   });
 
-  return records.filter((r) => r.feePaid > 0);
+  return records.filter((r) => r.feeUsdCents > 0);
 };
 
 export const fetchPremiumFeeRecords = async (from: Date, to: Date): Promise<FeeRecord[]> => {
@@ -83,12 +83,11 @@ export const fetchPremiumFeeRecords = async (from: Date, to: Date): Promise<FeeR
   });
 
   return records
-    .filter((r) => r.amountUsd > 0 && r.confirmedAt !== null)
+    .filter((r) => r.amountUsdCents > 0 && r.confirmedAt !== null)
     .map((r) => ({
       chainId: r.chainId,
       feeTransactionHash: r.matchedTxHash,
-      // Premium payments store whole dollars, while FeeRecord amounts are in cents (like batch revokes)
-      feePaid: r.amountUsd * 100,
+      feeUsdCents: r.amountUsdCents,
       vatRegion: r.vatRegion,
       timestamp: r.confirmedAt!,
     }));
@@ -98,7 +97,7 @@ export const buildVatSummary = (records: FeeRecord[]): RegionSummary[] => {
   const revenueByRegion = new Map<string, number>();
   for (const record of records) {
     const region = record.vatRegion?.trim().toUpperCase() ?? 'UNKNOWN';
-    revenueByRegion.set(region, (revenueByRegion.get(region) ?? 0) + record.feePaid);
+    revenueByRegion.set(region, (revenueByRegion.get(region) ?? 0) + record.feeUsdCents);
   }
 
   const rows: RegionSummary[] = [];

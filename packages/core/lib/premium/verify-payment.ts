@@ -5,8 +5,8 @@ import { parseTransferLog, TokenEventType } from '@revoke.cash/core/events';
 import { getScriptLogsProvider } from '@revoke.cash/core/events/providers';
 import { addressToTopic } from '@revoke.cash/core/events/utils';
 import { and, eq, ne } from 'drizzle-orm';
-import { type Address, getAbiItem, type Hash, parseUnits, toEventSelector } from 'viem';
-import { getPaymentConfig } from './payment-config';
+import { type Address, getAbiItem, type Hash, toEventSelector } from 'viem';
+import { getPaymentConfig, usdCentsToTokenUnits } from './payment-config';
 import {
   getPaymentForOwner,
   type PaymentStatusResponse,
@@ -182,13 +182,13 @@ const getSiblingPendingPaymentAmounts = async (payment: PremiumPaymentRecord): P
       eq(premiumPayments.status, 'pending'),
       ne(premiumPayments.id, payment.id),
     ),
-    columns: { amountUsd: true, tokenDecimals: true },
+    columns: { amountUsdCents: true, tokenDecimals: true },
   });
 
   const expectedAmount = getExpectedTokenAmount(payment);
 
   return siblingPayments
-    .map((sibling) => parseUnits(String(sibling.amountUsd), sibling.tokenDecimals))
+    .map((sibling) => usdCentsToTokenUnits(sibling.amountUsdCents, sibling.tokenDecimals))
     .filter((amount) => amount !== expectedAmount);
 };
 
@@ -198,7 +198,7 @@ const finalizeMatchedPaymentInTransaction = async (
 ): Promise<void> => {
   const lockedPayment = await trx.query.premiumPayments.findFirst({
     where: eq(premiumPayments.id, paymentId),
-    with: { plan: { columns: { durationDays: true, priceUsd: true } } },
+    with: { plan: { columns: { durationDays: true, priceUsdCents: true } } },
   });
 
   if (lockedPayment?.status !== 'pending') {
@@ -247,5 +247,5 @@ const setPaymentStatus = async (
 };
 
 const getExpectedTokenAmount = (payment: PremiumPaymentRecord): bigint => {
-  return parseUnits(String(payment.amountUsd), payment.tokenDecimals);
+  return usdCentsToTokenUnits(payment.amountUsdCents, payment.tokenDecimals);
 };

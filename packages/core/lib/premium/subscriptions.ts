@@ -17,7 +17,7 @@ import type { Address } from 'viem';
 import { isUltimatePlan, type PremiumPlan } from './plans';
 
 export interface SubscriptionPayment {
-  amountUsd: number;
+  amountUsdCents: number;
   chainId: number;
   tokenSymbol: string;
   txHash: string | null;
@@ -29,7 +29,7 @@ export interface SubscriptionPayment {
 export interface PremiumSubscription {
   id: string;
   ownerAddress: Address;
-  plan: Pick<PremiumPlan, 'id' | 'name' | 'priceUsd' | 'durationDays' | 'maxAddresses' | 'tier'>;
+  plan: Pick<PremiumPlan, 'id' | 'name' | 'priceUsdCents' | 'durationDays' | 'maxAddresses' | 'tier'>;
   addresses: Address[];
   slots: {
     used: number;
@@ -109,10 +109,12 @@ export const getOwnerSubscriptions = async (ownerAddress: Address): Promise<Prem
     where: eq(premiumSubscriptions.ownerAddress, ownerAddress),
     orderBy: (subscriptions, { desc }) => [desc(subscriptions.createdAt)],
     with: {
-      plan: { columns: { id: true, name: true, priceUsd: true, durationDays: true, maxAddresses: true, tier: true } },
+      plan: {
+        columns: { id: true, name: true, priceUsdCents: true, durationDays: true, maxAddresses: true, tier: true },
+      },
       addresses: { columns: { address: true } },
       payments: {
-        columns: { amountUsd: true, chainId: true, tokenSymbol: true, matchedTxHash: true, confirmedAt: true },
+        columns: { amountUsdCents: true, chainId: true, tokenSymbol: true, matchedTxHash: true, confirmedAt: true },
         with: { plan: { columns: { id: true, name: true } } },
         where: (payments, { eq }) => eq(payments.status, 'confirmed'),
         orderBy: (payments, { desc }) => [desc(payments.confirmedAt)],
@@ -124,7 +126,7 @@ export const getOwnerSubscriptions = async (ownerAddress: Address): Promise<Prem
     const addresses = subscription.addresses.map((entry) => entry.address);
 
     const payments: SubscriptionPayment[] = subscription.payments.map((payment) => ({
-      amountUsd: payment.amountUsd,
+      amountUsdCents: payment.amountUsdCents,
       chainId: payment.chainId,
       tokenSymbol: payment.tokenSymbol,
       txHash: payment.matchedTxHash,
@@ -255,21 +257,21 @@ export interface CreateSubscriptionParams {
   ownerAddress: Address;
   planId: string;
   planVersion: number;
-  plan: Pick<PremiumPlan, 'durationDays' | 'priceUsd'>;
+  plan: Pick<PremiumPlan, 'durationDays' | 'priceUsdCents'>;
   now: Date;
 }
 
 interface SubscriptionPlanState {
   planId: string;
   planVersion: number;
-  priceUsd: number;
+  priceUsdCents: number;
   endsAt: Date;
 }
 
 interface AppliedPayment {
   planId: string;
   planVersion: number;
-  plan: Pick<PremiumPlan, 'durationDays' | 'priceUsd'>;
+  plan: Pick<PremiumPlan, 'durationDays' | 'priceUsdCents'>;
   paidAt: Date;
 }
 
@@ -308,7 +310,7 @@ export const rebuildSubscriptionFromPayments = async (
       isNotNull(premiumPayments.confirmedAt),
     ),
     orderBy: (payments, { asc }) => [asc(payments.confirmedAt)],
-    with: { plan: { columns: { durationDays: true, priceUsd: true } } },
+    with: { plan: { columns: { durationDays: true, priceUsdCents: true } } },
   });
 
   // With no confirmed payments left, the subscription collapses to a zero-length period
@@ -328,7 +330,7 @@ export const rebuildSubscriptionFromPayments = async (
         plan: payment.plan,
         paidAt: payment.confirmedAt!,
       }),
-    { planId: '', planVersion: 0, priceUsd: 0, endsAt: new Date(0) },
+    { planId: '', planVersion: 0, priceUsdCents: 0, endsAt: new Date(0) },
   );
 
   await trx
@@ -352,17 +354,17 @@ const applyPaymentToSubscription = (current: SubscriptionPlanState, payment: App
     return {
       planId: payment.planId,
       planVersion: payment.planVersion,
-      priceUsd: payment.plan.priceUsd,
+      priceUsdCents: payment.plan.priceUsdCents,
       endsAt: new Date(payment.paidAt.getTime() + payment.plan.durationDays * DAY),
     };
   }
 
-  const isUpgrade = payment.planId !== current.planId && payment.plan.priceUsd > current.priceUsd;
+  const isUpgrade = payment.planId !== current.planId && payment.plan.priceUsdCents > current.priceUsdCents;
 
   return {
     planId: isUpgrade ? payment.planId : current.planId,
     planVersion: isUpgrade ? payment.planVersion : current.planVersion,
-    priceUsd: isUpgrade ? payment.plan.priceUsd : current.priceUsd,
+    priceUsdCents: isUpgrade ? payment.plan.priceUsdCents : current.priceUsdCents,
     endsAt: new Date(current.endsAt.getTime() + payment.plan.durationDays * DAY),
   };
 };

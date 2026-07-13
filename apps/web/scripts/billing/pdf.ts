@@ -121,13 +121,13 @@ export const generatePdf = ({ title, records, summary, from, to, outputPath }: G
     const txUrl = record.feeTransactionHash ? `${explorerUrl}/tx/${record.feeTransactionHash}` : null;
     const region = record.vatRegion?.trim().toUpperCase() ?? '—';
     const vatRate = EU_VAT_RATES[region]?.rate ?? 0;
-    const vatAmount = Math.round((record.feePaid * vatRate) / (1 + vatRate));
+    const vatAmount = Math.round((record.feeUsdCents * vatRate) / (1 + vatRate));
     const vatLabel = vatRate > 0 ? `${formatUsd(vatAmount)} (${formatPercent(vatRate)})` : '';
 
     y = drawTableRow(
       doc,
       txColumns,
-      [formatDate(record.timestamp), chainName, txHash, region, formatUsd(record.feePaid), vatLabel],
+      [formatDate(record.timestamp), chainName, txHash, region, formatUsd(record.feeUsdCents), vatLabel],
       y,
       {
         bgColor: i % 2 === 0 ? '#FFFFFF' : '#F9FAFB',

@@ -15,6 +15,6 @@ export interface PendingPayment {
     decimals: number;
   };
   recipientAddress: Address;
-  amountUsd: number;
+  amountUsdCents: number;
   expiresAt: string;
 }

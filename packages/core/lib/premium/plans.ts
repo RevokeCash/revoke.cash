@@ -9,7 +9,7 @@ export interface PremiumPlan {
   id: string;
   version: number;
   name: string;
-  priceUsd: number;
+  priceUsdCents: number;
   tokenSymbol: 'USDC';
   supportedChainIds: readonly number[];
   maxAddresses: number;
@@ -24,7 +24,7 @@ const mapPlanRecord = (plan: PremiumPlanRecord): PremiumPlan => {
     id: plan.id,
     name: plan.name,
     version: plan.version,
-    priceUsd: plan.priceUsd,
+    priceUsdCents: plan.priceUsdCents,
     tokenSymbol: 'USDC',
     supportedChainIds: PREMIUM_PAYMENT_CHAIN_IDS,
     maxAddresses: plan.maxAddresses,
@@ -38,7 +38,7 @@ export const getPremiumPlans = async (): Promise<PremiumPlan[]> => {
 
   const planRows = await db.query.premiumPlans.findMany({
     where: eq(premiumPlans.isActive, true),
-    orderBy: (plans, { asc }) => [asc(plans.priceUsd)],
+    orderBy: (plans, { asc }) => [asc(plans.priceUsdCents)],
   });
   return planRows.map(mapPlanRecord);
 };

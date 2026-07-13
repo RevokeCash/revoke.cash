@@ -26,7 +26,7 @@ const UnauthenticatedView = ({ account, signIn, isAuthenticating }: Props) => {
         <ContentPageHero
           title={t('account.unauthenticated.selected_plan.title', { planName: selectedPlan.name })}
           subtitle={t('account.unauthenticated.selected_plan.summary', {
-            price: `$${selectedPlan.priceUsd}`,
+            price: `$${selectedPlan.priceUsdCents / 100}`,
             maxAddresses: selectedPlan.maxAddresses,
           })}
         />

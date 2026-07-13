@@ -53,3 +53,8 @@ export const getPaymentConfig = (chainId: number): PaymentConfig | null => {
   if (!isSupportedPaymentChainId(chainId)) return null;
   return PAYMENT_CONFIG_BY_CHAIN_ID[chainId];
 };
+
+// Token decimals are always >= 2 (USDC has 6, or 18 on BNB Chain), so whole cents map to whole token units
+export const usdCentsToTokenUnits = (amountUsdCents: number, tokenDecimals: number): bigint => {
+  return BigInt(amountUsdCents) * 10n ** BigInt(tokenDecimals - 2);
+};

@@ -25,12 +25,12 @@ export const columns = [
     header: () => <HeaderCell i18nKey="account.billing.columns.plan" />,
     cell: (info) => <div className="py-3 whitespace-nowrap">{info.getValue()}</div>,
   }),
-  columnHelper.accessor('amountUsd', {
+  columnHelper.accessor('amountUsdCents', {
     id: ColumnId.AMOUNT,
     header: () => <HeaderCell i18nKey="account.billing.columns.amount" />,
     cell: (info) => (
       <div className="py-3 whitespace-nowrap">
-        {info.getValue()} {info.row.original.tokenSymbol}
+        {info.getValue() / 100} {info.row.original.tokenSymbol}
       </div>
     ),
   }),

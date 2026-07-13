@@ -78,6 +78,13 @@
       "when": 1783765374675,
       "tag": "0010_premium_payment_reversed_status",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1783957395320,
+      "tag": "0011_money_units_and_timestamptz",
+      "breakpoints": true
     }
   ]
 }

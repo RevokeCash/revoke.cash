@@ -18,7 +18,7 @@ const main = async () => {
     process.exit(0);
   }
 
-  const totalRevenue = records.reduce((sum, r) => sum + r.feePaid, 0);
+  const totalRevenue = records.reduce((sum, r) => sum + r.feeUsdCents, 0);
   console.log(`Total revenue: ${formatUsd(totalRevenue)}`);
 
   const summary = buildVatSummary(records);
