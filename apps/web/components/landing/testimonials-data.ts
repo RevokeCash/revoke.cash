@@ -13,9 +13,7 @@ export const TESTIMONIALS: Testimonial[] = [
     handle: '@beausecurity',
     avatar: 'https://pbs.twimg.com/profile_images/1970575702584864768/1eNZddVS_400x400.jpg',
     tweetUrl: 'https://x.com/beausecurity/status/2009454611065917624',
-    quote: `Revoke old approvals to smart contracts you aren't using anymore.
-
-It's well worth it. Use Revoke.cash.`,
+    quote: `Super important reminder that just because a smart contract hasn't been exploited yet, doesn't mean it won't be. Revoke old approvals to smart contracts you aren't using anymore. It's well worth it. Use Revoke.cash.`,
   },
   {
     name: 'NFT Drew',

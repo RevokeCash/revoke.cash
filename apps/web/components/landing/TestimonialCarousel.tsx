@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import TestimonialCard from './TestimonialCard';
@@ -10,6 +11,10 @@ const INTERVAL_MS = 6000;
 const TestimonialCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+
+  const stopTimer = useCallback(() => {
+    clearInterval(timerRef.current);
+  }, []);
 
   const restartTimer = useCallback(() => {
     clearInterval(timerRef.current);
@@ -24,13 +29,22 @@ const TestimonialCarousel = () => {
     return () => clearInterval(timerRef.current);
   }, [restartTimer]);
 
+  // Deliberate selection stops the rotation so the chosen testimonial stays; it resumes on mouse leave
   const selectTestimonial = (index: number) => {
     setActiveIndex(index);
-    restartTimer();
+    stopTimer();
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <section
+      aria-roledescription="carousel"
+      aria-label="Testimonials"
+      className="relative"
+      onMouseEnter={stopTimer}
+      onMouseLeave={restartTimer}
+      onFocus={stopTimer}
+      onBlur={restartTimer}
+    >
       {/* Grid trick: all cards occupy the same cell, so the container sizes to the tallest */}
       <div className="grid">
         {TESTIMONIALS.map((testimonial, index) => (
@@ -45,21 +59,24 @@ const TestimonialCarousel = () => {
           </div>
         ))}
       </div>
-      <div className="flex justify-center gap-1.5">
+      {/* Positioned inside the card's reserved bottom padding, so the controls fill its footer space */}
+      <div className="absolute bottom-4 right-4 flex items-center gap-2">
         {TESTIMONIALS.map((testimonial, index) => (
           <button
             key={testimonial.tweetUrl}
             type="button"
             onClick={() => selectTestimonial(index)}
             className={twMerge(
-              'h-1.5 rounded-full transition-all duration-300',
-              index === activeIndex ? 'w-4 bg-zinc-400 dark:bg-zinc-500' : 'w-1.5 bg-zinc-200 dark:bg-zinc-700',
+              'flex rounded-full transition duration-300',
+              index === activeIndex ? 'ring-2 ring-brand' : 'opacity-40 grayscale hover:opacity-100 hover:grayscale-0',
             )}
-            aria-label={`Show testimonial ${index + 1}`}
-          />
+            aria-label={`Show testimonial from ${testimonial.name}`}
+          >
+            <Image src={testimonial.avatar} alt="" width={24} height={24} className="rounded-full" unoptimized />
+          </button>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

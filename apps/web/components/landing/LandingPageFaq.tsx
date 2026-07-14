@@ -10,7 +10,7 @@ const LandingPageFaq = () => {
 
   return (
     <FullWidthLandingSection title={t('landing.faq.title')} size="md">
-      <FadeIn stagger className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-x-6 md:gap-y-8">
+      <FadeIn stagger className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-x-12 md:gap-y-10">
         <LandingPageFaqItem question={t('faq.questions.recover_assets.question')}>
           <RichText>{(tags) => t.rich('faq.questions.recover_assets.answer', tags)}</RichText>
         </LandingPageFaqItem>

@@ -1,4 +1,5 @@
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import { AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD } from '@revoke.cash/core/auto-revoke/config';
 import InformationIconTooltip from 'components/common/InformationIconTooltip';
 import { useTranslations } from 'next-intl';
 import { FEATURES, TIER_KEYS } from './pricing-data';
@@ -8,7 +9,7 @@ const ComparisonTable = () => {
 
   const resolveFeatureValue = (value: boolean | string): boolean | string => {
     if (typeof value === 'boolean') return value;
-    return t(`premium.pricing.features.${value}`, { price: '$1.50' });
+    return t(`premium.pricing.features.${value}`, { price: '$1.50', budget: `$${AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD}` });
   };
 
   return (

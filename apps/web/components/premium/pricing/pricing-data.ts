@@ -41,6 +41,13 @@ export const FEATURES: PricingFeature[] = [
     tooltipKey: 'automated_revoking',
   },
   {
+    labelKey: 'gas_allowance',
+    free: false,
+    premium: false,
+    ultimate: 'gas_allowance_amount',
+    cardLabelKey: { ultimate: 'gas_allowance_included' },
+  },
+  {
     labelKey: 'address_slots',
     free: false,
     premium: 'ten_address_slots',

@@ -1,4 +1,5 @@
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import { AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD } from '@revoke.cash/core/auto-revoke/config';
 import Button from 'components/common/Button';
 import InformationIconTooltip from 'components/common/InformationIconTooltip';
 import Label from 'components/common/Label';
@@ -134,7 +135,10 @@ const FeatureItem = ({ feature, tierKey, included }: FeatureItemProps) => {
         <XMarkIcon className="w-4 h-4 shrink-0 text-zinc-300 dark:text-zinc-600" />
       )}
       <span className={twMerge('flex items-center gap-1', !included && 'text-zinc-400 dark:text-zinc-600')}>
-        {t(`premium.pricing.features.${labelKey}`, { price: '$1.50' })}
+        {t(`premium.pricing.features.${labelKey}`, {
+          price: '$1.50',
+          budget: `$${AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD}`,
+        })}
         {feature.tooltipKey && <InformationIconTooltip tooltip={t(`premium.pricing.tooltips.${feature.tooltipKey}`)} />}
       </span>
     </li>
