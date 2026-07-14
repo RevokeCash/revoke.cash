@@ -11,8 +11,6 @@ import type { Hash } from 'viem';
 import { create } from 'zustand';
 
 // TODO: Add other kinds of transactions besides "revoke" transactions to the store
-// - Cancel permit
-// - Cancel marketplace
 // - ✅ Fee Payment
 // - Update allowance vs revoke
 // - Revoke session

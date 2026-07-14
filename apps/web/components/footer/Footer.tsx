@@ -35,9 +35,6 @@ const Footer = () => {
             <FooterLink href="/premium" router>
               {t('common.footer.premium')}
             </FooterLink>
-            <FooterLink href="/marketplace-bulk-delister/ethereum" router>
-              {t('common.footer.marketplace_bulk_delister')}
-            </FooterLink>
           </FooterSection>
           <FooterSection heading={t('common.footer.learn')}>
             <FooterLink href="/learn" router>
