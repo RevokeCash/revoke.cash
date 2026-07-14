@@ -27,7 +27,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
 
   const selectedChainId = selectedAllowances[0]?.chainId ?? 1;
 
-  const { results, revoke, pause, isRevoking, isAllConfirmed, feeDollarAmount } = useRevokeBatch(
+  const { results, revoke, pause, isSubmitting, isRevoking, isAllConfirmed, feeDollarAmount } = useRevokeBatch(
     selectedAllowances,
     table.options.meta!.onUpdate,
   );
@@ -46,12 +46,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
 
   return (
     <>
-      <ControlsWrapper
-        chainId={selectedChainId}
-        address={address}
-        overrideDisabled={!isSomeRowsSelected}
-        skipSwitchChain
-      >
+      <ControlsWrapper address={address} overrideDisabled={!isSomeRowsSelected}>
         {(disabled) => (
           <div className="w-fit">
             <Button style="primary" size="sm" disabled={disabled} onClick={() => setOpen(true)}>
@@ -75,7 +70,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
           <BatchRevokeControls
             chainId={selectedChainId}
             feeDollarAmount={feeDollarAmount}
-            isRevoking={isRevoking}
+            isRevoking={isSubmitting || isRevoking}
             isAllConfirmed={isAllConfirmed}
             setOpen={setOpen}
             revoke={revoke}

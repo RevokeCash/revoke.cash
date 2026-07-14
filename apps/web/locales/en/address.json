@@ -301,8 +301,7 @@
     "filter_by_spender": "Filter by this spender",
     "filter_by_token": "Filter by this token",
     "permit2_expiration": "This is a Permit2 approval that will expire {inTime}",
-    "risk_factors": "This is {riskLevel} for these reasons:",
-    "switch_chain": "Please switch your connected network to <b>{chainName}</b> inside your wallet to continue"
+    "risk_factors": "This is {riskLevel} for these reasons:"
   },
   "viewing_on": "Viewing address on",
   "wallet_health": {

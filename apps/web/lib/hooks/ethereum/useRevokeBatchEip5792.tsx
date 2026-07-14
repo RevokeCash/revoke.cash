@@ -22,9 +22,10 @@ import { recordBatchRevoke, trackBatchRevoke } from 'lib/allowances/batch-revoke
 import { useTranslations } from 'next-intl';
 import type PQueue from 'p-queue';
 import type { Capabilities, EstimateContractGasParameters, Hash } from 'viem'; // viem has an issue with typing the capability. Until they fix it, we are manually importing it.
-import { usePublicClient, useWalletClient } from 'wagmi';
+import { usePublicClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddress } from '../page-context/AddressIdentityContext';
+import { useEnsureWalletClient } from './ensureWalletClient';
 import { useFeePayment } from './useFeePayment';
 import { useWalletCapabilities } from './useWalletCapabilities';
 
@@ -40,16 +41,14 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
   // All selected allowances share the same chain, so a single client for `chainId` covers them all.
   const publicClient = usePublicClient({ chainId })!;
 
-  const { data: walletClient } = useWalletClient();
+  const { ensureWalletClient } = useEnsureWalletClient();
 
   const revoke = async (
     REVOKE_QUEUE: PQueue,
     feeDollarAmount: string,
     maxBatchSize: number = Number.POSITIVE_INFINITY,
   ) => {
-    if (!walletClient) {
-      throw new Error(t('common.errors.messages.connect_wallet_to_supported_network'));
-    }
+    const walletClient = await ensureWalletClient(chainId);
 
     // Do not revoke allowances that are already confirmed, or that are already pending
     // We do retry revoking the allowances that are reverted, preparing or retrying
@@ -93,7 +92,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
     if (!isZeroFeeDollarAmount(feeDollarAmount) && callsToSubmit.length > 0) {
       try {
-        const feeTransaction = prepareFeePayment(feeDollarAmount);
+        const feeTransaction = prepareFeePayment(feeDollarAmount, walletClient);
         // Fee payment is always the first transaction in the batch so it cannot be "skipped"
         // To fix the indexes and to handle fee payment tracking, we also add an undefined allowance to the allowancesToSubmit array
         callsToSubmit.unshift(mapTransactionRequestToEip5792Call(feeTransaction));

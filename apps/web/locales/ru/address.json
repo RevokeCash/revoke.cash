@@ -301,8 +301,7 @@
     "filter_by_spender": "Отфильтровать по этому отправителю",
     "filter_by_token": "Отфильтровать по этому токену",
     "permit2_expiration": "Это разрешение Permit2, срок действия которого истекает {inTime}",
-    "risk_factors": "Это {riskLevel} по следующим причинам:",
-    "switch_chain": "Пожалуйста, переключите сеть на <b>{chainName}</b> в вашем кошельке, чтобы продолжить"
+    "risk_factors": "Это {riskLevel} по следующим причинам:"
   },
   "viewing_on": "Viewing address on",
   "wallet_health": {

@@ -301,8 +301,7 @@
     "filter_by_spender": "按该被授权人筛选",
     "filter_by_token": "按此代币筛选",
     "permit2_expiration": "这是 Permit2 授权，将于 {inTime} 到期。",
-    "risk_factors": "此代币授权为{riskLevel}，原因如下：",
-    "switch_chain": "请在钱包内将区块链切换为 <b>{chainName}</b> 以继续操作"
+    "risk_factors": "此代币授权为{riskLevel}，原因如下："
   },
   "viewing_on": "Viewing address on",
   "wallet_health": {

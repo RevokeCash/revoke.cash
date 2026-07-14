@@ -14,9 +14,6 @@ const SelectCell = ({ row }: Props) => {
   const t = useTranslations();
   const { address } = useAddress();
 
-  // Get chainId from the row data itself - works for both single-chain and multi-chain scenarios
-  const chainId = row.original.chainId;
-
   // If the row is not selectable because of a revoke error, we still want to show the (disabled) checkbox
   if (!row.getCanSelect() && !row.original.payload.revokeError) return null;
 
@@ -25,13 +22,7 @@ const SelectCell = ({ row }: Props) => {
     : row.original.payload.revokeError;
 
   return (
-    <ControlsWrapper
-      chainId={chainId}
-      address={address}
-      overrideDisabled={Boolean(tooltip)}
-      disabledReason={tooltip}
-      skipSwitchChain
-    >
+    <ControlsWrapper address={address} overrideDisabled={Boolean(tooltip)} disabledReason={tooltip}>
       {(disabled) => (
         <div className="w-fit">
           <Checkbox

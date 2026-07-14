@@ -13,7 +13,7 @@ const ControlsCell = ({ session, onRevoke }: Props) => {
 
   return (
     <div className="flex justify-end w-28 mr-0 mx-auto">
-      <ControlsWrapper chainId={session.chainId} address={session.account} switchChainSize="sm">
+      <ControlsWrapper address={session.account}>
         {(disabled) => (
           <div className="controls-section">
             <RevokeButton transactionKey={getSessionKey(session)} revoke={revoke} disabled={disabled} />

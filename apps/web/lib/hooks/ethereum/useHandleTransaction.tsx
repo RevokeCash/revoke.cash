@@ -3,6 +3,7 @@ import {
   isLedgerNanoSError,
   isNoFeeRequiredError,
   isRevertedError,
+  isSwitchChainNotSupportedError,
   isUserRejectionError,
   parseErrorMessage,
 } from '@revoke.cash/core/utils/errors';
@@ -21,6 +22,9 @@ export const useHandleTransaction = (chainId: number) => {
     // Don't show error toasts for user denied transactions
     if (isUserRejectionError(message)) return;
     if (isNoFeeRequiredError(message)) return;
+
+    // Chain switch failures already get their own toast in useSwitchChain
+    if (isSwitchChainNotSupportedError(e)) return;
 
     console.debug(stringify(e, null, 2));
 

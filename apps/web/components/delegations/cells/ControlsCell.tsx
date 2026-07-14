@@ -13,7 +13,7 @@ const ControlsCell = ({ delegation, onRevoke }: Props) => {
 
   return (
     <div className="flex justify-end w-28 mr-0 mx-auto">
-      <ControlsWrapper chainId={delegation.chainId} address={delegation.delegator} switchChainSize="sm">
+      <ControlsWrapper address={delegation.delegator}>
         {(disabled) => (
           <div className="controls-section">
             <RevokeButton transactionKey={getDelegationKey(delegation)} revoke={revoke} disabled={disabled} />

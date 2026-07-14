@@ -301,8 +301,7 @@
     "filter_by_spender": "この支出者でフィルタリングする",
     "filter_by_token": "このトークンでフィルタリングする",
     "permit2_expiration": "これは{inTime}で期限が切れる許可2の承認です。",
-    "risk_factors": "これは下記の理由により{riskLevel}です：",
-    "switch_chain": "続行するには、ウォレット内の接続ネットワークを <b>{chainName}</b>に切り替えてください"
+    "risk_factors": "これは下記の理由により{riskLevel}です："
   },
   "viewing_on": "Viewing address on",
   "wallet_health": {

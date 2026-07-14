@@ -301,8 +301,7 @@
     "filter_by_spender": "Filtrar por este spender",
     "filter_by_token": "Filtrar por este token",
     "permit2_expiration": "Esta es una autorización de Permit2 que caducará {inTime}",
-    "risk_factors": "Esto es {riskLevel} por estas razones:",
-    "switch_chain": "Por favor cambia tu red conectada a <b>{chainName}</b> dentro de tu cartera para continuar"
+    "risk_factors": "Esto es {riskLevel} por estas razones:"
   },
   "viewing_on": "Viewing address on",
   "wallet_health": {

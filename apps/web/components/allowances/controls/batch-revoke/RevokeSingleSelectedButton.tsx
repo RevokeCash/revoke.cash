@@ -15,13 +15,10 @@ const RevokeSingleSelectedButton = ({ table, allowance }: Props) => {
   const t = useTranslations();
   const { address } = useAddress();
 
-  // Get chainId from the allowance itself
-  const chainId = allowance.chainId;
-
   const { revoke, isRevoking } = useRevoke(allowance, table.options.meta!.onUpdate);
 
   return (
-    <ControlsWrapper chainId={chainId} address={address} overrideDisabled={false} skipSwitchChain>
+    <ControlsWrapper address={address} overrideDisabled={false}>
       {(disabled) => (
         <div className="w-fit">
           <Button style="primary" size="sm" disabled={disabled} onClick={revoke} loading={isRevoking}>

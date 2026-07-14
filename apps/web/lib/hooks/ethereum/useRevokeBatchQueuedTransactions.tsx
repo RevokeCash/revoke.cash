@@ -9,9 +9,10 @@ import { recordBatchRevoke, trackBatchRevoke } from 'lib/allowances/batch-revoke
 import { useTranslations } from 'next-intl';
 import type PQueue from 'p-queue';
 import { toast } from 'react-toastify';
-import { usePublicClient, useWalletClient } from 'wagmi';
+import { usePublicClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddress } from '../page-context/AddressIdentityContext';
+import { useEnsureWalletClient } from './ensureWalletClient';
 import { useFeePayment } from './useFeePayment';
 
 export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
@@ -21,10 +22,12 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
   // Get chainId from the first allowance (all selected allowances should be from the same chain)
   const chainId = allowances[0]?.chainId ?? 1;
   const { sendFeePayment } = useFeePayment(chainId);
-  const { data: walletClient } = useWalletClient();
+  const { ensureWalletClient } = useEnsureWalletClient();
   const publicClient = usePublicClient({ chainId })!;
 
   const revoke = async (REVOKE_QUEUE: PQueue, feeDollarAmount: string) => {
+    const walletClient = await ensureWalletClient(chainId);
+
     // Pay the fee before revoking the allowances
     if (!isZeroFeeDollarAmount(feeDollarAmount)) {
       allowances.forEach((allowance) => {
@@ -59,7 +62,7 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
           const revoke = wrapTransaction({
             transactionKey: getAllowanceKey(allowance),
             transactionType: TransactionType.REVOKE,
-            executeTransaction: () => revokeAllowance(walletClient!, allowance, publicClient, onUpdate),
+            executeTransaction: () => revokeAllowance(walletClient, allowance, publicClient, onUpdate),
             updateTransaction,
             trackTransaction: () => trackRevokeTransaction(allowance, 'queued'),
           });

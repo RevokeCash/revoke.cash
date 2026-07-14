@@ -9,27 +9,22 @@ import { waitForTransactionConfirmation } from '@revoke.cash/core/wallet';
 import { isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { recordBatchRevoke } from 'lib/allowances/batch-revoke';
 import analytics from 'lib/utils/analytics';
-import { useTranslations } from 'next-intl';
 import useLocalStorage from 'use-local-storage';
 import { type Address, type Hash, parseEther, type SendTransactionParameters } from 'viem';
-import { usePublicClient, useWalletClient } from 'wagmi';
+import { usePublicClient } from 'wagmi';
+import { type ConnectedWalletClient, useEnsureWalletClient } from './ensureWalletClient';
 import { useNativeTokenPrice } from './useNativeTokenPrice';
 
 export const useFeePayment = (chainId: number) => {
-  const t = useTranslations();
   const nativeToken = getChainNativeToken(chainId)!;
-  const { data: walletClient } = useWalletClient({ chainId });
+  const { ensureWalletClient } = useEnsureWalletClient();
   const publicClient = usePublicClient({ chainId })!;
   const { nativeTokenPrice } = useNativeTokenPrice(chainId);
 
   // We keep track of the most recent fee payments per chain/address combination, to prevent potential duplicate fee payments
   const [lastFeePayments, setLastFeePayments] = useLocalStorage<Record<string, number>>('last-fee-payments', {});
 
-  const prepareFeePayment = (dollarAmount: string): SendTransactionParameters => {
-    if (!walletClient) {
-      throw new Error(t('common.errors.messages.connect_wallet_to_supported_network'));
-    }
-
+  const prepareFeePayment = (dollarAmount: string, walletClient: ConnectedWalletClient): SendTransactionParameters => {
     const feePaymentKey = `${chainId}-${walletClient.account.address}`;
     const lastFeePayment = lastFeePayments[feePaymentKey];
     if (lastFeePayment && Date.now() - lastFeePayment < 1 * HOUR) {
@@ -59,11 +54,8 @@ export const useFeePayment = (chainId: number) => {
     if (!dollarAmount || Number(dollarAmount) === 0) return;
 
     try {
-      if (!walletClient) {
-        throw new Error(t('common.errors.messages.connect_wallet_to_supported_network'));
-      }
-
-      const hash = await walletClient.sendTransaction(prepareFeePayment(dollarAmount));
+      const walletClient = await ensureWalletClient(chainId);
+      const hash = await walletClient.sendTransaction(prepareFeePayment(dollarAmount, walletClient));
 
       trackFeePaid(chainId, walletClient.account.address, dollarAmount, hash);
 

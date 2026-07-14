@@ -17,16 +17,8 @@ const GlobalSelectCell = ({ table }: Props) => {
   const checked = selectedCount === selectableCount && selectableCount > 0;
   const indeterminate = selectedCount > 0;
 
-  // Use the first selected row's chainId, or default to 1 if none selected
-  const selectedChainId = selectedRows[0]?.original.chainId ?? 1;
-
   return (
-    <ControlsWrapper
-      chainId={selectedChainId}
-      address={address}
-      overrideDisabled={selectableCount === 0}
-      skipSwitchChain
-    >
+    <ControlsWrapper address={address} overrideDisabled={selectableCount === 0}>
       {(disabled) => (
         <div className="w-fit">
           <Checkbox

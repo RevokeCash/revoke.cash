@@ -3,13 +3,14 @@ import { TransactionType } from '@revoke.cash/core/types';
 import { waitForTransactionConfirmation } from '@revoke.cash/core/wallet';
 import { useTransactionStore, wrapTransaction } from 'lib/stores/transaction-store';
 import analytics from 'lib/utils/analytics';
-import { usePublicClient, useWalletClient } from 'wagmi';
+import { usePublicClient } from 'wagmi';
+import { useEnsureWalletClient } from '../ensureWalletClient';
 import { useHandleTransaction } from '../useHandleTransaction';
 
 export const useRevokeSession = (session: Session, onRevoke: OnSessionRevoke) => {
   const { updateTransaction } = useTransactionStore();
   const publicClient = usePublicClient({ chainId: session.chainId })!;
-  const { data: walletClient } = useWalletClient();
+  const { ensureWalletClient } = useEnsureWalletClient();
 
   const handleTransaction = useHandleTransaction(session.chainId);
 
@@ -17,7 +18,8 @@ export const useRevokeSession = (session: Session, onRevoke: OnSessionRevoke) =>
     transactionKey: getSessionKey(session),
     transactionType: TransactionType.SESSION_REVOKE,
     executeTransaction: async () => {
-      const hash = await revokeSession(session, walletClient!, publicClient);
+      const walletClient = await ensureWalletClient(session.chainId);
+      const hash = await revokeSession(session, walletClient, publicClient);
 
       const waitForConfirmation = async () => {
         const transactionReceipt = await waitForTransactionConfirmation(hash, publicClient);

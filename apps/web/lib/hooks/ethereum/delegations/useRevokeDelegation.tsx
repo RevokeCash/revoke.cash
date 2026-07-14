@@ -10,7 +10,8 @@ import {
 } from '@revoke.cash/core/wallet';
 import { useTransactionStore, wrapTransaction } from 'lib/stores/transaction-store';
 import analytics from 'lib/utils/analytics';
-import { usePublicClient, useWalletClient } from 'wagmi';
+import { usePublicClient } from 'wagmi';
+import { useEnsureWalletClient } from '../ensureWalletClient';
 import { useHandleTransaction } from '../useHandleTransaction';
 
 // Function to generate a unique key for a delegation
@@ -21,7 +22,7 @@ export const getDelegationKey = (delegation: Delegation) => {
 export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegation: Delegation) => void) => {
   const { updateTransaction } = useTransactionStore();
   const publicClient = usePublicClient({ chainId: delegation.chainId })!;
-  const { data: walletClient } = useWalletClient();
+  const { ensureWalletClient } = useEnsureWalletClient();
   const handleTransaction = useHandleTransaction(delegation.chainId);
 
   // Create revoking function for a single delegation
@@ -29,7 +30,7 @@ export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegatio
     transactionKey: getDelegationKey(delegation),
     transactionType: TransactionType.DELEGATION_REVOKE,
     executeTransaction: async () => {
-      if (!walletClient) throw new Error('No wallet client available');
+      const walletClient = await ensureWalletClient(delegation.chainId);
 
       const delegationPlatform = new AggregateDelegatePlatform(publicClient, delegation.chainId);
       const transactionData = await delegationPlatform.prepareRevokeDelegation(delegation);

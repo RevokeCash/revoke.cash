@@ -55,7 +55,7 @@ const AllowanceCell = ({ allowance, onUpdate, timeMachineTimestamp }: Props) => 
         ) : null}
       </div>
       {isErc20Allowance(allowance.payload) && timeMachineTimestamp === undefined && (
-        <ControlsWrapper chainId={allowance.chainId} address={allowance.owner}>
+        <ControlsWrapper address={allowance.owner}>
           {(disabled) => (
             <div>
               <Button

@@ -35,7 +35,7 @@ const BatchRevokeControls = ({ chainId, feeDollarAmount, isRevoking, isAllConfir
     <Loader isLoading={walletCapabilities.isLoading}>
       <div className="flex flex-col items-center justify-center gap-8">
         <FeeNotice chainId={chainId} feeDollarAmount={feeDollarAmount} />
-        <ControlsWrapper chainId={chainId} address={address} switchChainSize="md">
+        <ControlsWrapper address={address}>
           {(disabled) => (
             <div>
               <Button

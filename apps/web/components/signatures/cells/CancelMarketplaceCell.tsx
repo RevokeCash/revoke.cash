@@ -5,6 +5,7 @@ import { HOUR, SECOND } from '@revoke.cash/core/utils/time';
 import { waitForSubmittedTransactionConfirmation, waitForTransactionConfirmation } from '@revoke.cash/core/wallet';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
+import { useEnsureWalletClient } from 'lib/hooks/ethereum/ensureWalletClient';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
@@ -12,7 +13,7 @@ import type { Marketplace, OnCancel } from 'lib/types';
 import analytics from 'lib/utils/analytics';
 import { useTranslations } from 'next-intl';
 import { useAsyncCallback } from 'react-async-hook';
-import { usePublicClient, useWalletClient } from 'wagmi';
+import { usePublicClient } from 'wagmi';
 
 interface Props {
   marketplace: Marketplace;
@@ -21,14 +22,15 @@ interface Props {
 
 const CancelMarketplaceCell = ({ marketplace, onCancel }: Props) => {
   const t = useTranslations();
-  const { data: walletClient } = useWalletClient();
-  const publicClient = usePublicClient()!;
+  const { ensureWalletClient } = useEnsureWalletClient();
   const { address } = useAddress();
   const { selectedChainId } = useAddressPageContext();
+  const publicClient = usePublicClient({ chainId: selectedChainId })!;
   const handleTransaction = useHandleTransaction(selectedChainId);
 
   const sendCancelTransaction = async (): Promise<TransactionSubmitted> => {
-    const hash = await marketplace?.cancelSignatures(walletClient!);
+    const walletClient = await ensureWalletClient(selectedChainId);
+    const hash = await marketplace.cancelSignatures(walletClient);
 
     analytics.track('Cancelled Marketplace Signatures', {
       chainId: selectedChainId,
@@ -65,9 +67,7 @@ const CancelMarketplaceCell = ({ marketplace, onCancel }: Props) => {
   return (
     <div className="flex justify-end w-32 mr-0 mx-auto">
       <ControlsWrapper
-        chainId={selectedChainId}
         address={address}
-        switchChainSize="sm"
         overrideDisabled={recentlyCancelled}
         disabledReason={t('signatures.marketplace.tooltips.recently_delisted')}
       >

@@ -2,15 +2,20 @@
 
 import { getAllowanceKey, type OnUpdate, type TokenAllowanceData } from '@revoke.cash/core/allowances';
 import { walletSupportsEip5792 } from '@revoke.cash/core/eip5792';
-import { isAccountUpgradeRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import {
+  isAccountUpgradeRejectionError,
+  isSwitchChainNotSupportedError,
+  isUserRejectionError,
+  parseErrorMessage,
+} from '@revoke.cash/core/utils/errors';
 import { getFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import PQueue from 'p-queue';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
-import { useWalletClient } from 'wagmi';
 import { isTransactionStatusLoadingState, useTransactionStore } from '../../stores/transaction-store';
+import { useEnsureWalletClient } from './ensureWalletClient';
 import { useNativeTokenPrice } from './useNativeTokenPrice';
 import { useRevokeBatchEip5792 } from './useRevokeBatchEip5792';
 import { useRevokeBatchQueuedTransactions } from './useRevokeBatchQueuedTransactions';
@@ -33,7 +38,7 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
   // If we cannot get the native token price, we set the fee to $0 (this will result in no fee payment downstream)
   const feeDollarAmount = nativeTokenPrice ? getFeeDollarAmount(chainId, allowances.length, isPremium).toFixed(2) : '0';
 
-  const { data: walletClient } = useWalletClient();
+  const { ensureWalletClient } = useEnsureWalletClient();
 
   useEffect(() => {
     allowances.forEach((allowance) => {
@@ -43,8 +48,10 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
 
   const { execute: revoke, loading: isSubmitting } = useAsyncCallback(async (): Promise<void> => {
     try {
+      const walletClient = await ensureWalletClient(chainId);
+
       const supportsEip5792 = walletCapabilities.isLoading
-        ? await walletSupportsEip5792(walletClient!, chainId)
+        ? await walletSupportsEip5792(walletClient, chainId)
         : walletCapabilities.supportsEip5792;
 
       if (supportsEip5792 && hasMoreThanOneTransaction(allowances, feeDollarAmount)) {
@@ -62,7 +69,10 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
         await revokeQueuedTransactions(REVOKE_QUEUE, feeDollarAmount);
       }
     } catch (error) {
-      toast.error(parseErrorMessage(error));
+      // Rejecting the chain switch prompt is intentional, and switch failures already get their own toast
+      if (!isUserRejectionError(error) && !isSwitchChainNotSupportedError(error)) {
+        toast.error(parseErrorMessage(error));
+      }
       throw error;
     }
   });

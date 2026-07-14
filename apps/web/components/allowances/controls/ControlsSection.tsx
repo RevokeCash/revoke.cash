@@ -23,13 +23,7 @@ const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
     : allowance.payload.revokeError;
 
   return (
-    <ControlsWrapper
-      chainId={allowance.chainId}
-      address={allowance.owner}
-      switchChainSize="sm"
-      overrideDisabled={Boolean(tooltip)}
-      disabledReason={tooltip}
-    >
+    <ControlsWrapper address={allowance.owner} overrideDisabled={Boolean(tooltip)} disabledReason={tooltip}>
       {(disabled) => (
         <div className="controls-section">
           {revoke && <RevokeButton transactionKey={getAllowanceKey(allowance)} revoke={revoke} disabled={disabled} />}
