@@ -270,7 +270,7 @@ const SubscriptionBanner = ({ planName, endsAt, grantedBy, slots }: Subscription
           {isExpiringSoon ? t('account.subscription.expires_soon') : t('account.subscription.active')}
         </StatusLabel>
       </div>
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">{bannerStrings.filter(Boolean).join(' · ')}</p>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">{bannerStrings.filter(Boolean).join(' • ')}</p>
     </div>
   );
 };

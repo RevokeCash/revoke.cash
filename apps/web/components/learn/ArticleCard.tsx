@@ -58,9 +58,9 @@ const ArticleCardMeta = ({ date, readingTime, author }: Pick<ISidebarEntry, 'dat
 
   return (
     <p className="text-xs text-zinc-500 dark:text-zinc-400">
-      {author ? `${author.name?.split(' ')?.[0]} · ` : ''}
+      {author ? `${author.name?.split(' ')?.[0]} • ` : ''}
       {formatDate(date)}
-      {' · '}
+      {' • '}
       {t('common.article_meta.reading_time', { readingTime })}
     </p>
   );

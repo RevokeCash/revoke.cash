@@ -50,7 +50,7 @@ const TierCard = ({
               <span className="text-sm text-zinc-500 dark:text-zinc-400">
                 {t('premium.pricing.per_year')}
                 {t.has(`premium.pricing.tiers.${tierKey}.price_note`) && (
-                  <> &middot; {t(`premium.pricing.tiers.${tierKey}.price_note`)}</>
+                  <> • {t(`premium.pricing.tiers.${tierKey}.price_note`)}</>
                 )}
               </span>
             )}

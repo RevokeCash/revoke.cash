@@ -14,7 +14,7 @@ In the second quarter of 2026, most of our energy went into building the upcomin
 
 Behind the scenes, this quarter was dominated by the biggest addition to Revoke.cash since its launch: the upcoming **Revoke Premium** and **Ultimate** plans.
 
-Revoke Premium is built around a fully integrated multichain dashboard: view and manage your token approvals, approval history and exploit exposure across 100+ networks in a single unified overview, for up to 10 wallets per subscription. It also includes the Time Machine to inspect your approvals at any point in the past, and unlimited batch revokes at no extra cost.
+Revoke Premium is built around a fully integrated multichain dashboard: view and manage your token approvals, approval history and exploit exposure across 100+ networks in a single unified overview, for up to 10 wallets per subscription. It also includes unlimited batch revokes at no extra cost.
 
 Revoke Ultimate goes a step further with **Auto-Revoking**. Set your rules once and Revoke.cash keeps watch around the clock, automatically revoking approvals to exploited or risky contracts and cleaning up stale approvals on your behalf, even while you sleep.
 

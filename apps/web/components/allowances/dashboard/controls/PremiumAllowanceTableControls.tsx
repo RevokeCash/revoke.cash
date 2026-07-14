@@ -6,8 +6,10 @@ import Chevron from 'components/common/Chevron';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 import AllowanceTableControls from './AllowanceTableControls';
-import TimeMachineBanner from './TimeMachineBanner';
-import TimeMachineModalWithButton from './TimeMachineModalWithButton';
+
+// Time machine is hidden until its standalone launch
+// import TimeMachineBanner from './TimeMachineBanner';
+// import TimeMachineModalWithButton from './TimeMachineModalWithButton';
 
 interface Props {
   onSortChange: (sort: ColumnSort[]) => void;
@@ -24,10 +26,10 @@ const PremiumAllowanceTableControls = ({
 }: Props) => {
   return (
     <div className="flex flex-col gap-2">
-      <TimeMachineBanner />
+      {/* <TimeMachineBanner /> */}
       <AllowanceTableControls onSearchValuesChange={onSearchValuesChange} onSortChange={onSortChange}>
         <div className="flex flex-wrap w-full gap-2 sm:w-auto">
-          <TimeMachineModalWithButton />
+          {/* <TimeMachineModalWithButton /> */}
           <ExpandAllButton isAllExpanded={isAllExpanded} onToggleExpandAll={onToggleExpandAll} />
         </div>
       </AllowanceTableControls>

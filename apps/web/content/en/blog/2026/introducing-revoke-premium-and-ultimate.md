@@ -36,10 +36,6 @@ Check your wallets against all known exploits across every supported network at 
 
 Revoke multiple approvals in a single transaction at no extra cost, on every network. The $1.50 batch fee no longer applies to Premium subscribers.
 
-### Time Machine
-
-Travel back in time to see what your approvals looked like at any point in the past. The Time Machine lets you investigate how your approval state has changed over time across all supported networks.
-
 ## Revoke Ultimate
 
 Revoke Ultimate includes everything in Premium, plus the feature we're most excited about: **Auto-Revoking**. It costs **$199 per year**, also covering up to 10 wallets.

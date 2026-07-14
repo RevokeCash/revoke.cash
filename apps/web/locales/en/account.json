@@ -148,7 +148,7 @@
   "error": "Something went wrong loading your subscription data. Please try again later.",
   "granted": {
     "active": "Active",
-    "granted_by": "Granted by {address} · Valid until {date}",
+    "granted_by": "Granted by {address} • Valid until {date}",
     "title": "Granted Premium Access"
   },
   "meta": {

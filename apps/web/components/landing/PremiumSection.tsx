@@ -18,7 +18,6 @@ const PremiumSection = () => {
         <PremiumSectionCard title={t('landing.premium.free_title')}>
           <ul className="flex flex-col gap-2">
             <Highlight i18nKey="landing.premium.free_features.single_chain" />
-            <Highlight i18nKey="landing.premium.free_features.history" />
             <Highlight i18nKey="landing.premium.free_features.exploit_checker" />
             <Highlight i18nKey="landing.premium.free_features.batch_revoke" />
           </ul>
@@ -39,7 +38,8 @@ const PremiumSection = () => {
             <Highlight i18nKey="landing.premium.highlights.multichain_dashboard" />
             <Highlight i18nKey="landing.premium.highlights.multichain_exploit_checker" />
             <Highlight i18nKey="landing.premium.highlights.unlimited_batch_revokes" />
-            <Highlight i18nKey="landing.premium.highlights.time_machine" />
+            {/* Time machine is hidden until its standalone launch */}
+            {/* <Highlight i18nKey="landing.premium.highlights.time_machine" /> */}
           </ul>
           <div className="mt-auto pt-2">
             <Button href="/premium" router style="secondary" size="md" className="w-full">
@@ -59,9 +59,6 @@ const PremiumSection = () => {
           className="border-2 border-zinc-800 dark:border-zinc-200"
         >
           <ul className="flex flex-col gap-2">
-            <li className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
-              {t('landing.premium.includes_premium')}
-            </li>
             <Highlight i18nKey="landing.premium.ultimate_features.continuous_monitoring" />
             <Highlight
               i18nKey="landing.premium.ultimate_features.automated_revoking"

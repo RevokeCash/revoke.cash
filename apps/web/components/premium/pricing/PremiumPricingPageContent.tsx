@@ -67,18 +67,19 @@ const PremiumPricingPageContent = () => {
             imagePosition="left"
             translationPrefix={TRANSLATION_PREFIX}
           />
-          <Feature
+          {/* Time machine is hidden until its standalone launch */}
+          {/* <Feature
             featureKey="time_machine"
             image="/assets/images/premium/time-machine.jpg"
             video="/assets/videos/premium/time-machine.mp4"
             imagePosition="right"
             translationPrefix={TRANSLATION_PREFIX}
-          />
+          /> */}
           <Feature
             featureKey="automated_revoking"
             image="/assets/images/premium/auto-revoke.jpg"
             video="/assets/videos/premium/auto-revoke.mp4"
-            imagePosition="left"
+            imagePosition="right"
             translationPrefix={TRANSLATION_PREFIX}
             badge={t('premium.pricing.tiers.ultimate.name')}
             link={{
