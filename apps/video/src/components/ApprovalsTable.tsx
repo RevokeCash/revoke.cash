@@ -19,22 +19,13 @@ interface Props {
   className?: string;
   // When provided, rows cascade in one after another.
   rowMotion?: RowMotion;
-  // Fades the exploited row's red tint and pill in (Problem scene) or out (time-machine scrub).
+  // Controls the exploited row's red tint and pill while it animates into view.
   exploitedHighlightOpacity?: number;
-  // 1 = the approval exists, 0 = fully collapsed; drives the time-machine scrub in the Premium
-  // scene, where approvals disappear as the date moves back past their creation.
-  rowPresence?: (approval: MockApproval) => number;
 }
 
 // Replica of the approvals dashboard table (apps/web/components/allowances/dashboard),
 // matching the real column order: Asset · Approved Amount · Approved Spender · Last Updated · Actions
-export const ApprovalsTable = ({
-  approvals,
-  className,
-  rowMotion,
-  exploitedHighlightOpacity = 1,
-  rowPresence,
-}: Props) => {
+export const ApprovalsTable = ({ approvals, className, rowMotion, exploitedHighlightOpacity = 1 }: Props) => {
   return (
     <div className={twMerge('overflow-hidden rounded-xl border border-zinc-800 bg-black', className)}>
       <div className={twMerge(TABLE_GRID, 'border-b border-zinc-800 px-4 py-3 text-sm font-bold text-zinc-100')}>
@@ -49,7 +40,6 @@ export const ApprovalsTable = ({
           key={`${approval.symbol}-${approval.spender}`}
           approval={approval}
           exploitedHighlightOpacity={exploitedHighlightOpacity}
-          presence={rowPresence?.(approval) ?? 1}
           entranceStyle={
             rowMotion
               ? riseIn(rowMotion.frame, rowMotion.fps, rowMotion.startAt + index * rowMotion.stagger)
@@ -64,19 +54,16 @@ export const ApprovalsTable = ({
 interface RowProps {
   approval: MockApproval;
   exploitedHighlightOpacity: number;
-  presence: number;
   entranceStyle?: React.CSSProperties;
 }
 
-const ApprovalRow = ({ approval, exploitedHighlightOpacity, presence, entranceStyle }: RowProps) => {
+const ApprovalRow = ({ approval, exploitedHighlightOpacity, entranceStyle }: RowProps) => {
   return (
     <div
       className={twMerge(TABLE_GRID, 'overflow-hidden border-b border-zinc-800 px-4 text-sm last:border-b-0')}
       style={{
         ...entranceStyle,
-        height: ROW_HEIGHT * presence,
-        opacity: Math.min(presence, (entranceStyle?.opacity as number) ?? 1),
-        borderBottomWidth: presence < 0.05 ? 0 : undefined,
+        height: ROW_HEIGHT,
         backgroundColor: approval.exploited ? `rgba(239, 68, 68, ${0.15 * exploitedHighlightOpacity})` : undefined,
       }}
     >

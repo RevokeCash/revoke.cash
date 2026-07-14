@@ -19,16 +19,19 @@ import './fonts';
 import './style.css';
 
 const FPS = 30;
+// Start one bar before the soundtrack's second drop. This aligns the drop with the opening stats,
+// the scene changes with musical bars, and the final impact with the call to action.
+const NEW_SOUNDTRACK_TRIM_BEFORE = 2809;
 
 // The announcement video's individual scenes stay registered for stills and per-scene iteration.
 const ANNOUNCEMENT_SCENES = [
-  { id: 'Hook', component: HookScene, durationInFrames: 120 },
-  { id: 'Problem', component: ProblemScene, durationInFrames: 150 },
-  { id: 'TitleCard', component: TitleCardScene, durationInFrames: 100 },
-  { id: 'Premium', component: PremiumScene, durationInFrames: 270 },
-  { id: 'AutoRevoke', component: AutoRevokeScene, durationInFrames: 330 },
-  { id: 'Pricing', component: PricingScene, durationInFrames: 210 },
-  { id: 'Cta', component: CtaScene, durationInFrames: 140 },
+  { id: 'Hook', component: HookScene, durationInFrames: 114 },
+  { id: 'Problem', component: ProblemScene, durationInFrames: 167 },
+  { id: 'TitleCard', component: TitleCardScene, durationInFrames: 114 },
+  { id: 'Premium', component: PremiumScene, durationInFrames: 113 },
+  { id: 'AutoRevoke', component: AutoRevokeScene, durationInFrames: 326 },
+  { id: 'Pricing', component: PricingScene, durationInFrames: 167 },
+  { id: 'Cta', component: CtaScene, durationInFrames: 159 },
 ] as const;
 
 // Animated mockups for the premium pricing page's feature showcase; the pricing page plays them
@@ -59,7 +62,7 @@ export const Root = () => {
           fps={FPS}
           width={1920}
           height={1080}
-          defaultProps={{ soundtrack: 'audio/soundtrack.m4a' }}
+          defaultProps={{ soundtrack: 'audio/new-audio.wav', soundtrackTrimBefore: NEW_SOUNDTRACK_TRIM_BEFORE }}
         />
         <Composition
           id="MainAlternativeSoundtrack"
@@ -68,7 +71,7 @@ export const Root = () => {
           fps={FPS}
           width={1920}
           height={1080}
-          defaultProps={{ soundtrack: 'audio/soundtrack-alternative.m4a' }}
+          defaultProps={{ soundtrack: 'audio/soundtrack-alternative.m4a', soundtrackTrimBefore: 0 }}
         />
         {ANNOUNCEMENT_SCENES.map((scene) => (
           <Composition
