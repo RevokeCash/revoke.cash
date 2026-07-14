@@ -1,19 +1,12 @@
 import { ChainId } from '@revoke.cash/chains';
-import type { Session } from '@revoke.cash/core/sessions';
 import { isNullish } from '@revoke.cash/core/utils';
-import {
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
 import Card, { CardTitle } from 'components/common/Card';
 import ChainDisplay from 'components/common/ChainDisplay';
 import Table from 'components/common/table/Table';
 import { useSessions } from 'lib/hooks/ethereum/sessions/useSessions';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { AddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { useTable } from 'lib/hooks/useTable';
 import { useTranslations } from 'next-intl';
 import { useContext, useMemo } from 'react';
 import { columns } from './columns';
@@ -31,21 +24,10 @@ const SessionsTable = ({ chainId }: Props) => {
 
   const data = useMemo(() => sessions ?? [], [sessions]);
 
-  const table = useReactTable({
+  const table = useTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel<Session>(),
-    getSortedRowModel: getSortedRowModel<Session>(),
-    getFilteredRowModel: getFilteredRowModel<Session>(),
-    getPaginationRowModel: getPaginationRowModel<Session>(),
-    initialState: {
-      pagination: {
-        pageSize: 25,
-      },
-    },
-    getRowId(row) {
-      return `${row.payload.sessionHash}`;
-    },
+    getRowId: (row) => `${row.payload.sessionHash}`,
     meta: { onSessionRevoke } as any,
   });
 

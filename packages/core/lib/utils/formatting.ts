@@ -76,6 +76,10 @@ export const formatFiatAmount = (
   return `${fiatSign}${addThousandsSeparators(amount.toFixed(decimals))}`;
 };
 
+export const formatUsdCents = (cents: number): string => {
+  return formatFiatAmount(cents / 100) ?? '$0.00';
+};
+
 export const formatDonationTokenAmount = (tokenAmount: number | null, nativeToken: string) => {
   if (tokenAmount === null) return '???';
 

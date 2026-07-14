@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false }, { status: 400 });
     }
 
-    const siwe = { address, message, signature };
+    const siwe = { address, message, signature, verifiedAt: Date.now() };
     const res = NextResponse.json({ ok: true });
     await storeSessionEdge(req, res, { siwe });
     await storeSiweCookieEdge(req, res, siwe);

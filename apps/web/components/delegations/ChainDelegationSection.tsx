@@ -1,11 +1,11 @@
 'use client';
 
 import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
-import { getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import ChainSectionHeader from 'components/common/ChainSectionHeader';
 import CollapsibleCard from 'components/common/CollapsibleCard';
 import Table from 'components/common/table/Table';
 import type { ChainDelegationsData } from 'lib/hooks/ethereum/delegations/usePremiumDelegations';
+import { useTable } from 'lib/hooks/useTable';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
@@ -39,23 +39,13 @@ const ChainDelegationSection = ({ chainData, onRevoke, defaultExpanded }: Props)
 
   const data = useMemo(() => delegations, [delegations]);
 
-  const table = useReactTable({
+  const table = useTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel<Delegation>(),
-    getSortedRowModel: getSortedRowModel<Delegation>(),
-    getPaginationRowModel: getPaginationRowModel<Delegation>(),
-    autoResetPageIndex: false,
     getRowId: getDelegationRowId,
-    initialState: {
-      columnVisibility: {
-        [ColumnId.CHAIN]: false,
-      },
-      pagination: {
-        pageSize: 25,
-      },
-    },
+    columnVisibility: { [ColumnId.CHAIN]: false },
     meta: { onRevoke } as any,
+    autoResetPageIndex: false,
   });
 
   const canExpand = status === 'success' && delegations.length > 0;

@@ -1,6 +1,6 @@
 ## General Coding Rules
 
-NEVER stage changes, just leave them in the working directory.
+NEVER stage or unstage changes, just leave them in the working directory. The index is user-owned.
 
 ## Dev Server
 

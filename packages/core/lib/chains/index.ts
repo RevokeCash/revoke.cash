@@ -1532,7 +1532,7 @@ export const isTestnetChain = (chainId: DocumentedChainId): boolean => {
 };
 
 export const getChainName = (chainId: DocumentedChainId): string => {
-  return getChainConfig(chainId).getName();
+  return getChainConfig(chainId)?.getName() ?? `Chain ${chainId}`;
 };
 
 export const getChainSlug = (chainId: DocumentedChainId): string => {
@@ -1571,7 +1571,7 @@ export const getChainLogsRpcUrl = (chainId: DocumentedChainId): string => {
 };
 
 export const getChainLogo = (chainId: DocumentedChainId): string | undefined => {
-  return getChainConfig(chainId).getLogoUrl();
+  return getChainConfig(chainId)?.getLogoUrl();
 };
 
 export const getChainInfoUrl = (chainId: DocumentedChainId): string | undefined => {

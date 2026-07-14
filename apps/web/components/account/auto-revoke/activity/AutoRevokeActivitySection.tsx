@@ -1,12 +1,11 @@
 'use client';
 
-import type { AutoRevokeActivityItem } from '@revoke.cash/core/auto-revoke/activity';
-import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import Card, { CardTitle } from 'components/common/Card';
 import SegmentedControl from 'components/common/SegmentedControl';
 import Table from 'components/common/table/Table';
 import { type ActivityScope, useAutoRevokeActivity } from 'lib/hooks/auto-revoke/useAutoRevokeActivity';
 import { useAddressAutoRevokeBudget, useSubscriptionAutoRevokeBudget } from 'lib/hooks/auto-revoke/useAutoRevokeBudget';
+import { useTable } from 'lib/hooks/useTable';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import AutoRevokeBudgetSummary from './AutoRevokeBudgetSummary';
@@ -32,18 +31,11 @@ const AutoRevokeActivitySection = ({ subscriptionId }: Props) => {
   const { budget: subscriptionBudget } = useSubscriptionAutoRevokeBudget(subscriptionId, scope.type === 'subscription');
   const budget = scope.type === 'subscription' ? subscriptionBudget : addressBudget;
 
-  const table = useReactTable({
+  const table = useTable({
     data: items,
     columns,
-    getCoreRowModel: getCoreRowModel<AutoRevokeActivityItem>(),
-    getPaginationRowModel: getPaginationRowModel<AutoRevokeActivityItem>(),
     getRowId: (row) => row.id,
-    initialState: {
-      pagination: { pageSize: 25 },
-    },
-    state: {
-      columnVisibility: { [ColumnId.WALLET]: scope.type === 'subscription' },
-    },
+    columnVisibility: { [ColumnId.WALLET]: scope.type === 'subscription' },
   });
 
   return (

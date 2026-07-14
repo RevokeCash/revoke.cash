@@ -1,9 +1,9 @@
 'use client';
 
 import type { PremiumSubscription, SubscriptionPayment } from '@revoke.cash/core/premium/types';
-import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import Card, { CardTitle } from 'components/common/Card';
 import Table from 'components/common/table/Table';
+import { useTable } from 'lib/hooks/useTable';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { columns } from './columns';
@@ -23,17 +23,7 @@ const BillingSection = ({ subscriptions, isLoading }: Props) => {
     [subscriptions],
   );
 
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel<SubscriptionPayment>(),
-    getPaginationRowModel: getPaginationRowModel<SubscriptionPayment>(),
-    initialState: {
-      pagination: {
-        pageSize: 25,
-      },
-    },
-  });
+  const table = useTable({ data, columns });
 
   return (
     <Card header={<CardTitle title={t('account.billing.title')} />} className="p-0">

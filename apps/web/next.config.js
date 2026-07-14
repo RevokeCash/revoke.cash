@@ -7,7 +7,12 @@ const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
   // Turbopack-compatible way to keep native HyperSync bindings external.
-  serverExternalPackages: ['@envio-dev/hypersync-client'],
+  // pdfkit reads its built-in font data from disk at runtime, so it must stay unbundled too.
+  serverExternalPackages: ['@envio-dev/hypersync-client', 'pdfkit'],
+  outputFileTracingIncludes: {
+    // The invoice header embeds the logo via an fs read from public/
+    '/api/admin/revenue/invoice': ['./public/assets/images/revoke-icon-orange-black.png'],
+  },
   turbopack: {
     resolveAlias: {
       siwe: './app/embed/world/stubs/siwe.js',
@@ -16,6 +21,24 @@ const nextConfig = {
   images: {
     qualities: [25, 50, 75, 100],
     unoptimized: process.env.NODE_ENV === 'development',
+  },
+  headers: async () => {
+    // Add extra security headers to the admin pages and API endpoints
+    const adminSecurityHeaders = [
+      { key: 'X-Frame-Options', value: 'DENY' },
+      {
+        key: 'Content-Security-Policy',
+        value: "frame-ancestors 'none'; object-src 'none'; base-uri 'none'",
+      },
+      { key: 'Referrer-Policy', value: 'no-referrer' },
+      { key: 'X-Content-Type-Options', value: 'nosniff' },
+      { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+    ];
+
+    return [
+      { source: '/admin/:path*', headers: adminSecurityHeaders },
+      { source: '/api/admin/:path*', headers: adminSecurityHeaders },
+    ];
   },
   redirects: async () => {
     return [

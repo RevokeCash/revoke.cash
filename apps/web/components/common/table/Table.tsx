@@ -1,7 +1,7 @@
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import type { Nullable } from '@revoke.cash/core/types';
 import { isNullish } from '@revoke.cash/core/utils';
-import type { Table as ReactTable } from '@tanstack/react-table';
+import type { Table as ReactTable, Row } from '@tanstack/react-table';
 import EmptyState from 'components/common/EmptyState';
 import ErrorDisplay from 'components/common/ErrorDisplay';
 import TablePagination from 'components/history/TablePagination';
@@ -17,10 +17,21 @@ interface Props<T> {
   emptyChildren?: React.ReactNode;
   loaderRows?: number;
   partialLoadingRows?: number;
+  // Renders a full-width sub-row (e.g. an expanded details <tr>) below rows that are expanded
+  renderSubComponent?: (row: Row<T>) => React.ReactNode;
   className?: string;
 }
 
-const Table = <T,>({ loading, error, table, emptyChildren, loaderRows, partialLoadingRows, className }: Props<T>) => {
+const Table = <T,>({
+  loading,
+  error,
+  table,
+  emptyChildren,
+  loaderRows,
+  partialLoadingRows,
+  renderSubComponent,
+  className,
+}: Props<T>) => {
   const classes = {
     container:
       'border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-x-scroll whitespace-nowrap scrollbar-hide',
@@ -41,6 +52,7 @@ const Table = <T,>({ loading, error, table, emptyChildren, loaderRows, partialLo
               isLoading={loading}
               loaderRows={loaderRows}
               partialLoadingRows={partialLoadingRows}
+              renderSubComponent={renderSubComponent}
             />
           )}
         </table>

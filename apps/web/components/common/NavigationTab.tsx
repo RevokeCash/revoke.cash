@@ -7,11 +7,13 @@ interface Props {
   href: string;
   retainSearchParams?: string[];
   attention?: boolean;
+  // Also select the tab on routes nested under its href (e.g. /admin/lookup/0x123 selects /admin/lookup)
+  matchNestedRoutes?: boolean;
 }
 
-const NavigationTab = ({ name, href, retainSearchParams, attention }: Props) => {
+const NavigationTab = ({ name, href, retainSearchParams, attention, matchNestedRoutes }: Props) => {
   const path = usePathname();
-  const isSelected = path?.endsWith(href);
+  const isSelected = matchNestedRoutes ? path === href || Boolean(path?.startsWith(`${href}/`)) : path?.endsWith(href);
 
   const classes = twMerge(
     'flex whitespace-nowrap items-center rounded-md px-4 py-2 text-sm font-medium transition-colors',

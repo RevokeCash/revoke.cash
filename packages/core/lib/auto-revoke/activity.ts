@@ -84,7 +84,7 @@ interface ChainMetadata {
 
 // Token and spender metadata are cached per chain by the indexer; the actions' tokens and spenders
 // were all enriched during evaluation, so these lookups are cache reads in practice.
-const loadMetadataByChain = async (actions: Action[]): Promise<Map<number, ChainMetadata>> => {
+export const loadMetadataByChain = async (actions: Action[]): Promise<Map<number, ChainMetadata>> => {
   const chainIds = deduplicateArray(actions.map((action) => action.observation.chainId));
 
   const entries = await Promise.all(
@@ -107,7 +107,7 @@ const loadMetadataByChain = async (actions: Action[]): Promise<Map<number, Chain
   return new Map(entries);
 };
 
-const mapActivityItem = (action: Action, metadata: ChainMetadata | undefined): AutoRevokeActivityItem => {
+export const mapActivityItem = (action: Action, metadata: ChainMetadata | undefined): AutoRevokeActivityItem => {
   const tokenMetadataRow = metadata?.tokens.get(action.observation.tokenAddress);
   const tokenMetadata = tokenMetadataRow ? serializeTokenMetadata(tokenMetadataRow) : undefined;
 

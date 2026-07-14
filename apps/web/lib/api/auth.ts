@@ -2,18 +2,20 @@ import { hasActivePremiumEntitlement, hasActiveUltimateEntitlement } from '@revo
 import type { Nullable } from '@revoke.cash/core/types';
 import { isNullish } from '@revoke.cash/core/utils';
 import { ApiError } from '@revoke.cash/core/utils/errors';
+import { HOUR } from '@revoke.cash/core/utils/time';
 import { getIronSession, type SessionOptions, unsealData } from 'iron-session';
 import { type AuthSession, UNAUTHENTICATED_AUTH_SESSION } from 'lib/auth/session';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { cookies, headers } from 'next/headers';
 import type { NextRequest, NextResponse } from 'next/server';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
-import type { Address, Hex } from 'viem';
+import { type Address, getAddress, type Hex, isAddressEqual } from 'viem';
 
 export interface SiweFields {
   address: Address;
   message: string;
   signature: Hex;
+  verifiedAt?: number;
 }
 
 export interface RevokeSession {
@@ -141,6 +143,7 @@ export const storeSiweCookieEdge = async (req: NextRequest, res: NextResponse, s
   session.address = siwe.address;
   session.message = siwe.message;
   session.signature = siwe.signature;
+  session.verifiedAt = siwe.verifiedAt;
   await session.save();
 };
 
@@ -229,23 +232,13 @@ export const getServerAuthSession = async () => {
   return getAuthSessionByHeaders(requestHeaders, sessionCookie);
 };
 
-export const getAuthenticatedSiweAddress = async (req: NextRequest): Promise<Address | null> => {
-  const sessionCookie = req.cookies.get(IRON_OPTIONS.cookieName)?.value;
-  const session = await getAuthSessionByHeaders(req.headers, sessionCookie);
-
-  if (!session.hasApiSession || !session.siweAddress) {
-    return null;
-  }
-
-  return session.siweAddress;
-};
-
 type ApiAuthMode = 'api-session' | 'siwe';
 
 interface AuthorizeRequestOptions {
   auth?: ApiAuthMode;
   rateLimiter?: RateLimiterMemory;
   requireUltimateEntitlement?: boolean;
+  requireAdmin?: boolean;
 }
 
 export async function authorizeRequest(
@@ -273,8 +266,76 @@ export async function authorizeRequest(
     await requireUltimateEntitlement(siweAddress);
   }
 
+  if (options.requireAdmin) {
+    await requireAdminSession(req);
+  }
+
   return { siweAddress };
 }
+
+// Admin access requires a signature fresher than the main session TTL, so the silent restore
+// from the 90-day SIWE cookie never mints admin access without a new signature.
+const MAX_ADMIN_SESSION_AGE_MS = 24 * HOUR;
+
+export const requireAdminSession = async (req: NextRequest): Promise<Address> => {
+  const siwe = await getAuthenticatedSiweFields(req);
+  if (!siwe || !isAdminAddress(siwe.address)) {
+    throw new ApiError(403, 'Not authorized');
+  }
+
+  if (!siwe.verifiedAt || Date.now() - siwe.verifiedAt > MAX_ADMIN_SESSION_AGE_MS) {
+    throw new ApiError(403, 'Admin session expired, please sign in again');
+  }
+
+  return siwe.address;
+};
+
+export const isAdminSession = async (req: NextRequest): Promise<boolean> => {
+  try {
+    await requireAdminSession(req);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const isAdminAddress = (address: Address): boolean => {
+  const adminAddress = process.env.ADMIN_ADDRESS;
+  if (!adminAddress) return false;
+
+  try {
+    return isAddressEqual(address, getAddress(adminAddress));
+  } catch {
+    return false;
+  }
+};
+
+const getAuthenticatedSiweFields = async (req: NextRequest): Promise<SiweFields | null> => {
+  const sealedSession = req.cookies.get(IRON_OPTIONS.cookieName)?.value;
+  if (!sealedSession) return null;
+
+  try {
+    const session = await unsealSession(sealedSession);
+    if (!session.ip || session.ip !== getClientIpFromHeaders(req.headers)) return null;
+    return session.siwe ?? null;
+  } catch {
+    return null;
+  }
+};
+
+// Session cookies are sameSite 'none', so state-changing admin endpoints must reject cross-origin requests
+export const requireSameOrigin = (req: NextRequest) => {
+  const origin = req.headers.get('origin');
+  const host = req.headers.get('host');
+
+  try {
+    if (!origin || !host || new URL(origin).host !== host) {
+      throw new Error('Origin mismatch');
+    }
+  } catch {
+    throw new ApiError(403, 'Cross-origin request rejected');
+  }
+};
 
 export const requireApiSession = async (req: NextRequest) => {
   if (!(await checkActiveSessionEdge(req))) {
@@ -283,12 +344,12 @@ export const requireApiSession = async (req: NextRequest) => {
 };
 
 export const requireSiweSession = async (req: NextRequest): Promise<Address> => {
-  const siweAddress = await getAuthenticatedSiweAddress(req);
-  if (!siweAddress) {
+  const siwe = await getAuthenticatedSiweFields(req);
+  if (!siwe) {
     throw new ApiError(403, 'No SIWE session is active');
   }
 
-  return siweAddress;
+  return siwe.address;
 };
 
 export const requireRateLimit = async (

@@ -7,7 +7,11 @@ import { useMounted } from 'lib/hooks/useMounted';
 import analytics from 'lib/utils/analytics';
 import { useTranslations } from 'next-intl';
 
-const ColorThemeSelect = () => {
+interface Props {
+  menuPlacement?: 'top' | 'bottom';
+}
+
+const ColorThemeSelect = ({ menuPlacement = 'top' }: Props) => {
   const isMounted = useMounted();
   const { theme, setTheme } = useColorTheme();
   const t = useTranslations();
@@ -39,7 +43,7 @@ const ColorThemeSelect = () => {
       options={options}
       onChange={selectTheme}
       formatOptionLabel={displayOption}
-      menuPlacement="top"
+      menuPlacement={menuPlacement}
     />
   );
 };

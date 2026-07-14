@@ -1,6 +1,7 @@
 import { flexRender, type Row, type Table } from '@tanstack/react-table';
 import { ColumnId } from 'components/allowances/dashboard/columns';
 import TableBodyLoader from 'components/common/TableBodyLoader';
+import { Fragment } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface Props<T> {
@@ -8,9 +9,11 @@ interface Props<T> {
   table: Table<T>;
   loaderRows?: number;
   partialLoadingRows?: number;
+  // Renders a full-width sub-row (e.g. an expanded details <tr>) below rows that are expanded
+  renderSubComponent?: (row: Row<T>) => React.ReactNode;
 }
 
-const TableBody = <T,>({ table, isLoading, loaderRows, partialLoadingRows = 0 }: Props<T>) => {
+const TableBody = <T,>({ table, isLoading, loaderRows, partialLoadingRows = 0, renderSubComponent }: Props<T>) => {
   const rows = table.getRowModel().rows;
   const hasRows = rows.length > 0;
 
@@ -35,7 +38,10 @@ const TableBody = <T,>({ table, isLoading, loaderRows, partialLoadingRows = 0 }:
       ) : null}
       <tbody>
         {rows.map((row) => (
-          <TableBodyRow key={row.id} row={row} />
+          <Fragment key={row.id}>
+            <TableBodyRow row={row} />
+            {row.getIsExpanded() && renderSubComponent?.(row)}
+          </Fragment>
         ))}
       </tbody>
     </>

@@ -22,7 +22,7 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
   const pageIndex = table.getState().pagination.pageIndex;
   const pageCount = table.getPageCount();
   const pageSize = table.getState().pagination.pageSize;
-  const totalRows = table.getFilteredRowModel().rows.length;
+  const totalRows = table.getRowCount();
 
   if (totalRows <= PAGINATION_ROW_THRESHOLD && pageCount <= 1) return null;
 

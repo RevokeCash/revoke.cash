@@ -1,16 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { EU_VAT_RATES, type FeeRecord, formatVatRate, type RegionSummary } from '@revoke.cash/core/admin/revenue';
 import { getChainExplorerUrl, getChainName } from '@revoke.cash/core/chains';
+import { formatUsdCents } from '@revoke.cash/core/utils/formatting';
 import PDFDocument from 'pdfkit';
-import {
-  EU_VAT_RATES,
-  type FeeRecord,
-  formatDate,
-  formatPercent,
-  formatPeriodLabel,
-  formatUsd,
-  type RegionSummary,
-} from './utils';
 
 // Design constants
 const ACCENT_COLOR = '#fdb952'; // Revoke brand orange
@@ -30,19 +23,18 @@ interface Column {
   align?: 'left' | 'right' | 'center';
 }
 
-export interface GeneratePdfOptions {
+interface GeneratePdfOptions {
   title: string;
   records: FeeRecord[];
   summary: RegionSummary[];
   from: Date;
   to: Date;
-  outputPath: string;
 }
 
-export const generatePdf = ({ title, records, summary, from, to, outputPath }: GeneratePdfOptions): Promise<void> => {
+export const generatePdf = ({ title, records, summary, from, to }: GeneratePdfOptions): Promise<Buffer> => {
   const doc = new PDFDocument({ size: 'A4', margin: PAGE_MARGIN, bufferPages: true });
-  const stream = fs.createWriteStream(outputPath);
-  doc.pipe(stream);
+  const chunks: Buffer[] = [];
+  doc.on('data', (chunk) => chunks.push(chunk));
 
   const totalRevenue = summary.reduce((sum, r) => sum + r.revenue, 0);
   const totalVat = summary.reduce((sum, r) => sum + r.vatAmount, 0);
@@ -62,15 +54,15 @@ export const generatePdf = ({ title, records, summary, from, to, outputPath }: G
 
   for (let i = 0; i < summary.length; i++) {
     const row = summary[i];
-    y = ensureSpace(doc, 18, () => doc.addPage());
+    y = ensureSpace(doc, 18);
     y = drawTableRow(
       doc,
       summaryColumns,
       [
         row.region,
-        formatUsd(row.revenue),
-        row.vatRate > 0 ? formatPercent(row.vatRate) : '—',
-        row.vatRate > 0 ? formatUsd(row.vatAmount) : '—',
+        formatUsdCents(row.revenue),
+        row.vatRate > 0 ? formatVatRate(row.vatRate) : '—',
+        row.vatRate > 0 ? formatUsdCents(row.vatAmount) : '—',
       ],
       y,
       { bgColor: i % 2 === 0 ? '#FFFFFF' : '#F9FAFB' },
@@ -79,10 +71,10 @@ export const generatePdf = ({ title, records, summary, from, to, outputPath }: G
   }
 
   // Totals row
-  y = ensureSpace(doc, 24, () => doc.addPage());
+  y = ensureSpace(doc, 24);
   y += 2;
   drawLine(doc, PAGE_MARGIN, y, PAGE_MARGIN + CONTENT_WIDTH, TEXT_PRIMARY, 1);
-  y = drawTableRow(doc, summaryColumns, ['TOTAL', formatUsd(totalRevenue), '', formatUsd(totalVat)], y + 2, {
+  y = drawTableRow(doc, summaryColumns, ['TOTAL', formatUsdCents(totalRevenue), '', formatUsdCents(totalVat)], y + 2, {
     bold: true,
     bgColor: ACCENT_LIGHT,
   });
@@ -107,7 +99,7 @@ export const generatePdf = ({ title, records, summary, from, to, outputPath }: G
 
   for (let i = 0; i < records.length; i++) {
     const record = records[i];
-    y = ensureSpace(doc, 18, () => doc.addPage());
+    y = ensureSpace(doc, 18);
 
     // Re-draw header after page break
     if (y === PAGE_MARGIN) {
@@ -122,12 +114,12 @@ export const generatePdf = ({ title, records, summary, from, to, outputPath }: G
     const region = record.vatRegion?.trim().toUpperCase() ?? '—';
     const vatRate = EU_VAT_RATES[region]?.rate ?? 0;
     const vatAmount = Math.round((record.feeUsdCents * vatRate) / (1 + vatRate));
-    const vatLabel = vatRate > 0 ? `${formatUsd(vatAmount)} (${formatPercent(vatRate)})` : '';
+    const vatLabel = vatRate > 0 ? `${formatUsdCents(vatAmount)} (${formatVatRate(vatRate)})` : '';
 
     y = drawTableRow(
       doc,
       txColumns,
-      [formatDate(record.timestamp), chainName, txHash, region, formatUsd(record.feeUsdCents), vatLabel],
+      [formatDate(record.timestamp), chainName, txHash, region, formatUsdCents(record.feeUsdCents), vatLabel],
       y,
       {
         bgColor: i % 2 === 0 ? '#FFFFFF' : '#F9FAFB',
@@ -157,9 +149,9 @@ export const generatePdf = ({ title, records, summary, from, to, outputPath }: G
 
   doc.end();
 
-  return new Promise<void>((resolve, reject) => {
-    stream.on('finish', resolve);
-    stream.on('error', reject);
+  return new Promise<Buffer>((resolve, reject) => {
+    doc.on('end', () => resolve(Buffer.concat(chunks)));
+    doc.on('error', reject);
   });
 };
 
@@ -173,14 +165,10 @@ const drawLine = (doc: PDFKit.PDFDocument, x1: number, y: number, x2: number, co
   doc.strokeColor(color).lineWidth(width).moveTo(x1, y).lineTo(x2, y).stroke();
 };
 
-const ensureSpace = (doc: PDFKit.PDFDocument, needed: number, onPageBreak?: () => void): number => {
+const ensureSpace = (doc: PDFKit.PDFDocument, needed: number): number => {
   const pageBottom = PAGE_HEIGHT - PAGE_MARGIN - 15; // Reserve space for footer
   if (doc.y + needed > pageBottom) {
-    if (onPageBreak) {
-      onPageBreak();
-    } else {
-      doc.addPage();
-    }
+    doc.addPage();
     return PAGE_MARGIN;
   }
   return doc.y;
@@ -306,7 +294,7 @@ const drawInvoiceHeader = (
   doc.text(formatPeriodLabel(from, to), leftCol + 80, infoY);
   doc.text(new Date().toISOString().slice(0, 10), leftCol + 80, infoY + 22);
   doc.text(totalRecords.toLocaleString(), rightCol + 90, infoY);
-  doc.text(formatUsd(totalRevenue), rightCol + 90, infoY + 22);
+  doc.text(formatUsdCents(totalRevenue), rightCol + 90, infoY + 22);
 
   // Divider
   drawLine(doc, PAGE_MARGIN, infoY + 44, PAGE_MARGIN + CONTENT_WIDTH, BORDER_COLOR, 1);
@@ -317,4 +305,19 @@ const drawInvoiceHeader = (
 const drawSectionTitle = (doc: PDFKit.PDFDocument, title: string) => {
   doc.font('Helvetica-Bold').fontSize(12).fillColor(TEXT_PRIMARY).text(title);
   doc.moveDown(0.4);
+};
+
+const formatDate = (date: Date): string => {
+  return date
+    .toISOString()
+    .replace('T', ' ')
+    .replace(/\.\d{3}Z$/, ' UTC');
+};
+
+const formatPeriodLabel = (from: Date, to: Date): string => {
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const fromMonth = months[from.getUTCMonth()];
+  const toMonth = months[to.getUTCMonth()];
+  const year = from.getUTCFullYear();
+  return `${fromMonth} ${from.getUTCDate()} – ${toMonth} ${to.getUTCDate()}, ${year}`;
 };
