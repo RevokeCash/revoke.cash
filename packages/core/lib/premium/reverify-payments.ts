@@ -1,13 +1,12 @@
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import { getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { premiumPayments } from '@revoke.cash/core/db/schema/premium';
-import { acquireAdvisoryLock } from '@revoke.cash/core/db/utils';
 import { HOUR } from '@revoke.cash/core/utils/time';
 import { and, eq, gte, inArray, isNotNull, lte, ne } from 'drizzle-orm';
 import { type Hash, TransactionReceiptNotFoundError } from 'viem';
 import { getPaymentConfig } from './payment-config';
 import type { PremiumPaymentRecord } from './payments';
-import { rebuildSubscriptionFromPayments } from './subscriptions';
+import { transitionPaymentAndRebuild } from './subscriptions';
 import { findMatchingTransferTxHash } from './verify-payment';
 
 // We do not wait for confirmations before marking a payment as confirmed. Instead we re-verify recently confirmed
@@ -66,7 +65,7 @@ const reverifyPayment = async (payment: PremiumPaymentRecord): Promise<Reverific
   const transferExists = await isTransactionStillOnChain(payment.chainId, payment.matchedTxHash!);
 
   if (payment.status === 'reversed') {
-    if (transferExists && (await transitionPaymentAndRebuild(payment.id, 'reversed', 'confirmed'))) {
+    if (transferExists && (await transitionPaymentInTransaction(payment.id, 'reversed', 'confirmed'))) {
       return 'reconfirmed';
     }
     return 'intact';
@@ -85,8 +84,17 @@ const reverifyPayment = async (payment: PremiumPaymentRecord): Promise<Reverific
     return 'rematched';
   }
 
-  const reversalSucceeded = await transitionPaymentAndRebuild(payment.id, 'confirmed', 'reversed');
+  const reversalSucceeded = await transitionPaymentInTransaction(payment.id, 'confirmed', 'reversed');
   return reversalSucceeded ? 'reversed' : 'intact';
+};
+
+const transitionPaymentInTransaction = async (
+  paymentId: string,
+  fromStatus: 'confirmed' | 'reversed',
+  toStatus: 'confirmed' | 'reversed',
+): Promise<boolean> => {
+  const db = getTransactionalDb();
+  return db.transaction((trx) => transitionPaymentAndRebuild(trx, paymentId, fromStatus, toStatus));
 };
 
 const isTransactionStillOnChain = async (chainId: number, txHash: Hash): Promise<boolean> => {
@@ -115,40 +123,4 @@ const findReplacementTxHash = async (payment: PremiumPaymentRecord): Promise<Has
   });
 
   return existingTxUse ? null : matchedTxHash;
-};
-
-// Flips the payment between confirmed and reversed and replays the subscription's remaining
-// confirmed payments, so the subscription always reflects the payments that verifiably happened.
-const transitionPaymentAndRebuild = async (
-  paymentId: string,
-  fromStatus: 'confirmed' | 'reversed',
-  toStatus: 'confirmed' | 'reversed',
-): Promise<boolean> => {
-  const db = getTransactionalDb();
-
-  return db.transaction(async (trx) => {
-    // Lock the payment row so a concurrent reconciliation or sweep cannot interleave
-    const [lockedPayment] = await trx
-      .select({
-        status: premiumPayments.status,
-        subscriptionId: premiumPayments.subscriptionId,
-        ownerAddress: premiumPayments.ownerAddress,
-      })
-      .from(premiumPayments)
-      .where(eq(premiumPayments.id, paymentId))
-      .for('update');
-
-    if (lockedPayment?.status !== fromStatus) return false;
-
-    // The same lock findOrCreateSubscriptionForOwner takes, so the rebuild cannot race a renewal
-    await acquireAdvisoryLock(trx, `premium_subscription_owner:${lockedPayment.ownerAddress.toLowerCase()}`);
-
-    await trx.update(premiumPayments).set({ status: toStatus }).where(eq(premiumPayments.id, paymentId));
-
-    if (lockedPayment.subscriptionId) {
-      await rebuildSubscriptionFromPayments(trx, lockedPayment.subscriptionId);
-    }
-
-    return true;
-  });
 };

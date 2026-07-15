@@ -20,6 +20,7 @@ import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { usePremiumPlans } from 'lib/hooks/premium/usePremiumPlans';
 import { type SubscribeStatus, useSubscribe } from 'lib/hooks/premium/useSubscribe';
 import analytics from 'lib/utils/analytics';
+import { getCancellationRefund, hasPendingRefundRequest } from 'lib/utils/cancellation';
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
@@ -216,6 +217,7 @@ const SubscriptionBannerSection = ({
           planName={activeSubscription.plan.name}
           endsAt={activeSubscription.endsAt}
           slots={activeSubscription.slots}
+          cancellationRequested={hasPendingRefundRequest(activeSubscription.payments)}
         />
       )}
       {!activeSubscription && expiredSubscription && <ExpiredSubscriptionBanner subscription={expiredSubscription} />}
@@ -241,11 +243,12 @@ interface SubscriptionBannerProps {
   endsAt: string;
   grantedBy?: Address;
   slots?: { used: number; max: number };
+  cancellationRequested?: boolean;
 }
 
 const EXPIRY_WARNING_DAYS = 30;
 
-const SubscriptionBanner = ({ planName, endsAt, grantedBy, slots }: SubscriptionBannerProps) => {
+const SubscriptionBanner = ({ planName, endsAt, grantedBy, slots, cancellationRequested }: SubscriptionBannerProps) => {
   const t = useTranslations();
 
   const daysUntilExpiry = Math.max(Math.ceil((new Date(endsAt).getTime() - Date.now()) / DAY), 0);
@@ -270,6 +273,9 @@ const SubscriptionBanner = ({ planName, endsAt, grantedBy, slots }: Subscription
         <StatusLabel status={isExpiringSoon ? 'warning' : 'success'}>
           {isExpiringSoon ? t('account.subscription.expires_soon') : t('account.subscription.active')}
         </StatusLabel>
+        {cancellationRequested && (
+          <StatusLabel status="warning">{t('account.subscription.cancellation.requested')}</StatusLabel>
+        )}
       </div>
       <p className="text-sm text-zinc-600 dark:text-zinc-400">{bannerStrings.filter(Boolean).join(' • ')}</p>
     </div>
@@ -279,8 +285,13 @@ const SubscriptionBanner = ({ planName, endsAt, grantedBy, slots }: Subscription
 const ExpiredSubscriptionBanner = ({ subscription }: { subscription: PremiumSubscription }) => {
   const t = useTranslations();
 
+  // A subscription whose latest payment was refunded ended by cancellation, not by running out
+  const cancellationRefund = getCancellationRefund(subscription.payments);
+
   const bannerStrings = [
-    t('account.subscription.expired_on', { date: subscription.endsAt.slice(0, 10) }),
+    cancellationRefund
+      ? t('account.subscription.cancellation.cancelled_on', { date: cancellationRefund.processedAt.slice(0, 10) })
+      : t('account.subscription.expired_on', { date: subscription.endsAt.slice(0, 10) }),
     isUltimatePlan(subscription.plan) && t('account.subscription.expired_ultimate_stopped'),
     t('account.subscription.expired_preserved'),
   ];
@@ -289,7 +300,12 @@ const ExpiredSubscriptionBanner = ({ subscription }: { subscription: PremiumSubs
     <div className="flex flex-col gap-2 rounded-md bg-yellow-50 dark:bg-yellow-950/20 p-4 border border-yellow-200 dark:border-yellow-900">
       <div className="flex items-center gap-2">
         <span className="font-medium">{subscription.plan.name}</span>
-        <StatusLabel status="warning">{t('account.subscription.expired')}</StatusLabel>
+        <StatusLabel status="warning">
+          {cancellationRefund ? t('account.subscription.cancellation.cancelled') : t('account.subscription.expired')}
+        </StatusLabel>
+        {hasPendingRefundRequest(subscription.payments) && (
+          <StatusLabel status="warning">{t('account.subscription.cancellation.requested')}</StatusLabel>
+        )}
       </div>
       <p className="text-sm text-zinc-600 dark:text-zinc-400">{bannerStrings.filter(Boolean).join(' ')}</p>
     </div>
@@ -354,6 +370,16 @@ const PaymentForm = ({
           </p>
         </div>
       )}
+
+      <p className="text-xs text-zinc-500 dark:text-zinc-400">
+        {t.rich('account.subscription.legal_notice', {
+          'terms-link': (children) => (
+            <Href href="/terms" router underline="always">
+              {children}
+            </Href>
+          ),
+        })}
+      </p>
 
       <div className="flex flex-wrap items-center gap-3">
         {status === 'confirmed' ? (

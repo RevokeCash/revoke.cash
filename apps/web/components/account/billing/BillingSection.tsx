@@ -4,9 +4,11 @@ import type { PremiumSubscription, SubscriptionPayment } from '@revoke.cash/core
 import Card, { CardTitle } from 'components/common/Card';
 import Table from 'components/common/table/Table';
 import { useTable } from 'lib/hooks/useTable';
+import { getPaymentRefundStatus } from 'lib/utils/cancellation';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { columns } from './columns';
+import PaymentDetailsRow from './PaymentDetailsRow';
 
 interface Props {
   subscriptions: PremiumSubscription[];
@@ -23,7 +25,12 @@ const BillingSection = ({ subscriptions, isLoading }: Props) => {
     [subscriptions],
   );
 
-  const table = useTable({ data, columns });
+  // Rows only expand when there are refund details to show; fully final payments have none
+  const table = useTable({
+    data,
+    columns,
+    getRowCanExpand: (row) => getPaymentRefundStatus(row.original) !== 'final',
+  });
 
   return (
     <Card header={<CardTitle title={t('account.billing.title')} />} className="p-0">
@@ -32,6 +39,8 @@ const BillingSection = ({ subscriptions, isLoading }: Props) => {
         loading={isLoading}
         error={null}
         emptyChildren={t('account.billing.no_payments')}
+        renderSubComponent={(row) => <PaymentDetailsRow payment={row.original} />}
+        expandOnRowClick
         className="border-none"
       />
     </Card>

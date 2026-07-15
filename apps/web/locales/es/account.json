@@ -113,9 +113,21 @@
       "amount": "Monto",
       "date": "Fecha",
       "plan": "Plan",
+      "status": "Estado",
       "transaction": "Transacción"
     },
+    "details": {
+      "refund_available": "Todavía puedes cancelar este pago y recibir un reembolso completo.",
+      "refund_transaction": "Transacción de reembolso",
+      "requested_at": "Solicitado el"
+    },
     "no_payments": "Aún no hay historial de pagos.",
+    "status": {
+      "final": "Definitivo",
+      "pending_refund": "Reembolso pendiente",
+      "refunded": "Reembolsado",
+      "within_refund_window": "En plazo de reembolso"
+    },
     "title": "Facturación"
   },
   "coverage": {
@@ -170,6 +182,21 @@
       "try_again": "Intentar otra vez",
       "upgrade": "Actualizar"
     },
+    "cancellation": {
+      "cancelled": "Cancelada",
+      "cancelled_on": "Cancelada el {date}. Tu pago ha sido reembolsado.",
+      "confirm_button": "Solicitar reembolso",
+      "download_confirmation": "Descargar confirmación",
+      "error_fallback": "No se pudo solicitar el reembolso",
+      "modal_access_notice": "Mantendrás el acceso a tu suscripción hasta que se procese el reembolso. El reembolso se envía a la cartera con la que pagaste.",
+      "modal_description": "Esto cancela tu pago de {planName} y lo reembolsa íntegramente. Si tienes otros pagos, tu suscripción se recalcula sin este.",
+      "modal_title": "Cancelar suscripción",
+      "network": "Red",
+      "refund_amount": "Importe del reembolso",
+      "refund_destination": "Destino del reembolso",
+      "requested": "Cancelación solicitada",
+      "success": "Reembolso solicitado. Mantendrás el acceso hasta que se procese el reembolso."
+    },
     "downgrade_not_supported": "No puedes bajar de categoría una suscripción activa.",
     "expired": "Expired",
     "expired_on": "Expired on {date}.",
@@ -178,6 +205,7 @@
     "expires_in": "Expires in {days, plural, =1 {1 day} other {# days}} ({date})",
     "expires_soon": "Expires soon",
     "granted_by": "Concedido por {address}",
+    "legal_notice": "Al suscribirte, aceptas nuestros <terms-link>Términos de Servicio</terms-link>.",
     "next_setup_auto_revoke": "Next step: set up Auto-Revoking",
     "no_subscription": "No tienes una suscripción premium activa. Suscríbete a continuación para empezar. <premium-link>Más información sobre Premium</premium-link>.",
     "optional_own_subscription": "Ya tienes acceso gracias a una suscripción que te han concedido. Si quieres, aún puedes suscribirte a tu propio plan.",

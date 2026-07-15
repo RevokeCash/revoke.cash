@@ -16,7 +16,15 @@ import type { AnyPgColumn } from 'drizzle-orm/pg-core';
 import type { Address } from 'viem';
 import { isUltimatePlan, type PremiumPlan } from './plans';
 
+export interface SubscriptionPaymentRefundRequest {
+  refundAmountUsdCents: number;
+  requestedAt: string;
+  processedAt: string | null;
+  refundTxHash: string | null;
+}
+
 export interface SubscriptionPayment {
+  id: string;
   amountUsdCents: number;
   chainId: number;
   tokenSymbol: string;
@@ -24,6 +32,7 @@ export interface SubscriptionPayment {
   paidAt: string | null;
   planId: string;
   planName: string;
+  refundRequest: SubscriptionPaymentRefundRequest | null;
 }
 
 export interface PremiumSubscription {
@@ -114,9 +123,23 @@ export const getOwnerSubscriptions = async (ownerAddress: Address): Promise<Prem
       },
       addresses: { columns: { address: true } },
       payments: {
-        columns: { amountUsdCents: true, chainId: true, tokenSymbol: true, matchedTxHash: true, confirmedAt: true },
-        with: { plan: { columns: { id: true, name: true } } },
-        where: (payments, { eq }) => eq(payments.status, 'confirmed'),
+        columns: {
+          id: true,
+          amountUsdCents: true,
+          chainId: true,
+          tokenSymbol: true,
+          matchedTxHash: true,
+          confirmedAt: true,
+        },
+        with: {
+          plan: { columns: { id: true, name: true } },
+          refundRequests: {
+            columns: { refundAmountUsdCents: true, createdAt: true, processedAt: true, refundTxHash: true },
+            where: (requests, { isNull }) => isNull(requests.dismissedAt),
+          },
+        },
+        // Refunded payments stay visible so the billing history keeps the user's record of the refund
+        where: (payments, { inArray }) => inArray(payments.status, ['confirmed', 'refunded']),
         orderBy: (payments, { desc }) => [desc(payments.confirmedAt)],
       },
     },
@@ -125,15 +148,29 @@ export const getOwnerSubscriptions = async (ownerAddress: Address): Promise<Prem
   return subscriptions.map((subscription) => {
     const addresses = subscription.addresses.map((entry) => entry.address);
 
-    const payments: SubscriptionPayment[] = subscription.payments.map((payment) => ({
-      amountUsdCents: payment.amountUsdCents,
-      chainId: payment.chainId,
-      tokenSymbol: payment.tokenSymbol,
-      txHash: payment.matchedTxHash,
-      paidAt: payment.confirmedAt?.toISOString() ?? null,
-      planId: payment.plan.id,
-      planName: payment.plan.name,
-    }));
+    const payments: SubscriptionPayment[] = subscription.payments.map((payment) => {
+      // At most one non-dismissed request exists per payment (partial unique index)
+      const [refundRequest] = payment.refundRequests;
+
+      return {
+        id: payment.id,
+        amountUsdCents: payment.amountUsdCents,
+        chainId: payment.chainId,
+        tokenSymbol: payment.tokenSymbol,
+        txHash: payment.matchedTxHash,
+        paidAt: payment.confirmedAt?.toISOString() ?? null,
+        planId: payment.plan.id,
+        planName: payment.plan.name,
+        refundRequest: refundRequest
+          ? {
+              refundAmountUsdCents: refundRequest.refundAmountUsdCents,
+              requestedAt: refundRequest.createdAt.toISOString(),
+              processedAt: refundRequest.processedAt?.toISOString() ?? null,
+              refundTxHash: refundRequest.refundTxHash,
+            }
+          : null,
+      };
+    });
 
     return {
       id: subscription.id,
@@ -309,7 +346,7 @@ export const rebuildSubscriptionFromPayments = async (
       eq(premiumPayments.status, 'confirmed'),
       isNotNull(premiumPayments.confirmedAt),
     ),
-    orderBy: (payments, { asc }) => [asc(payments.confirmedAt)],
+    orderBy: (payments, { asc }) => [asc(payments.confirmedAt), asc(payments.id)],
     with: { plan: { columns: { durationDays: true, priceUsdCents: true } } },
   });
 
@@ -345,6 +382,40 @@ export const rebuildSubscriptionFromPayments = async (
   if (rebuiltSubscription.endsAt.getTime() > Date.now()) {
     await wakeSubscriptionInactiveActions(trx, subscriptionId);
   }
+};
+
+// Transitions a payment between verification-driven statuses and replays the subscription's remaining
+// confirmed payments, so the subscription always reflects the payments that verifiably happened.
+// 'refunded' (EU right of withdrawal) is deliberately only a destination: nothing transitions out of it.
+export const transitionPaymentAndRebuild = async (
+  trx: DatabaseTransaction,
+  paymentId: string,
+  fromStatus: 'confirmed' | 'reversed',
+  toStatus: 'confirmed' | 'reversed' | 'refunded',
+): Promise<boolean> => {
+  // Lock the payment row so a concurrent reconciliation or sweep cannot interleave
+  const [lockedPayment] = await trx
+    .select({
+      status: premiumPayments.status,
+      subscriptionId: premiumPayments.subscriptionId,
+      ownerAddress: premiumPayments.ownerAddress,
+    })
+    .from(premiumPayments)
+    .where(eq(premiumPayments.id, paymentId))
+    .for('update');
+
+  if (lockedPayment?.status !== fromStatus) return false;
+
+  // The same lock findOrCreateSubscriptionForOwner takes, so the rebuild cannot race a renewal
+  await acquireAdvisoryLock(trx, `premium_subscription_owner:${lockedPayment.ownerAddress.toLowerCase()}`);
+
+  await trx.update(premiumPayments).set({ status: toStatus }).where(eq(premiumPayments.id, paymentId));
+
+  if (lockedPayment.subscriptionId) {
+    await rebuildSubscriptionFromPayments(trx, lockedPayment.subscriptionId);
+  }
+
+  return true;
 };
 
 const applyPaymentToSubscription = (current: SubscriptionPlanState, payment: AppliedPayment): SubscriptionPlanState => {

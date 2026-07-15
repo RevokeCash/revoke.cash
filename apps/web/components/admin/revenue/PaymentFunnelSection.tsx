@@ -43,13 +43,18 @@ const columns = [
     cell: (info) => (
       <div
         className={twMerge(
-          'py-1.5 text-right text-sm',
+          'py-1.5 pr-4 text-right text-sm',
           info.getValue() > 0 && 'text-red-600 dark:text-red-400 font-medium',
         )}
       >
         {info.getValue()}
       </div>
     ),
+  }),
+  columnHelper.accessor('refunded', {
+    id: 'refunded',
+    header: () => <div className="text-right">Refunded</div>,
+    cell: (info) => <div className="py-1.5 text-right text-sm">{info.getValue()}</div>,
   }),
 ];
 

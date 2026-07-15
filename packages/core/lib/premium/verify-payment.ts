@@ -32,6 +32,7 @@ interface ReconcilePendingPaymentsResult {
   expired: number;
   failed: number;
   reversed: number;
+  refunded: number;
   errors: number;
 }
 
@@ -54,6 +55,7 @@ export const reconcilePendingPayments = async (limit = 20): Promise<ReconcilePen
     expired: 0,
     failed: 0,
     reversed: 0,
+    refunded: 0,
     errors: 0,
   };
 

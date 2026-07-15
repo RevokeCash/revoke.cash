@@ -20,7 +20,7 @@ const isRevenueEligibleBatchGroup = (group: BatchRevokeDayGroup): boolean => !gr
 interface RevenuePayment {
   createdAt: string;
   confirmedAt: string | null;
-  status: 'pending' | 'confirmed' | 'expired' | 'failed' | 'reversed';
+  status: 'pending' | 'confirmed' | 'expired' | 'failed' | 'reversed' | 'refunded';
   chainId: number;
   planId: string;
   planName: string | null;
@@ -229,13 +229,14 @@ export interface PaymentFunnelPoint {
   expired: number;
   failed: number;
   reversed: number;
+  refunded: number;
 }
 
 export const deriveFunnel = (data: RevenueData, months: number): PaymentFunnelPoint[] => {
   const pointsByMonth = new Map<string, PaymentFunnelPoint>(
     listUtcMonths(months).map((month) => [
       month,
-      { month, pending: 0, confirmed: 0, expired: 0, failed: 0, reversed: 0 },
+      { month, pending: 0, confirmed: 0, expired: 0, failed: 0, reversed: 0, refunded: 0 },
     ]),
   );
 

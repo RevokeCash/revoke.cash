@@ -1,6 +1,6 @@
 # Terms and Conditions
 
-_Last updated July 7, 2026_
+_Last updated July 15, 2026_
 
 The following terms and conditions (**Terms**) govern Your access and use of the services, browser extension and website offered over the internet and blockchain by Revoke.cash (**Revoke.cash, We, Us, Our**) on [https://revoke.cash](/). Revoke.cash provides services, a website and a browser extension ("**Services**") that enables users to revoke token approvals they have granted with their cryptocurrency wallet and provides additional security advice for crypto users.
 
@@ -104,11 +104,14 @@ The use of Our Services is subject to the Terms set forth below. By visiting thi
     4. You are solely responsible for any fees incurred in connection with Your use of the Services, including both service fees and network fees.
     5. Certain paid plans include a periodic network fee (gas) allowance for transactions executed through Automated Revoking. This allowance has no monetary value outside the Services, cannot be redeemed or paid out, and any unused portion does not carry over unless expressly stated otherwise. We may defer or decline to execute transactions that would exceed the applicable allowance or per-transaction limits.
 
-11. **Refunds**
+11. **Refunds and right of withdrawal**
     1. Any payments, fees or donations made through or to the Services are final and non-refundable, except where required by applicable law.
     2. We do not provide refunds for any transactions, including but not limited to voluntary donations, service fees, or mistaken transfers.
     3. Users are solely responsible for verifying the accuracy of recipient addresses and transaction details prior to initiating any transaction. Blockchain transactions are irreversible, and We are unable to reverse, cancel or recover funds once they have been sent.
     4. We do not process or investigate refund requests for transactions after a reasonable period of time.
+    5. **Right of withdrawal** - If You are a consumer residing in the European Union, the European Economic Area or the United Kingdom, You have the statutory right to withdraw from a paid subscription without giving any reason within 14 days of the day the subscription was purchased. To exercise this right, You must inform Us of Your decision to withdraw by an unequivocal statement before the withdrawal period has expired, by e-mailing rosco@revoke.cash or by using the cancellation option in the Billing section of Your account page. You may use the model withdrawal form set out in article 11.7, but this is not obligatory.
+    6. By purchasing a subscription, You expressly request that We start providing the subscription immediately, before the end of the withdrawal period, and You acknowledge that You lose Your right of withdrawal once the subscription has been fully performed (i.e. once the subscription period has ended). If You withdraw within the 14-day withdrawal period, We will refund the amount You paid for the subscription. Where permitted by applicable law, We may reduce the refund by an amount proportionate to the part of the subscription period that had already elapsed when You informed Us of Your withdrawal; unless We inform You otherwise when You withdraw, We refund the full amount. We will issue the refund without undue delay and no later than 14 days after the day on which We were informed of Your withdrawal. Unless expressly agreed otherwise, refunds are made in the same token, on the same network, and to the same wallet address used for the original payment.
+    7. **Model withdrawal form** - (complete and return this form only if You wish to withdraw from the contract) To: Kalis Software B.V. (Revoke.cash), rosco@revoke.cash. I hereby give notice that I withdraw from my contract for the provision of the following service: Revoke Premium / Revoke Ultimate subscription (delete as appropriate), purchased on [date], paid from wallet address [address]. Name of consumer, Date.
 
 12. **KYC and anti-money laundering**
 

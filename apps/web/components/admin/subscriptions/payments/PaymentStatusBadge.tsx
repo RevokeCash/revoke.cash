@@ -13,6 +13,7 @@ const STATUS_STYLES: Record<PremiumPaymentStatus, Status> = {
   expired: 'neutral',
   failed: 'danger',
   reversed: 'danger',
+  refunded: 'neutral',
 };
 
 const PaymentStatusBadge = ({ status, chainId }: Props) => (

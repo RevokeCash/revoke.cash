@@ -113,9 +113,21 @@
       "amount": "金額",
       "date": "日付",
       "plan": "プラン",
+      "status": "ステータス",
       "transaction": "取引"
     },
+    "details": {
+      "refund_available": "このお支払いはまだキャンセルでき、全額返金を受け取れます。",
+      "refund_transaction": "返金取引",
+      "requested_at": "リクエスト日"
+    },
     "no_payments": "支払い履歴はまだありません。",
+    "status": {
+      "final": "確定",
+      "pending_refund": "返金待ち",
+      "refunded": "返金済み",
+      "within_refund_window": "返金期間内"
+    },
     "title": "請求"
   },
   "coverage": {
@@ -170,6 +182,21 @@
       "try_again": "もう一度やり直してください",
       "upgrade": "アップグレード"
     },
+    "cancellation": {
+      "cancelled": "キャンセル済み",
+      "cancelled_on": "{date} にキャンセルされました。お支払いは返金されました。",
+      "confirm_button": "返金をリクエスト",
+      "download_confirmation": "確認書をダウンロード",
+      "error_fallback": "返金のリクエストに失敗しました",
+      "modal_access_notice": "返金が処理されるまで、サブスクリプションへのアクセスは維持されます。返金はお支払いに使用したウォレットに送金されます。",
+      "modal_description": "{planName} のお支払いをキャンセルし、全額返金します。他のお支払いがある場合、サブスクリプションはこのお支払いを除いて再計算されます。",
+      "modal_title": "サブスクリプションのキャンセル",
+      "network": "ネットワーク",
+      "refund_amount": "返金額",
+      "refund_destination": "返金先",
+      "requested": "キャンセル申請済み",
+      "success": "返金をリクエストしました。返金が処理されるまでアクセスは維持されます。"
+    },
     "downgrade_not_supported": "有効なサブスクリプションをダウングレードすることはできません。",
     "expired": "Expired",
     "expired_on": "Expired on {date}.",
@@ -178,6 +205,7 @@
     "expires_in": "Expires in {days, plural, =1 {1 day} other {# days}} ({date})",
     "expires_soon": "Expires soon",
     "granted_by": "Granted by {address}",
+    "legal_notice": "サブスクリプションに登録することで、<terms-link>利用規約</terms-link>に同意したものとみなされます。",
     "next_setup_auto_revoke": "Next step: set up Auto-Revoking",
     "no_subscription": "有効なプレミアムサブスクリプションはありません。以下から購読して始めましょう。",
     "optional_own_subscription": "You already have access through a granted subscription. You can still subscribe for your own plan if you'd like.",

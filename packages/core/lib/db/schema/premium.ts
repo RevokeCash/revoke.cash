@@ -24,6 +24,7 @@ export const premiumPaymentStatusEnum = premiumSchema.enum('payment_status', [
   'expired',
   'failed',
   'reversed',
+  'refunded',
 ]);
 export const premiumPlanTierEnum = premiumSchema.enum('plan_tier', ['premium', 'ultimate']);
 
@@ -136,12 +137,37 @@ export const premiumSubscriptionAddresses = premiumSchema.table(
   ],
 );
 
+export const premiumRefundRequests = premiumSchema.table(
+  'refund_requests',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    paymentId: uuid('payment_id')
+      .notNull()
+      .references(() => premiumPayments.id),
+    refundAmountUsdCents: integer('refund_amount_usd_cents').notNull(),
+    refundTxHash: text('refund_tx_hash').$type<Hash>(),
+    processedAt: timestamp('processed_at', { withTimezone: true }),
+    dismissedAt: timestamp('dismissed_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [
+    uniqueIndex('idx_refund_requests_payment_unique').on(table.paymentId).where(sql`${table.dismissedAt} IS NULL`),
+    uniqueIndex('idx_refund_requests_refund_tx_hash_unique')
+      .on(table.refundTxHash)
+      .where(sql`${table.refundTxHash} IS NOT NULL`),
+  ],
+);
+
 export const premiumPlansRelations = relations(premiumPlans, ({ many }) => ({
   subscriptions: many(premiumSubscriptions),
   payments: many(premiumPayments),
 }));
 
-export const premiumPaymentsRelations = relations(premiumPayments, ({ one }) => ({
+export const premiumPaymentsRelations = relations(premiumPayments, ({ one, many }) => ({
   plan: one(premiumPlans, {
     fields: [premiumPayments.planId, premiumPayments.planVersion],
     references: [premiumPlans.id, premiumPlans.version],
@@ -149,6 +175,14 @@ export const premiumPaymentsRelations = relations(premiumPayments, ({ one }) => 
   subscription: one(premiumSubscriptions, {
     fields: [premiumPayments.subscriptionId],
     references: [premiumSubscriptions.id],
+  }),
+  refundRequests: many(premiumRefundRequests),
+}));
+
+export const premiumRefundRequestsRelations = relations(premiumRefundRequests, ({ one }) => ({
+  payment: one(premiumPayments, {
+    fields: [premiumRefundRequests.paymentId],
+    references: [premiumPayments.id],
   }),
 }));
 

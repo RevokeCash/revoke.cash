@@ -8,11 +8,12 @@ import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import EvaluationBacklogPanel from './EvaluationBacklogPanel';
 import IndexerProblemsPanel from './IndexerProblemsPanel';
+import RefundRequestsPanel from './refunds/RefundRequestsPanel';
 import StuckPaymentsPanel from './StuckPaymentsPanel';
 
 const PROBLEM_ACTION_STATUSES = ['failed', 'blocked_budget'];
 
-type HealthPanel = 'evaluation-backlog' | 'indexer-disabled' | 'indexer-failing' | 'stuck-payments';
+type HealthPanel = 'evaluation-backlog' | 'indexer-disabled' | 'indexer-failing' | 'stuck-payments' | 'pending-refunds';
 
 const HealthSection = () => {
   const { data, isLoading } = useAdminHealth();
@@ -28,7 +29,7 @@ const HealthSection = () => {
     >
       {data && (
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
             <HealthTile
               label="Evaluation backlog"
               count={data.evaluationBacklogCount}
@@ -57,12 +58,20 @@ const HealthSection = () => {
               isOpen={openPanel === 'stuck-payments'}
               onClick={() => togglePanel('stuck-payments')}
             />
+            <HealthTile
+              label="Pending refunds"
+              count={data.pendingRefundRequestCount}
+              warnAbove={0}
+              isOpen={openPanel === 'pending-refunds'}
+              onClick={() => togglePanel('pending-refunds')}
+            />
           </div>
 
           <EvaluationBacklogPanel isOpen={openPanel === 'evaluation-backlog'} />
           <IndexerProblemsPanel kind="disabled" isOpen={openPanel === 'indexer-disabled'} />
           <IndexerProblemsPanel kind="failing" isOpen={openPanel === 'indexer-failing'} />
           <StuckPaymentsPanel isOpen={openPanel === 'stuck-payments'} />
+          <RefundRequestsPanel isOpen={openPanel === 'pending-refunds'} />
 
           <div className="flex flex-wrap gap-2">
             {data.actionCounts.map((entry) => (

@@ -19,6 +19,8 @@ interface Props<T> {
   partialLoadingRows?: number;
   // Renders a full-width sub-row (e.g. an expanded details <tr>) below rows that are expanded
   renderSubComponent?: (row: Row<T>) => React.ReactNode;
+  // Makes expandable rows toggle their expansion when clicked anywhere outside an interactive element
+  expandOnRowClick?: boolean;
   className?: string;
 }
 
@@ -30,6 +32,7 @@ const Table = <T,>({
   loaderRows,
   partialLoadingRows,
   renderSubComponent,
+  expandOnRowClick,
   className,
 }: Props<T>) => {
   const classes = {
@@ -53,6 +56,7 @@ const Table = <T,>({
               loaderRows={loaderRows}
               partialLoadingRows={partialLoadingRows}
               renderSubComponent={renderSubComponent}
+              expandOnRowClick={expandOnRowClick}
             />
           )}
         </table>

@@ -4,6 +4,7 @@ import { type DatabaseWriter, getDb } from '@revoke.cash/core/db/client';
 import { autoRevokeActions } from '@revoke.cash/core/db/schema/auto-revoke';
 import { indexerAllowanceState, indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
 import { premiumPayments } from '@revoke.cash/core/db/schema/premium';
+import { getPendingRefundRequestCount } from '@revoke.cash/core/premium/refunds';
 import { activeSubscriptionsQuery } from '@revoke.cash/core/premium/subscriptions';
 import { MINUTE } from '@revoke.cash/core/utils/time';
 import { and, asc, count, desc, eq, exists, gt, inArray, isNotNull, isNull, lt, or, sql } from 'drizzle-orm';
@@ -22,6 +23,8 @@ export interface AdminHealth {
   indexerFailingCount: number;
   // Pending payments past their quote expiry that the reconcile cron has not yet touched
   pendingPaymentsPastExpiryCount: number;
+  // Refund requests (EU right of withdrawal) awaiting manual processing; refunds are due within 14 days
+  pendingRefundRequestCount: number;
 }
 
 // Pending payments are expired by the reconcile cron (every 5 minutes), so anything pending
@@ -57,7 +60,7 @@ const stuckPendingPaymentConditions = () =>
 export const getAdminHealth = async (): Promise<AdminHealth> => {
   const db = getDb();
 
-  const [actionRows, [evaluationRow], [indexerDisabledRow], [indexerFailingRow], [pendingPaymentsRow]] =
+  const [actionRows, [evaluationRow], [indexerDisabledRow], [indexerFailingRow], [pendingPaymentsRow], refunds] =
     await Promise.all([
       db
         .select({ status: autoRevokeActions.status, count: sql<number>`count(*)::int` })
@@ -67,6 +70,7 @@ export const getAdminHealth = async (): Promise<AdminHealth> => {
       db.select({ count: count() }).from(indexerEventsState).where(indexerProblemConditions('disabled')),
       db.select({ count: count() }).from(indexerEventsState).where(indexerProblemConditions('failing')),
       db.select({ count: count() }).from(premiumPayments).where(stuckPendingPaymentConditions()),
+      getPendingRefundRequestCount(),
     ]);
 
   return {
@@ -75,6 +79,7 @@ export const getAdminHealth = async (): Promise<AdminHealth> => {
     indexerDisabledCount: indexerDisabledRow.count,
     indexerFailingCount: indexerFailingRow.count,
     pendingPaymentsPastExpiryCount: pendingPaymentsRow.count,
+    pendingRefundRequestCount: refunds,
   };
 };
 

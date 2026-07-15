@@ -1,20 +1,22 @@
-import fs from 'node:fs';
-import path from 'node:path';
 import { EU_VAT_RATES, type FeeRecord, formatVatRate, type RegionSummary } from '@revoke.cash/core/admin/revenue';
 import { getChainExplorerUrl, getChainName } from '@revoke.cash/core/chains';
 import { formatUsdCents } from '@revoke.cash/core/utils/formatting';
+import {
+  ACCENT_LIGHT,
+  BORDER_COLOR,
+  CONTENT_WIDTH,
+  drawAccentBar,
+  drawBrandHeader,
+  drawLine,
+  drawPageFooters,
+  drawSectionTitle,
+  ensureSpace,
+  formatPdfDate,
+  PAGE_MARGIN,
+  TEXT_PRIMARY,
+  TEXT_SECONDARY,
+} from 'lib/pdf';
 import PDFDocument from 'pdfkit';
-
-// Design constants
-const ACCENT_COLOR = '#fdb952'; // Revoke brand orange
-const ACCENT_LIGHT = '#FEF7EC'; // Light orange tint
-const TEXT_PRIMARY = '#111827'; // Gray-900
-const TEXT_SECONDARY = '#6B7280'; // Gray-500
-const BORDER_COLOR = '#E5E7EB'; // Gray-200
-const PAGE_MARGIN = 50;
-const PAGE_WIDTH = 595.28; // A4
-const PAGE_HEIGHT = 841.89; // A4
-const CONTENT_WIDTH = PAGE_WIDTH - PAGE_MARGIN * 2;
 
 interface Column {
   label: string;
@@ -119,7 +121,7 @@ export const generatePdf = ({ title, records, summary, from, to }: GeneratePdfOp
     y = drawTableRow(
       doc,
       txColumns,
-      [formatDate(record.timestamp), chainName, txHash, region, formatUsdCents(record.feeUsdCents), vatLabel],
+      [formatPdfDate(record.timestamp), chainName, txHash, region, formatUsdCents(record.feeUsdCents), vatLabel],
       y,
       {
         bgColor: i % 2 === 0 ? '#FFFFFF' : '#F9FAFB',
@@ -129,23 +131,7 @@ export const generatePdf = ({ title, records, summary, from, to }: GeneratePdfOp
     doc.y = y;
   }
 
-  // Draw page footers on all buffered pages
-  const { start, count: totalPages } = doc.bufferedPageRange();
-  for (let i = start; i < start + totalPages; i++) {
-    doc.switchToPage(i);
-    const savedBottomMargin = doc.page.margins.bottom;
-    doc.page.margins.bottom = 0;
-    doc
-      .font('Helvetica')
-      .fontSize(7)
-      .fillColor(TEXT_SECONDARY)
-      .text(`Revoke.cash — Page ${i + 1}/${totalPages}`, PAGE_MARGIN, PAGE_HEIGHT - 30, {
-        width: CONTENT_WIDTH,
-        align: 'center',
-        lineBreak: false,
-      });
-    doc.page.margins.bottom = savedBottomMargin;
-  }
+  drawPageFooters(doc);
 
   doc.end();
 
@@ -156,23 +142,6 @@ export const generatePdf = ({ title, records, summary, from, to }: GeneratePdfOp
 };
 
 // --- PDF Drawing Helpers ---
-
-const drawAccentBar = (doc: PDFKit.PDFDocument) => {
-  doc.rect(0, 0, PAGE_WIDTH, 6).fill(ACCENT_COLOR);
-};
-
-const drawLine = (doc: PDFKit.PDFDocument, x1: number, y: number, x2: number, color: string, width = 0.5) => {
-  doc.strokeColor(color).lineWidth(width).moveTo(x1, y).lineTo(x2, y).stroke();
-};
-
-const ensureSpace = (doc: PDFKit.PDFDocument, needed: number): number => {
-  const pageBottom = PAGE_HEIGHT - PAGE_MARGIN - 15; // Reserve space for footer
-  if (doc.y + needed > pageBottom) {
-    doc.addPage();
-    return PAGE_MARGIN;
-  }
-  return doc.y;
-};
 
 const drawTableHeaderRow = (doc: PDFKit.PDFDocument, columns: Column[], y: number): number => {
   doc.rect(PAGE_MARGIN, y, CONTENT_WIDTH, 20).fill(ACCENT_LIGHT);
@@ -238,41 +207,9 @@ const drawInvoiceHeader = (
   totalRecords: number,
   totalRevenue: number,
 ) => {
-  const headerY = PAGE_MARGIN;
-
-  // Accent bar at top
-  drawAccentBar(doc);
-
-  // Logo
-  const logoPath = path.join(process.cwd(), 'public/assets/images/revoke-icon-orange-black.png');
-  if (fs.existsSync(logoPath)) {
-    doc.image(logoPath, PAGE_MARGIN, headerY + 4, { width: 30, height: 30 });
-  }
-
-  // Company name (offset for logo)
-  doc
-    .font('Helvetica-Bold')
-    .fontSize(22)
-    .fillColor(TEXT_PRIMARY)
-    .text('Revoke.cash', PAGE_MARGIN + 36, headerY + 10);
-
-  // Company info (right side)
-  const rightBlockX = PAGE_MARGIN + 300;
-  const rightBlockWidth = CONTENT_WIDTH - 300;
-
-  const companyInfo = process.env.INVOICE_COMPANY_INFO;
-  if (companyInfo) {
-    const lines = companyInfo.split('\\n');
-    doc.font('Helvetica-Bold').fontSize(8).fillColor(TEXT_PRIMARY);
-    doc.text(lines[0], rightBlockX, headerY + 10, { width: rightBlockWidth, align: 'right' });
-    doc.font('Helvetica').fontSize(8).fillColor(TEXT_SECONDARY);
-    for (let i = 1; i < lines.length; i++) {
-      doc.text(lines[i], rightBlockX, headerY + 10 + i * 11, { width: rightBlockWidth, align: 'right' });
-    }
-  }
+  const titleY = drawBrandHeader(doc);
 
   // Title
-  const titleY = companyInfo ? headerY + 10 + companyInfo.split('\\n').length * 11 + 6 : headerY + 42;
   doc.font('Helvetica-Bold').fontSize(12).fillColor(TEXT_PRIMARY).text(title, PAGE_MARGIN, titleY);
 
   // Divider
@@ -300,18 +237,6 @@ const drawInvoiceHeader = (
   drawLine(doc, PAGE_MARGIN, infoY + 44, PAGE_MARGIN + CONTENT_WIDTH, BORDER_COLOR, 1);
 
   doc.y = infoY + 58;
-};
-
-const drawSectionTitle = (doc: PDFKit.PDFDocument, title: string) => {
-  doc.font('Helvetica-Bold').fontSize(12).fillColor(TEXT_PRIMARY).text(title);
-  doc.moveDown(0.4);
-};
-
-const formatDate = (date: Date): string => {
-  return date
-    .toISOString()
-    .replace('T', ' ')
-    .replace(/\.\d{3}Z$/, ' UTC');
 };
 
 const formatPeriodLabel = (from: Date, to: Date): string => {

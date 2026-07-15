@@ -3,9 +3,11 @@
 import {
   type ColumnDef,
   getCoreRowModel,
+  getExpandedRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  type Row,
   type TableMeta,
   useReactTable,
   type VisibilityState,
@@ -15,6 +17,7 @@ interface TableOptions<T> {
   data: T[];
   columns: ColumnDef<T, any>[];
   getRowId?: (row: T) => string;
+  getRowCanExpand?: (row: Row<T>) => boolean;
   pageSize?: number;
   columnVisibility?: VisibilityState;
   meta?: TableMeta<T>;
@@ -25,6 +28,7 @@ export const useTable = <T>({
   data,
   columns,
   getRowId,
+  getRowCanExpand,
   pageSize = 25,
   columnVisibility,
   meta,
@@ -37,6 +41,7 @@ export const useTable = <T>({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    ...(getRowCanExpand ? { getExpandedRowModel: getExpandedRowModel(), getRowCanExpand } : {}),
     getRowId,
     meta,
     autoResetPageIndex,

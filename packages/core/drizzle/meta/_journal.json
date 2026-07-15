@@ -85,6 +85,20 @@
       "when": 1783957395320,
       "tag": "0011_money_units_and_timestamptz",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1784142532902,
+      "tag": "0012_premium_withdrawal_requests",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1784142571251,
+      "tag": "0013_premium_refund_rename",
+      "breakpoints": true
     }
   ]
 }
