@@ -10,7 +10,6 @@ export class ValidationError extends ApiError {
 
 interface HandleApiRouteErrorOptions {
   errorMessage?: string;
-  exposeErrorMessage?: boolean;
 }
 
 export const handleApiRouteError = (error: unknown, options: HandleApiRouteErrorOptions = {}): NextResponse => {
@@ -19,10 +18,9 @@ export const handleApiRouteError = (error: unknown, options: HandleApiRouteError
     return NextResponse.json(body, { status });
   }
 
+  // Unexpected error details are logged but never sent to clients; expected errors throw ApiError instead
   const fallbackMessage = options.errorMessage ?? 'API route failed';
   console.error(fallbackMessage, parseErrorMessage(error), error);
 
-  const message =
-    options.exposeErrorMessage === false ? fallbackMessage : (parseErrorMessage(error) ?? fallbackMessage);
-  return NextResponse.json({ message }, { status: 500 });
+  return NextResponse.json({ message: fallbackMessage }, { status: 500 });
 };

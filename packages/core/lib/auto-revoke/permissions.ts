@@ -15,6 +15,7 @@ import { type DatabaseTransaction, getDb, getTransactionalDb } from '@revoke.cas
 import { autoRevokePermissions } from '@revoke.cash/core/db/schema/auto-revoke';
 import { premiumSubscriptionAddresses } from '@revoke.cash/core/db/schema/premium';
 import { acquireAdvisoryLock } from '@revoke.cash/core/db/utils';
+import { scheduleEventsReindex } from '@revoke.cash/core/indexer/register';
 import { deduplicateArray } from '@revoke.cash/core/utils';
 import { filterAsync } from '@revoke.cash/core/utils/promises';
 import { SECOND } from '@revoke.cash/core/utils/time';
@@ -86,13 +87,23 @@ export const getPermissionById = async (permissionId: string): Promise<Permissio
 export const savePermission = async (item: Omit<AutoRevokePermission, 'isActive'>): Promise<{ id: string }> => {
   const { address, ...rest } = item;
   const [result] = await getTransactionalDb().transaction((trx) => applyPermissionBatch(trx, address, [rest]));
-  return result;
+
+  await scheduleReindexForGrantedChains(address, [result.chainId]);
+  return { id: result.id };
+};
+
+const scheduleReindexForGrantedChains = async (address: Address, chainIds: number[]): Promise<void> => {
+  try {
+    await scheduleEventsReindex(getDb(), [address], chainIds);
+  } catch (error) {
+    console.error('Failed to schedule events reindex after permission grant:', error);
+  }
 };
 
 export const syncPermissions = async (
   address: Address,
   items: Array<Omit<AutoRevokePermission, 'address' | 'isActive'>>,
-): Promise<Array<{ id: string }>> => {
+): Promise<Array<Pick<PermissionRecord, 'id' | 'address' | 'chainId'>>> => {
   const db = getTransactionalDb();
   const syncedChainIds = items.map((item) => item.chainId);
 
@@ -106,8 +117,8 @@ export const syncPermissions = async (
 
   const permissionIdsToRevoke = (await filterAsync(candidates, isPermissionDisabledOrExpired)).map((row) => row.id);
 
-  return db.transaction(async (trx) => {
-    const results = await applyPermissionBatch(trx, address, items);
+  const results = await db.transaction(async (trx) => {
+    const batch = await applyPermissionBatch(trx, address, items);
 
     if (permissionIdsToRevoke.length > 0) {
       await trx
@@ -116,8 +127,12 @@ export const syncPermissions = async (
         .where(and(inArray(autoRevokePermissions.id, permissionIdsToRevoke), isNull(autoRevokePermissions.revokedAt)));
     }
 
-    return results;
+    return batch;
   });
+
+  const grantedChainIds = results.map((result) => result.chainId);
+  await scheduleReindexForGrantedChains(address, grantedChainIds);
+  return results;
 };
 
 const isPermissionDisabledOrExpired = async (row: PermissionRecord): Promise<boolean> => {
@@ -240,7 +255,7 @@ const applyPermissionBatch = async (
   trx: DatabaseTransaction,
   address: Address,
   items: Array<Omit<AutoRevokePermission, 'address' | 'isActive'>>,
-): Promise<Array<{ id: string }>> => {
+): Promise<Array<Pick<PermissionRecord, 'id' | 'address' | 'chainId'>>> => {
   if (items.length === 0) return [];
 
   await acquireAdvisoryLock(trx, `auto_revoke_permissions:${address.toLowerCase()}`);
@@ -284,7 +299,7 @@ const applyPermissionBatch = async (
       chainId: autoRevokePermissions.chainId,
     });
 
-  return permissions.map(({ id }) => ({ id }));
+  return permissions;
 };
 
 export const resolvePermissionRecord = async (

@@ -234,6 +234,8 @@ export const getServerAuthSession = async () => {
 
 type ApiAuthMode = 'api-session' | 'siwe';
 
+const MUTATING_HTTP_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE'];
+
 interface AuthorizeRequestOptions {
   auth?: ApiAuthMode;
   rateLimiter?: RateLimiterMemory;
@@ -253,6 +255,11 @@ export async function authorizeRequest(
   req: NextRequest,
   options: AuthorizeRequestOptions = {},
 ): Promise<{ siweAddress: Address | null }> {
+  // Session cookies are sameSite 'none', so SIWE-authenticated state-changing requests must be same-origin (CSRF)
+  if (options.auth === 'siwe' && MUTATING_HTTP_METHODS.includes(req.method)) {
+    requireSameOrigin(req);
+  }
+
   const siweAddress = await getAuthorizedSiweAddress(req, options.auth);
   if (options.rateLimiter) {
     await requireRateLimit(req, options.rateLimiter);
@@ -323,7 +330,7 @@ const getAuthenticatedSiweFields = async (req: NextRequest): Promise<SiweFields 
   }
 };
 
-// Session cookies are sameSite 'none', so state-changing admin endpoints must reject cross-origin requests
+// Session cookies are sameSite 'none', so state-changing endpoints must reject cross-origin requests
 export const requireSameOrigin = (req: NextRequest) => {
   const origin = req.headers.get('origin');
   const host = req.headers.get('host');

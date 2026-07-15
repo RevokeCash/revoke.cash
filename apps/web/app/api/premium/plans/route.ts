@@ -18,6 +18,6 @@ export async function GET() {
       },
     );
   } catch (error) {
-    return handleApiRouteError(error, { errorMessage: 'Failed to load plans', exposeErrorMessage: false });
+    return handleApiRouteError(error, { errorMessage: 'Failed to load plans' });
   }
 }

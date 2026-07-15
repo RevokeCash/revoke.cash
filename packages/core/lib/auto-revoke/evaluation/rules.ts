@@ -1,12 +1,12 @@
 import type { TokenAllowanceData } from '@revoke.cash/core/allowances';
 import { type DatabaseTransaction, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { autoRevokeRules } from '@revoke.cash/core/db/schema/auto-revoke';
-import { indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
 import { premiumPlans, premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
+import { scheduleEventsReindex } from '@revoke.cash/core/indexer/register';
 import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
 import { activeSubscriptionsQuery, isSubscriptionActive } from '@revoke.cash/core/premium/subscriptions';
 import type { SpenderRiskData } from '@revoke.cash/core/whois';
-import { and, asc, eq, gt, inArray, lte } from 'drizzle-orm';
+import { and, asc, eq, gt, lte } from 'drizzle-orm';
 import type { Address } from 'viem';
 import { filterUnknownRiskFactors, getRiskLevel, type RiskFactor } from '../../risk';
 import { ApiError } from '../../utils/errors';
@@ -246,15 +246,8 @@ const scheduleReindexForAddresses = async (addresses: Address[]): Promise<void> 
 
   await requeueRulesBlockedActions(addresses);
 
-  await getDb()
-    .update(indexerEventsState)
-    .set({ nextRunAt: new Date(Date.now() + RULES_CHANGE_REINDEX_GRACE_MS) })
-    .where(
-      and(
-        inArray(indexerEventsState.address, addresses),
-        inArray(indexerEventsState.chainId, [...AUTO_REVOKE_SUPPORTED_CHAINS]),
-      ),
-    );
+  const runAt = new Date(Date.now() + RULES_CHANGE_REINDEX_GRACE_MS);
+  await scheduleEventsReindex(getDb(), addresses, [...AUTO_REVOKE_SUPPORTED_CHAINS], runAt);
 };
 
 const scheduleReindexForSubscription = async (subscriptionId: string): Promise<void> => {

@@ -32,6 +32,6 @@ export async function GET(req: NextRequest, props: Props) {
 
     return NextResponse.json(status);
   } catch (error) {
-    return handleApiRouteError(error);
+    return handleApiRouteError(error, { errorMessage: 'Failed to check payment status' });
   }
 }

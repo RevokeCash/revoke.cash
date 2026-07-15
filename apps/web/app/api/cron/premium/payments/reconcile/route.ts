@@ -13,6 +13,6 @@ export async function GET(req: NextRequest) {
     const reverification = await reverifyRecentPayments();
     return NextResponse.json({ reconciliation, reverification }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
-    return handleApiRouteError(error, { errorMessage: 'Failed to reconcile payments', exposeErrorMessage: false });
+    return handleApiRouteError(error, { errorMessage: 'Failed to reconcile payments' });
   }
 }

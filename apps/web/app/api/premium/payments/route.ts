@@ -38,6 +38,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(payment);
   } catch (error) {
-    return handleApiRouteError(error);
+    return handleApiRouteError(error, { errorMessage: 'Failed to create payment' });
   }
 }

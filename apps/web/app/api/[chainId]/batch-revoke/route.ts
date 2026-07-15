@@ -46,6 +46,6 @@ export async function POST(req: NextRequest, props: Props) {
 
     return NextResponse.json({});
   } catch (error) {
-    return handleApiRouteError(error, { errorMessage: 'Failed to record batch revoke', exposeErrorMessage: false });
+    return handleApiRouteError(error, { errorMessage: 'Failed to record batch revoke' });
   }
 }

@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
 
       return NextResponse.json({ subscriptions, entitlements }, { headers: { 'Cache-Control': 'no-store' } });
     } catch (error) {
-      return handleApiRouteError(error, { errorMessage: 'Failed to load subscriptions', exposeErrorMessage: false });
+      return handleApiRouteError(error, { errorMessage: 'Failed to load subscriptions' });
     }
   } catch (error) {
     return handleApiRouteError(error);
