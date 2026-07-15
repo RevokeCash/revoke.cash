@@ -1,6 +1,6 @@
 # Privacy Policy
 
-_Last updated January 17, 2024_
+_Last updated July 15, 2026_
 
 This privacy policy for Revoke.cash (**Company**, **We**, **Us**, or **Our**), describes how and why we might collect, store, use, and/or share (**Process**) your information when you use our services (**Services**), such as when you:
 
@@ -28,17 +28,27 @@ Reading this privacy policy will help you understand your privacy rights and cho
 
    Like many businesses, we also collect information through cookies and similar technologies.
 
-   **Information automatically collected by third parties through our Services**
+   **Information we process when you purchase a subscription**
 
-   _In Short: Some third parties might collect a limited amount of personal information via our Services._
+   _In Short: For Revoke Premium and Ultimate subscriptions, we process payment, subscription, and refund records tied to your wallet address._
 
-   We may use third-party service providers ('third parties') to perform our Services. We do not share personal data with these third parties, but they might collect some personal information through our Services, such as: your cryptocurrency wallet address, your ENS domain name and/or device and usage information, such as your IP address, browser and device characteristics, operating system, language preferences, referring URLs, device name, country, location, information about how and when you use our Services, and other technical information.
+   When you purchase a Revoke Premium or Ultimate subscription, we process the wallet address you pay from and the wallet addresses covered by your subscription, the details of your payments (network, token, amount, and transaction hashes), your subscription and refund history, and the country indicated by your IP address at the time of purchase, which we store to determine the applicable VAT. If you request a cancellation and refund, we process and retain the records of that request and the refund transaction.
+
+   If you use Automated Revoking (Ultimate), we continuously monitor the token approvals of your covered wallet addresses and process the transactions we execute on your behalf, including their network costs, in order to provide the service and administer your gas budget. If you add wallet addresses to your subscription that you do not own, you are responsible for being authorized to have us process them.
+
+   **Information processed by third parties on our behalf**
+
+   _In Short: We use service providers that process a limited amount of personal information on our behalf, and some third parties might collect information through our Services._
+
+   We use third-party service providers ('processors') to perform parts of our Services on our behalf, such as hosting and database providers (Vercel, Neon, Render), usage analytics (Mixpanel), and customer support chat (Crisp). These providers process personal information on our behalf and on our instructions, such as: your cryptocurrency wallet address, your subscription and payment activity, the contents of support conversations you start with us, your ENS domain name and/or device and usage information, such as your IP address, browser and device characteristics, operating system, language preferences, referring URLs, device name, country, location, information about how and when you use our Services, and other technical information.
 
    The categories of third parties we may share personal information with are as follows:
 
    - APIs
+   - Hosting and Database Providers
    - Data Analytics Services
    - Performance Monitoring Tools
+   - Customer Support Tools
 
 2. **WHY WE PROCESS YOUR INFORMATION**
 
@@ -49,6 +59,9 @@ Reading this privacy policy will help you understand your privacy rights and cho
    We process your personal information for a variety of reasons, depending on how you interact with our Services, including:
 
    - To provide the Services. We may process your information as part of our efforts to provide our Services to you, such as proposing wallet approval revokes.
+   - To provide paid subscriptions. We process your payment, subscription, and refund information to deliver the Premium and Ultimate services you purchase, including Automated Revoking, and to process cancellations and refunds.
+   - To comply with the law. We process and retain certain payment information, such as the country used to determine VAT, to meet our tax and accounting obligations.
+   - To provide support. We process the information you share with us in support conversations to help you.
    - To protect our Services. We may process your information as part of our efforts to keep our Services safe and secure, including fraud monitoring and prevention.
    - To identify usage trends. We may process information about how you use our Services to better understand how they are being used so we can improve them.
 
@@ -61,10 +74,11 @@ Reading this privacy policy will help you understand your privacy rights and cho
    The General Data Protection Regulation (GDPR) and UK GDPR require us to explain the valid legal bases we rely on in order to process your personal information. As such, we may rely on the following legal bases to process your personal information:
 
    - **Consent** - We may process your information if you have given us permission (i.e. consent) to use your personal information for a specific purpose. You can withdraw your consent at any time. Click here to learn more.
+   - **Performance of a Contract** - We process your payment, subscription, and refund information because it is necessary to provide the paid Services you purchase from us and to fulfil our obligations to you, such as processing a cancellation and refund.
+   - **Legal Obligations** - We process and retain certain information, such as payment records and the country used to determine VAT, to comply with our legal obligations (such as tax and accounting laws), to cooperate with a law enforcement body or regulatory agency, to exercise or defend our legal rights, or to disclose your information as evidence in litigation in which we are involved.
    - **Legitimate Interests** - We may process your information when we believe it is reasonably necessary to achieve our legitimate business interests and those interests do not outweigh your interests and fundamental rights and freedoms. For example, we may process your personal information for some of the purposes described in order to:
      - Analyse how our services are used so we can improve them to engage and retain users
      - Diagnose problems and/or prevent fraudulent activities
-     - Comply with legal obligations, such as to cooperate with a law enforcement body or regulatory agency, exercise or defend our legal rights, or disclose your information as evidence in litigation in which we are involved.
 
    **If you are located in Canada, this section applies to you.**
 
@@ -86,11 +100,13 @@ Reading this privacy policy will help you understand your privacy rights and cho
 
    We may use cookies and similar tracking technologies (like web beacons and pixels) to access or store information. You can disable the use of cookies through your browser settings, but some parts of our website may not work properly as a result of that. Our website uses the following cookies:
 
-   | Cookie Name       | Type                 | Purpose                             |
-   | ----------------- | -------------------- | ----------------------------------- |
-   | `revoke_session`  | Session based cookie | Used for backend API authentication |
-   | `mp_xxx_mixpanel` | Session based cookie | Used for usage analytics            |
-   | `crisp-client/*`  | Session based cookie | Used for Crisp chat widget          |
+   | Cookie Name         | Type                          | Purpose                                                     |
+   | ------------------- | ----------------------------- | ----------------------------------------------------------- |
+   | `revoke_session`    | Persistent cookie (24 hours)  | Used for backend API authentication |
+   | `revoke_siwe`       | Persistent cookie (90 days)   | Remembers your wallet sign-in (Sign-In with Ethereum)        |
+   | `revoke_siwe_nonce` | Persistent cookie (10 minutes) | Protects the wallet sign-in flow against replay              |
+   | `mp_xxx_mixpanel`   | Session based cookie          | Used for usage analytics                                     |
+   | `crisp-client/*`    | Session based cookie          | Used for Crisp chat widget                                   |
 
 6. **DATA RETENTION**
 
@@ -104,7 +120,13 @@ Reading this privacy policy will help you understand your privacy rights and cho
 
    We have implemented appropriate and reasonable technical and organisational security measures designed to protect the security of any personal information we process. However, despite our safeguards and efforts to secure your information, no electronic transmission over the Internet or information storage technology can be guaranteed to be 100% secure, so we cannot promise or guarantee that hackers, cybercriminals, or other unauthorised third parties will not be able to defeat our security and improperly collect, access, steal, or modify your information.
 
-8. **YOUR PRIVACY RIGHTS**
+8. **INTERNATIONAL DATA TRANSFERS**
+
+   _In Short: Some of our service providers process data in countries outside the European Economic Area, such as the United States._
+
+   We are based in the Netherlands, but some of the processors we use (such as our hosting, database, and analytics providers) process personal information on servers located outside the European Economic Area, including in the United States. Where that is the case, we rely on safeguards recognised under the GDPR to protect your personal information, such as adequacy decisions (including the EU-US Data Privacy Framework) and the European Commission's Standard Contractual Clauses.
+
+9. **YOUR PRIVACY RIGHTS**
 
    _In Short: In some regions, such as the European Economic Area (EEA), United Kingdom (UK), and Canada, you have rights that allow you greater access to and control over your personal information. You may review, change, or terminate your account at any time._
 
@@ -116,13 +138,13 @@ Reading this privacy policy will help you understand your privacy rights and cho
 
    If you have questions or comments about your privacy rights, you may email us at rosco@revoke.cash.
 
-9. **CHANGES TO THIS PRIVACY POLICY**
+10. **CHANGES TO THIS PRIVACY POLICY**
 
    _In Short: We will update this privacy policy as necessary to stay compliant with relevant laws._
 
    We may update this privacy policy from time to time. The updated version will be indicated by an updated 'Revised' date and the updated version will be effective as soon as it is accessible. We encourage you to review this privacy policy frequently to be informed of how we are protecting your information.
 
-10. **CONTACT US**
+11. **CONTACT US**
 
     If you have questions or comments about this privacy policy, or if you want to exercise one of the rights mentioned in this privacy policy, you may email us at rosco@revoke.cash or by post to:
 
