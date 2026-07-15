@@ -39,7 +39,7 @@
   },
   "premium": {
     "best_protection": "Best Protection",
-    "description": "Monitor and protect your token approvals across 100+ networks. Starting at $99/year.",
+    "description": "Monitor and protect your token approvals across 100+ networks. Starting at {price}/year.",
     "free_features": {
       "batch_revoke": "Batch revoke ($1.50/batch)",
       "exploit_checker": "Single-chain exploit checker",
@@ -56,7 +56,7 @@
     },
     "includes_premium": "Everything in Premium, plus:",
     "most_popular": "Most Popular",
-    "premium_price": "$99/year",
+    "premium_price": "{price}/year",
     "premium_title": "Premium",
     "title": "Revoke Premium",
     "ultimate_features": {
@@ -65,7 +65,7 @@
       "continuous_monitoring": "Continuous monitoring",
       "gas_allowance": "$5/month gas budget included"
     },
-    "ultimate_price": "$199/year",
+    "ultimate_price": "{price}/year",
     "ultimate_title": "Ultimate"
   },
   "stats": {

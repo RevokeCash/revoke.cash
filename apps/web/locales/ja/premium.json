@@ -56,7 +56,7 @@
         "question": "Is auto-revoking guaranteed to protect my funds?"
       },
       "multiple_wallets": {
-        "answer": "Yes. Both Premium and Ultimate include 10 wallet slots. The subscription owner can add wallet addresses and all wallets get the same features. With Ultimate, each wallet can additionally manage its own auto-revoking configuration independently.",
+        "answer": "Yes. Both Premium and Ultimate include {count} wallet slots. The subscription owner can add wallet addresses and all wallets get the same features. With Ultimate, each wallet can additionally manage its own auto-revoking configuration independently.",
         "question": "Can I use one subscription for multiple wallets?"
       },
       "subscription_expiry": {

@@ -13,7 +13,9 @@ const PremiumSection = () => {
 
   return (
     <FullWidthLandingSection title={t('landing.premium.title')} size="lg">
-      <p className="-mt-4 text-center text-lg text-zinc-600 dark:text-zinc-400">{t('landing.premium.description')}</p>
+      <p className="-mt-4 text-center text-lg text-zinc-600 dark:text-zinc-400">
+        {t('landing.premium.description', { price: '$99' })}
+      </p>
       <FadeIn stagger className="grid grid-cols-1 gap-6 md:grid-cols-3">
         <PremiumSectionCard title={t('landing.premium.free_title')}>
           <ul className="flex flex-col gap-2">
@@ -29,7 +31,11 @@ const PremiumSection = () => {
         </PremiumSectionCard>
         <PremiumSectionCard
           title={t('landing.premium.premium_title')}
-          badge={<Label className="bg-brand px-3 py-1 text-black">{t('landing.premium.premium_price')}</Label>}
+          badge={
+            <Label className="bg-brand px-3 py-1 text-black">
+              {t('landing.premium.premium_price', { price: '$99' })}
+            </Label>
+          }
           topBadge={t('landing.premium.most_popular')}
           topBadgeClassName="bg-brand text-zinc-900"
           className="border-2 border-brand/70"
@@ -51,7 +57,7 @@ const PremiumSection = () => {
           title={t('landing.premium.ultimate_title')}
           badge={
             <Label className="bg-zinc-800 px-3 py-1 text-white dark:bg-zinc-200 dark:text-black">
-              {t('landing.premium.ultimate_price')}
+              {t('landing.premium.ultimate_price', { price: '$199' })}
             </Label>
           }
           topBadge={t('landing.premium.best_protection')}

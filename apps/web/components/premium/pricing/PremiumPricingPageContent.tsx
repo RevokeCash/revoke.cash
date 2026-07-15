@@ -5,6 +5,7 @@ import { Feature } from 'components/landing/FeaturesShowcase';
 import LandingPageFaqItem from 'components/landing/LandingPageFaqItem';
 import { useTranslations } from 'next-intl';
 import ComparisonTable from './ComparisonTable';
+import { TIER_MAX_ADDRESSES } from './pricing-data';
 import TierCard from './TierCard';
 
 const TRANSLATION_PREFIX = 'premium.pricing.feature_sections';
@@ -101,7 +102,7 @@ const PremiumPricingPageContent = () => {
         <h2 className="text-3xl font-bold text-center">{t('premium.pricing.faq.title')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-x-6 md:gap-y-8">
           <LandingPageFaqItem question={t(`premium.pricing.faq.multiple_wallets.question`)}>
-            {t(`premium.pricing.faq.multiple_wallets.answer`)}
+            {t(`premium.pricing.faq.multiple_wallets.answer`, { count: TIER_MAX_ADDRESSES.premium })}
           </LandingPageFaqItem>
           <LandingPageFaqItem question={t(`premium.pricing.faq.subscription_expiry.question`)}>
             {t(`premium.pricing.faq.subscription_expiry.answer`)}

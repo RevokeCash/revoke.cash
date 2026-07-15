@@ -56,7 +56,7 @@
         "question": "¿Está garantizado que la revocación automática protege mis fondos?"
       },
       "multiple_wallets": {
-        "answer": "Sí. Tanto la versión Premium como la Ultimate incluyen 10 espacios para carteras. El titular de la suscripción puede añadir direcciones de cartera y todas las carteras tienen las mismas funciones. Con la versión Ultimate, cada cartera puede, además, gestionar de forma independiente su propia configuración de revocación automática.",
+        "answer": "Sí. Tanto la versión Premium como la Ultimate incluyen {count} espacios para carteras. El titular de la suscripción puede añadir direcciones de cartera y todas las carteras tienen las mismas funciones. Con la versión Ultimate, cada cartera puede, además, gestionar de forma independiente su propia configuración de revocación automática.",
         "question": "¿Puedo usar una misma suscripción para varias carteras?"
       },
       "subscription_expiry": {

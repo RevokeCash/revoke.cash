@@ -39,7 +39,7 @@
   },
   "premium": {
     "best_protection": "Best Protection",
-    "description": "1つのダッシュボードから100以上のネットワークの承認を一元管理できます。年間79ドルからご利用いただけます。",
+    "description": "1つのダッシュボードから100以上のネットワークの承認を一元管理できます。年間{price}からご利用いただけます。",
     "free_features": {
       "batch_revoke": "バッチ取り消し（1.50ドル/バッチ）",
       "exploit_checker": "シングルチェーンエクスプロイトチェッカー",
@@ -56,7 +56,7 @@
     },
     "includes_premium": "Everything in Premium, plus:",
     "most_popular": "Most Popular",
-    "premium_price": "$99/year",
+    "premium_price": "{price}/year",
     "premium_title": "プレミアム",
     "title": "プレミアムを取り消す",
     "ultimate_features": {
@@ -65,7 +65,7 @@
       "continuous_monitoring": "Continuous monitoring",
       "gas_allowance": "$5/month gas budget included"
     },
-    "ultimate_price": "$199/year",
+    "ultimate_price": "{price}/year",
     "ultimate_title": "Ultimate"
   },
   "stats": {

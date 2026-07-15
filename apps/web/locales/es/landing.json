@@ -39,7 +39,7 @@
   },
   "premium": {
     "best_protection": "Best Protection",
-    "description": "Gestiona las aprobaciones en más de 100 redes desde un único panel de control. A partir de $99/año.",
+    "description": "Gestiona las aprobaciones en más de 100 redes desde un único panel de control. A partir de {price}/año.",
     "free_features": {
       "batch_revoke": "Revocación por lotes ($1,50/lote)",
       "exploit_checker": "Comprobador de vulnerabilidades de cadena única",
@@ -56,7 +56,7 @@
     },
     "includes_premium": "Everything in Premium, plus:",
     "most_popular": "Most Popular",
-    "premium_price": "$99/año",
+    "premium_price": "{price}/año",
     "premium_title": "Prémium",
     "title": "Revoke Premium",
     "ultimate_features": {
@@ -65,7 +65,7 @@
       "continuous_monitoring": "Monitoreo continuo",
       "gas_allowance": "$5/month gas budget included"
     },
-    "ultimate_price": "$199/año",
+    "ultimate_price": "{price}/año",
     "ultimate_title": "Lo mejor"
   },
   "stats": {
