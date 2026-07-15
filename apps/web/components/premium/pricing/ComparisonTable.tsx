@@ -2,14 +2,22 @@ import { CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import { AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD } from '@revoke.cash/core/auto-revoke/config';
 import InformationIconTooltip from 'components/common/InformationIconTooltip';
 import { useTranslations } from 'next-intl';
-import { FEATURES, TIER_KEYS } from './pricing-data';
+import { FEATURES, TIER_KEYS, type TierKey } from './pricing-data';
 
-const ComparisonTable = () => {
+interface Props {
+  walletSlots: Partial<Record<TierKey, number>>;
+}
+
+const ComparisonTable = ({ walletSlots }: Props) => {
   const t = useTranslations();
 
-  const resolveFeatureValue = (value: boolean | string): boolean | string => {
+  const resolveFeatureValue = (value: boolean | string, tierKey: TierKey): boolean | string => {
     if (typeof value === 'boolean') return value;
-    return t(`premium.pricing.features.${value}`, { price: '$1.50', budget: `$${AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD}` });
+    return t(`premium.pricing.features.${value}`, {
+      price: '$1.50',
+      budget: `$${AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD}`,
+      count: walletSlots[tierKey] ?? 0,
+    });
   };
 
   return (
@@ -42,7 +50,7 @@ const ComparisonTable = () => {
                 </td>
                 {TIER_KEYS.map((tierKey) => (
                   <td key={tierKey} className="py-3 px-4 text-center">
-                    <FeatureValue value={resolveFeatureValue(feature[tierKey])} />
+                    <FeatureValue value={resolveFeatureValue(feature[tierKey], tierKey)} />
                   </td>
                 ))}
               </tr>

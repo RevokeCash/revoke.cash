@@ -51,8 +51,8 @@ export const FEATURES: PricingFeature[] = [
   {
     labelKey: 'address_slots',
     free: false,
-    premium: 'ten_address_slots',
-    ultimate: 'ten_address_slots',
+    premium: 'address_slots_count',
+    ultimate: 'address_slots_count',
     comparisonOnly: true,
   },
 ];

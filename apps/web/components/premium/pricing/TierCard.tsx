@@ -1,8 +1,11 @@
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import { AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD } from '@revoke.cash/core/auto-revoke/config';
+import { isNullish } from '@revoke.cash/core/utils';
 import Button from 'components/common/Button';
+import Href from 'components/common/Href';
 import InformationIconTooltip from 'components/common/InformationIconTooltip';
 import Label from 'components/common/Label';
+import StatusLabel from 'components/common/StatusLabel';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 import { FEATURES, type PricingFeature, type TierKey } from './pricing-data';
@@ -10,23 +13,29 @@ import { FEATURES, type PricingFeature, type TierKey } from './pricing-data';
 interface Props {
   tierKey: TierKey;
   price: string;
+  perWalletPerMonthPrice?: string;
+  walletSlots?: number;
   href: string;
   className?: string;
   badgeLabel?: string;
   badgeClassName?: string;
   buttonStyle?: 'primary' | 'secondary' | 'tertiary' | 'none';
   referencesTier?: TierKey;
+  link?: { href: string; label: string };
 }
 
 const TierCard = ({
   tierKey,
   price,
+  perWalletPerMonthPrice,
+  walletSlots,
   href,
   className,
   badgeLabel,
   badgeClassName,
   buttonStyle = 'secondary',
   referencesTier,
+  link,
 }: Props) => {
   const t = useTranslations();
 
@@ -49,12 +58,17 @@ const TierCard = ({
             {tierKey !== 'free' && (
               <span className="text-sm text-zinc-500 dark:text-zinc-400">
                 {t('premium.pricing.per_year')}
-                {t.has(`premium.pricing.tiers.${tierKey}.price_note`) && (
-                  <> • {t(`premium.pricing.tiers.${tierKey}.price_note`)}</>
+                {!isNullish(walletSlots) && t.has(`premium.pricing.tiers.${tierKey}.price_note`) && (
+                  <> • {t(`premium.pricing.tiers.${tierKey}.price_note`, { count: walletSlots })}</>
                 )}
               </span>
             )}
           </div>
+          {t.has(`premium.pricing.tiers.${tierKey}.savings`) && (
+            <StatusLabel status="success" className={twMerge('mt-1 w-fit', tierKey === 'free' && 'invisible')}>
+              {t(`premium.pricing.tiers.${tierKey}.savings`, { price: perWalletPerMonthPrice ?? '' })}
+            </StatusLabel>
+          )}
         </div>
 
         <p className="text-sm text-zinc-600 dark:text-zinc-400">{t(`premium.pricing.tiers.${tierKey}.description`)}</p>
@@ -65,6 +79,12 @@ const TierCard = ({
       </Button>
 
       <FeatureList tierKey={tierKey} referencesTier={referencesTier} />
+
+      {link && (
+        <Href href={link.href} router underline="always" className="mt-auto w-fit text-sm font-medium">
+          {link.label} →
+        </Href>
+      )}
     </div>
   );
 };
@@ -98,22 +118,14 @@ const FeatureList = ({ tierKey, referencesTier }: FeatureListProps) => {
   );
 
   return (
-    <div className="flex flex-col gap-4">
-      <ul className="flex flex-col gap-2.5">
-        <li className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
-          {t('premium.pricing.includes_tier', { tierName: t(`premium.pricing.tiers.${referencesTier}.name`) })}
-        </li>
-        {uniqueFeatures.map((feature) => (
-          <FeatureItem key={feature.labelKey} feature={feature} tierKey={tierKey} included />
-        ))}
-      </ul>
-
-      {t.has(`premium.pricing.tiers.${tierKey}.savings`) && (
-        <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
-          {t(`premium.pricing.tiers.${tierKey}.savings`, { price: '$1.66' })}
-        </p>
-      )}
-    </div>
+    <ul className="flex flex-col gap-2.5">
+      <li className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+        {t('premium.pricing.includes_tier', { tierName: t(`premium.pricing.tiers.${referencesTier}.name`) })}
+      </li>
+      {uniqueFeatures.map((feature) => (
+        <FeatureItem key={feature.labelKey} feature={feature} tierKey={tierKey} included />
+      ))}
+    </ul>
   );
 };
 

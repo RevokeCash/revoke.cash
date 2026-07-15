@@ -24,7 +24,7 @@ const AutoRevokeBudgetSummary = ({ budget }: Props) => {
           })}
         </span>
         <WithHoverTooltip
-          tooltip={`${t('account.auto_revoke.budget.shared')} ${t('account.auto_revoke.budget.per_action_cap', { cap: `$${budget.maxActionCostUsd.toFixed(2)}` })}`}
+          tooltip={`${t('account.auto_revoke.budget.shared')} ${t('account.auto_revoke.budget.per_action_cap', { cap: `$${budget.maxActionCostUsd.toFixed(2)}` })} ${t('account.auto_revoke.budget.exploit_protection')}`}
         >
           <InformationCircleIcon className="h-4 w-4 text-zinc-400" />
         </WithHoverTooltip>
@@ -35,6 +35,11 @@ const AutoRevokeBudgetSummary = ({ budget }: Props) => {
       <span className="text-xs text-zinc-500 dark:text-zinc-500">
         {t('account.auto_revoke.budget.resets', { date: resetDate })}
       </span>
+      {budget.remainingUsd <= 0 && (
+        <span className="text-xs text-zinc-500 dark:text-zinc-500">
+          {t('account.auto_revoke.budget.exploit_protection')}
+        </span>
+      )}
     </div>
   );
 };

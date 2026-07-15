@@ -6,7 +6,7 @@
     },
     "description": "Todo lo que debes saber sobre la revocación automática antes de suscribirte: cómo te protege, qué requiere y cuáles son sus límites.",
     "gas": {
-      "description": "Tu suscripción incluye una Allowance mensual de gas {budget} que cubre el coste de las transacciones de revoke automáticas. Cuando se agota la Allowance, las revokes restantes quedan en espera hasta el siguiente ciclo mensual, aunque las revokes provocadas por vulnerabilidades siguen teniendo prioridad. Para que aproveches bien tu Allowance, las revokes individuales tienen un límite de {cap} y pueden aplazarse temporalmente durante los picos de gas.",
+      "description": "Tu suscripción incluye un presupuesto mensual de gas de {budget} que cubre el coste de las transacciones de revoke automáticas. Cuando se agota el presupuesto, las revokes restantes quedan en espera hasta el siguiente ciclo mensual, aunque las revokes provocadas por vulnerabilidades se siguen ejecutando. Para que aproveches bien tu presupuesto, las revokes individuales tienen un límite de {cap} y pueden aplazarse temporalmente durante los picos de gas.",
       "title": "Las comisiones de gas están incluidas"
     },
     "limitations": {
@@ -14,11 +14,11 @@
       "title": "Qué no es la revocación automática"
     },
     "meta": {
-      "description": "Cómo protege tu cartera la función de revocación automática: reglas, redes compatibles, Allowance de gas y sus límites.",
+      "description": "Cómo protege tu cartera la función de revocación automática: reglas, redes compatibles, presupuesto de gas y sus límites.",
       "title": "Cómo funciona la revocación automática"
     },
     "networks": {
-      "description": "La revocación automática requiere actualmente MetaMask, la primera cartera que admite los permisos ERC-7715. Se irá añadiendo compatibilidad con más carteras y redes a medida que se vaya adoptando el estándar. De momento funciona en {count} redes:",
+      "description": "La revocación automática requiere actualmente MetaMask, la primera cartera que admite los permisos ERC-7715. Para conceder estos permisos, primero hay que actualizar tu cartera a una smart account ERC-7702; MetaMask te guía durante la configuración. Se irá añadiendo compatibilidad con más carteras y redes a medida que se vaya adoptando el estándar. De momento funciona en {count} redes:",
       "title": "Carteras y redes compatibles"
     },
     "steps": {
@@ -100,22 +100,22 @@
     },
     "features": {
       "address_slots": "Espacios para cartera",
+      "address_slots_count": "{count} carteras",
       "approval_history": "Historial de Aprobaciones",
       "automated_revoking": "Revocación automática",
       "batch_revoke": "Revocación por lotes",
       "batch_revoke_paid": "Revocación por lotes ({price} /lote)",
       "continuous_monitoring": "Monitoreo continuo",
       "exploit_checker": "Comprobador de exploits",
-      "gas_allowance": "Gas allowance",
+      "gas_allowance": "Gas budget",
       "gas_allowance_amount": "{budget}/month",
-      "gas_allowance_included": "{budget}/month gas allowance included",
+      "gas_allowance_included": "{budget}/month gas budget included",
       "multichain_dashboard": "Panel de control multicadena",
       "multichain_exploit_checker": "Comprobador de exploits multicadena",
       "one_chain": "Una cadena a la vez.",
       "per_batch": "{price} por lote",
       "priority_support": "Soporte prioritario",
       "revoke_approvals": "Revoca autorizaciones en más de 100 redes.",
-      "ten_address_slots": "10 carteras",
       "time_machine": "Máquina del tiempo",
       "unlimited": "Ilimitado",
       "unlimited_batch_revokes": "Revocaciones de lotes ilimitadas"
@@ -139,18 +139,20 @@
         "cta": "Suscribirse",
         "description": "Supervisa y gestiona las aprobaciones de tokens en un único panel de control multichain.",
         "name": "Prémium",
-        "price_note": "Incluye 10 carteras"
+        "price_note": "Incluye {count} carteras",
+        "savings": "Eso equivale a {price} por cartera al mes"
       },
       "ultimate": {
         "cta": "Suscribirse",
         "description": "Protección del tipo configúralo y olvídate gracias a la revocación automática.",
         "name": "Lo mejor",
-        "price_note": "Incluye 10 carteras"
+        "price_note": "Incluye {count} carteras",
+        "savings": "Eso equivale a {price} por cartera al mes"
       }
     },
     "title": "Precios Premium",
     "tooltips": {
-      "automated_revoking": "Compatible con determinadas redes y carteras. La revocación automática se realiza en la medida de lo posible y no puede garantizar que se eviten las pérdidas."
+      "automated_revoking": "Requiere MetaMask. Compatible con determinadas redes. La revocación automática se realiza en la medida de lo posible y no puede garantizar que se eviten las pérdidas."
     }
   }
 }

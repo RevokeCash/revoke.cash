@@ -26,7 +26,8 @@
         "chain_pipeline_full": "A la espera de que se confirmen otras revocaciones en esta cadena.",
         "cooling": "Se espera un breve retraso de seguridad antes de ejecutarse, para que los cambios en las reglas aún puedan cancelarlo.",
         "execution_failed": "No se ha podido completar la transacción de Revoke.",
-        "monthly_budget": "A la espera porque se ha agotado el presupuesto mensual.",
+        "monthly_budget": "A la espera porque se ha agotado el presupuesto mensual. Las revokes provocadas por vulnerabilidades se siguen ejecutando.",
+        "monthly_budget_urgent": "A la espera porque se ha alcanzado el gasto máximo mensual para las revokes provocadas por vulnerabilidades.",
         "nonce_consumed": "Volver a enviar tras un conflicto de transacciones.",
         "per_action_cap": "En espera porque el coste estimado supera el límite por Revoke.",
         "queued": "A la espera de que se ejecute.",
@@ -53,6 +54,7 @@
       }
     },
     "budget": {
+      "exploit_protection": "Las revokes provocadas por vulnerabilidades se siguen ejecutando aunque el presupuesto esté agotado.",
       "per_action_cap": "Cada revoke tiene un límite de {cap}.",
       "resets": "Restablece {date}",
       "shared": "The gas budget is shared by all wallets in the subscription.",
@@ -195,6 +197,7 @@
     "plans_unavailable": "El proceso de pago no está disponible temporalmente. Por favor inténtalo de nuevo más tarde.",
     "slots_summary": "{usado}/{max} {max, plural, =1 {espacio} other {espacios}} de cartera usado(s)",
     "title": "Suscripción Premium",
+    "ultimate_requires_metamask": "La revocación automática requiere MetaMask. Puedes pagar con cualquier cartera y configurar la revocación automática después conectándote con MetaMask.",
     "valid_until": "Válido hasta {date}",
     "wallet": "Cartera",
     "wrong_wallet_error": "The payment must be sent from {address}. Please switch to that wallet and try again."

@@ -2,7 +2,7 @@ import type { Ref } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Label from './Label';
 
-export type Status = 'success' | 'info' | 'warning' | 'severe' | 'danger' | 'neutral';
+export type Status = 'success' | 'info' | 'warning' | 'severe' | 'danger' | 'neutral' | 'brand';
 
 const STATUS_CLASSES: Record<Status, string> = {
   success: 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-400',
@@ -11,6 +11,7 @@ const STATUS_CLASSES: Record<Status, string> = {
   severe: 'bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-400',
   danger: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-400',
   neutral: 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400',
+  brand: 'bg-brand/30 text-zinc-700 dark:bg-brand/20 dark:text-zinc-300',
 };
 
 interface Props {

@@ -69,6 +69,7 @@ export const columns = [
         status={info.getValue()}
         errorCode={info.row.original.errorCode}
         nextRetryAt={info.row.original.nextRetryAt}
+        triggerType={info.row.original.triggerType}
       />
     ),
   }),

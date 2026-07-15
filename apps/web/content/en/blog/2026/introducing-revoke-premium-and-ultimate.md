@@ -14,15 +14,17 @@ Today we're launching **Revoke Premium** and **Revoke Ultimate**, our biggest ad
 
 ## Why We're Launching Paid Plans
 
-Revoke.cash has been free and open source since 2019. In that time we've helped millions of users stay safe and prevented over $140 million in losses from smart contract hacks alone. For most of that time, we relied on grants and donations from public goods funding initiatives like Optimism's Retro Funding, Gitcoin Grants and Octant to keep the platform running.
+A multichain dashboard is something our users have requested for years. We've always wanted to build it, but indexing approvals across 100+ networks comes with serious infrastructure costs, far more than we could carry for a free product. The only way to offer it was to pair it with a paid plan.
 
-As we wrote last October in [Why We're Adding Batch Revoke Fees](/blog/2025/why-were-adding-batch-revoke-fees), public goods funding in crypto has declined significantly, and relying on it is no longer sustainable. The batch revoke fee was the first step towards a sustainable business model. Revoke Premium and Ultimate are the next step, and a much more exciting one: we get to offer genuinely new protection that was never possible before.
+Revoke.cash has been free and open source since 2019, helping millions of users stay safe and preventing over $140 million in losses from smart contract hacks alone. For most of that time we relied on grants and donations from public goods funding initiatives
+
+But as we wrote last October in [Why We're Adding Batch Revoke Fees](/blog/2025/why-were-adding-batch-revoke-fees), public goods funding in crypto has declined significantly, and relying on it is no longer sustainable. The batch revoke fee was the first step towards a sustainable business model. Revoke Premium and Ultimate are the next step, and a much more exciting one: we get to offer genuinely new protection that was not possible before.
 
 This model means the people who get the most value out of Revoke.cash directly fund its future. Every subscription pays for the infrastructure, monitoring and development that keep the free tools running for everyone else. That is the mission we started with: proper security tools should be accessible to everyone.
 
 ## Revoke Premium
 
-Revoke Premium is built for people who are active on multiple chains. It costs **$99 per year** and covers up to 10 wallets.
+Revoke Premium is built for people who are active on multiple chains. It costs **$99 per year** and covers up to 10 wallets. That's about **$0.83** per wallet per month.
 
 ### Multichain Dashboard
 
@@ -38,7 +40,7 @@ Revoke multiple approvals in a single transaction at no extra cost, on every net
 
 ## Revoke Ultimate
 
-Revoke Ultimate includes everything in Premium, plus the feature we're most excited about: **Auto-Revoking**. It costs **$199 per year**, also covering up to 10 wallets.
+Revoke Ultimate includes everything in Premium, plus the feature we're most excited about: **Auto-Revoking**. It costs **$199 per year**, also covering up to 10 wallets. That's about **$1.66** per wallet per month.
 
 Until now, Revoke.cash could only help you if you showed up. You had to hear about an exploit, open the site, find the approval and revoke it yourself. Auto-Revoking takes that job off your plate. It shrinks your exposure ahead of time by cleaning up stale and risky approvals, and once an exploit is identified, it responds right away instead of waiting for you to catch the news.
 
@@ -47,7 +49,7 @@ Here is how it works. You connect with MetaMask and grant Revoke.cash a permissi
 - **Risky Approval Detection**: automatically revoke approvals to exploited or risky contracts, with a sensitivity level you control.
 - **Stale Approval Cleanup**: automatically revoke approvals older than a threshold you choose, 180 days by default.
 
-From that moment, Revoke.cash monitors your approvals around the clock. When an approval matches your rules, we revoke it automatically on your behalf. When a new exploit is discovered, affected wallets are handled with priority, because minutes matter during an exploit. Gas fees are included: your subscription comes with a monthly gas allowance that comfortably covers normal usage.
+From that moment, Revoke.cash monitors your approvals around the clock. When an approval matches your rules, we revoke it automatically on your behalf. When a new exploit is discovered, affected wallets are handled with priority, because minutes matter during an exploit. Gas fees are included: your subscription comes with a monthly gas budget that comfortably covers normal usage.
 
 Auto-Revoking currently works with MetaMask, the first wallet to support the ERC-7715 permission standard, on 10 popular networks. You can read more on the [How Auto-Revoking Works](/premium/automated-revoking) page, and if you want the full technical picture of delegations, executors and gas accounting, we published a [technical deep dive](/blog/2026/how-auto-revoking-works-under-the-hood) alongside this post.
 
@@ -59,7 +61,7 @@ One honest note: Auto-Revoking is best-effort protection. It meaningfully reduce
 - **Premium**: the full multichain experience. $99 per year, 10 wallets.
 - **Ultimate**: set-and-forget protection with Auto-Revoking. $199 per year, 10 wallets.
 
-Subscriptions are paid in USDC on Ethereum, Base, Arbitrum, Optimism, Polygon or BNB Chain. Head over to the [pricing page](/premium) for the full comparison, or go straight to your [account page](/account) to subscribe.
+If you use all 10 slots, that works out to about $0.83 per wallet per month on Premium and about $1.66 on Ultimate, gas budget included. Subscriptions are paid in USDC on Ethereum, Base, Arbitrum, Optimism, Polygon or BNB Chain. Head over to the [pricing page](/premium) for the full comparison, or go straight to your [account page](/account?plan=premium) to subscribe.
 
 ## What's Next
 

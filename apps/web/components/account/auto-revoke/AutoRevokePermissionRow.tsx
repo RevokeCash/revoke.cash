@@ -29,7 +29,7 @@ const AutoRevokePermissionRow = ({ address, connectedAddress, permissions }: Pro
 
   const { grantPermission, isGranting, pendingChainId: grantingChainId } = useGrantAutoRevokePermission();
   const { revokePermission, isRevoking, pendingChainId: revokingChainId } = useRevokeAutoRevokePermission();
-  const { syncPermissions, isSyncing, isMetaMask } = useSyncAutoRevokePermissions();
+  const { syncPermissions, isSyncing, supportsErc7715 } = useSyncAutoRevokePermissions();
 
   const isPending = isGranting || isRevoking || isSyncing;
   const pendingChainId = grantingChainId ?? revokingChainId;
@@ -67,7 +67,7 @@ const AutoRevokePermissionRow = ({ address, connectedAddress, permissions }: Pro
       <div className="py-2">
         <AutoRevokePermissionSummary address={address} grantedCount={grantedCount} totalCount={totalCount} />
         <div className="mt-1">
-          {isMetaMask && (
+          {supportsErc7715 && (
             <div className="flex justify-end mb-2 mt-1">
               <SyncPermissionsButton onSync={syncPermissions} isSyncing={isSyncing} />
             </div>

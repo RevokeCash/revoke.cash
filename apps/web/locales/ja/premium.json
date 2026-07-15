@@ -6,7 +6,7 @@
     },
     "description": "Everything you should know about Auto-Revoking before you subscribe: how it protects you, what it needs, and where its limits are.",
     "gas": {
-      "description": "Your subscription includes a {budget} monthly gas allowance that pays for automated revoke transactions. When the allowance is used up, remaining revokes wait for the next monthly cycle, with exploit-triggered revokes still prioritized. To spend your allowance efficiently, individual revokes are capped at {cap} and may be deferred temporarily during gas spikes.",
+      "description": "Your subscription includes a {budget} monthly gas budget that pays for automated revoke transactions. When the budget is used up, routine revokes wait for the next monthly cycle, but exploit-triggered revokes still go through. To spend your budget efficiently, individual revokes are capped at {cap} and may be deferred temporarily during gas spikes.",
       "title": "Gas fees are included"
     },
     "limitations": {
@@ -14,11 +14,11 @@
       "title": "What Auto-Revoking is not"
     },
     "meta": {
-      "description": "How Auto-Revoking protects your wallet: rules, supported networks, gas allowance, and its limits.",
+      "description": "How Auto-Revoking protects your wallet: rules, supported networks, gas budget, and its limits.",
       "title": "How Auto-Revoking Works"
     },
     "networks": {
-      "description": "Auto-Revoking currently requires MetaMask, the first wallet to support ERC-7715 permissions. Support for more wallets and networks will follow as the standard gets adopted. It currently works on {count} networks:",
+      "description": "Auto-Revoking currently requires MetaMask, the first wallet to support ERC-7715 permissions. Granting these permissions requires upgrading your wallet to an ERC-7702 smart account, which MetaMask walks you through during setup. Support for more wallets and networks will follow as the standard gets adopted. It currently works on {count} networks:",
       "title": "Supported wallets & networks"
     },
     "steps": {
@@ -100,22 +100,22 @@
     },
     "features": {
       "address_slots": "アドレススロット",
+      "address_slots_count": "{count}つのアドレススロット",
       "approval_history": "承認履歴",
       "automated_revoking": "Automated revoking",
       "batch_revoke": "バッチ取り消し",
       "batch_revoke_paid": "バッチ取り消し（{price}/バッチ）",
       "continuous_monitoring": "Continuous monitoring",
       "exploit_checker": "エクスプロイトチェッカー",
-      "gas_allowance": "Gas allowance",
+      "gas_allowance": "Gas budget",
       "gas_allowance_amount": "{budget}/month",
-      "gas_allowance_included": "{budget}/month gas allowance included",
+      "gas_allowance_included": "{budget}/month gas budget included",
       "multichain_dashboard": "マルチチェーンダッシュボード",
       "multichain_exploit_checker": "マルチチェーンエクスプロイトチェッカー",
       "one_chain": "チェーンは一度に1つずつ",
       "per_batch": "1バッチあたり {price}",
       "priority_support": "優先サポート",
       "revoke_approvals": "100以上のネットワークで承認を取り消す",
-      "ten_address_slots": "10つのアドレススロット",
       "time_machine": "タイムマシン",
       "unlimited": "無制限",
       "unlimited_batch_revokes": "無制限のバッチ取り消し"
@@ -139,18 +139,20 @@
         "cta": "購読",
         "description": "マルチチェーンダッシュボードへのフルアクセス、履歴の確認、および無制限のバッチ取り消し機能。",
         "name": "プレミアム",
-        "price_note": "10 wallets included"
+        "price_note": "{count} wallets included",
+        "savings": "That's {price} per wallet per month"
       },
       "ultimate": {
         "cta": "Subscribe",
         "description": "Set-and-forget protection with automated revoking.",
         "name": "Ultimate",
-        "price_note": "10 wallets included"
+        "price_note": "{count} wallets included",
+        "savings": "That's {price} per wallet per month"
       }
     },
     "title": "価格設定",
     "tooltips": {
-      "automated_revoking": "Supported on select networks and wallets. Automated revoking is best-effort and cannot guarantee that losses are prevented."
+      "automated_revoking": "Requires MetaMask. Supported on select networks. Automated revoking is best-effort and cannot guarantee that losses are prevented."
     }
   }
 }

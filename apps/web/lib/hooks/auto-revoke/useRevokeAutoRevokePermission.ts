@@ -8,8 +8,8 @@ import ky from 'lib/ky';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 import type { Address, Hash, Hex } from 'viem';
-import { useConnection } from 'wagmi';
 import { useEnsureWalletClient } from '../ethereum/ensureWalletClient';
+import { useErc7715Support } from './useErc7715Support';
 
 interface RevokePermissionParams {
   permissionContext: Hex;
@@ -19,15 +19,13 @@ interface RevokePermissionParams {
 
 export const useRevokeAutoRevokePermission = () => {
   const t = useTranslations();
-  const { connector } = useConnection();
   const { ensureWalletClient } = useEnsureWalletClient();
+  const { supportsErc7715 } = useErc7715Support();
   const queryClient = useQueryClient();
-
-  const isMetaMask = connector?.id === 'io.metamask';
 
   const mutation = useMutation({
     mutationFn: async ({ permissionContext, delegationManagerAddress, chainId }: RevokePermissionParams) => {
-      if (!isMetaMask) throw new Error(t('account.auto_revoke.metamask_not_connected'));
+      if (!supportsErc7715) throw new Error(t('account.auto_revoke.metamask_not_connected'));
 
       const walletClient = await ensureWalletClient(chainId);
 
@@ -76,6 +74,6 @@ export const useRevokeAutoRevokePermission = () => {
     },
     isRevoking: mutation.isPending,
     pendingChainId: mutation.isPending ? (mutation.variables?.chainId ?? null) : null,
-    isMetaMask,
+    supportsErc7715,
   };
 };

@@ -15,6 +15,7 @@ import Href from 'components/common/Href';
 import StatusLabel from 'components/common/StatusLabel';
 import ChainSelect from 'components/common/select/ChainSelect';
 import { Crisp } from 'crisp-sdk-web';
+import { useErc7715Support } from 'lib/hooks/auto-revoke/useErc7715Support';
 import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { usePremiumPlans } from 'lib/hooks/premium/usePremiumPlans';
 import { type SubscribeStatus, useSubscribe } from 'lib/hooks/premium/useSubscribe';
@@ -319,6 +320,7 @@ const PaymentForm = ({
   onReset,
 }: PaymentFormProps) => {
   const t = useTranslations();
+  const { supportsErc7715 } = useErc7715Support();
 
   return (
     <>
@@ -343,6 +345,15 @@ const PaymentForm = ({
           maxAddresses: selectedPlan.maxAddresses,
         })}
       </p>
+
+      {isUltimatePlan(selectedPlan) && !supportsErc7715 && (
+        <div className="rounded-lg border border-yellow-500/50 bg-yellow-50 dark:bg-yellow-950/20 p-4 flex items-center gap-3">
+          <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-yellow-500" />
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+            {t('account.subscription.ultimate_requires_metamask')}
+          </p>
+        </div>
+      )}
 
       <div className="flex flex-wrap items-center gap-3">
         {status === 'confirmed' ? (

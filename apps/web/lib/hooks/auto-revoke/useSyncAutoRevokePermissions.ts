@@ -8,19 +8,18 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ky from 'lib/ky';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
-import { useConnection, useConnectorClient } from 'wagmi';
+import { useConnectorClient } from 'wagmi';
+import { useErc7715Support } from './useErc7715Support';
 
 export const useSyncAutoRevokePermissions = () => {
   const t = useTranslations();
-  const { connector } = useConnection();
   const { data: connectorClient } = useConnectorClient();
+  const { supportsErc7715 } = useErc7715Support();
   const queryClient = useQueryClient();
-
-  const isMetaMask = connector?.id === 'io.metamask';
 
   const mutation = useMutation({
     mutationFn: async () => {
-      if (!connectorClient || !isMetaMask) throw new Error(t('account.auto_revoke.metamask_not_connected'));
+      if (!connectorClient || !supportsErc7715) throw new Error(t('account.auto_revoke.metamask_not_connected'));
 
       const walletClient = connectorClient.extend(erc7715ProviderActions());
 
@@ -56,6 +55,6 @@ export const useSyncAutoRevokePermissions = () => {
   return {
     syncPermissions: () => mutation.mutateAsync().catch(() => []),
     isSyncing: mutation.isPending,
-    isMetaMask,
+    supportsErc7715,
   };
 };

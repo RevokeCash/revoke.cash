@@ -21,6 +21,8 @@ const PremiumPricingPageContent = () => {
         <TierCard
           tierKey="premium"
           price="$99"
+          perWalletPerMonthPrice="$0.83"
+          walletSlots={10}
           href="/account?plan=premium"
           className="border-2 border-brand/70"
           badgeLabel={t('premium.pricing.most_popular_label')}
@@ -30,7 +32,13 @@ const PremiumPricingPageContent = () => {
         <TierCard
           tierKey="ultimate"
           price="$199"
+          perWalletPerMonthPrice="$1.66"
+          walletSlots={10}
           href="/account?plan=ultimate"
+          link={{
+            href: '/premium/automated-revoking',
+            label: t('premium.pricing.feature_sections.automated_revoking.link_label'),
+          }}
           className="border-2 border-zinc-900 dark:border-zinc-200"
           badgeLabel={t('premium.pricing.best_protection')}
           badgeClassName="bg-zinc-900 text-white dark:bg-zinc-200 dark:text-zinc-900"
@@ -41,7 +49,7 @@ const PremiumPricingPageContent = () => {
 
       <p className="-mt-6 text-center text-sm text-zinc-500 dark:text-zinc-400">{t('premium.pricing.payment_note')}</p>
 
-      <ComparisonTable />
+      <ComparisonTable walletSlots={{ premium: 10, ultimate: 10 }} />
 
       <div className="flex flex-col gap-8">
         <h2 className="text-3xl font-bold text-center">{t('premium.pricing.feature_sections.title')}</h2>

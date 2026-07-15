@@ -61,9 +61,9 @@
     "title": "Revoke Premium",
     "ultimate_features": {
       "automated_revoking": "Revocación automática",
-      "automated_revoking_tooltip": "Compatible con determinadas redes y carteras.",
+      "automated_revoking_tooltip": "Requiere MetaMask. Compatible con determinadas redes.",
       "continuous_monitoring": "Monitoreo continuo",
-      "gas_allowance": "$5/month gas allowance included"
+      "gas_allowance": "$5/month gas budget included"
     },
     "ultimate_price": "$199/año",
     "ultimate_title": "Lo mejor"

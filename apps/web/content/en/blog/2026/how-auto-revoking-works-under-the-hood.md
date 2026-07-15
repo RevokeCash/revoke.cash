@@ -66,7 +66,7 @@ Separate wallets mean nonce isolation: each lane is a per-chain pipeline of cons
 
 ## Gas Accounting
 
-Revoke.cash pays the gas for every auto-revoke, so Ultimate includes a monthly gas allowance of $5 per subscription. Costs are estimated before submission and settled after mining. But "we pay the gas" needs guardrails. The rules, in order:
+Revoke.cash pays the gas for every auto-revoke, so Ultimate includes a monthly gas budget of $5 per subscription. Costs are estimated before submission and settled after mining. But "we pay the gas" needs guardrails. The rules, in order:
 
 - **Per-action cap of $2.** No single revoke may cost more. Over the cap, the action is retried later.
 - **Soft cap of $0.20 with 24 hours of patience.** A normal-lane action above $0.20 waits for cheaper gas, but goes through anyway after 24 hours. Urgent actions skip this.

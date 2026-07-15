@@ -61,9 +61,9 @@
     "title": "プレミアムを取り消す",
     "ultimate_features": {
       "automated_revoking": "Automated revoking",
-      "automated_revoking_tooltip": "Supported on select networks and wallets.",
+      "automated_revoking_tooltip": "Requires MetaMask. Supported on select networks.",
       "continuous_monitoring": "Continuous monitoring",
-      "gas_allowance": "$5/month gas allowance included"
+      "gas_allowance": "$5/month gas budget included"
     },
     "ultimate_price": "$199/year",
     "ultimate_title": "Ultimate"

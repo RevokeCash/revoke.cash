@@ -7,6 +7,7 @@ interface Props {
   status: AutoRevokeActivityItem['status'];
   errorCode: AutoRevokeActivityItem['errorCode'];
   nextRetryAt: AutoRevokeActivityItem['nextRetryAt'];
+  triggerType?: AutoRevokeActivityItem['triggerType'];
 }
 
 const STATUS_STYLES: Record<AutoRevokeActivityItem['status'], { key: string; status: Status }> = {
@@ -20,7 +21,7 @@ const STATUS_STYLES: Record<AutoRevokeActivityItem['status'], { key: string; sta
   blocked_rules: { key: 'pending', status: 'warning' },
 };
 
-const AutoRevokeActivityStatusBadge = ({ status, errorCode, nextRetryAt }: Props) => {
+const AutoRevokeActivityStatusBadge = ({ status, errorCode, nextRetryAt, triggerType }: Props) => {
   const t = useTranslations();
   const style = STATUS_STYLES[status];
   const label = (
@@ -29,7 +30,7 @@ const AutoRevokeActivityStatusBadge = ({ status, errorCode, nextRetryAt }: Props
     </StatusLabel>
   );
 
-  const reason = getTooltipReason(status, errorCode, nextRetryAt);
+  const reason = getTooltipReason(status, errorCode, nextRetryAt, triggerType);
   if (!reason) return label;
 
   return <WithHoverTooltip tooltip={t(`account.auto_revoke.activity.reasons.${reason}`)}>{label}</WithHoverTooltip>;
@@ -39,7 +40,10 @@ const getTooltipReason = (
   status: AutoRevokeActivityItem['status'],
   errorCode: AutoRevokeActivityItem['errorCode'],
   nextRetryAt: AutoRevokeActivityItem['nextRetryAt'],
+  triggerType?: AutoRevokeActivityItem['triggerType'],
 ): string | null => {
+  // Exploit-triggered revokes bypass the monthly budget; they only wait once the spending ceiling is reached
+  if (errorCode === 'monthly_budget' && triggerType === 'exploit') return 'monthly_budget_urgent';
   if (errorCode) return errorCode;
   if (status !== 'queued') return null;
   if (nextRetryAt && new Date(nextRetryAt) > new Date()) return 'cooling';

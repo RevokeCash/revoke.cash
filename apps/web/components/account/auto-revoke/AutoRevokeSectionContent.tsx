@@ -6,9 +6,9 @@ import type { AutoRevokePermission } from '@revoke.cash/core/auto-revoke/permiss
 import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import Divider from 'components/common/Divider';
 import type { useAddressAutoRevokeRules } from 'lib/hooks/auto-revoke/useAutoRevokeRules';
+import { useErc7715Support } from 'lib/hooks/auto-revoke/useErc7715Support';
 import { useTranslations } from 'next-intl';
 import { type Address, isAddressEqual } from 'viem';
-import { useConnection } from 'wagmi';
 import AutoRevokePermissions from './AutoRevokePermissions';
 import AutoRevokeRulesEditor from './AutoRevokeRulesEditor';
 import AutoRevokeRulesSourceSelect from './AutoRevokeRulesSourceSelect';
@@ -34,8 +34,7 @@ const AutoRevokeSectionContent = ({
   updateRules,
 }: Props) => {
   const t = useTranslations();
-  const { connector } = useConnection();
-  const isMetaMask = connector?.id === 'io.metamask';
+  const { supportsErc7715 } = useErc7715Support();
 
   const isUsingSubscriptionDefaults = !isAdmin && addressRules.rulesSource?.type === 'subscription';
 
@@ -50,7 +49,7 @@ const AutoRevokeSectionContent = ({
 
   return (
     <div className="flex flex-col gap-4">
-      {!isMetaMask && <MetaMaskRequiredBanner />}
+      {!supportsErc7715 && <MetaMaskRequiredBanner />}
 
       {connectedWalletNeedsSetup && (
         <div className="rounded-lg border border-brand/50 bg-brand/5 p-4 flex items-center gap-3">

@@ -26,7 +26,8 @@
         "chain_pipeline_full": "Waiting for other revokes on this chain to confirm.",
         "cooling": "Waiting out a short safety delay before executing, so rule changes can still cancel it.",
         "execution_failed": "The revoke transaction could not be completed.",
-        "monthly_budget": "Waiting because the monthly budget is used up.",
+        "monthly_budget": "Waiting because the monthly budget is used up. Exploit-triggered revokes still go through.",
+        "monthly_budget_urgent": "Waiting because this month's maximum spend for exploit-triggered revokes has been reached.",
         "nonce_consumed": "Resubmitting after a transaction conflict.",
         "per_action_cap": "Waiting because the estimated cost exceeds the per-revoke limit.",
         "queued": "Waiting to be executed.",
@@ -53,6 +54,7 @@
       }
     },
     "budget": {
+      "exploit_protection": "Exploit-triggered revokes still go through when the budget is used up.",
       "per_action_cap": "Each revoke is capped at {cap}.",
       "resets": "Resets {date}",
       "shared": "The gas budget is shared by all wallets in the subscription.",
@@ -195,6 +197,7 @@
     "plans_unavailable": "Checkout is temporarily unavailable. Please try again later.",
     "slots_summary": "{used}/{max} wallet {max, plural, =1 {slot} other {slots}} used",
     "title": "Premium Subscription",
+    "ultimate_requires_metamask": "Auto-Revoking requires MetaMask. You can pay with any wallet, and set up Auto-Revoking afterwards by connecting with MetaMask.",
     "valid_until": "Valid until {date}",
     "wallet": "Wallet",
     "wrong_wallet_error": "The payment must be sent from {address}. Please switch to that wallet and try again."
