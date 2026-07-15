@@ -16,7 +16,7 @@ Today we're launching **Revoke Premium** and **Revoke Ultimate**, our biggest ad
 
 A multichain dashboard is something our users have requested for years. We've always wanted to build it, but indexing approvals across 100+ networks comes with serious infrastructure costs, far more than we could carry for a free product. The only way to offer it was to pair it with a paid plan.
 
-Revoke.cash has been free and open source since 2019, helping millions of users stay safe and preventing over $140 million in losses from smart contract hacks alone. For most of that time we relied on grants and donations from public goods funding initiatives
+Revoke.cash has been free and open source since 2019, helping millions of users stay safe and preventing over $140 million in losses from smart contract hacks alone. For most of that time we relied on grants and donations from public goods funding initiatives.
 
 But as we wrote last October in [Why We're Adding Batch Revoke Fees](/blog/2025/why-were-adding-batch-revoke-fees), public goods funding in crypto has declined significantly, and relying on it is no longer sustainable. The batch revoke fee was the first step towards a sustainable business model. Revoke Premium and Ultimate are the next step, and a much more exciting one: we get to offer genuinely new protection that was not possible before.
 

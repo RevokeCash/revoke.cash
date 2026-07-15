@@ -13,11 +13,12 @@ import { ColumnId, columns } from './columns';
 
 interface Props {
   subscriptionId?: string;
+  isPreview?: boolean;
 }
 
 type ScopeType = ActivityScope['type'];
 
-const AutoRevokeActivitySection = ({ subscriptionId }: Props) => {
+const AutoRevokeActivitySection = ({ subscriptionId, isPreview = false }: Props) => {
   const t = useTranslations();
   const [scopeType, setScopeType] = useState<ScopeType>('address');
 
@@ -63,7 +64,9 @@ const AutoRevokeActivitySection = ({ subscriptionId }: Props) => {
         table={table}
         loading={isLoading}
         error={error}
-        emptyChildren={t('account.auto_revoke.activity.empty')}
+        emptyChildren={t(
+          isPreview ? 'account.auto_revoke.activity.empty_preview' : 'account.auto_revoke.activity.empty',
+        )}
         className="border-none rounded-none"
       />
     </Card>

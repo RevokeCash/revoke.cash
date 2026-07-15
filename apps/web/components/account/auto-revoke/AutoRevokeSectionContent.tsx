@@ -22,6 +22,7 @@ interface Props {
   addressRules: ReturnType<typeof useAddressAutoRevokeRules>;
   effectiveRules: AutoRevokeRules | null;
   updateRules: (rules: Partial<AutoRevokeRules>) => void;
+  isPreview?: boolean;
 }
 
 const AutoRevokeSectionContent = ({
@@ -32,6 +33,7 @@ const AutoRevokeSectionContent = ({
   addressRules,
   effectiveRules,
   updateRules,
+  isPreview = false,
 }: Props) => {
   const t = useTranslations();
   const { supportsErc7715 } = useErc7715Support();
@@ -49,9 +51,9 @@ const AutoRevokeSectionContent = ({
 
   return (
     <div className="flex flex-col gap-4">
-      {!supportsErc7715 && <MetaMaskRequiredBanner />}
+      {!supportsErc7715 && !isPreview && <MetaMaskRequiredBanner />}
 
-      {connectedWalletNeedsSetup && (
+      {connectedWalletNeedsSetup && !isPreview && (
         <div className="rounded-lg border border-brand/50 bg-brand/5 p-4 flex items-center gap-3">
           <InformationCircleIcon className="h-6 w-6 shrink-0 text-brand" />
           <p className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.auto_revoke.setup.get_started')}</p>

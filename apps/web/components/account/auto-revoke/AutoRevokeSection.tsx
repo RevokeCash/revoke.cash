@@ -15,9 +15,10 @@ import AutoRevokeSectionContent from './AutoRevokeSectionContent';
 interface Props {
   activeSubscription?: PremiumSubscription;
   account: Address;
+  isPreview?: boolean;
 }
 
-const AutoRevokeSection = ({ activeSubscription, account }: Props) => {
+const AutoRevokeSection = ({ activeSubscription, account, isPreview = false }: Props) => {
   const t = useTranslations();
   const isAdmin = Boolean(activeSubscription && isAddressEqual(account, activeSubscription.ownerAddress));
 
@@ -55,6 +56,7 @@ const AutoRevokeSection = ({ activeSubscription, account }: Props) => {
           addressRules={addressRules}
           effectiveRules={effectiveRules}
           updateRules={updateRules}
+          isPreview={isPreview}
         />
       )}
     </Card>
