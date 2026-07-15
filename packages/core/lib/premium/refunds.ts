@@ -8,6 +8,7 @@ import {
   premiumRefundRequests,
   premiumSubscriptionAddresses,
 } from '@revoke.cash/core/db/schema/premium';
+import { isUniqueViolationError } from '@revoke.cash/core/db/utils';
 import { ExportableError } from '@revoke.cash/core/utils/errors';
 import { DAY } from '@revoke.cash/core/utils/time';
 import { and, count, eq, gte, inArray, isNull, sql, sum } from 'drizzle-orm';
@@ -347,15 +348,6 @@ const runMappingUniqueViolations = async <Result>(operation: () => Promise<Resul
     }
     throw error;
   }
-};
-
-const isUniqueViolationError = (error: unknown): boolean => {
-  let current = error as { code?: string; cause?: unknown } | undefined;
-  for (let depth = 0; current && depth < 4; depth++) {
-    if (current.code === '23505') return true;
-    current = current.cause as typeof current;
-  }
-  return false;
 };
 
 const verifyRefundTransfer = async (

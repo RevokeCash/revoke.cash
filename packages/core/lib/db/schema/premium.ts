@@ -94,6 +94,15 @@ export const premiumPayments = premiumSchema.table(
   ],
 );
 
+export const premiumTransferScanCursors = premiumSchema.table('transfer_scan_cursors', {
+  chainId: integer('chain_id').primaryKey(),
+  lastScannedBlock: bigint('last_scanned_block', { mode: 'bigint' }).notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});
+
 export const premiumSubscriptions = premiumSchema.table(
   'subscriptions',
   {

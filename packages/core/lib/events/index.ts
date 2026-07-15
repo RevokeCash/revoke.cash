@@ -9,6 +9,8 @@ import { type Address, decodeEventLog, getAbiItem, type Hash, type Hex, toEventS
 import { logSorterChronological } from './utils';
 
 // Topic-0 selectors for every event type we parse. Computed once at import.
+// ERC20 and ERC721 share the Transfer(address,address,uint256) signature, so their topics are equal.
+export const ERC20_TRANSFER_TOPIC = toEventSelector(getAbiItem({ abi: ERC20_ABI, name: 'Transfer' }));
 export const ERC721_TRANSFER_TOPIC = toEventSelector(getAbiItem({ abi: ERC721_ABI, name: 'Transfer' }));
 export const ERC721_APPROVAL_TOPIC = toEventSelector(getAbiItem({ abi: ERC721_ABI, name: 'Approval' }));
 export const ERC721_APPROVAL_FOR_ALL_TOPIC = toEventSelector(getAbiItem({ abi: ERC721_ABI, name: 'ApprovalForAll' }));
