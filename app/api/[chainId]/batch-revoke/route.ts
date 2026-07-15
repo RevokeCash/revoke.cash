@@ -42,7 +42,7 @@ export async function POST(req: NextRequest, { params }: Props) {
 
   try {
     await sql`
-      INSERT INTO batch_revokes (chain_id, fee_transaction_hash, user_address, fee_paid, is_testnet, vat_region, sponsor, timestamp)
+      INSERT INTO batch_revokes (chain_id, fee_transaction_hash, user_address, fee_usd_cents, is_testnet, vat_region, sponsor, timestamp)
       VALUES (${chainId}, ${transactionHash}, ${userAddress}, ${feePaid}, ${isTestnetChain(chainId)}, ${country}, ${sponsor}, ${new Date().toISOString()})
     `;
 
