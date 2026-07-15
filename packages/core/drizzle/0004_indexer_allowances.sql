@@ -7,6 +7,7 @@ CREATE TABLE "indexer"."allowance_state" (
 	"consecutive_failures" integer DEFAULT 0 NOT NULL,
 	"last_error" text,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"last_evaluated_at" timestamp with time zone,
 	CONSTRAINT "allowance_state_pkey" PRIMARY KEY("address","chain_id")
 );
 --> statement-breakpoint

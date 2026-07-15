@@ -1,6 +1,4 @@
 CREATE TYPE "auto_revoke"."allowance_type" AS ENUM('erc721_single', 'erc721_all', 'erc20', 'permit2');--> statement-breakpoint
-DROP TABLE "auto_revoke"."activity_log";--> statement-breakpoint
-DROP TYPE "auto_revoke"."activity_status";--> statement-breakpoint
 CREATE TABLE "auto_revoke"."observations" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"address" text NOT NULL,

@@ -1,1 +1,0 @@
-ALTER TYPE "premium"."payment_status" ADD VALUE 'reversed';

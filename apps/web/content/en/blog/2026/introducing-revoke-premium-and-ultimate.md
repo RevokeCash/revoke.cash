@@ -1,7 +1,7 @@
 ---
 title: 'Introducing Revoke Premium & Ultimate'
 description: Today we're launching Revoke Premium and Revoke Ultimate. Premium brings all your approvals together in one multichain dashboard, and Ultimate automatically revokes approvals on your behalf. Everything you use today stays free.
-date: 2026-07-10T13:00:00Z
+date: 2026-07-16T13:00:00Z
 author: Rosco Kalis
 translator: <Your Name Here (or remove)>
 ---

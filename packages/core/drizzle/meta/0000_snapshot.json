@@ -37,8 +37,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "fee_paid": {
-          "name": "fee_paid",
+        "fee_usd_cents": {
+          "name": "fee_usd_cents",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -69,7 +69,7 @@
         },
         "timestamp": {
           "name": "timestamp",
-          "type": "timestamp",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"

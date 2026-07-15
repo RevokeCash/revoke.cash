@@ -64,48 +64,6 @@
       "when": 1782837483206,
       "tag": "0008_auto_revoke_actions",
       "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "7",
-      "when": 1783703566221,
-      "tag": "0009_allowance_state_last_evaluated_at",
-      "breakpoints": true
-    },
-    {
-      "idx": 10,
-      "version": "7",
-      "when": 1783765374675,
-      "tag": "0010_premium_payment_reversed_status",
-      "breakpoints": true
-    },
-    {
-      "idx": 11,
-      "version": "7",
-      "when": 1783957395320,
-      "tag": "0011_money_units_and_timestamptz",
-      "breakpoints": true
-    },
-    {
-      "idx": 12,
-      "version": "7",
-      "when": 1784142532902,
-      "tag": "0012_premium_withdrawal_requests",
-      "breakpoints": true
-    },
-    {
-      "idx": 13,
-      "version": "7",
-      "when": 1784142571251,
-      "tag": "0013_premium_refund_rename",
-      "breakpoints": true
-    },
-    {
-      "idx": 14,
-      "version": "7",
-      "when": 1784147295678,
-      "tag": "0014_premium_transfer_scan_cursors",
-      "breakpoints": true
     }
   ]
 }

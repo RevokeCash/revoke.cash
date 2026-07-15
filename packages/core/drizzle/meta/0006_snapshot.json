@@ -4,108 +4,6 @@
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "auto_revoke.activity_log": {
-      "name": "activity_log",
-      "schema": "auto_revoke",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "address": {
-          "name": "address",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "chain_id": {
-          "name": "chain_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "trigger_type": {
-          "name": "trigger_type",
-          "type": "trigger_type",
-          "typeSchema": "auto_revoke",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "spender_address": {
-          "name": "spender_address",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "token_address": {
-          "name": "token_address",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "tx_hash": {
-          "name": "tx_hash",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "status": {
-          "name": "status",
-          "type": "activity_status",
-          "typeSchema": "auto_revoke",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "idx_activity_log_address": {
-          "name": "idx_activity_log_address",
-          "columns": [
-            {
-              "expression": "address",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "idx_activity_log_created": {
-          "name": "idx_activity_log_created",
-          "columns": [
-            {
-              "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "auto_revoke.permissions": {
       "name": "permissions",
       "schema": "auto_revoke",
@@ -434,8 +332,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "fee_paid": {
-          "name": "fee_paid",
+        "fee_usd_cents": {
+          "name": "fee_usd_cents",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -466,7 +364,7 @@
         },
         "timestamp": {
           "name": "timestamp",
-          "type": "timestamp",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
@@ -540,6 +438,12 @@
         "last_error": {
           "name": "last_error",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last_evaluated_at": {
+          "name": "last_evaluated_at",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
         },
@@ -1409,8 +1313,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "amount_usd": {
-          "name": "amount_usd",
+        "amount_usd_cents": {
+          "name": "amount_usd_cents",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -1626,8 +1530,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "price_usd": {
-          "name": "price_usd",
+        "price_usd_cents": {
+          "name": "price_usd_cents",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -1930,18 +1834,153 @@
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
+    },
+    "premium.refund_requests": {
+      "name": "refund_requests",
+      "schema": "premium",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "payment_id": {
+          "name": "payment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "refund_amount_usd_cents": {
+          "name": "refund_amount_usd_cents",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "refund_tx_hash": {
+          "name": "refund_tx_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "processed_at": {
+          "name": "processed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dismissed_at": {
+          "name": "dismissed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "idx_refund_requests_payment_unique": {
+          "name": "idx_refund_requests_payment_unique",
+          "columns": [
+            {
+              "expression": "payment_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"premium\".\"refund_requests\".\"dismissed_at\" IS NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_refund_requests_refund_tx_hash_unique": {
+          "name": "idx_refund_requests_refund_tx_hash_unique",
+          "columns": [
+            {
+              "expression": "refund_tx_hash",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"premium\".\"refund_requests\".\"refund_tx_hash\" IS NOT NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "refund_requests_payment_id_payments_id_fk": {
+          "name": "refund_requests_payment_id_payments_id_fk",
+          "tableFrom": "refund_requests",
+          "tableTo": "payments",
+          "schemaTo": "premium",
+          "columnsFrom": [
+            "payment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "premium.transfer_scan_cursors": {
+      "name": "transfer_scan_cursors",
+      "schema": "premium",
+      "columns": {
+        "chain_id": {
+          "name": "chain_id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "last_scanned_block": {
+          "name": "last_scanned_block",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     }
   },
   "enums": {
-    "auto_revoke.activity_status": {
-      "name": "activity_status",
-      "schema": "auto_revoke",
-      "values": [
-        "pending",
-        "executed",
-        "failed"
-      ]
-    },
     "auto_revoke.risk_sensitivity": {
       "name": "risk_sensitivity",
       "schema": "auto_revoke",
@@ -2003,7 +2042,9 @@
         "pending",
         "confirmed",
         "expired",
-        "failed"
+        "failed",
+        "reversed",
+        "refunded"
       ]
     },
     "premium.plan_tier": {

@@ -1,1 +1,0 @@
-ALTER TABLE "indexer"."allowance_state" ADD COLUMN "last_evaluated_at" timestamp with time zone;
