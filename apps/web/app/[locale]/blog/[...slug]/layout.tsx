@@ -1,9 +1,8 @@
 import Breadcrumb from 'components/common/Breadcrumb';
 import Divider from 'components/common/Divider';
 import PageNavigation from 'components/common/PageNavigation';
-import TranslateButton from 'components/common/TranslateButton';
 import type { BreadcrumbEntry } from 'lib/types';
-import { getSidebar, getTranslationUrl, readAndParseContentFile } from 'lib/utils/markdown-content';
+import { getSidebar, readAndParseContentFile } from 'lib/utils/markdown-content';
 import { rdfaTypeof } from 'lib/utils/rdfa';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
@@ -25,7 +24,6 @@ const BlogLayout = async ({ params, children }: Props) => {
   const t = await getTranslations({ locale });
   const { meta } = readAndParseContentFile(slug, locale, 'blog')!;
   const posts = await getSidebar(locale, 'blog');
-  const translationUrl = await getTranslationUrl(slug, locale, 'blog');
 
   const breadcrumbs: BreadcrumbEntry[] = [{ name: t('common.nav.blog'), href: '/blog' }];
   if (meta.sidebarTitle) breadcrumbs.push({ name: meta.sidebarTitle });
@@ -47,7 +45,6 @@ const BlogLayout = async ({ params, children }: Props) => {
       <div className="max-w-3xl mx-auto">
         <div className="pl-2 pt-2">
           <Breadcrumb pages={breadcrumbs} />
-          <TranslateButton language={meta.language} translationUrl={translationUrl} />
         </div>
         {children}
         <Divider className="my-6" />

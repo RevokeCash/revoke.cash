@@ -14,8 +14,6 @@
     "analyze": "ANALYZE=true yarn build",
     "typecheck": "tsc --noEmit",
     "lint:checksums": "yarn tsx scripts/lint-checksums.ts && git rm -r --cached -q data && git add --all data",
-    "translations:update": "localazy upload && localazy download",
-    "translations:update:md": "localazy upload -k localazy.content.keys.json -c localazy.content.json && localazy download -k localazy.content.keys.json -c localazy.content.json && yarn tsx scripts/remove-untranslated-markdown-files.ts",
     "test": "yarn test:mocha && yarn test:cypress",
     "test:cypress": "cypress run",
     "test:mocha": "yarn env mocha test/**/*.test.ts --",
@@ -80,7 +78,6 @@
   "devDependencies": {
     "@cypress/grep": "^6.0.2",
     "@dotenvx/dotenvx": "^2.0.0",
-    "@localazy/cli": "^2.0.11",
     "@next/bundle-analyzer": "^16.2.10",
     "@tailwindcss/postcss": "^4.3.2",
     "@tailwindcss/typography": "^0.5.20",

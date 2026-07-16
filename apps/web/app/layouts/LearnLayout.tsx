@@ -1,7 +1,6 @@
 import Breadcrumb from 'components/common/Breadcrumb';
 import Divider from 'components/common/Divider';
 import PageNavigation from 'components/common/PageNavigation';
-import TranslateButton from 'components/common/TranslateButton';
 import ArticleMeta from 'components/learn/ArticleMeta';
 import Sidebar from 'components/learn/Sidebar';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
@@ -15,11 +14,10 @@ interface Props {
   sidebarEntries: ISidebarEntry[];
   slug: string[];
   meta: ContentMeta;
-  translationUrl?: string;
 }
 
 // TODO: Make this into a nested layout
-const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translationUrl }: Props) => {
+const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta }: Props) => {
   const messages = useMessages();
   const t = useTranslations();
 
@@ -41,9 +39,6 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
           <div className="min-w-0 w-full">
             <div className="pl-2 pt-2">
               <Breadcrumb pages={breadcrumbs} />
-              <NextIntlClientProvider messages={{ common: messages.common, learn: messages.learn }}>
-                <TranslateButton language={meta.language} translationUrl={translationUrl} />
-              </NextIntlClientProvider>
             </div>
             {children}
             <Divider className="my-6" />

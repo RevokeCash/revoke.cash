@@ -1,7 +1,7 @@
 import LearnLayout from 'app/layouts/LearnLayout';
 import MarkdownProse from 'components/common/MarkdownProse';
 import { locales } from 'lib/i18n/routing';
-import { getAllContentSlugs, getSidebar, getTranslationUrl, readAndParseContentFile } from 'lib/utils/markdown-content';
+import { getAllContentSlugs, getSidebar, readAndParseContentFile } from 'lib/utils/markdown-content';
 import { rdfaTypeof } from 'lib/utils/rdfa';
 import type { Metadata, NextPage } from 'next';
 import { setRequestLocale } from 'next-intl/server';
@@ -43,7 +43,6 @@ const LearnDocumentPage: NextPage<Props> = async ({ params }) => {
 
   const { content, meta } = readAndParseContentFile(slug, locale, 'learn')!;
   const sidebar = await getSidebar(locale, 'learn');
-  const translationUrl = await getTranslationUrl(slug, locale, 'learn');
 
   return (
     <>
@@ -53,7 +52,7 @@ const LearnDocumentPage: NextPage<Props> = async ({ params }) => {
           <div hidden className="hidden" property="image" content={`https://revoke.cash${meta.coverImage}`} />
         )}
       </div>
-      <LearnLayout sidebarEntries={sidebar} slug={slug} meta={meta} translationUrl={translationUrl}>
+      <LearnLayout sidebarEntries={sidebar} slug={slug} meta={meta}>
         <MarkdownProse meta={meta} content={content} />
       </LearnLayout>
     </>

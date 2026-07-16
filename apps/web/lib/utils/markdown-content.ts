@@ -2,7 +2,6 @@ import type { Nullable } from '@revoke.cash/core/types';
 import { deduplicateArray } from '@revoke.cash/core/utils';
 import { readFileSync } from 'fs';
 import matter from 'gray-matter';
-import ky from 'lib/ky';
 import type { ContentFile, ISidebarEntry, Person, RawContentFile } from 'lib/types';
 import { getTranslations } from 'next-intl/server';
 import { join } from 'path';
@@ -190,45 +189,6 @@ export const getAllContentSlugs = (directory: ContentDirectory = 'learn'): strin
 export const getAllLearnCategories = (): string[] => {
   const slugs = getAllContentSlugs('learn');
   return deduplicateArray([...slugs.map((slug) => slug[0]), 'wallets']);
-};
-
-export const getTranslationUrl = async (
-  slug: string | string[],
-  locale: string,
-  directory: ContentDirectory = 'learn',
-): Promise<string | undefined> => {
-  if (!process.env.LOCALAZY_API_KEY || locale === 'en') return undefined;
-
-  const normalisedSlug = Array.isArray(slug) ? slug : [slug];
-
-  const baseUrl = 'https://api.localazy.com/projects/_a7784910611832258237';
-
-  const headers = {
-    Authorization: `Bearer ${process.env.LOCALAZY_API_KEY}`,
-  };
-
-  const files = await ky.get(`${baseUrl}/files`, { headers }).json<any[]>();
-
-  const targetFileName = `${normalisedSlug.at(-1)}.md`;
-  const targetPath = `${directory}/${normalisedSlug.slice(0, -1).join('/')}`;
-  const file = files.find((file) => file.name === targetFileName && file.path === targetPath);
-
-  if (!file) {
-    throw new Error(`Could not find translation file for ${targetPath}/${targetFileName}`);
-  }
-
-  const {
-    keys: [key],
-  } = await ky.get(`${baseUrl}/files/${file.id}/keys/en`, { headers }).json<any>();
-
-  const languageCodes: Record<string, number> = {
-    zh: 1,
-    ru: 1105,
-    ja: 717,
-    es: 458,
-  };
-
-  return `https://localazy.com/p/revoke-cash-markdown-content/phrases/${languageCodes[locale]}/edit/${key.id}`;
 };
 
 export const getCoverImage = (
