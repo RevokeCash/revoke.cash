@@ -19,9 +19,6 @@ import './fonts';
 import './style.css';
 
 const FPS = 30;
-// Start one bar before the soundtrack's second drop. This aligns the drop with the opening stats,
-// the scene changes with musical bars, and the final impact with the call to action.
-const NEW_SOUNDTRACK_TRIM_BEFORE = 2809;
 
 // The announcement video's individual scenes stay registered for stills and per-scene iteration.
 const ANNOUNCEMENT_SCENES = [
@@ -62,7 +59,7 @@ export const Root = () => {
           fps={FPS}
           width={1920}
           height={1080}
-          defaultProps={{ soundtrack: 'audio/new-audio.wav', soundtrackTrimBefore: NEW_SOUNDTRACK_TRIM_BEFORE }}
+          defaultProps={{ soundtrack: 'audio/revoke-premium-manual-cut.wav' }}
         />
         <Composition
           id="MainAlternativeSoundtrack"
