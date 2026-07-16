@@ -4,6 +4,7 @@ import { type ChainRevenue, deriveByChain, deriveByPlan, type PlanRevenue } from
 import { getChainName } from '@revoke.cash/core/chains';
 import { formatUsdCents } from '@revoke.cash/core/utils/formatting';
 import { createColumnHelper } from '@tanstack/react-table';
+import DateRangePicker, { currentUtcDate, currentUtcYearStart } from 'components/admin/common/DateRangePicker';
 import Card, { CardHeader } from 'components/common/Card';
 import ChainLogo from 'components/common/ChainLogo';
 import EmptyState from 'components/common/EmptyState';
@@ -12,7 +13,6 @@ import { useAdminRevenueData } from 'lib/hooks/admin/useAdminRevenue';
 import { useTable } from 'lib/hooks/useTable';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import DateRangeInputs, { currentUtcDate, currentUtcYearStart } from './DateRangeInputs';
 
 const RevenueBreakdownSection = () => {
   const [fromDate, setFromDate] = useState(currentUtcYearStart);
@@ -31,7 +31,7 @@ const RevenueBreakdownSection = () => {
               <h2 className="text-xl">Revenue breakdown</h2>
               <p>Confirmed revenue by chain and plan for the selected period</p>
             </div>
-            <DateRangeInputs from={fromDate} to={toDate} onFromChange={setFromDate} onToChange={setToDate} />
+            <DateRangePicker from={fromDate} to={toDate} onFromChange={setFromDate} onToChange={setToDate} />
           </div>
         </CardHeader>
       }
@@ -39,9 +39,15 @@ const RevenueBreakdownSection = () => {
       className={twMerge(isLoading && 'h-80')}
     >
       {data && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <RevenueByChainTable byChain={deriveByChain(data, fromIso, toExclusiveIso)} />
-          <RevenueByPlanTable byPlan={deriveByPlan(data, fromIso, toExclusiveIso)} />
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <h3 className="font-medium">By plan</h3>
+            <RevenueByPlanTable byPlan={deriveByPlan(data, fromIso, toExclusiveIso)} />
+          </div>
+          <div className="flex flex-col gap-2">
+            <h3 className="font-medium">By chain</h3>
+            <RevenueByChainTable byChain={deriveByChain(data, fromIso, toExclusiveIso)} />
+          </div>
         </div>
       )}
     </Card>

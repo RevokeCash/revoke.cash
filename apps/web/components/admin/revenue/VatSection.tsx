@@ -3,6 +3,7 @@
 import { formatVatRate, type RegionSummary } from '@revoke.cash/core/admin/revenue';
 import { formatUsdCents } from '@revoke.cash/core/utils/formatting';
 import { createColumnHelper } from '@tanstack/react-table';
+import DateRangePicker, { currentUtcDate, currentUtcYearStart } from 'components/admin/common/DateRangePicker';
 import Button from 'components/common/Button';
 import Card, { CardHeader } from 'components/common/Card';
 import Table from 'components/common/table/Table';
@@ -10,7 +11,6 @@ import { useAdminVatReport, type VatStream } from 'lib/hooks/admin/useAdminReven
 import { useTable } from 'lib/hooks/useTable';
 import { useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import DateRangeInputs, { currentUtcDate, currentUtcYearStart } from './DateRangeInputs';
 
 const VatSection = () => {
   const [fromDate, setFromDate] = useState(currentUtcYearStart);
@@ -29,7 +29,7 @@ const VatSection = () => {
               <p>Gross revenue per VAT region; VAT extracted from gross amounts at the standard rate</p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <DateRangeInputs from={fromDate} to={toDate} onFromChange={setFromDate} onToChange={setToDate} />
+              <DateRangePicker from={fromDate} to={toDate} onFromChange={setFromDate} onToChange={setToDate} />
               <Button style="secondary" size="sm" href={csvUrl}>
                 Download CSV
               </Button>

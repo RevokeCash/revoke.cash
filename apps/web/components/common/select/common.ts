@@ -56,12 +56,12 @@ export const normaliseSearchText = (text: string): string =>
 // Text sizes are set explicitly (rather than inherited) because the menu is rendered in a portal,
 // so it does not inherit the text size of the trigger's surroundings
 const triggerSizeClassMapping = {
-  sm: 'h-6 pl-2 pr-1.5 text-sm',
-  md: 'h-9 px-2',
+  sm: 'h-6 pl-2 pr-1.5 rounded-md text-sm',
+  md: 'h-9 px-2 rounded-lg text-base',
 } as const;
 
 export const getTriggerClassName = (size: 'sm' | 'md' = 'md'): string =>
-  twMerge('flex items-center justify-between gap-2 font-normal rounded-lg', triggerSizeClassMapping[size]);
+  twMerge('flex items-center justify-between gap-2 font-normal', triggerSizeClassMapping[size]);
 
 export const getTriggerChevronClassName = (size: 'sm' | 'md' = 'md'): string =>
   size === 'sm' ? 'w-4 h-4 shrink-0' : 'w-5 h-5 shrink-0';
