@@ -1,0 +1,27 @@
+import { getSessionKey, type OnSessionRevoke, type Session } from '@revoke.cash/core/sessions';
+import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
+import RevokeButton from 'components/allowances/controls/RevokeButton';
+import { useRevokeSession } from 'lib/hooks/ethereum/sessions/useRevokeSession';
+
+interface Props {
+  session: Session;
+  onRevoke: OnSessionRevoke;
+}
+
+const ControlsCell = ({ session, onRevoke }: Props) => {
+  const { revoke } = useRevokeSession(session, onRevoke);
+
+  return (
+    <div className="flex justify-end w-28 mr-0 mx-auto">
+      <ControlsWrapper address={session.account}>
+        {(disabled) => (
+          <div className="controls-section">
+            <RevokeButton transactionKey={getSessionKey(session)} revoke={revoke} disabled={disabled} />
+          </div>
+        )}
+      </ControlsWrapper>
+    </div>
+  );
+};
+
+export default ControlsCell;

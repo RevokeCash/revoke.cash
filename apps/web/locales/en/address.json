@@ -1,0 +1,227 @@
+{
+  "allowances": {
+    "amount": "{amount} {symbol}",
+    "count": "{count, plural, =0 {No approvals} =1 {# approval} other {# approvals}}",
+    "empty_chains_count": "{count, plural, =0 {No networks without approvals} =1 {# network without approvals} other {# networks without approvals}}",
+    "none_found": "No approvals found",
+    "none_found_filtered": "No approvals found for the selected filters",
+    "none_found_premium": "No approvals found on any of the supported networks. You're all clear!",
+    "token_id": "Token #{tokenId}",
+    "unknown": "Unknown",
+    "unlimited": "Unlimited"
+  },
+  "batch_revoke": {
+    "failed": "Failed",
+    "fee": {
+      "eip5792_notice": "Note: your wallet does not support atomic batch revokes, so even when you use our paid batch revoke, you need to send multiple transactions.",
+      "eip5792_notice_chain": "Note: your wallet does not support atomic batch revokes for {chainName}, so even when you use our paid batch revoke, you need to send multiple transactions.",
+      "notice": "By batch revoking, you pay a small fee of <m>${feeDollarAmount}</m> that supports the continued development of Revoke.cash.",
+      "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link> is sponsoring the batch revoke fee on the <m>{chainName}</m> network! 🥳",
+      "tooltip": "The flat fee of <m>${BASE_FEE}</m> per batch supports infrastructure costs and ongoing development. You can also revoke approvals one by one for free.",
+      "upgrade_prompt": "Want unlimited batch revokes?"
+    },
+    "revoked": "Revoked",
+    "title": "Batch Revoke",
+    "total": "Total"
+  },
+  "delegations": {
+    "columns": {
+      "chain": "Network",
+      "contract": "Asset / Contract",
+      "delegate": "Delegate",
+      "delegator": "Delegator",
+      "platform": "Platform",
+      "type": "Type"
+    },
+    "contract": {
+      "not_applicable": "N/A"
+    },
+    "count": "{count, plural, =0 {No delegations} =1 {# delegation} other {# delegations}}",
+    "delegated_to": "Delegated To",
+    "eip7702_delegations": "EIP7702 Delegations",
+    "empty_chains_count": "{count, plural, =0 {No networks without delegations} =1 {# network without delegations} other {# networks without delegations}}",
+    "info_panel": {
+      "description": "Delegations are a way to authorize other addresses to act on your behalf, for example when trying to verify asset ownership or when claiming airdrops. This can be beneficial to security, as it allows you to use a <b>hot wallet</b> to manage your assets without having to use your <b>cold wallet</b> for every interaction. However, in case your hot wallet gets compromised, you do want to make sure that you revoke the delegation so that the attacker cannot use it to impersonate you. Note that these delegations are <b>different</b> from EIP7702 delegations, which can <i>only</i> be revoked inside your wallet application.",
+      "title": "What Are Delegations?"
+    },
+    "no_delegations": "No delegations found",
+    "no_eip7702_delegations": "No EIP7702 delegations found",
+    "none_found_premium": "No delegations found on any of the supported networks. You're all clear!",
+    "this_wallet": "This wallet",
+    "tooltips": {
+      "contract": "A contract-level delegation gives the delegate the permission to act on your behalf on supported platforms for a specific contract.",
+      "eip7702": "An EIP7702 delegation adds smart contract functionality to your wallet.",
+      "eip7702_revoke": "EIP7702 delegations have to be revoked inside your wallet application",
+      "erc1155": "An ERC1155 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC1155 token.",
+      "erc20": "An ERC20 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC20 token.",
+      "erc721": "An ERC721 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC721 token.",
+      "wallet": "A wallet-level delegation allows the delegate to act on your behalf on supported platforms."
+    },
+    "types": {
+      "contract": "Contract",
+      "eip7702": "EIP7702",
+      "erc1155": "ERC1155",
+      "erc20": "ERC20",
+      "erc721": "ERC721",
+      "wallet": "Wallet"
+    }
+  },
+  "headers": {
+    "actions": "Actions",
+    "allowance": "Approved Amount",
+    "amount": "Amount",
+    "asset": "Asset",
+    "asset_type": "Type",
+    "chain": "Network",
+    "date": "Date",
+    "event_type": "Event Type",
+    "expiration": "Expiration",
+    "last_checked": "Last Checked",
+    "last_updated": "Last Updated",
+    "policy_type": "Permission Type",
+    "session_hash": "Session Identifier",
+    "signer": "Authorized Signer",
+    "spender": "Approved Spender",
+    "status": "Status",
+    "transaction": "Transaction",
+    "value_at_risk": "Value at Risk"
+  },
+  "history": {
+    "approved": "Approved",
+    "cancelled_signatures": "Cancelled Signatures",
+    "none_found": "No approval history found",
+    "revoked": "Revoked",
+    "status_failed": "failed",
+    "status_loaded": "loaded",
+    "status_loading": "loading",
+    "title": "Approval History"
+  },
+  "labels": {
+    "account_types": {
+      "eip7702": "EIP7702 Account",
+      "eoa": "EOA",
+      "smart_contract": "Smart Contract"
+    },
+    "connected": "Connected",
+    "nft": "NFT",
+    "not_connected": "Not Connected",
+    "policy_type": {
+      "all": "Transfers & Calls",
+      "calls": "Contract Calls",
+      "none": "None",
+      "transfers": "Transfers"
+    },
+    "token": "Token"
+  },
+  "meta": {
+    "title": "Address {addressDisplay}'s Approvals",
+    "title_chain": "Address {addressDisplay}'s Approvals on {chainName}"
+  },
+  "navigation": {
+    "allowances": "Approvals",
+    "delegations": "Delegations",
+    "exploits": "Exploits",
+    "history": "History",
+    "sessions": "Sessions"
+  },
+  "permit2": {
+    "expiration": "Expires {inTime}"
+  },
+  "premium": {
+    "banner": {
+      "cta": "Upgrade to Premium",
+      "description": "Multichain dashboard?"
+    },
+    "subscription_expiry": {
+      "cta": "Extend",
+      "description": "Your premium subscription expires in {days, plural, =1 {1 day} other {# days}}."
+    }
+  },
+  "risk_factors": {
+    "allowlist": "Well-known spender address",
+    "blocklist": "Dangerous or malicious",
+    "closed_source": "Closed source",
+    "deprecated": "Deprecated or outdated",
+    "eoa": "Externally Owned Account",
+    "excessive_expiration": "Excessive expiration",
+    "exploit": "Involved in the {data}",
+    "levels": {
+      "high": "high risk",
+      "low": "low risk",
+      "medium": "medium risk"
+    },
+    "phishing_risk": "Increases risk surface in case of phishing",
+    "proxy": "Upgradeable proxy contract",
+    "source": "reported by <source-link>{source}</source-link>",
+    "suspicious_address": "Suspicious-looking address",
+    "uninitialized": "No contract deployed to this address",
+    "unsafe": "Potentially unsafe contract code"
+  },
+  "search": {
+    "history": "Search by Spender or Token",
+    "spender": "Search by Spender"
+  },
+  "sessions": {
+    "info": {
+      "description": "Sessions are a permissions system similar to token approvals, but with a few key differences. While token approvals specify a permission for an address to take tokens from your wallet, sessions can be used to specify a permission for another address to sign specific transactions on your behalf when interacting with smart contracts. These sessions are currently only available on Abstract when using the <i>Abstract Global Wallet</i>, but might be available on other chains in the future.",
+      "title": "What Are Sessions?"
+    },
+    "table": {
+      "none_found": "No sessions found",
+      "title": "Active Sessions"
+    },
+    "tooltips": {
+      "policy_type": {
+        "all": "This session is authorized to call {callPoliciesCount} different functions and transfer tokens to {transferPoliciesCount} different addresses",
+        "calls": "This session is authorized to call {callPoliciesCount} different functions",
+        "none": "This session has no permissions",
+        "transfers": "This session is authorized to transfer tokens to {transferPoliciesCount} different addresses"
+      }
+    }
+  },
+  "sorting": {
+    "columns": {
+      "allowance": "Approved Amount",
+      "approved_spender": "Approved Spender",
+      "asset_name": "Asset Name",
+      "last_updated": "Last Updated",
+      "value_at_risk": "Value at Risk"
+    },
+    "fns": {
+      "date": {
+        "asc": "Oldest to Newest",
+        "desc": "Newest to Oldest"
+      },
+      "number": {
+        "asc": "Low to High",
+        "desc": "High to Low"
+      },
+      "text": {
+        "asc": "A to Z",
+        "desc": "Z to A"
+      }
+    },
+    "label": "Sort"
+  },
+  "time_machine": {
+    "apply": "Apply",
+    "description": "Travel back in time to see what your approvals looked like at a specific point in the past. Revoke actions are disabled while viewing historical data.",
+    "exit": "Back to Present",
+    "label": "Time Machine",
+    "now": "Now",
+    "viewing_as_of": "Viewing approvals as of {date}, {time}"
+  },
+  "tooltips": {
+    "connect_wallet": "Please connect your wallet to continue",
+    "connected_account": "You can only perform actions for the connected account",
+    "filter_by_spender": "Filter by this spender",
+    "filter_by_token": "Filter by this token",
+    "permit2_expiration": "This is a Permit2 approval that will expire {inTime}",
+    "risk_factors": "This is {riskLevel} for these reasons:"
+  },
+  "viewing_on": "Viewing address on",
+  "wallet_health": {
+    "allowances": "Approvals",
+    "value_at_risk": "Value at Risk"
+  }
+}

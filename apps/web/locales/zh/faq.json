@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "description": "解答您关于代币授权、Revoke.cash 和钱包安全的所有问题。",
+    "title": "常见问题"
+  },
+  "questions": {
+    "costs": {
+      "answer": "Revoke.cash 的核心工具是免费的：查看授权并逐个撤销只需支付网络的汽油费。使用<i>批量撤销</i>功能时，免费用户需支付 <b>${BASE_FEE}</b> 的少量费用，而 <b>Revoke Premium</b> 则包含无限次批量撤销。Premium 增加了多链便利和主动防护，同时帮助支持免费公共工具的运营。在某些网络上，批量撤销费用由赞助商承担。",
+      "question": "使用 Revoke.cash 需要多少钱？"
+    },
+    "deposited_tokens": {
+      "answer": "撤销授权对您存入或质押的代币没有任何影响。这些代币将保持存入状态，您仍然可以提取它们。但是，如果您想向已存入的仓位中添加更多代币，则需要再次进行授权。",
+      "question": "撤销授权后，我存入或质押的代币会怎样？"
+    },
+    "enough_to_disconnect": {
+      "answer": "不够。断开您的钱包（如 MetaMask）连接对保护您免受授权漏洞（以及大多数其他漏洞）的侵害<i>毫无</i>作用。断开钱包与某个网站的连接时，唯一的变化是该网站无法再看到您的地址。但您的授权仍然有效。",
+      "question": "只“断开”钱包连接而不撤销授权，这样就足够了吗？"
+    },
+    "hardware_wallets": {
+      "answer": "不能。一般而言，硬件钱包比移动钱包或基于浏览器的钱包安全得多，因为钱包的密钥安全地存储在设备上，只要无法接触到设备，就不可能窃取密钥。但对于授权而言，任何人都<i>无需</i>窃取您的密钥就能拿走您的代币。正因为如此，硬件钱包对授权漏洞并不能提供额外的保护。",
+      "question": "硬件钱包能让我免于遭受授权漏洞吗？"
+    },
+    "other_question": {
+      "answer": "如果您有任何未在本常见问题解答中提及的问题，请通过 <twitter-link>Twitter</twitter-link> 或 <discord-link>Discord</discord-link> 联系我们。",
+      "question": "这里找不到我的问题。"
+    },
+    "recover_assets": {
+      "answer": "不能。Revoke.cash 是一种<i>预防性</i>工具，帮助您养成良好的钱包安全习惯。通过定期撤销活跃的授权，您可以降低成为授权漏洞受害者的可能性。但遗憾的是，它无法用于追回任何被盗资金。您仍然应该确保撤销那些被用来盗取您资金的授权，以防止未来更多资金被盗。",
+      "question": "我可以用 Revoke.cash 来追回被盗资产吗？"
+    },
+    "sweeper_bot": {
+      "answer": "如果您的账户上有一个所谓的“扫荡机器人”，只要有 ETH 进账就会立即被偷走，这意味着您的助记词已经泄露。在这种情况下，撤销授权对您的钱包安全没有帮助。不幸的是，您的钱包没有办法从中恢复。您应该放弃这个钱包并创建一个新的钱包。",
+      "question": "我想撤销授权，但每当我向我的账户添加 ETH 时，它就会被盗。"
+    },
+    "testnet_allowances": {
+      "answer": "通常您无需撤销测试网上的代币授权，因为测试网上的代币没有任何价值。每个代币授权<i>仅</i>适用于单个网络上的单个代币。因此，测试网上的代币授权不会对您的主网代币构成安全风险。",
+      "question": "我需要撤销测试网上的授权吗？"
+    },
+    "wallet_mentions_approve": {
+      "answer": "在代币的智能合约中，批准授权和撤销授权是同一个函数。区别在于，撤销授权时您会将授权设置为 0（对于 ERC20 代币）或“false”（对于 NFT）。您可以在 MetaMask 中点击“编辑权限”（对于 ERC20 代币）或“数据”标签页（对于 NFT），来验证 Revoke.cash 确实是在撤销授权。",
+      "question": "为什么撤销授权时，我的钱包弹窗会提到“授予权限”、“批准”或“设置全部授权”？"
+    },
+    "which_allowances": {
+      "answer": "选择撤销哪些授权始终是在安全性和便利性之间进行权衡。对于某些知名协议（如 Uniswap），保留活跃的授权很可能没有问题；但对于较新的和未知的智能合约，撤销授权更为稳妥。另外请记住，某些使用场景要求您保持授权活跃。例如，如果您在 OpenSea 上有正在进行的挂单，就需要保留相应的授权，挂单才能保持有效。",
+      "question": "我需要撤销哪些授权？"
+    },
+    "which_chains": {
+      "answer": "Revoke.cash 的<extension-link>浏览器扩展</extension-link>支持所有 EVM 网络。Revoke.cash 网站支持大量 EVM 网络，完整列表见下方。如果您希望我们支持其他网络，请通过 <twitter-link>Twitter</twitter-link> 或 <discord-link>Discord</discord-link> 联系我们。",
+      "question": "Revoke.cash 支持哪些网络？"
+    },
+    "which_domains": {
+      "answer": "在搜索栏中搜索账户时，您可以使用多种不同的域名服务。目前我们支持 <ens-link>ENS</ens-link>、<uns-link>Unstoppable Domains</uns-link> 和 <avvy-link>Avvy Domains</avvy-link>。将来我们可能会添加其他域名服务。",
+      "question": "Revoke.cash 支持哪些类型的域名？"
+    }
+  },
+  "title": "常见问题"
+}

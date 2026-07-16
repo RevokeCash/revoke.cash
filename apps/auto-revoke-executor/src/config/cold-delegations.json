@@ -1,0 +1,726 @@
+{
+  "0x5862aB2F23C4241D64B99d509d50B2483a23A793": {
+    "1": {
+      "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0xc00b411c8717362da9c26b7b977ae750326ce75d14d885dda70c2bb645ead2ed",
+      "signature": "0x1b0f28e3c704fc481631b276ed58d7ec756bc97199b66fdb0a556ffc834f6e2b58d01ee0c7e6e0ba6303d53e772370622f36be74553250a398d65b4b3425578e1b"
+    },
+    "10": {
+      "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0xf75b4c4ce1c02b4f9cd9e3a2dba40c844b5a012727cec061725ca906bb1d763b",
+      "signature": "0xa478ba57f1043b604d8766ad714322ba74f02ba8b77f61f0665b622610aede4464c5407b1683c93079868baccb1fdae24c8f6b08e231cff3b6d4aa3e2483e83e1b"
+    },
+    "56": {
+      "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x6ac8ea299ebbccac5cbbd9ba561f26191111ebdd2d4a968dd4ac3d1e36336758",
+      "signature": "0x4d62852773606fc897b56f452c36249dbccac1994de51e5af9d86c1cbb99c1927ec21d72a278e57ef11205d2d2cf9509599b1f80090432337002a8fc9a28b3dc1b"
+    },
+    "100": {
+      "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x43ef86b2f3d67ee561f070526f293e38d6959ad1be01e2f04e503da98a2d2526",
+      "signature": "0x604b1b234ef37e74b6b80a7ded10604631e1ed46f971d64b545a9cd21cc6e5516e442439f351c2447ed15fddb9483514da60c3a15d8bc5c9e6d90d40d90061df1b"
+    },
+    "130": {
+      "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x9b9b68f69930064d1695e1f025353b62c6178caa35be1a5e19f580d3a2ab81fc",
+      "signature": "0x2fd5d3c3624d4c67d90dc94015233e424a21c7a3043bbfe73824430a320e12973225f8105f491f5bdff96dc168952f639502191f74dd492725a7a867b43051e71c"
+    },
+    "137": {
+      "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x329471b3361cc8b78cb0ff918855c8e9e2c32d9262efce0a3fd4b3327238da3e",
+      "signature": "0x46750c9140d616db325bff9bb204595322b3188a68531f1791da914e6cbe95e228bcb809e3afeaf1cdb0cccd4e72155701744a9a5edd9e2a6f8fb3f3c22197511b"
+    },
+    "143": {
+      "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x69145c18da728484aab2ea3889c813fdcdce942ea9a3e8a90133c0cdb178a885",
+      "signature": "0xc4c144d5f88c3cee5dd2cb71292db1a02f3614a63da78fc7e52825d03f52e0a2370fdee7704a876902bce2d25bd09b38fdd6d58f6d9ea0ab59d1be65f4e4cb131b"
+    },
+    "146": {
+      "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x8311f61b810d8d71ca92b6b1008851856cd2ce9bf984f5bdede33c3f59bc59ef",
+      "signature": "0x8f0445f645be7decd80697b21db61ea5932a75d87a80fe05fa968ea4356588342c9a566f0c0bf532e3312e4cd8ce0d1cbdb10e98915a8661b832f9d55b58646b1b"
+    },
+    "1329": {
+      "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0xe3382df57636b4844418923488ed0ef3e78aa1e3f126636941078ed9c95850d7",
+      "signature": "0x374a2d35df83b04199d5b45cf36cc7d67738dc8ca9f6dd9454b770528eb53e0658e473133f58911e3af5c2eb857e89e38a3028e96637dbfa5aa3f35c0115f98d1c"
+    },
+    "4114": {
+      "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0xea6695a8017ef68013857b3c2b20fadaf9fd841876c672731a23252ea445a42c",
+      "signature": "0x4c112087a104703b067d6f1add5f8751412be4a51b4c3aa0477f41ed32e8c5ef425d5c364883290122bcb8b5d4bf1367add3b5615df8f54047231e9cee3ba6fd1b"
+    },
+    "8453": {
+      "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0xaac6babd35af6350f93bd13693a426e1a1348d3f117c62eeac9101c0cae3e024",
+      "signature": "0xdfc603969e01b6fb207a621427e7f8661ed4d60adb0cde744b927c934cff3b265dbfc257ed92e5b3b6d7571a674cc7ea2a451e85e56cb931065dc3d58a92f7901b"
+    },
+    "42161": {
+      "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x258454e1498dbe51821f8c6576c80a0d26839b6112c8fb9fefebad591f719874",
+      "signature": "0xe24302e39198eb8fa209617d2239f95be31e954cde391192cd25e77d8d953bda48a6e82298cf52c413c4e24c309a19a13c948cdfee73c925f12622014ea9947f1c"
+    },
+    "59144": {
+      "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0xbc7e93da10156746c80561370754f0ec4b777a1c9f915c5769a20b47454fbf1a",
+      "signature": "0xd213b1841be6911b278e9a1a3edf6e4a60e27a19c3db388c7cb9d8712c78c8a3689bca3422134d0149c22de88d6df504a036c4f21e1cb3c49255a8175f2f88321c"
+    },
+    "80094": {
+      "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x2ea0e8a8032922c6f77175f993b3d1ba91910ac36e95af0ef322cccd8af6b047",
+      "signature": "0x2c56eade4ea10abdbe8babe5e6abaeab8665ddd631b6144fe48e49f03d7261f20a10b8fbc7622735eb02917039946bb5ab93ff2db4d1f50c9329050e6764923a1c"
+    },
+    "11155111": {
+      "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x6a710da369276c56dc88236fee2703584e29facb0d4b5d1bb076c8f4ef5c645e",
+      "signature": "0x123963a2d9a0a93dce6f7e15074a5821b70ac6538e3a96314aff0c7cf03dab54461dddcc7c684ad5fc342c599be67971eb5b262ffdafc574116dd1bc5a926b631c"
+    }
+  },
+  "0xe27418d01359a632fEDE71710D3091bEA98a4958": {
+    "1": {
+      "delegate": "0xe27418d01359a632fEDE71710D3091bEA98a4958",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x1a505db607628a8b441a7cbf4fa4468acb210f8cbe9c3577cbd2c1d1a67336d8",
+      "signature": "0xe844dce7c5296e0f401519d53daf37c2ee458577e9424fbe31553d2ba279a91a0fe2a988b24150a33781d75b8518047abbe0c8f5cadaab04790368b8fe649dc71b"
+    },
+    "10": {
+      "delegate": "0xe27418d01359a632fEDE71710D3091bEA98a4958",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x2040ad043144c82a93651e37ecbbf5c13d95930dde7e402593d82cf0bcacd0ef",
+      "signature": "0x3b79a1e9239ae2d4f8ffb32f9bcfa8913bc1a47d11d58d1edc88a74ae051dbc7301a7b22669de7dbb04681ab633dccf9d1315ea17764ec13448166c86321e6a31c"
+    },
+    "56": {
+      "delegate": "0xe27418d01359a632fEDE71710D3091bEA98a4958",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x8662841b7c86f0b4e08bd63cf5012b09c458270f6c893dbdf2c26018f9608dd7",
+      "signature": "0xe345d4d77f98903af86a51a67f778b21b4fa40c01d56761358d9db258d8500406c643913c793c2e8dca04021cf574e02be5a5b6b13a155ffa5d989e9eb069f151b"
+    },
+    "100": {
+      "delegate": "0xe27418d01359a632fEDE71710D3091bEA98a4958",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0xf86609425f51efa02055b970ad34b29f1da78ed95fb2ebdd4932b2071dd332b0",
+      "signature": "0xc79924047420d338bf5b0457d03ae5a261377008abf15c0bd009ba744c79c1be1b9e93361ad63fb6832dfe8a028dc10767ecdabc9c5bad19e7eb575b7b1a808d1c"
+    },
+    "130": {
+      "delegate": "0xe27418d01359a632fEDE71710D3091bEA98a4958",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0xeb5c47034e37aa42d434e2db4d788769d03d2d60224f39c3dc5bce8aafe8d3ee",
+      "signature": "0x48ebc140f8ec59c721e57636ba6d3d71d398fc9c25f4877476ecd32b35fbaff540b78ca45312f317ad3507fb220bbb71653e3e007a77b0d84b9b7238230131d41b"
+    },
+    "137": {
+      "delegate": "0xe27418d01359a632fEDE71710D3091bEA98a4958",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x59e6333028774a67c911575d1f8db2f1fe4b8f8b50b2efcc8b7ca5e031fc433d",
+      "signature": "0xc88f08e319b5dd32dfac8030a980b18b7d191ded9ea72f2b269c46c0c65e7f3662a271f91964d597c3a1f5fd0257dba4f323bd72a0ae19759d49062af28f5c221c"
+    },
+    "143": {
+      "delegate": "0xe27418d01359a632fEDE71710D3091bEA98a4958",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0xf6e4b4dc6bde15b54777cc390e175b41fdbf2e703c62360ffa7ccddbb7a45b69",
+      "signature": "0x7a19427b190250ceedfd2aeb187c864eafff511151199849a7ae19121c7eb50034698e34bd359d79c6de926de59a2fc22280788e7fae64474a7e4b1967856e2b1b"
+    },
+    "146": {
+      "delegate": "0xe27418d01359a632fEDE71710D3091bEA98a4958",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x7a529fac2edb64d01def100929232456e7c90b5c692eec010374b5e8933c1ed4",
+      "signature": "0x6c58b3c52d0e02bbb91e38bf04b07ba3230494421300ebde53567387125f022c462e6dbd68120a1cb460ae8bcb06b342505607a6df8fff872905076f8b77110b1c"
+    },
+    "1329": {
+      "delegate": "0xe27418d01359a632fEDE71710D3091bEA98a4958",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x3c183b57e20557b388d89d0949eba483d7452e79a964087ba3eb95601a9d2628",
+      "signature": "0xf97783943d7899fc11dff656a8dee1e403a08f91fdea3bb3314b1851d679d325610453be3fb85fda9dbb30819f20c6878fd9c4aeb1a6eb354451a184cd0ff9581c"
+    },
+    "4114": {
+      "delegate": "0xe27418d01359a632fEDE71710D3091bEA98a4958",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x4f80f417e6761004a1b20c39e5240c954b223ba008bdd01001789aaf8c16007d",
+      "signature": "0xafb3e63fc6d6fda0cfbca5cbb57b6d8770ef50a0fadfda92e9e8b344b7a0ef4f0f5b39c67067b22093f5fba9d0b9bea162e4e3efd0bd2a7bd31f3e321b5a29431b"
+    },
+    "8453": {
+      "delegate": "0xe27418d01359a632fEDE71710D3091bEA98a4958",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x8bc51dce31a80a3efa1941048cb6375bb0680687ef0b93066ed442a0fb7f6180",
+      "signature": "0xee7601c7ed1e4f986000b277db4d59c18a5d63efa8624f1193162ba7095fcbdf609a7953474dc62cb44e4c5d76d0b72057f14531f6e4f159256d15b76c3ff6d61c"
+    },
+    "42161": {
+      "delegate": "0xe27418d01359a632fEDE71710D3091bEA98a4958",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x3c074f9c89af04e19a0a3bdc49ca38aa25bad9eb85522c436f6bf2a69ba4b897",
+      "signature": "0xbbd7e9d0e96e2930e618a5af399fac7d886c4a96a9d601115b36dd71ecfdbfa9603db5dd71bff612281de959eb6bea047d2140d182c50ab7cb6dbf3630c5dbce1b"
+    },
+    "59144": {
+      "delegate": "0xe27418d01359a632fEDE71710D3091bEA98a4958",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x84d045bdb535ae6ce71fc14d5cd87300e4c2e078f25f93d394ed307f698dbbbe",
+      "signature": "0x00a5d80d55eadeaa37121b728c7445c48e2f1d31ac1eccf19ed6541cba55ce722f46a81d27e5deff06cbef204381172a6a94aa05804260027a9d074643b6bdfe1c"
+    },
+    "80094": {
+      "delegate": "0xe27418d01359a632fEDE71710D3091bEA98a4958",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0x912ef9aeb53f1a49fadbde5b2c8f4ef1f190efe09e1ba14bc2a733e95a548047",
+      "signature": "0x543292fe7f64f73f271e2933f4c5aa5676debf3fff9ba206a5a95b295a8b6610368709f877d7d359e66b2ddd2fbf71bddb475b030f0b2d2dc54ca97426a238831b"
+    },
+    "11155111": {
+      "delegate": "0xe27418d01359a632fEDE71710D3091bEA98a4958",
+      "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+      "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "caveats": [
+        {
+          "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+          "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+          "terms": "0xcef6d209",
+          "args": "0x00"
+        },
+        {
+          "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+          "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "args": "0x00"
+        }
+      ],
+      "salt": "0xffecc9b50e36ecae50349f190e268babae6890ccc8f0828f83d9295be5dd0ec7",
+      "signature": "0xe097bf7b5643c3d4e0716c343e4f7ce302f7b19d2fd8dd996dd246c6de8017ae16f717abe85acfd23f55878e9ceec948fccb3146da71891d81d9bc90b1ef953f1b"
+    }
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "announcements": {
+    "premium_launch": {
+      "learn_more": "詳しく見る",
+      "text": "<b>Revoke Premium & Ultimate</b>が登場：統合マルチチェーンダッシュボードと自動取り消し",
+      "view_pricing": "料金プランを見る"
+    }
+  },
+  "article_meta": {
+    "author": "著者：<person-link>{author}</person-link>",
+    "reading_time": "読了時間：{readingTime}分",
+    "translator": "翻訳者：<person-link>{translator}</person-link>"
+  },
+  "buttons": {
+    "authenticate": "認証する",
+    "authenticate_wallet": "ウォレットを認証する",
+    "authenticated": "認証済み",
+    "authenticating": "認証中",
+    "back_to_exploits": "エクスプロイト一覧に戻る",
+    "cancel": "キャンセル",
+    "check": "確認",
+    "check_connected_address": "接続したアドレスの確認",
+    "close": "閉じる",
+    "collapse_all": "すべて折りたたむ",
+    "connect": "ウォレットを接続する",
+    "connecting": "接続中",
+    "disconnect": "接続解除",
+    "download": "ダウンロードする",
+    "expand_all": "すべて展開",
+    "get_premium": "プレミアムを入手",
+    "get_started": "開始する",
+    "get_ultimate": "Ultimateを入手",
+    "loading": "読み込み中",
+    "my_account": "アカウント設定",
+    "my_allowances": "マイダッシュボード",
+    "next": "次へ",
+    "previous": "前へ",
+    "remove": "削除",
+    "retrying": "再試行中",
+    "revoke": "取り消す",
+    "revoke_selected": "選択した項目を取り消す",
+    "revoking": "取り消し中",
+    "send": "送信する",
+    "sending": "送信中",
+    "share_on_x": "Xで共有する",
+    "try_again": "再試行",
+    "understand": "理解しました",
+    "update": "更新",
+    "updating": "更新中",
+    "upgrade_to_premium": "プレミアムにアップグレード",
+    "upgrade_to_ultimate": "Ultimateにアップグレード"
+  },
+  "chain_select": {
+    "mainnets": "メインネット",
+    "testnets": "テストネット"
+  },
+  "color_themes": {
+    "dark": "ダーク",
+    "light": "ライト",
+    "system": "システム"
+  },
+  "connect_wallet": {
+    "title": "ウォレットを接続する"
+  },
+  "errors": {
+    "404": {
+      "go_home": "もしくは、ホーム画面に戻る",
+      "subtitle": "お探しのページは見つかりませんでした。",
+      "suggested_pages": {
+        "faq": {
+          "description": "すべての質問にお答えします。",
+          "title": "よくある質問"
+        },
+        "title": "この中からお探しですか？",
+        "your_allowances": {
+          "description": "自分の許可を確認する。",
+          "title": "あなたの許可一覧"
+        }
+      },
+      "title": "このページは存在しません。"
+    },
+    "messages": {
+      "chain_could_not_connect": "{chainName}に接続できませんでした。後でもう一度試してください。",
+      "connect_wallet_to_supported_network": "Web3ウォレットをサポートされているネットワークに接続してください",
+      "eip5792_batch_call_failed": "EIP5792バッチコールに関連するエラーが発生しました",
+      "page_load_failed": "このページの読み込み中に問題が発生しました。後でもう一度お試しください。"
+    }
+  },
+  "footer": {
+    "about": "私たちについて",
+    "acknowledgements": "謝辞",
+    "blog": "ブログ",
+    "brand_assets": "ブランドアセット",
+    "community": "コミュニティー",
+    "company": "会社",
+    "donations": "寄付",
+    "exploit_checker": "エクスプロイトチェッカー",
+    "extension": "ブラウザ拡張機能",
+    "faq": "よくある質問",
+    "knowledgebase": "ナレッジベース",
+    "learn": "学ぶ",
+    "premium": "プレミアム",
+    "privacy": "プライバシーポリシー",
+    "product": "製品",
+    "terms": "利用規約",
+    "token_approval_checker": "トークン承認チェッカー",
+    "what_are_token_approvals": "トークン承認とは？",
+    "what_to_do_when_scammed": "詐欺に遭った場合の対処方法"
+  },
+  "labels": {
+    "premium": "プレミアム",
+    "ultimate": "Ultimate"
+  },
+  "meta": {
+    "acknowledgements": {
+      "description": "Revoke.cashはいくつかのサードパーティ製ツールやサービスを利用しています。このページではそれらを一覧にしています。",
+      "title": "謝辞"
+    },
+    "description": "{chainName}とその他100以上のネットワークで、過去に付与したトークン承認や許可を取り消すことにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
+    "disclaimer": {
+      "description": "Revoke.cashの免責事項",
+      "title": "免責事項"
+    },
+    "privacy_policy": {
+      "description": "Revoke.cashのプライバシーポリシー",
+      "title": "プライバシーポリシー"
+    },
+    "terms": {
+      "description": "Revoke.cashの利用規約",
+      "title": "利用規約"
+    },
+    "title": "100以上のネットワークでトークンの承認を取り消す"
+  },
+  "nav": {
+    "about": "私たちについて",
+    "blog": "ブログ",
+    "exploits": "エクスプロイト",
+    "extension": "ブラウザ拡張機能",
+    "learn": "学ぶ",
+    "merchandise": "商品",
+    "more": "その他",
+    "premium": "プレミアム",
+    "search": "アドレスまたはドメインでアカウントを検索する"
+  },
+  "pagination": {
+    "first": "最初",
+    "last": "最後",
+    "page": "{total}ページ中{page}ページ目",
+    "show": "表示",
+    "showing": "{total}件中{start}件目から{end}件目までを表示中"
+  },
+  "quiz": {
+    "check_answer": "回答を確認する",
+    "check_selected_answers": "選択した回答を確認する",
+    "correct_answer": "正解です！よくできました。",
+    "incorrect_answer": "不正解です。正解は次のとおりです。",
+    "next_question": "次の質問",
+    "question_progress": "{total}問中{current}問目",
+    "select_all_that_apply": "該当するものをすべて選択してください",
+    "select_correct_answer": "正しい答えを選択してください",
+    "wait_and_read": "読んでお待ちください"
+  },
+  "select": {
+    "no_options": "選択肢がありません"
+  },
+  "toasts": {
+    "clipboard_failed": "❌ クリップボードにコピーできませんでした",
+    "clipboard_success": "✅ クリップボードにコピーされました",
+    "fee_payment_failed": "❌ 手数料の支払いに失敗しました：{message}",
+    "fee_payment_rejected": "❌ 続行するには一括取り消し手数料をお支払いください",
+    "revoke_failed": "❌ 取り消しに失敗しました：{message}",
+    "revoke_failed_ledger_nano_s": "❌ Ledger Nano SはLedgerによって非推奨となり、NFT承認の取り消し機能をサポートしなくなりました。新しいLedgerデバイスへのアップグレードが推奨されます。",
+    "revoke_failed_revert": "❌ このトークンの作成者は、承認と承認取り消しの機能を無効化または一時停止しました（{message}）",
+    "switch_chain_failed": "❌ チェーンの切り替えに失敗しました。ウォレットで手動で{chainName}に切り替えてください。",
+    "transaction_failed": "❌ トランザクションが失敗しました：{message}",
+    "transaction_submitted": "✅ トランザクションを送信しました！",
+    "update_failed": "❌ このトークンは許可の更新をサポートしていません。代わりに取り消してください。"
+  }
+}

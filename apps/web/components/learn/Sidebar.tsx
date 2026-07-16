@@ -1,0 +1,55 @@
+'use client';
+
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
+import { ChevronDownIcon } from '@heroicons/react/24/solid';
+import type { ISidebarEntry } from 'lib/types';
+import { useTranslations } from 'next-intl';
+import StickyBox from 'react-sticky-box';
+import { twMerge } from 'tailwind-merge';
+import SidebarEntry from './SidebarEntry';
+
+interface Props {
+  entries: ISidebarEntry[];
+}
+
+const Sidebar = ({ entries }: Props) => {
+  const t = useTranslations();
+
+  const sidebarContent = (
+    <ul className="flex flex-col gap-1 w-full text-zinc-600 dark:text-zinc-400">
+      {entries.map((entry) => (
+        <SidebarEntry key={entry.path} {...entry} />
+      ))}
+    </ul>
+  );
+
+  return (
+    <aside>
+      <StickyBox offsetTop={16} offsetBottom={16}>
+        <Disclosure
+          as="div"
+          className="w-full border border-zinc-200 dark:border-zinc-800 rounded-xl lg:w-80 px-4 py-3"
+        >
+          {({ open }) => {
+            return (
+              <>
+                <DisclosureButton className="flex gap-2 w-full items-center justify-between text-left lg:hidden">
+                  <div className={twMerge('font-bold', open && 'invisible')}>{t('learn.sidebar.mobile_header')}</div>
+                  <ChevronDownIcon
+                    className={twMerge(open ? '-rotate-180' : 'rotate-0', 'h-6 w-6 transform shrink-0')}
+                  />
+                </DisclosureButton>
+                <DisclosurePanel className="lg:hidden">{sidebarContent}</DisclosurePanel>
+                <DisclosurePanel className="hidden lg:flex" static>
+                  {sidebarContent}
+                </DisclosurePanel>
+              </>
+            );
+          }}
+        </Disclosure>
+      </StickyBox>
+    </aside>
+  );
+};
+
+export default Sidebar;

@@ -1,0 +1,12 @@
+{
+  // Type-checking-only config: the runtime tsconfig.json must keep module: commonjs because
+  // @swc-node/register reads it to decide how to transform code. Bundler resolution makes tsc use
+  // dependencies' declaration files (via their exports maps) instead of type-checking any raw
+  // TypeScript source they ship.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler"
+  },
+  "include": ["src/**/*.ts", "scripts/**/*.ts"]
+}

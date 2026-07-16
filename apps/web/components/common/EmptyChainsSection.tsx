@@ -1,0 +1,59 @@
+'use client';
+
+import { getChainName } from '@revoke.cash/core/chains';
+import ChainLogo from 'components/common/ChainLogo';
+import ChainLogoStack from 'components/common/ChainLogoStack';
+import CollapsibleCard from 'components/common/CollapsibleCard';
+import { useState } from 'react';
+
+interface Props {
+  emptyChains: Array<{ chainId: number }>;
+  description: string;
+  allEmptyMessage?: string;
+}
+
+const EmptyChainsSection = ({ emptyChains, description, allEmptyMessage }: Props) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  if (emptyChains.length === 0) return null;
+
+  return (
+    <CollapsibleCard
+      isExpanded={isExpanded}
+      onToggle={() => setIsExpanded((value) => !value)}
+      className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950"
+      headerClassName="hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+      contentClassName="border-zinc-200 dark:border-zinc-800 px-4 pb-3"
+      header={
+        <div className="w-full flex flex-col gap-1 min-w-0">
+          <div className="flex items-center gap-3">
+            <ChainLogoStack
+              chainIds={emptyChains.map((chain) => chain.chainId)}
+              maxVisible={5}
+              logoSize={24}
+              overlapClassName="-space-x-2"
+              itemClassName="ring-2 dark:ring-zinc-950"
+              overflowClassName="h-6 min-w-6 text-xs bg-zinc-200 dark:bg-zinc-700 ring-2 dark:ring-zinc-950"
+            />
+            <span className="text-sm text-zinc-600 dark:text-zinc-400">{description}</span>
+          </div>
+          {allEmptyMessage ? <span className="text-sm text-zinc-500 dark:text-zinc-400">{allEmptyMessage}</span> : null}
+        </div>
+      }
+    >
+      <div className="flex flex-wrap gap-2 pt-3">
+        {emptyChains.map((chain) => (
+          <div
+            key={chain.chainId}
+            className="flex items-center gap-1.5 px-2 py-1 rounded-sm bg-zinc-100 dark:bg-zinc-800 text-xs text-zinc-600 dark:text-zinc-400"
+          >
+            <ChainLogo chainId={chain.chainId} size={14} />
+            <span>{getChainName(chain.chainId)}</span>
+          </div>
+        ))}
+      </div>
+    </CollapsibleCard>
+  );
+};
+
+export default EmptyChainsSection;

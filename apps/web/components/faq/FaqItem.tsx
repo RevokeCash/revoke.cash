@@ -1,0 +1,68 @@
+'use client';
+
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
+import { ChevronDownIcon, HashtagIcon } from '@heroicons/react/24/outline';
+import Href from 'components/common/Href';
+import Prose from 'components/common/Prose';
+import { useMounted } from 'lib/hooks/useMounted';
+import { rdfaTypeof } from 'lib/utils/rdfa';
+import React, { type ReactNode } from 'react';
+import { twMerge } from 'tailwind-merge';
+
+interface Props {
+  question: string;
+  slug: string;
+  children: ReactNode;
+  wrapper?: 'p' | 'div';
+  heading?: 'h2' | 'h3';
+}
+
+const FaqItem = ({ question, slug, children, wrapper, heading = 'h2' }: Props) => {
+  const isMounted = useMounted();
+
+  return (
+    <Disclosure
+      as="div"
+      className="py-4 w-full relative group"
+      property="mainEntity"
+      {...rdfaTypeof('Question')}
+      id={slug}
+      // We're using this "key" hack to force a re-mount of the component when the page loads, this allows us to
+      // automatically open the FAQ item if the URL contains the question in its hash, while also having full SSR.
+      key={`${slug}-${isMounted}`}
+      defaultOpen={isMounted && window.location.hash === `#${slug}`}
+    >
+      {({ open }) => (
+        <>
+          <dt className="relative">
+            <DisclosureButton className="flex gap-2 w-full items-center justify-between text-left">
+              {React.createElement(heading, { className: 'text-lg not-prose', property: 'name' }, question)}
+              <ChevronDownIcon
+                className={twMerge(open ? 'rotate-180' : 'rotate-0', 'h-6 w-6 transition-transform shrink-0')}
+              />
+            </DisclosureButton>
+            <div className="absolute top-0 -right-8 h-full w-8 z-10">
+              <Href href={`#${slug}`} underline="none" router className="flex h-full items-center">
+                {open ? (
+                  <HashtagIcon className={twMerge('h-6 w-6 ml-2 shrink-0 hidden group-hover:flex')} />
+                ) : (
+                  // We add this disclosure button to make the link also open the FAQ item (but only when it's closed)
+                  <DisclosureButton>
+                    <HashtagIcon className={twMerge('h-6 w-6 ml-2 shrink-0 hidden group-hover:flex')} />
+                  </DisclosureButton>
+                )}
+              </Href>
+            </div>
+          </dt>
+          <DisclosurePanel as="dd" className="mt-2" unmount={false} property="acceptedAnswer" {...rdfaTypeof('Answer')}>
+            <Prose>{React.createElement(wrapper ?? 'p', { property: 'text' }, children)}</Prose>
+          </DisclosurePanel>
+          {/* Add this absolute positioned div to align the "group" position with the hash link */}
+          <div className="absolute top-0 -right-8 h-full w-8" />
+        </>
+      )}
+    </Disclosure>
+  );
+};
+
+export default FaqItem;

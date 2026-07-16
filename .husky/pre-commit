@@ -1,2 +1,2 @@
-yarn lint-staged
-yarn tsc --noEmit
+yarn lint --staged --error-on-warnings --no-errors-on-unmatched
+yarn typecheck

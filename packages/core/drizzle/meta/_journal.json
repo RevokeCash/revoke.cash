@@ -1,0 +1,76 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1772908511117,
+      "tag": "0000_batch_revokes",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1777034315732,
+      "tag": "0001_premium",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1777034344973,
+      "tag": "0002_auto_revoke",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1779708645428,
+      "tag": "0003_indexer_events",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1779708718501,
+      "tag": "0004_indexer_allowances",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1779708758131,
+      "tag": "0005_indexer_token_metadata",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1780502195596,
+      "tag": "0006_indexer_spender_metadata",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1780912581583,
+      "tag": "0007_auto_revoke_observations",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1782837483206,
+      "tag": "0008_auto_revoke_actions",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1784190008844,
+      "tag": "0009_audit_events",
+      "breakpoints": true
+    }
+  ]
+}

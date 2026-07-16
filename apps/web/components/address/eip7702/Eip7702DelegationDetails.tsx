@@ -1,0 +1,34 @@
+'use client';
+
+import { getEip7702DelegatedAddress } from '@revoke.cash/core/eip7702';
+import { isNullish } from '@revoke.cash/core/utils';
+import { useQuery } from '@tanstack/react-query';
+import AddressCellWithRiskData from 'components/allowances/dashboard/cells/AddressCellWithRiskData';
+import { useTranslations } from 'next-intl';
+import type { Address } from 'viem';
+import { usePublicClient } from 'wagmi';
+
+interface Props {
+  address: Address;
+  chainId: number;
+}
+
+export const Eip7702DelegationDetails = ({ address, chainId }: Props) => {
+  const t = useTranslations();
+  const publicClient = usePublicClient({ chainId });
+
+  const { data: delegatedAddress, isLoading } = useQuery({
+    queryKey: ['delegatedAddress', address, publicClient?.chain?.id],
+    queryFn: () => getEip7702DelegatedAddress(address, publicClient!),
+    enabled: !isNullish(address) && !isNullish(publicClient?.chain),
+  });
+
+  return (
+    <div className="flex flex-col justify-center items-center gap-1">
+      <div className="text-sm font-medium">{t('address.delegations.delegated_to')}</div>
+      <div className="w-full flex flex-row justify-between gap-2">
+        <AddressCellWithRiskData address={delegatedAddress!} chainId={chainId} isLoading={isLoading} />
+      </div>
+    </div>
+  );
+};

@@ -1,0 +1,81 @@
+{
+  "faq": {
+    "subtitle": "Estas son algunas de las preguntas más comunes que nos hacen. Para obtener una lista completa de preguntas frecuentes, por favor visita nuestra <faq-link>página de Preguntas Frecuentes</faq-link>.",
+    "title": "Preguntas Frecuentes"
+  },
+  "features": {
+    "auto_revoke": {
+      "description": "Deja que Revoke.cash supervise tus aprobaciones las 24 horas del día y revoque automáticamente en tu nombre las que supongan un riesgo. Protección del tipo configúralo y olvídate para tu cartera, incluso mientras duermes.",
+      "title": "Revocación Automática"
+    },
+    "dashboard": {
+      "description": "Obtén una visión general clara de todas las aprobaciones de tokens que hayas concedido. Ordena, filtra y revoca las que ya no necesites, todo desde un sencillo panel de control.",
+      "title": "Panel de Aprobaciones"
+    },
+    "exploit_checker": {
+      "description": "Comprueba automáticamente tus aprobaciones contra exploits conocidos para ver si alguna de ellas está en riesgo.",
+      "title": "Comprobador de Exploits"
+    },
+    "title": "Diseñado para la Seguridad de la Cartera"
+  },
+  "hero_section": {
+    "subtitle": "Revisa y revoca las autorizaciones de tokens para proteger tu cartera de exploits y estafas.",
+    "title": "Recupera el Control de <highlight>Tu Cartera.</highlight>"
+  },
+  "how_to": {
+    "paragraph_1": {
+      "description": "Haz clic en <b>Conectar Cartera</b> en la parte superior derecha o introduce una dirección en la barra de búsqueda.",
+      "title": "1. Conecta"
+    },
+    "paragraph_2": {
+      "description": "Revisa tus autorizaciones usando las opciones de selección de red, ordenación y filtrado.",
+      "title": "2. Revisa"
+    },
+    "paragraph_3": {
+      "description": "Revoca las autorizaciones que ya no utilices para evitar acceso no deseado a tus fondos.",
+      "title": "3. Revoca"
+    },
+    "title": "Cómo Revocar Tus Autorizaciones"
+  },
+  "premium": {
+    "best_protection": "La mejor protección",
+    "description": "Supervisa y protege tus aprobaciones de tokens en más de 100 redes. A partir de {price}/año.",
+    "free_features": {
+      "batch_revoke": "Revocación por lotes ($1,50/lote)",
+      "exploit_checker": "Comprobador de exploits de cadena única",
+      "single_chain": "Panel de aprobaciones de cadena única"
+    },
+    "free_title": "Gratis",
+    "highlights": {
+      "multichain_dashboard": "Panel de control multicadena",
+      "multichain_exploit_checker": "Comprobador de exploits multicadena",
+      "time_machine": "Time Machine para aprobaciones históricas",
+      "unlimited_batch_revokes": "Revocaciones por lotes ilimitadas"
+    },
+    "most_popular": "Más popular",
+    "premium_price": "{price}/año",
+    "premium_title": "Premium",
+    "title": "Revoke Premium",
+    "ultimate_features": {
+      "automated_revoking": "Revocación automática",
+      "automated_revoking_tooltip": "Requiere MetaMask. Compatible con determinadas redes.",
+      "continuous_monitoring": "Monitoreo continuo",
+      "gas_allowance": "Presupuesto de gas de $5/mes incluido"
+    },
+    "ultimate_price": "{price}/año",
+    "ultimate_title": "Ultimate"
+  },
+  "stats": {
+    "approvals_revoked": "Autorizaciones Revocadas",
+    "networks_supported": "{count} Redes Compatibles",
+    "protected_from_exploits": "Protegido contra Exploits",
+    "total_users": "Total de Usuarios"
+  },
+  "testimonials": {
+    "quotes": {
+      "beausecurity": "Recordatorio súper importante: que un contrato inteligente todavía no haya sufrido un exploit no significa que no vaya a sufrirlo. Revoca las aprobaciones antiguas a contratos inteligentes que ya no uses. Vale mucho la pena. Usa Revoke.cash.",
+      "nft_dreww": "Todos tenemos un teléfono, así que pon un recordatorio ahora mismo para entrar en Revoke.cash y revisar tus aprobaciones cada semana. Esto solo lleva 30 segundos y puede evitar que los hackers te roben los activos.",
+      "rsquare": "Una de las mejores cosas que puedes hacer con Safe a la hora de reaccionar rápido ante incidentes es revocar aprobaciones cómodamente con la Safe App de Revoke.cash."
+    }
+  }
+}

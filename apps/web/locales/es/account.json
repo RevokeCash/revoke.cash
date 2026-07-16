@@ -1,0 +1,254 @@
+{
+  "addresses": {
+    "add_address": "Añadir cartera",
+    "add_failed": "No se pudo añadir la cartera",
+    "placeholder": "Dirección de cartera o nombre de dominio",
+    "remove_failed": "No se pudo eliminar la cartera",
+    "resolve_failed": "No se pudo resolver la dirección o el nombre de la cartera",
+    "title": "Carteras Premium"
+  },
+  "auto_revoke": {
+    "activity": {
+      "columns": {
+        "asset": "Activo",
+        "chain": "Red",
+        "cost": "Coste",
+        "date": "Fecha",
+        "spender": "Gastador",
+        "status": "Estado",
+        "trigger": "Activador",
+        "wallet": "Cartera"
+      },
+      "empty": "Todavía no hay ninguna actividad de revocación automática. Las aprobaciones que cumplan tus reglas aparecerán aquí a medida que se vayan revocando.",
+      "empty_preview": "La actividad de revocación automática aparecerá aquí cuando actualices a Ultimate y configures la Revocación automática.",
+      "reasons": {
+        "awaiting_cheap_gas": "A la espera de que bajen los precios del gas para estirar tu presupuesto mensual.",
+        "chain_pipeline_full": "A la espera de que se confirmen otras revocaciones en esta cadena.",
+        "cooling": "A la espera de que pase un breve retraso de seguridad antes de la ejecución, para que los cambios en las reglas aún puedan cancelarla.",
+        "execution_failed": "No se ha podido completar la transacción de revocación.",
+        "monthly_budget": "A la espera porque se ha agotado el presupuesto mensual. Las revocaciones provocadas por exploits se siguen ejecutando.",
+        "monthly_budget_urgent": "A la espera porque se ha alcanzado el gasto máximo de este mes para las revocaciones provocadas por exploits.",
+        "nonce_consumed": "Reenviando tras un conflicto de transacciones.",
+        "per_action_cap": "A la espera porque el coste estimado supera el límite por revocación.",
+        "queued": "A la espera de que se ejecute.",
+        "subscription_inactive": "A la espera de una suscripción activa que cubra esta cartera.",
+        "transaction_reverted": "La transacción de revocación se ha revertido en la cadena de bloques.",
+        "transient_error": "Se ha producido un error temporal; se volverá a intentar."
+      },
+      "scope": {
+        "mine": "Tu actividad",
+        "subscription": "Todos los miembros"
+      },
+      "status": {
+        "failed": "Fallido",
+        "pending": "Pendiente",
+        "revoked": "Revocado",
+        "skipped": "No es necesario",
+        "submitting": "Enviando"
+      },
+      "title": "Actividad",
+      "triggers": {
+        "exploit": "Exploit",
+        "risk_score": "Arriesgado",
+        "stale": "Obsoleto"
+      }
+    },
+    "budget": {
+      "exploit_protection": "Las revocaciones provocadas por exploits se siguen ejecutando aunque el presupuesto esté agotado.",
+      "per_action_cap": "Cada revocación tiene un límite de {cap}.",
+      "resets": "Se restablece {date}",
+      "shared": "El presupuesto de gas es compartido por todas las carteras de la suscripción.",
+      "used": "{used} de {total} utilizados este mes"
+    },
+    "load_failed": "No se ha podido cargar tu configuración de Revocación automática. Actualiza la página o inténtalo de nuevo más tarde.",
+    "metamask_not_connected": "MetaMask no está conectado",
+    "metamask_required": "La Revocación automática requiere MetaMask. Por favor, conéctate con MetaMask para usar esta función.",
+    "permissions": {
+      "connect_to_manage": "Conecta esta cartera para gestionar sus permisos.",
+      "decode_failed": "No se pudo decodificar el permiso",
+      "grant_description": "Cada dirección debe conceder individualmente el permiso de revocación automática a través de MetaMask.",
+      "grant_failed": "No se ha podido conceder el permiso de revocación automática.",
+      "networks_enabled": "{enabled}/{total} redes habilitadas",
+      "no_active_permission_returned": "No se ha devuelto ningún permiso activo",
+      "revoke_failed": "No se ha podido revocar el permiso de revocación automática.",
+      "revoke_transaction_reverted": "La transacción para desactivar el permiso se ha revertido en la cadena de bloques. Sincroniza desde la cartera y vuelve a intentarlo.",
+      "sync": "Sincronizar desde la cartera",
+      "sync_failed": "No se han podido sincronizar los permisos de revocación automática desde la cartera.",
+      "sync_success": "Permisos de revocación automática sincronizados desde la cartera.",
+      "title": "Permisos"
+    },
+    "rules": {
+      "days": "días",
+      "defaults_description": "Estas reglas se aplican por defecto a todas las carteras de esta suscripción, pero cada cartera puede anularlas.",
+      "managed_by": "Gestionado por {owner}",
+      "risk_detection": "Detección de Aprobaciones de Riesgo",
+      "risk_detection_description": "Revoca automáticamente las aprobaciones concedidas a gastadores de riesgo o afectados por exploits.",
+      "save_failed": "No se han podido guardar las reglas.",
+      "sensitivity_exploits_only": "Solo exploits",
+      "sensitivity_high": "Alto riesgo",
+      "sensitivity_medium": "Riesgo medio y superior",
+      "stale_approval": "Limpieza de Aprobaciones Obsoletas",
+      "stale_approval_description": "Revoca las aprobaciones anteriores al número de días especificado.",
+      "title": "Reglas",
+      "title_defaults": "Reglas Predeterminadas"
+    },
+    "rules_source": {
+      "custom": "Reglas personalizadas",
+      "subscription_defaults": "Gestionado por {owner}",
+      "switch_failed": "No se ha podido cambiar la fuente de las reglas.",
+      "title": "Fuente de las Reglas"
+    },
+    "setup": {
+      "banner": "La Revocación automática aún no está activa para esta cartera.",
+      "banner_cta": "Configúrala",
+      "get_started": "La Revocación automática aún no está activa para esta cartera. Activa abajo las redes que quieres proteger. Cada cartera de la suscripción debe hacer esto una vez, usando MetaMask."
+    },
+    "title": "Revocación automática",
+    "upsell": "La función Revocación automática revoca automáticamente, en tu nombre, las aprobaciones peligrosas u obsoletas. Requiere una suscripción Ultimate."
+  },
+  "billing": {
+    "columns": {
+      "amount": "Monto",
+      "date": "Fecha",
+      "plan": "Plan",
+      "status": "Estado",
+      "transaction": "Transacción"
+    },
+    "details": {
+      "refund_available": "Todavía puedes cancelar este pago y recibir un reembolso completo.",
+      "refund_transaction": "Transacción de reembolso",
+      "requested_at": "Solicitado el"
+    },
+    "no_payments": "Aún no hay historial de pagos.",
+    "status": {
+      "final": "Definitivo",
+      "pending_refund": "Reembolso pendiente",
+      "refunded": "Reembolsado",
+      "within_refund_window": "En plazo de reembolso"
+    },
+    "title": "Facturación"
+  },
+  "coverage": {
+    "active": "Activa",
+    "extension": {
+      "get_extension": "Obtén Revoke Sidekick",
+      "lite_description": "La cobertura está inactiva porque la extensión está en el plan Lite. Cambia al plan Standard para activar una cobertura por robo de hasta $30k.",
+      "not_installed_description": "Ahora mismo no estás protegido por la extensión Revoke Sidekick. Instala la extensión Revoke Sidekick para recibir alertas de transacciones en tiempo real y una cobertura por robo de hasta $30k.",
+      "standard_description": "Tienes una cobertura de hasta $30k en protección contra robos gracias a la extensión Revoke Sidekick.",
+      "title": "Cobertura de Revoke Sidekick"
+    },
+    "fairside": {
+      "active_description": "Tienes cobertura de hasta {amount} en protección contra robos a través de Fairside.",
+      "covered": "{amount} cubierto",
+      "covered_wallets": "Carteras Cubiertas",
+      "description": "Protege tu cartera contra el phishing y las estafas de ingeniería social con la cobertura de Fairside.",
+      "errors": {
+        "authentication_failed": "No se pudo autenticar",
+        "authentication_failed_fairside": "No se pudo autenticar con Fairside",
+        "connect_wallet": "Por favor conecta tu cartera para autenticarte",
+        "generate_message_failed": "No se pudo generar el mensaje de autenticación"
+      },
+      "get_coverage": "Obtén Cobertura",
+      "manage": "Gestionar la cobertura",
+      "title": "Cobertura de Fairside",
+      "valid_until": "Válida hasta {date}.",
+      "wallets_description": "Firma un mensaje de autenticación para ver tus carteras protegidas."
+    },
+    "inactive": "Inactiva",
+    "title": "Cobertura contra robos"
+  },
+  "description": "Gestiona tu suscripción premium y la configuración de tu cuenta.",
+  "error": "Se produjo un error al cargar los datos de tu suscripción. Por favor inténtalo de nuevo más tarde.",
+  "granted": {
+    "active": "Activo",
+    "granted_by": "Concedido por {address} • Válido hasta {date}",
+    "title": "Acceso Premium Concedido"
+  },
+  "meta": {
+    "description": "Gestiona tu cuenta y la configuración premium.",
+    "title": "Configuración de la Cuenta"
+  },
+  "subscription": {
+    "active": "Activa",
+    "buttons": {
+      "confirming": "Confirmando pago",
+      "creating": "Creando pago",
+      "extend": "Extender",
+      "paying": "Confirmar en la cartera",
+      "renew": "Renovar",
+      "subscribe": "Suscribirse",
+      "try_again": "Inténtalo de nuevo",
+      "upgrade": "Actualizar"
+    },
+    "cancellation": {
+      "cancelled": "Cancelada",
+      "cancelled_on": "Cancelada el {date}. Tu pago ha sido reembolsado.",
+      "confirm_button": "Solicitar reembolso",
+      "download_confirmation": "Descargar confirmación",
+      "error_fallback": "No se pudo solicitar el reembolso",
+      "modal_access_notice": "Mantendrás el acceso a tu suscripción hasta que se procese el reembolso. El reembolso se envía a la cartera con la que pagaste.",
+      "modal_description": "Esto cancela tu pago de {planName} y lo reembolsa íntegramente. Si tienes otros pagos, tu suscripción se recalcula sin este.",
+      "modal_title": "Cancelar suscripción",
+      "network": "Red",
+      "reason_label": "Motivo de la cancelación (opcional)",
+      "reason_placeholder": "Cuéntanos por qué cancelas",
+      "refund_amount": "Monto del reembolso",
+      "refund_destination": "Destino del reembolso",
+      "requested": "Cancelación solicitada",
+      "success": "Reembolso solicitado. Mantendrás el acceso hasta que se procese el reembolso."
+    },
+    "downgrade_not_supported": "No puedes cambiar una suscripción activa a un plan inferior.",
+    "expired": "Caducada",
+    "expired_on": "Caducó el {date}.",
+    "expired_preserved": "Tus espacios de cartera y tus reglas de Revocación automática se conservan. Renueva para retomarlo donde lo dejaste.",
+    "expired_ultimate_stopped": "La Revocación automática ya no está supervisando tus carteras.",
+    "expires_in": "Caduca en {days, plural, =1 {1 día} other {# días}} ({date})",
+    "expires_soon": "Caduca pronto",
+    "granted_by": "Concedido por {address}",
+    "legal_notice": "Al suscribirte, aceptas nuestros <terms-link>Términos de Servicio</terms-link>.",
+    "next_setup_auto_revoke": "Siguiente paso: configura la Revocación automática",
+    "no_subscription": "No tienes una suscripción premium activa. Suscríbete para empezar. <premium-link>Más información sobre Premium</premium-link>.",
+    "optional_own_subscription": "Ya tienes acceso gracias a una suscripción que te han concedido. Si quieres, aún puedes suscribirte a tu propio plan.",
+    "payment_confirmed": "¡Pago confirmado! Tu suscripción premium ya está activa.",
+    "payment_expired": "El plazo de pago ha expirado. Si ya enviaste el monto completo en USDC, se acreditará automáticamente en cuanto se registre en la cadena de bloques. Comprueba el estado de tu suscripción en unos minutos.",
+    "payment_failed": "El pago de la suscripción ha fallado",
+    "payment_help": "¿Necesitas ayuda? <support-link>Chatea con soporte</support-link>.",
+    "payment_network": "Red de pago",
+    "payment_status_error": "Pago {status}",
+    "payment_summary": "Pagarás {amount} {token} por {days} días. Incluye hasta {maxAddresses} {maxAddresses, plural, =1 {cartera} other {carteras}}.",
+    "plan": "Plan",
+    "plan_description": "${price}/año",
+    "plan_options": {
+      "basic_access": "Acceso Básico",
+      "current": "Actual",
+      "free": "Gratis"
+    },
+    "plans_unavailable": "El proceso de pago no está disponible temporalmente. Por favor inténtalo de nuevo más tarde.",
+    "slots_summary": "{used}/{max} {max, plural, =1 {espacio de cartera usado} other {espacios de cartera usados}}",
+    "title": "Suscripción Premium",
+    "ultimate_requires_metamask": "La Revocación automática requiere MetaMask. Puedes pagar con cualquier cartera y configurar la Revocación automática después conectándote con MetaMask.",
+    "valid_until": "Válida hasta {date}",
+    "wallet": "Cartera",
+    "wrong_wallet_error": "El pago debe enviarse desde {address}. Por favor cambia a esa cartera y vuelve a intentarlo."
+  },
+  "tabs": {
+    "auto_revoke": "Revocación automática",
+    "billing": "Facturación",
+    "coverage": "Cobertura",
+    "subscription": "Suscripción"
+  },
+  "unauthenticated": {
+    "benefits": {
+      "auto_revoke": "Configura y supervisa la Revocación automática",
+      "billing": "Consulta tu historial de facturación",
+      "coverage": "Consulta y gestiona la cobertura de Fairside",
+      "manage_subscription": "Gestiona tu suscripción Premium",
+      "title": "Qué puedes hacer aquí"
+    },
+    "description": "Inicia sesión para gestionar tu suscripción Premium, la Revocación automática, tus espacios de cartera y tu cobertura.",
+    "selected_plan": {
+      "summary": "{price} al año con hasta {maxAddresses} carteras incluidas. Conecta tu cartera para continuar.",
+      "title": "Suscríbete a {planName}"
+    }
+  }
+}

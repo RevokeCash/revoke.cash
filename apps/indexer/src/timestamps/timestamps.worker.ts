@@ -1,0 +1,43 @@
+import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
+import { Logger } from '@nestjs/common';
+import { TIMESTAMPS_QUEUE_NAME, type TimestampsJobData } from '@revoke.cash/backend/indexer/queues/timestamps';
+import { resolveAndPersistTimestamps } from '@revoke.cash/core/indexer/timestamps';
+import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { DelayedError, type Job } from 'bullmq';
+
+const CONTINUATION_DELAY_MS = 500;
+
+@Processor(TIMESTAMPS_QUEUE_NAME, { concurrency: 50, lockDuration: 90_000 })
+export class TimestampsWorker extends WorkerHost {
+  private readonly logger = new Logger(TimestampsWorker.name);
+
+  async process(job: Job<TimestampsJobData>, token?: string): Promise<void> {
+    const { chainId } = job.data;
+    const result = await resolveAndPersistTimestamps(chainId);
+    if (result.blocksProcessed === 0) return;
+
+    if (result.saturated) {
+      this.logger.warn({
+        event: 'timestamps_batch_completed',
+        outcome: 'saturated',
+        continuationDelayMs: CONTINUATION_DELAY_MS,
+        ...result,
+      });
+      await job.moveToDelayed(Date.now() + CONTINUATION_DELAY_MS, token);
+      throw new DelayedError();
+    }
+
+    this.logger.log({ event: 'timestamps_batch_completed', outcome: 'ok', ...result });
+  }
+
+  @OnWorkerEvent('failed')
+  async onFailed(job: Job<TimestampsJobData> | undefined, error: Error): Promise<void> {
+    this.logger.error({
+      event: 'timestamps_batch_failed',
+      outcome: 'failed',
+      jobId: job?.id,
+      chainId: job?.data?.chainId,
+      error: parseErrorMessage(error),
+    });
+  }
+}

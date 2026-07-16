@@ -1,0 +1,254 @@
+{
+  "addresses": {
+    "add_address": "Add wallet",
+    "add_failed": "Failed to add wallet",
+    "placeholder": "Wallet address or domain name",
+    "remove_failed": "Failed to remove wallet",
+    "resolve_failed": "Could not resolve wallet address or name",
+    "title": "Premium Wallets"
+  },
+  "auto_revoke": {
+    "activity": {
+      "columns": {
+        "asset": "Asset",
+        "chain": "Network",
+        "cost": "Cost",
+        "date": "Date",
+        "spender": "Spender",
+        "status": "Status",
+        "trigger": "Trigger",
+        "wallet": "Wallet"
+      },
+      "empty": "No auto-revoke activity yet. Approvals matching your rules will appear here as they are revoked.",
+      "empty_preview": "Auto-revoke activity will appear here once you upgrade to Ultimate and set up Auto-Revoking.",
+      "reasons": {
+        "awaiting_cheap_gas": "Waiting for lower gas prices to stretch your monthly budget.",
+        "chain_pipeline_full": "Waiting for other revokes on this chain to confirm.",
+        "cooling": "Waiting out a short safety delay before executing, so rule changes can still cancel it.",
+        "execution_failed": "The revoke transaction could not be completed.",
+        "monthly_budget": "Waiting because the monthly budget is used up. Exploit-triggered revokes still go through.",
+        "monthly_budget_urgent": "Waiting because this month's maximum spend for exploit-triggered revokes has been reached.",
+        "nonce_consumed": "Resubmitting after a transaction conflict.",
+        "per_action_cap": "Waiting because the estimated cost exceeds the per-revoke limit.",
+        "queued": "Waiting to be executed.",
+        "subscription_inactive": "Waiting for an active subscription to cover this wallet.",
+        "transaction_reverted": "The revoke transaction reverted on-chain.",
+        "transient_error": "A temporary error occurred; this will be retried."
+      },
+      "scope": {
+        "mine": "Your activity",
+        "subscription": "All members"
+      },
+      "status": {
+        "failed": "Failed",
+        "pending": "Pending",
+        "revoked": "Revoked",
+        "skipped": "Not needed",
+        "submitting": "Submitting"
+      },
+      "title": "Activity",
+      "triggers": {
+        "exploit": "Exploit",
+        "risk_score": "Risky",
+        "stale": "Stale"
+      }
+    },
+    "budget": {
+      "exploit_protection": "Exploit-triggered revokes still go through when the budget is used up.",
+      "per_action_cap": "Each revoke is capped at {cap}.",
+      "resets": "Resets {date}",
+      "shared": "The gas budget is shared by all wallets in the subscription.",
+      "used": "{used} of {total} used this month"
+    },
+    "load_failed": "Failed to load your Auto-Revoking configuration. Please refresh the page or try again later.",
+    "metamask_not_connected": "MetaMask not connected",
+    "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",
+    "permissions": {
+      "connect_to_manage": "Connect this wallet to manage its permissions.",
+      "decode_failed": "Failed to decode permission",
+      "grant_description": "Each address must individually grant auto-revoke permission via MetaMask.",
+      "grant_failed": "Failed to grant auto-revoke permission.",
+      "networks_enabled": "{enabled}/{total} networks enabled",
+      "no_active_permission_returned": "No active permission returned",
+      "revoke_failed": "Failed to revoke auto-revoke permission.",
+      "revoke_transaction_reverted": "The transaction to disable the permission failed onchain. Sync from wallet and try again.",
+      "sync": "Sync from wallet",
+      "sync_failed": "Failed to sync auto-revoke permissions from wallet.",
+      "sync_success": "Auto-revoke permissions synced from wallet.",
+      "title": "Permissions"
+    },
+    "rules": {
+      "days": "days",
+      "defaults_description": "These rules apply to all wallets in this subscription by default, but each wallet can override them.",
+      "managed_by": "Managed by {owner}",
+      "risk_detection": "Risky Approval Detection",
+      "risk_detection_description": "Auto-revoke approvals to risky or exploited spenders.",
+      "save_failed": "Failed to save rules.",
+      "sensitivity_exploits_only": "Exploits only",
+      "sensitivity_high": "High risk",
+      "sensitivity_medium": "Medium risk and above",
+      "stale_approval": "Stale Approval Cleanup",
+      "stale_approval_description": "Revoke approvals older than the specified number of days.",
+      "title": "Rules",
+      "title_defaults": "Default Rules"
+    },
+    "rules_source": {
+      "custom": "Custom rules",
+      "subscription_defaults": "Managed by {owner}",
+      "switch_failed": "Failed to switch rules source.",
+      "title": "Rules Source"
+    },
+    "setup": {
+      "banner": "Auto-Revoking is not active for this wallet yet.",
+      "banner_cta": "Set it up",
+      "get_started": "Auto-Revoking is not active for this wallet yet. Toggle the networks you want protected below. Every wallet in the subscription needs to do this once, using MetaMask."
+    },
+    "title": "Auto-Revoking",
+    "upsell": "Auto-Revoking automatically revokes dangerous or stale approvals on your behalf. It requires an Ultimate subscription."
+  },
+  "billing": {
+    "columns": {
+      "amount": "Amount",
+      "date": "Date",
+      "plan": "Plan",
+      "status": "Status",
+      "transaction": "Transaction"
+    },
+    "details": {
+      "refund_available": "You can still cancel this payment and receive a full refund.",
+      "refund_transaction": "Refund transaction",
+      "requested_at": "Requested on"
+    },
+    "no_payments": "No payment history yet.",
+    "status": {
+      "final": "Final",
+      "pending_refund": "Pending refund",
+      "refunded": "Refunded",
+      "within_refund_window": "Within refund window"
+    },
+    "title": "Billing"
+  },
+  "coverage": {
+    "active": "Active",
+    "extension": {
+      "get_extension": "Get Revoke Sidekick",
+      "lite_description": "Coverage is inactive because the extension is on the Lite tier. Switch to Standard to activate up to $30k in theft coverage.",
+      "not_installed_description": "You are currently not covered by the Revoke Sidekick extension. Install the Revoke Sidekick extension for real-time transaction warnings and up to $30k in theft coverage.",
+      "standard_description": "You are covered for up to $30k in theft protection through the Revoke Sidekick extension.",
+      "title": "Revoke Sidekick Coverage"
+    },
+    "fairside": {
+      "active_description": "You are covered for up to {amount} in theft protection through Fairside.",
+      "covered": "{amount} covered",
+      "covered_wallets": "Covered Wallets",
+      "description": "Protect your wallet against phishing and social engineering drains with Fairside coverage.",
+      "errors": {
+        "authentication_failed": "Failed to authenticate",
+        "authentication_failed_fairside": "Failed to authenticate with Fairside",
+        "connect_wallet": "Please connect your wallet to authenticate",
+        "generate_message_failed": "Could not generate authentication message"
+      },
+      "get_coverage": "Get Coverage",
+      "manage": "Manage Coverage",
+      "title": "Fairside Coverage",
+      "valid_until": "Valid until {date}.",
+      "wallets_description": "Sign an authentication message to view your covered wallets."
+    },
+    "inactive": "Inactive",
+    "title": "Theft Coverage"
+  },
+  "description": "Manage your premium subscription and account settings.",
+  "error": "Something went wrong loading your subscription data. Please try again later.",
+  "granted": {
+    "active": "Active",
+    "granted_by": "Granted by {address} • Valid until {date}",
+    "title": "Granted Premium Access"
+  },
+  "meta": {
+    "description": "Manage your account and premium settings.",
+    "title": "Account Settings"
+  },
+  "subscription": {
+    "active": "Active",
+    "buttons": {
+      "confirming": "Confirming payment",
+      "creating": "Creating payment",
+      "extend": "Extend",
+      "paying": "Confirm in wallet",
+      "renew": "Renew",
+      "subscribe": "Subscribe",
+      "try_again": "Try again",
+      "upgrade": "Upgrade"
+    },
+    "cancellation": {
+      "cancelled": "Cancelled",
+      "cancelled_on": "Cancelled on {date}. Your payment was refunded.",
+      "confirm_button": "Request refund",
+      "download_confirmation": "Download confirmation",
+      "error_fallback": "Failed to request a refund",
+      "modal_access_notice": "You keep access to your subscription until the refund is processed. The refund is sent to the wallet that paid.",
+      "modal_description": "This cancels your {planName} payment and refunds it in full. If you have other payments, your subscription is recalculated without this one.",
+      "modal_title": "Cancel subscription",
+      "network": "Network",
+      "reason_label": "Reason for cancelling (optional)",
+      "reason_placeholder": "Let us know why you're cancelling",
+      "refund_amount": "Refund amount",
+      "refund_destination": "Refund destination",
+      "requested": "Cancellation requested",
+      "success": "Refund requested. You keep access until the refund is processed."
+    },
+    "downgrade_not_supported": "You cannot downgrade an active subscription.",
+    "expired": "Expired",
+    "expired_on": "Expired on {date}.",
+    "expired_preserved": "Your wallet slots and Auto-Revoking rules are preserved. Renew to pick up where you left off.",
+    "expired_ultimate_stopped": "Auto-Revoking is no longer monitoring your wallets.",
+    "expires_in": "Expires in {days, plural, =1 {1 day} other {# days}} ({date})",
+    "expires_soon": "Expires soon",
+    "granted_by": "Granted by {address}",
+    "legal_notice": "By subscribing, you agree to our <terms-link>Terms of Service</terms-link>.",
+    "next_setup_auto_revoke": "Next step: set up Auto-Revoking",
+    "no_subscription": "You don't have an active premium subscription. Subscribe to get started. <premium-link>Learn more about Premium</premium-link>.",
+    "optional_own_subscription": "You already have access through a granted subscription. You can still subscribe for your own plan if you'd like.",
+    "payment_confirmed": "Payment confirmed! Your premium subscription is now active.",
+    "payment_expired": "The payment window expired. If you already sent the full USDC amount, it will be credited automatically once it lands on-chain. Check your subscription status in a few minutes.",
+    "payment_failed": "Subscription payment failed",
+    "payment_help": "Need help? <support-link>Chat with support</support-link>.",
+    "payment_network": "Payment network",
+    "payment_status_error": "Payment {status}",
+    "payment_summary": "You will pay {amount} {token} for {days} days. Includes up to {maxAddresses} {maxAddresses, plural, =1 {wallet} other {wallets}}.",
+    "plan": "Plan",
+    "plan_description": "${price}/year",
+    "plan_options": {
+      "basic_access": "Basic Access",
+      "current": "Current",
+      "free": "Free"
+    },
+    "plans_unavailable": "Checkout is temporarily unavailable. Please try again later.",
+    "slots_summary": "{used}/{max} wallet {max, plural, =1 {slot} other {slots}} used",
+    "title": "Premium Subscription",
+    "ultimate_requires_metamask": "Auto-Revoking requires MetaMask. You can pay with any wallet, and set up Auto-Revoking afterwards by connecting with MetaMask.",
+    "valid_until": "Valid until {date}",
+    "wallet": "Wallet",
+    "wrong_wallet_error": "The payment must be sent from {address}. Please switch to that wallet and try again."
+  },
+  "tabs": {
+    "auto_revoke": "Auto-Revoking",
+    "billing": "Billing",
+    "coverage": "Coverage",
+    "subscription": "Subscription"
+  },
+  "unauthenticated": {
+    "benefits": {
+      "auto_revoke": "Set up and monitor Auto-Revoking",
+      "billing": "View your billing history",
+      "coverage": "View and manage Fairside coverage",
+      "manage_subscription": "Manage your Premium subscription",
+      "title": "What you can do here"
+    },
+    "description": "Sign in to manage your Premium subscription, Auto-Revoking, wallet slots, and coverage.",
+    "selected_plan": {
+      "summary": "{price} per year with up to {maxAddresses} wallets included. Connect your wallet to continue.",
+      "title": "Subscribe to {planName}"
+    }
+  }
+}

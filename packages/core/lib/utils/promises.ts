@@ -1,0 +1,60 @@
+import PQueue from 'p-queue';
+import { timeout } from '.';
+
+export const unpackResult = async <T>(promise: Promise<T[]>): Promise<T> => (await promise)[0];
+
+export const withFallback = async <T>(promise: Promise<T>, fallback: T): Promise<T> => {
+  try {
+    const res = await promise;
+    if (res === undefined) return fallback;
+    if (typeof res === 'string' && res.trim() === '') return fallback;
+    return res;
+  } catch {
+    return fallback;
+  }
+};
+
+export const convertString = async (promise: Promise<any>) => String(await promise);
+
+export const filterAsync = async <T>(
+  arrPromise: readonly T[] | Promise<readonly T[]>,
+  predicate: (entry: T) => Promise<boolean>,
+) => {
+  const arr = await arrPromise;
+  const results = await Promise.all(arr.map(predicate));
+  return arr.filter((_v, index) => results[index]);
+};
+
+export const mapAsync = async <T, U>(
+  arrPromise: readonly T[] | Promise<readonly T[]>,
+  mapper: (entry: T) => Promise<U>,
+) => {
+  const arr = await arrPromise;
+  return Promise.all(arr.map(mapper));
+};
+
+export const mapAsyncSequential = async <T, U>(
+  arrPromise: readonly T[] | Promise<readonly T[]>,
+  mapper: (entry: T) => Promise<U>,
+): Promise<U[]> => {
+  const arr = await arrPromise;
+  const results: U[] = [];
+  for (const entry of arr) {
+    results.push(await mapper(entry));
+  }
+  return results;
+};
+
+export const mapAsyncBounded = async <T, U>(
+  arrPromise: readonly T[] | Promise<readonly T[]>,
+  concurrency: number,
+  mapper: (entry: T) => Promise<U>,
+): Promise<U[]> => {
+  const arr = await arrPromise;
+  const queue = new PQueue({ concurrency });
+  return queue.addAll(arr.map((entry) => () => mapper(entry)));
+};
+
+export const withTimeout = async <T>(promise: Promise<T>, ms: number, timeoutMessage: string): Promise<T> => {
+  return await Promise.race([promise, timeout(ms, timeoutMessage)]);
+};

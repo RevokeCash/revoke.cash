@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "description": "Revoke.cash 由 Rosco Kalis 于 2019 年创建，是一款管理代币授权的工具。从那时起，它已发展成为 web3 安全领域不可或缺的工具。",
+    "title": "关于我们"
+  },
+  "timeline": {
+    "batch_revoke": {
+      "description": "这是一项呼声很高的功能：用户现在可以通过排队交易，在一个流程中撤销多个授权。",
+      "title": "批量撤销"
+    },
+    "beyond_approvals": {
+      "description": "Revoke.cash 的功能扩展到授权管理之外，新增了用于管理委托和查看授权历史的标签页。",
+      "title": "委托与历史标签页"
+    },
+    "created": {
+      "description": "受 Paul Berg 在 Devcon 5 上演讲的启发，Rosco Kalis 构建了第一个代币授权管理工具，让用户能够撤销无限授权。",
+      "title": "Revoke.cash 诞生"
+    },
+    "extension": {
+      "description": "加密生态系统中的诈骗和网络钓鱼攻击大幅增加。Rosco 发布了一款浏览器扩展，可在用户签署有风险的授权之前发出警告，提供主动防护。",
+      "title": "浏览器扩展发布"
+    },
+    "extension_overhaul": {
+      "description": "威胁形势不断演变，浏览器扩展需要保持领先。Revoke.cash 与 Fairside 合作打造了全新扩展，改进了检测能力、用户体验和风险覆盖范围。",
+      "title": "扩展全面升级"
+    },
+    "full_time": {
+      "description": "在离开之前的创业公司后，Rosco 决定全职投入 Revoke.cash，将其从业余项目变成一项使命。",
+      "title": "全职投入"
+    },
+    "learn_section": {
+      "description": "工具虽然是安全的重要组成部分，但无法取代教育的作用。我们新增了学习资源板块，帮助用户了解钱包安全。",
+      "title": "学习资源板块"
+    },
+    "multichain": {
+      "description": "EVM 生态系统快速发展，Revoke.cash 从 Ethereum 扩展到支持数十个 EVM 兼容网络。",
+      "title": "多链扩展"
+    },
+    "nft_support": {
+      "description": "随着 NFT 的流行，许多用户向 OpenSea 等交易市场授予授权。Revoke.cash 成为第一个支持撤销 NFT 授权的工具，将功能扩展到 ERC20 代币之外。",
+      "title": "NFT 授权支持"
+    },
+    "premium": {
+      "description": "随着公共物品资助的减少，Revoke.cash 需要找到可持续的商业模式。Revoke Premium 应运而生，以产生真正的收入。",
+      "title": "Revoke Premium"
+    },
+    "redesign": {
+      "description": "此时，Revoke.cash 的视觉设计自 2019 年以来从未改变。为了给未来铺路，我们发布了 Revoke.cash 仪表盘和网站的全面视觉改版。",
+      "title": "网站改版"
+    },
+    "single_tx_batch": {
+      "description": "EIP7702 让用户能够在单笔交易中撤销多个授权，大幅改善了批量撤销的用户体验。",
+      "title": "单笔交易批量撤销"
+    },
+    "team_retropgf": {
+      "description": "Optimism RetroPGF 提供了重要资金支持，促成了首次团队扩充。2024 年，团队迎来了 Dries 和 WiiMee 两位兼职成员。",
+      "title": "团队扩充与 RetroPGF"
+    },
+    "today": "今天"
+  },
+  "title": "关于我们"
+}

@@ -1,0 +1,38 @@
+{
+  "name": "@revoke.cash/video",
+  "version": "0.0.1",
+  "private": true,
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render",
+    "still": "remotion still",
+    "typecheck": "tsc --noEmit",
+    "allow-scripts": "cd ../.. && yarn allow-scripts"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.486",
+    "@remotion/fonts": "^4.0.486",
+    "@remotion/tailwind-v4": "^4.0.486",
+    "@remotion/transitions": "^4.0.486",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "remotion": "^4.0.486",
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss": "4.3.2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^6.0.3"
+  },
+  "lavamoat": {
+    "allowScripts": {
+      "@remotion/cli>@remotion/renderer>ws>bufferutil#4.0.9": true,
+      "@remotion/cli>@remotion/renderer>ws>utf-8-validate#5.0.10": true,
+      "@remotion/cli>@remotion/bundler>esbuild#0.28.1": false
+    }
+  }
+}

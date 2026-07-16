@@ -1,0 +1,179 @@
+{
+  "announcements": {
+    "premium_launch": {
+      "learn_more": "Подробнее",
+      "text": "Представляем <b>Revoke Premium & Ultimate</b>: единая мультичейн-панель и автоматический отзыв",
+      "view_pricing": "Посмотреть тарифы"
+    }
+  },
+  "article_meta": {
+    "author": "Автор <person-link>{author}</person-link>",
+    "reading_time": "{readingTime} мин. чтения",
+    "translator": "Переводчик <person-link>{translator}</person-link>"
+  },
+  "buttons": {
+    "authenticate": "Аутентифицировать",
+    "authenticate_wallet": "Аутентифицировать кошелек",
+    "authenticated": "Аутентифицировано",
+    "authenticating": "Аутентификация",
+    "back_to_exploits": "Назад к эксплойтам",
+    "cancel": "Отмена",
+    "check": "Проверить",
+    "check_connected_address": "Проверить подключенный адрес",
+    "close": "Закрыть",
+    "collapse_all": "Свернуть все",
+    "connect": "Подключить кошелек",
+    "connecting": "Подключение",
+    "disconnect": "Отключить",
+    "download": "Скачать",
+    "expand_all": "Развернуть все",
+    "get_premium": "Получить Premium",
+    "get_started": "Начать",
+    "get_ultimate": "Получить Ultimate",
+    "loading": "Загрузка",
+    "my_account": "Настройки аккаунта",
+    "my_allowances": "Моя панель",
+    "next": "Следующее",
+    "previous": "Предыдущее",
+    "remove": "Удалить",
+    "retrying": "Повторная попытка",
+    "revoke": "Отозвать",
+    "revoke_selected": "Отозвать выбранное",
+    "revoking": "Отзыв",
+    "send": "Отправить",
+    "sending": "Отправка",
+    "share_on_x": "Поделиться на X",
+    "try_again": "Попробовать снова",
+    "understand": "Понятно",
+    "update": "Обновить",
+    "updating": "Обновление",
+    "upgrade_to_premium": "Перейти на Premium",
+    "upgrade_to_ultimate": "Перейти на Ultimate"
+  },
+  "chain_select": {
+    "mainnets": "Основные сети",
+    "testnets": "Тестовые сети"
+  },
+  "color_themes": {
+    "dark": "Темная",
+    "light": "Светлая",
+    "system": "Система"
+  },
+  "connect_wallet": {
+    "title": "Подключите кошелек"
+  },
+  "errors": {
+    "404": {
+      "go_home": "Или вернитесь на главную",
+      "subtitle": "Не удалось найти страницу, которую вы ищете.",
+      "suggested_pages": {
+        "faq": {
+          "description": "Ответы на все ваши вопросы.",
+          "title": "ЧаВо"
+        },
+        "title": "Возможно, вы ищете одну из этих страниц?",
+        "your_allowances": {
+          "description": "Проверьте свои собственные доступы.",
+          "title": "Ваши доступы"
+        }
+      },
+      "title": "Такой страницы не существует."
+    },
+    "messages": {
+      "chain_could_not_connect": "Не удалось подключиться к {chainName}, пожалуйста, повторите попытку позже.",
+      "connect_wallet_to_supported_network": "Пожалуйста, подключите ваш web3-кошелек к поддерживаемой сети",
+      "eip5792_batch_call_failed": "Произошла ошибка, связанная с пакетными вызовами EIP5792",
+      "page_load_failed": "Что-то пошло не так при загрузке этой страницы. Пожалуйста, повторите попытку позже."
+    }
+  },
+  "footer": {
+    "about": "О нас",
+    "acknowledgements": "Благодарности",
+    "blog": "Блог",
+    "brand_assets": "Материалы бренда",
+    "community": "Сообщество",
+    "company": "Компания",
+    "donations": "Пожертвования",
+    "exploit_checker": "Проверка эксплойтов",
+    "extension": "Расширение для браузера",
+    "faq": "ЧаВо",
+    "knowledgebase": "База знаний",
+    "learn": "Обучение",
+    "premium": "Premium",
+    "privacy": "Политика конфиденциальности",
+    "product": "Продукт",
+    "terms": "Условия",
+    "token_approval_checker": "Проверка одобрений токенов",
+    "what_are_token_approvals": "Что такое одобрение токенов?",
+    "what_to_do_when_scammed": "Что делать в случае мошенничества?"
+  },
+  "labels": {
+    "premium": "Premium",
+    "ultimate": "Ultimate"
+  },
+  "meta": {
+    "acknowledgements": {
+      "description": "Revoke.cash использует ряд сторонних инструментов и сервисов. На этой странице они перечислены.",
+      "title": "Благодарности"
+    },
+    "description": "Верните себе контроль над своим кошельком и оставайтесь в безопасности, отозвав одобрения токенов и разрешения, предоставленные вами в сети {chainName} и более чем в 100 других сетях.",
+    "disclaimer": {
+      "description": "Отказ от ответственности Revoke.cash",
+      "title": "Отказ от ответственности"
+    },
+    "privacy_policy": {
+      "description": "Политика конфиденциальности Revoke.cash",
+      "title": "Политика конфиденциальности"
+    },
+    "terms": {
+      "description": "Условия использования Revoke.cash",
+      "title": "Условия использования"
+    },
+    "title": "Отзовите доступы к вашим токенам в более чем 100 сетях"
+  },
+  "nav": {
+    "about": "О нас",
+    "blog": "Блог",
+    "exploits": "Эксплойты",
+    "extension": "Расширение",
+    "learn": "Обучение",
+    "merchandise": "Мерч",
+    "more": "Еще",
+    "premium": "Premium",
+    "search": "Поиск учетных записей по адресу или домену"
+  },
+  "pagination": {
+    "first": "Первая",
+    "last": "Последняя",
+    "page": "Страница {page} из {total}",
+    "show": "Показывать",
+    "showing": "Показано с {start} по {end} из {total} результатов"
+  },
+  "quiz": {
+    "check_answer": "Проверить ответ",
+    "check_selected_answers": "Проверить выбранные ответы",
+    "correct_answer": "Правильно! Отлично.",
+    "incorrect_answer": "Неверно. Вот правильный ответ:",
+    "next_question": "Следующий вопрос",
+    "question_progress": "Вопрос {current} из {total}",
+    "select_all_that_apply": "Выберите все подходящие варианты",
+    "select_correct_answer": "Выберите правильный ответ",
+    "wait_and_read": "Подождите и прочитайте"
+  },
+  "select": {
+    "no_options": "Нет вариантов"
+  },
+  "toasts": {
+    "clipboard_failed": "❌ Не удалось скопировать в буфер обмена",
+    "clipboard_success": "✅ Скопировано в буфер обмена",
+    "fee_payment_failed": "❌ Не удалось оплатить комиссию: {message}",
+    "fee_payment_rejected": "❌ Пожалуйста, оплатите комиссию за пакетный отзыв, чтобы продолжить",
+    "revoke_failed": "❌ Не удалось отозвать: {message}",
+    "revoke_failed_ledger_nano_s": "❌ Ledger Nano S снят с поддержки компанией Ledger и больше не поддерживает отзыв одобрений NFT. Рекомендуется перейти на более новое устройство Ledger.",
+    "revoke_failed_revert": "❌ Создатель этого токена отключил или приостановил выдачу и отзыв доступов ({message})",
+    "switch_chain_failed": "❌ Не удалось переключить сеть, пожалуйста, переключитесь на {chainName} вручную в вашем кошельке.",
+    "transaction_failed": "❌ Сбой транзакции: {message}",
+    "transaction_submitted": "✅ Транзакция отправлена!",
+    "update_failed": "❌ Этот токен не поддерживает обновление доступов, вместо этого отзовите их."
+  }
+}

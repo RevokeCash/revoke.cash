@@ -1,0 +1,14 @@
+{
+  "buildCommand": "sh vercel.sh",
+  "crons": [
+    {
+      "path": "/api/cron/premium/payments/reconcile",
+      "schedule": "*/5 * * * *"
+    }
+  ],
+  "functions": {
+    "pages/api/**/*.ts": {
+      "memory": 512
+    }
+  }
+}

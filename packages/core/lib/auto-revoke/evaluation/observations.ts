@@ -1,0 +1,111 @@
+import { type AllowancePayload, AllowanceType, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { type DatabaseTransaction, getTransactionalDb } from '@revoke.cash/core/db/client';
+import { autoRevokeObservations } from '@revoke.cash/core/db/schema/auto-revoke';
+import type { indexerAllowances } from '@revoke.cash/core/db/schema/indexer';
+import { toLowercaseAddress } from '@revoke.cash/core/utils';
+import { and, eq, inArray, ne } from 'drizzle-orm';
+import { requeueObservationActions } from '../actions';
+import type { RuleContext, TriggerDetails } from './rules';
+
+export type Observation = typeof autoRevokeObservations.$inferSelect;
+export type IndexedAllowance = typeof indexerAllowances.$inferSelect;
+
+type ObservationInsert = typeof autoRevokeObservations.$inferInsert;
+
+interface ObservationCandidate {
+  triggerType: Observation['triggerType'];
+  triggerDetails: TriggerDetails;
+  ruleSnapshot: RuleContext;
+  allowance: TokenAllowanceData;
+}
+
+const flattenPayloadIdentity = (payload: AllowancePayload) => ({
+  tokenId: payload.type === AllowanceType.ERC721_SINGLE ? payload.tokenId : null,
+  permit2Address: payload.type === AllowanceType.PERMIT2 ? payload.permit2Address : null,
+  expiration: payload.type === AllowanceType.PERMIT2 ? payload.expiration : null,
+});
+
+export const buildAllowanceFingerprint = (allowance: TokenAllowanceData): string => {
+  const { payload } = allowance;
+  const { tokenId, permit2Address, expiration } = flattenPayloadIdentity(payload);
+
+  return [
+    toLowercaseAddress(allowance.owner),
+    allowance.chainId,
+    payload.type,
+    toLowercaseAddress(allowance.token.address),
+    toLowercaseAddress(payload.spender),
+    tokenId?.toString() ?? '',
+    permit2Address ? toLowercaseAddress(permit2Address) : '',
+    expiration ?? '',
+    payload.lastUpdated.transactionHash.toLowerCase(),
+  ].join(':');
+};
+
+export const createObservations = async (candidates: ObservationCandidate[]): Promise<Observation[]> => {
+  if (candidates.length === 0) return [];
+
+  const observationValues = candidates.map((candidate) => {
+    const payload = candidate.allowance.payload;
+    const { tokenId, permit2Address, expiration } = flattenPayloadIdentity(payload);
+
+    return {
+      address: candidate.allowance.owner,
+      chainId: candidate.allowance.chainId,
+      triggerType: candidate.triggerType,
+      triggerDetails: candidate.triggerDetails,
+      ruleSnapshot: candidate.ruleSnapshot,
+      allowanceFingerprint: buildAllowanceFingerprint(candidate.allowance),
+      allowanceType: payload.type,
+      tokenAddress: candidate.allowance.token.address,
+      spenderAddress: payload.spender,
+      tokenId,
+      permit2Address,
+      expiration,
+      lastUpdatedTxHash: payload.lastUpdated.transactionHash,
+    };
+  });
+
+  const allowanceFingerprints = observationValues.map((observation) => observation.allowanceFingerprint);
+
+  const exploitObservationValues = observationValues.filter((observation) => observation.triggerType === 'exploit');
+
+  return getTransactionalDb().transaction(async (trx) => {
+    await trx.insert(autoRevokeObservations).values(observationValues).onConflictDoNothing();
+
+    // A previously observed allowance can later be affected by an exploit
+    const escalatedObservationIds = await escalateExploitObservations(trx, exploitObservationValues);
+    await requeueObservationActions(trx, escalatedObservationIds);
+
+    return trx.query.autoRevokeObservations.findMany({
+      where: inArray(autoRevokeObservations.allowanceFingerprint, allowanceFingerprints),
+    });
+  });
+};
+
+// Flips stored non-exploit observations to exploit when the same allowance is re-observed with an exploit trigger
+const escalateExploitObservations = async (
+  trx: DatabaseTransaction,
+  exploitObservationValues: Array<Pick<ObservationInsert, 'allowanceFingerprint' | 'triggerDetails' | 'ruleSnapshot'>>,
+): Promise<string[]> => {
+  const escalatedObservations = await Promise.all(
+    exploitObservationValues.map((observation) =>
+      trx
+        .update(autoRevokeObservations)
+        .set({
+          triggerType: 'exploit',
+          triggerDetails: observation.triggerDetails,
+          ruleSnapshot: observation.ruleSnapshot,
+        })
+        .where(
+          and(
+            eq(autoRevokeObservations.allowanceFingerprint, observation.allowanceFingerprint),
+            ne(autoRevokeObservations.triggerType, 'exploit'),
+          ),
+        )
+        .returning({ id: autoRevokeObservations.id }),
+    ),
+  );
+
+  return escalatedObservations.flat().map((observation) => observation.id);
+};

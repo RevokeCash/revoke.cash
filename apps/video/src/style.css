@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+/* Mirrors the custom theme tokens from apps/web/tailwind.config.js */
+@theme {
+  --color-brand: #fdb952;
+  --ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --font-heading: "Outfit Revoke", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-body);
+  }
+}

@@ -1,0 +1,227 @@
+{
+  "allowances": {
+    "amount": "{amount} {symbol}",
+    "count": "{count, plural, =0 {Sin aprobaciones} =1 {# aprobación} other {# aprobaciones}}",
+    "empty_chains_count": "{count, plural, =0 {No hay redes sin aprobaciones} =1 {# red sin aprobaciones} other {# redes sin aprobaciones}}",
+    "none_found": "No se han encontrado autorizaciones",
+    "none_found_filtered": "No se han encontrado autorizaciones para los filtros seleccionados",
+    "none_found_premium": "No se han encontrado aprobaciones en ninguna de las redes compatibles. ¡Todo en orden!",
+    "token_id": "Token #{tokenId}",
+    "unknown": "Desconocido",
+    "unlimited": "Ilimitada"
+  },
+  "batch_revoke": {
+    "failed": "Fallido",
+    "fee": {
+      "eip5792_notice": "Nota: tu cartera no admite revocaciones atómicas por lotes, por lo que, incluso cuando utilices nuestra revocación por lotes de pago, tendrás que enviar varias transacciones.",
+      "eip5792_notice_chain": "Nota: tu cartera no admite revocaciones atómicas por lotes para {chainName}, por lo que, incluso cuando utilices nuestra revocación por lotes de pago, tendrás que enviar varias transacciones.",
+      "notice": "Al revocar por lotes, pagas una pequeña tarifa de <m>${feeDollarAmount}</m> que contribuye al desarrollo continuo de Revoke.cash.",
+      "sponsored_notice": "¡<sponsor-link>{sponsor}</sponsor-link> está patrocinando la tarifa de revocación por lotes en la red <m>{chainName}</m>! 🥳",
+      "tooltip": "La tarifa fija de <m>${BASE_FEE}</m> por lote cubre los costes de infraestructura y el desarrollo continuo. También puedes revocar las aprobaciones una por una de forma gratuita.",
+      "upgrade_prompt": "¿Quieres revocaciones por lotes ilimitadas?"
+    },
+    "revoked": "Revocado",
+    "title": "Revocación por Lotes",
+    "total": "Total"
+  },
+  "delegations": {
+    "columns": {
+      "chain": "Red",
+      "contract": "Activo / Contrato",
+      "delegate": "Delegado",
+      "delegator": "Delegante",
+      "platform": "Plataforma",
+      "type": "Tipo"
+    },
+    "contract": {
+      "not_applicable": "N/A"
+    },
+    "count": "{count, plural, =0 {Sin delegaciones} =1 {# delegación} other {# delegaciones}}",
+    "delegated_to": "Delegado a",
+    "eip7702_delegations": "Delegaciones EIP7702",
+    "empty_chains_count": "{count, plural, =0 {No hay redes sin delegaciones} =1 {# red sin delegaciones} other {# redes sin delegaciones}}",
+    "info_panel": {
+      "description": "Las delegaciones son una forma de autorizar a otras direcciones a actuar en tu nombre, por ejemplo, al intentar verificar la propiedad de activos o al reclamar airdrops. Esto puede ser beneficioso para la seguridad, ya que te permite usar una <b>hot wallet</b> para gestionar tus activos sin tener que usar tu <b>cold wallet</b> en cada interacción. Sin embargo, en caso de que tu hot wallet se vea comprometida, debes asegurarte de revocar la delegación para que el atacante no pueda usarla para hacerse pasar por ti. Ten en cuenta que estas delegaciones son <b>diferentes</b> de las delegaciones EIP7702, que <i>solo</i> pueden revocarse dentro de tu aplicación de cartera.",
+      "title": "¿Qué son las Delegaciones?"
+    },
+    "no_delegations": "No se han encontrado delegaciones",
+    "no_eip7702_delegations": "No se han encontrado delegaciones EIP7702",
+    "none_found_premium": "No se han encontrado delegaciones en ninguna de las redes compatibles. ¡Todo en orden!",
+    "this_wallet": "Esta cartera",
+    "tooltips": {
+      "contract": "Una delegación a nivel de contrato otorga al delegado el permiso de actuar en tu nombre en las plataformas compatibles para un contrato específico.",
+      "eip7702": "Una delegación EIP7702 añade la funcionalidad de contrato inteligente a tu cartera.",
+      "eip7702_revoke": "Las delegaciones EIP7702 deben revocarse dentro de tu aplicación de cartera",
+      "erc1155": "Una delegación de tokens ERC1155 permite al delegado actuar en tu nombre en plataformas compatibles para un token ERC1155 específico.",
+      "erc20": "Una delegación de tokens ERC20 permite al delegado actuar en tu nombre en plataformas compatibles para un token ERC20 específico.",
+      "erc721": "Una delegación de tokens ERC721 permite al delegado actuar en tu nombre en plataformas compatibles para un token ERC721 específico.",
+      "wallet": "Una delegación a nivel de cartera permite que el delegado actúe en tu nombre en las plataformas compatibles."
+    },
+    "types": {
+      "contract": "Contrato",
+      "eip7702": "EIP7702",
+      "erc1155": "ERC1155",
+      "erc20": "ERC20",
+      "erc721": "ERC721",
+      "wallet": "Cartera"
+    }
+  },
+  "headers": {
+    "actions": "Acciones",
+    "allowance": "Cantidad Autorizada",
+    "amount": "Monto",
+    "asset": "Activo",
+    "asset_type": "Tipo",
+    "chain": "Red",
+    "date": "Fecha",
+    "event_type": "Tipo de Evento",
+    "expiration": "Vencimiento",
+    "last_checked": "Última Comprobación",
+    "last_updated": "Última Actualización",
+    "policy_type": "Tipo de Permiso",
+    "session_hash": "Identificador de Sesión",
+    "signer": "Firmante Autorizado",
+    "spender": "Gastador Autorizado",
+    "status": "Estado",
+    "transaction": "Transacción",
+    "value_at_risk": "Valor en Riesgo"
+  },
+  "history": {
+    "approved": "Aprobado",
+    "cancelled_signatures": "Firmas Canceladas",
+    "none_found": "No se ha encontrado ningún historial de aprobaciones",
+    "revoked": "Revocado",
+    "status_failed": "fallido",
+    "status_loaded": "cargado",
+    "status_loading": "cargando",
+    "title": "Historial de Aprobaciones"
+  },
+  "labels": {
+    "account_types": {
+      "eip7702": "Cuenta EIP7702",
+      "eoa": "EOA",
+      "smart_contract": "Contrato Inteligente"
+    },
+    "connected": "Conectado",
+    "nft": "NFT",
+    "not_connected": "No Conectado",
+    "policy_type": {
+      "all": "Transferencias y Llamadas",
+      "calls": "Llamadas a Contratos",
+      "none": "Ninguno",
+      "transfers": "Transferencias"
+    },
+    "token": "Token"
+  },
+  "meta": {
+    "title": "Autorizaciones de la dirección {addressDisplay}",
+    "title_chain": "Autorizaciones de la dirección {addressDisplay} en la red {chainName}"
+  },
+  "navigation": {
+    "allowances": "Autorizaciones",
+    "delegations": "Delegaciones",
+    "exploits": "Exploits",
+    "history": "Historial",
+    "sessions": "Sesiones"
+  },
+  "permit2": {
+    "expiration": "Caduca {inTime}"
+  },
+  "premium": {
+    "banner": {
+      "cta": "Actualizar a Premium",
+      "description": "¿Panel de control multicadena?"
+    },
+    "subscription_expiry": {
+      "cta": "Extender",
+      "description": "Tu suscripción premium caduca en {days, plural, =1 {1 día} other {# días}}."
+    }
+  },
+  "risk_factors": {
+    "allowlist": "Dirección de gastador bien conocida",
+    "blocklist": "Peligroso o malintencionado",
+    "closed_source": "Código cerrado",
+    "deprecated": "Obsoleto o desactualizado",
+    "eoa": "Cuenta de Propiedad Externa",
+    "excessive_expiration": "Caducidad excesiva",
+    "exploit": "Involucrado en la {data}",
+    "levels": {
+      "high": "alto riesgo",
+      "low": "bajo riesgo",
+      "medium": "riesgo medio"
+    },
+    "phishing_risk": "Aumenta la superficie de riesgo en caso de phishing",
+    "proxy": "Contrato de proxy actualizable",
+    "source": "reportado por <source-link>{source}</source-link>",
+    "suspicious_address": "Dirección de aspecto sospechoso",
+    "uninitialized": "No se ha implementado ningún contrato en esta dirección",
+    "unsafe": "Código de contrato potencialmente inseguro"
+  },
+  "search": {
+    "history": "Buscar por Gastador o Token",
+    "spender": "Buscar por Gastador"
+  },
+  "sessions": {
+    "info": {
+      "description": "Las sesiones son un sistema de permisos similar a las aprobaciones de tokens, pero con algunas diferencias clave. Mientras que las aprobaciones de tokens especifican un permiso para que una dirección tome tokens de tu cartera, las sesiones pueden utilizarse para especificar un permiso para que otra dirección firme transacciones específicas en tu nombre al interactuar con contratos inteligentes. Actualmente, estas sesiones solo están disponibles en Abstract cuando se utiliza la <i>Abstract Global Wallet</i>, pero podrían estar disponibles en otras cadenas en el futuro.",
+      "title": "¿Qué Son las Sesiones?"
+    },
+    "table": {
+      "none_found": "No se han encontrado sesiones",
+      "title": "Sesiones Activas"
+    },
+    "tooltips": {
+      "policy_type": {
+        "all": "Esta sesión está autorizada a llamar a {callPoliciesCount} funciones diferentes y a transferir tokens a {transferPoliciesCount} direcciones diferentes",
+        "calls": "Esta sesión está autorizada a llamar a {callPoliciesCount} funciones diferentes",
+        "none": "Esta sesión no tiene permisos",
+        "transfers": "Esta sesión está autorizada a transferir tokens a {transferPoliciesCount} direcciones diferentes"
+      }
+    }
+  },
+  "sorting": {
+    "columns": {
+      "allowance": "Cantidad Autorizada",
+      "approved_spender": "Gastador Autorizado",
+      "asset_name": "Nombre del Activo",
+      "last_updated": "Última Actualización",
+      "value_at_risk": "Valor en Riesgo"
+    },
+    "fns": {
+      "date": {
+        "asc": "De Más Antiguo a Más Reciente",
+        "desc": "De Más Reciente a Más Antiguo"
+      },
+      "number": {
+        "asc": "De Bajo a Alto",
+        "desc": "De Alto a Bajo"
+      },
+      "text": {
+        "asc": "De A a Z",
+        "desc": "De Z a A"
+      }
+    },
+    "label": "Ordenar"
+  },
+  "time_machine": {
+    "apply": "Aplicar",
+    "description": "Viaja al pasado para ver cómo eran tus autorizaciones en un momento concreto. Las acciones de revocación están desactivadas mientras se consultan los datos históricos.",
+    "exit": "Volver al presente",
+    "label": "Time Machine",
+    "now": "Ahora",
+    "viewing_as_of": "Viendo las aprobaciones tal como estaban el {date}, {time}"
+  },
+  "tooltips": {
+    "connect_wallet": "Por favor, conecta tu cartera para continuar",
+    "connected_account": "Solo puedes realizar acciones para la cuenta conectada",
+    "filter_by_spender": "Filtrar por este gastador",
+    "filter_by_token": "Filtrar por este token",
+    "permit2_expiration": "Esta es una autorización de Permit2 que caducará {inTime}",
+    "risk_factors": "Esto es de {riskLevel} por estas razones:"
+  },
+  "viewing_on": "Viendo dirección en",
+  "wallet_health": {
+    "allowances": "Autorizaciones",
+    "value_at_risk": "Valor en Riesgo"
+  }
+}

@@ -1,0 +1,40 @@
+import { AllowanceType, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { SECOND, YEAR } from '@revoke.cash/core/utils/time';
+import Loader from 'components/common/Loader';
+import { useMemo } from 'react';
+import AddressCell from './AddressCell';
+
+interface Props {
+  allowance: TokenAllowanceData;
+}
+
+const SpenderCell = ({ allowance }: Props) => {
+  const spenderData = allowance.payload.spenderData;
+  const isLoading = spenderData === undefined;
+
+  // Add non-spender-specific risk factors (TODO: set up a proper system for this)
+  const riskFactors = useMemo(() => {
+    const factors = spenderData?.riskFactors ?? [];
+
+    if (
+      allowance.payload.type === AllowanceType.PERMIT2 &&
+      allowance.payload.expiration * SECOND > Date.now() + 1 * YEAR
+    ) {
+      return [...factors, { type: 'excessive_expiration', source: 'onchain' }];
+    }
+
+    return factors;
+  }, [allowance.payload, spenderData?.riskFactors]);
+
+  return (
+    <Loader isLoading={isLoading} className="h-6">
+      <AddressCell
+        address={allowance.payload.spender}
+        spenderData={spenderData ? { name: spenderData.name, riskFactors } : undefined}
+        chainId={allowance.chainId}
+      />
+    </Loader>
+  );
+};
+
+export default SpenderCell;

@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "description": "Answers to all your questions surrounding token approvals, Revoke.cash and wallet security.",
+    "title": "Frequently Asked Questions"
+  },
+  "questions": {
+    "costs": {
+      "answer": "The core Revoke.cash tools are free: inspecting approvals and revoking them one by one only costs the network's gas fee. When using the <i>batch revoke</i> feature, a small fee of <b>${BASE_FEE}</b> is charged for free users, while <b>Revoke Premium</b> includes unlimited batch revokes. Premium adds multichain convenience and proactive protection, helping fund the free public tools. On certain networks, the batch fee is covered by a sponsor.",
+      "question": "How much does it cost to use Revoke.cash?"
+    },
+    "deposited_tokens": {
+      "answer": "Revoking approvals has no impact on your deposited or staked tokens. These tokens will stay deposited and you will still be able to withdraw them. However, if you want to add more tokens to your deposited position, you will need to grant an approval again.",
+      "question": "What happens to my deposited or staked tokens when I revoke approvals?"
+    },
+    "enough_to_disconnect": {
+      "answer": "No. Disconnecting your wallet (e.g. MetaMask) does not do <i>anything</i> to protect you from approval exploits - or most other exploits. The only thing that happens when disconnecting your wallet from a website is that that website cannot see your address anymore. But your approvals stay active.",
+      "question": "Is it enough to \"disconnect\" my wallet instead of revoking approvals?"
+    },
+    "hardware_wallets": {
+      "answer": "No. In general, hardware wallets are much safer than mobile or browser-based wallets because the wallet's keys are securely stored on the device, making it impossible to steal the keys without proper access to the device. But with approvals no one <i>needs</i> to steal your keys to take your tokens. And because of that hardware wallets offer no extra protection against approval exploits.",
+      "question": "Can hardware wallets save me from approval exploits?"
+    },
+    "other_question": {
+      "answer": "If you have any questions that aren't mentioned in this FAQ, please reach out on <twitter-link>Twitter</twitter-link> or <discord-link>Discord</discord-link>.",
+      "question": "My question is not listed here."
+    },
+    "recover_assets": {
+      "answer": "No. Revoke.cash is a <i>preventative</i> tool that helps you practice proper wallet hygiene. By regularly revoking active approvals you reduce the chances of becoming the victim of approval exploits. But unfortunately it cannot be used to recover any stolen funds. You should still make sure to revoke the approvals that were used to take your funds so that they cannot steal more in the future.",
+      "question": "Can I use Revoke.cash to recover stolen assets?"
+    },
+    "sweeper_bot": {
+      "answer": "If you have a so-called \"sweeper bot\" on your account that steals any ETH as soon as it comes in, your seed phrase was compromised. This means that revoking approvals is not going to help with your wallet security. Unfortunately, there is no way for your wallet to recover from this. You should abandon this wallet and create a new one.",
+      "question": "I want to revoke approvals, but when I add ETH to my account it gets stolen."
+    },
+    "testnet_allowances": {
+      "answer": "Generally you don't need to revoke token approvals on testnets, because tokens on testnets do not have any value. Every individual token approval <i>only</i> applies to a single token on a single network. So token approvals on testnets are not a security risk for your mainnet tokens.",
+      "question": "Do I need to revoke approvals on testnets?"
+    },
+    "wallet_mentions_approve": {
+      "answer": "In the tokens' smart contracts, the functions for approving and revoking approvals are the same function. The difference is that you set the approval to 0 (for ERC20 tokens) or \"false\" (for NFTs) when revoking the approval. You can verify that Revoke.cash is actually revoking the approval by clicking \"Edit Permission\" (for ERC20 tokens), or the \"data\" tab (for NFTs) in MetaMask.",
+      "question": "Why does my wallet pop-up mention \"give permission\", \"approve\" or \"set approval for all\" when revoking?"
+    },
+    "which_allowances": {
+      "answer": "Choosing which approvals to revoke is always a trade-off between safety and convenience. For certain well-known protocols (e.g. Uniswap) it is most likely fine to leave approvals active, but for newer and unknown smart contracts, it is more prudent to revoke approvals. Also keep in mind that some use cases require you to keep your approvals active. For example, if you have active listings on OpenSea you need to keep the approvals in order for the listings to remain active.",
+      "question": "Which approvals do I need to revoke?"
+    },
+    "which_chains": {
+      "answer": "The Revoke.cash <extension-link>browser extension</extension-link> supports every EVM network. The Revoke.cash website supports a large number of EVM networks, the full list is included below. If there are any other networks that you'd like to see supported, please reach out on <twitter-link>Twitter</twitter-link> or <discord-link>Discord</discord-link>.",
+      "question": "Which networks does Revoke.cash support?"
+    },
+    "which_domains": {
+      "answer": "When searching for accounts in the search bar, you can use several different domain name services. Currently we support <ens-link>ENS</ens-link>, <uns-link>Unstoppable Domains</uns-link> and <avvy-link>Avvy Domains</avvy-link>. We may add other domain name services in the future.",
+      "question": "Which kinds of domains does Revoke.cash support?"
+    }
+  },
+  "title": "Frequently Asked Questions"
+}

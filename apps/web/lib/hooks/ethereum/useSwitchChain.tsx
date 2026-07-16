@@ -1,0 +1,47 @@
+import { getChainAddEthereumChainParameter, getChainName } from '@revoke.cash/core/chains';
+import { isUserRejectionError } from '@revoke.cash/core/utils/errors';
+import { useTranslations } from 'next-intl';
+import { useCallback } from 'react';
+import { toast } from 'react-toastify';
+import { useConnection, useSwitchChain as useSwitchChainInternal } from 'wagmi';
+
+export const useSwitchChain = () => {
+  const t = useTranslations();
+
+  const { mutate: switchChainInternal, mutateAsync: switchChainAsyncInternal } = useSwitchChainInternal();
+  const { connector } = useConnection();
+  const canSwitchChain = connector?.type === 'injected';
+
+  const switchChain = useCallback(
+    (chainId: number) => {
+      try {
+        const addEthereumChainParameter = getChainAddEthereumChainParameter(chainId);
+        return switchChainInternal({ chainId, addEthereumChainParameter });
+      } catch (error) {
+        console.error(error);
+        toast.error(t('common.toasts.switch_chain_failed', { chainName: getChainName(chainId) }));
+        throw error;
+      }
+    },
+    [switchChainInternal, t],
+  );
+
+  const switchChainAsync = useCallback(
+    async (chainId: number) => {
+      try {
+        const addEthereumChainParameter = getChainAddEthereumChainParameter(chainId);
+        return await switchChainAsyncInternal({ chainId, addEthereumChainParameter });
+      } catch (error) {
+        console.error(error);
+        // Rejecting the switch prompt is intentional, so we only show an error toast for other failures
+        if (!isUserRejectionError(error)) {
+          toast.error(t('common.toasts.switch_chain_failed', { chainName: getChainName(chainId) }));
+        }
+        throw error;
+      }
+    },
+    [switchChainAsyncInternal, t],
+  );
+
+  return { switchChain, switchChainAsync, canSwitchChain };
+};

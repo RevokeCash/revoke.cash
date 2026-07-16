@@ -1,8 +1,0 @@
-{
-  "buildCommand": "sh vercel.sh",
-  "functions": {
-    "pages/api/**/*.ts": {
-      "memory": 512
-    }
-  }
-}

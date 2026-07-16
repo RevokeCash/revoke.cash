@@ -1,0 +1,126 @@
+import { PERMIT2_ABI } from '@revoke.cash/core/abis';
+import {
+  type Enriched,
+  type EnrichedTokenEvent,
+  hasTransfersFromOwnerAfterEvent,
+  type Permit2Event,
+  TokenEventType,
+} from '@revoke.cash/core/events';
+import { deduplicateArray } from '@revoke.cash/core/utils';
+import { SECOND } from '@revoke.cash/core/utils/time';
+import { type Address, type Chain, maxUint160, type PublicClient } from 'viem';
+import { type AllowanceDerivationOptions, AllowanceType, type Permit2Erc20Allowance } from '.';
+
+export const PERMIT2_ADDRESS: Address = '0x000000000022D473030F116dDEE9F6B43aC78BA3';
+
+export const getPermit2AllowancesFromApprovals = async (
+  tokenAddress: Address,
+  owner: Address,
+  events: EnrichedTokenEvent[],
+  publicClient: PublicClient,
+  options: AllowanceDerivationOptions = {},
+): Promise<Permit2Erc20Allowance[]> => {
+  const permit2ApprovalEvents = events.filter((event) => event.type === TokenEventType.PERMIT2);
+
+  const deduplicatedApprovalEvents = deduplicateArray(
+    permit2ApprovalEvents,
+    (event) =>
+      `${event.chainId}-${event.token}-${event.owner}-${event.payload.spender}-${event.payload.permit2Address}`,
+  );
+
+  const allowances = await Promise.all(
+    deduplicatedApprovalEvents.map((approval) =>
+      getPermit2AllowanceFromApproval(tokenAddress, owner, approval, events, publicClient, options),
+    ),
+  );
+
+  return allowances.filter((allowance) => allowance !== undefined) as Permit2Erc20Allowance[];
+};
+
+const getPermit2AllowanceFromApproval = async (
+  tokenAddress: Address,
+  owner: Address,
+  approval: Enriched<Permit2Event>,
+  events: EnrichedTokenEvent[],
+  publicClient: PublicClient,
+  options: AllowanceDerivationOptions = {},
+): Promise<Permit2Erc20Allowance | undefined> => {
+  const { blockNumber, referenceTime, transferEventsAvailable = true } = options;
+  const { spender, amount: lastApprovedAmount, expiration, permit2Address } = approval.payload;
+  if (lastApprovedAmount === 0n) return undefined;
+
+  const now = referenceTime ? referenceTime * SECOND : Date.now();
+  if (expiration * SECOND <= now) return undefined;
+
+  // Optimisation: if the approval is for the max uint160 value, the allowance is not decreased by transferFrom
+  // (per Permit2 convention), so we can use the event value directly without an RPC call. Works regardless of
+  // whether Transfer events are available — maxUint160 doesn't decrement.
+  if (lastApprovedAmount === maxUint160) {
+    return {
+      type: AllowanceType.PERMIT2,
+      spender,
+      amount: lastApprovedAmount,
+      lastUpdated: approval.time,
+      expiration,
+      permit2Address,
+    };
+  }
+
+  // Optimisation: if there are no transfers from the owner after the approval, the allowance cannot have been
+  // partially used, so we can use the event value directly without an RPC call.
+  // (Only valid when Transfer events are available for this caller)
+  if (transferEventsAvailable && !hasTransfersFromOwnerAfterEvent(owner, events, approval)) {
+    return {
+      type: AllowanceType.PERMIT2,
+      spender,
+      amount: lastApprovedAmount,
+      lastUpdated: approval.time,
+      expiration,
+      permit2Address,
+    };
+  }
+
+  const permit2Allowance = await publicClient.readContract({
+    address: permit2Address,
+    abi: PERMIT2_ABI,
+    functionName: 'allowance',
+    args: [owner, tokenAddress, spender],
+    blockNumber,
+  });
+
+  const [amount] = permit2Allowance;
+
+  return {
+    type: AllowanceType.PERMIT2,
+    spender,
+    amount,
+    lastUpdated: approval.time,
+    expiration,
+    permit2Address,
+  };
+};
+
+export const preparePermit2Approve = async (
+  permit2Address: Address,
+  account: Address,
+  chain: Chain | undefined,
+  tokenAddress: Address,
+  publicClient: PublicClient,
+  spender: Address,
+  amount: bigint,
+  expiration: number,
+) => {
+  const transactionRequest = {
+    address: permit2Address,
+    abi: PERMIT2_ABI,
+    functionName: 'approve' as const,
+    args: [tokenAddress, spender, amount, expiration] as const,
+    account,
+    chain,
+    value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
+  };
+
+  const gas = await publicClient.estimateContractGas(transactionRequest);
+
+  return { ...transactionRequest, gas };
+};

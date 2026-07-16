@@ -1,0 +1,254 @@
+{
+  "addresses": {
+    "add_address": "ウォレットを追加",
+    "add_failed": "ウォレットの追加に失敗しました",
+    "placeholder": "ウォレットアドレスまたはドメイン名",
+    "remove_failed": "ウォレットの削除に失敗しました",
+    "resolve_failed": "ウォレットアドレスまたは名前を解決できませんでした",
+    "title": "プレミアムウォレット"
+  },
+  "auto_revoke": {
+    "activity": {
+      "columns": {
+        "asset": "資産",
+        "chain": "ネットワーク",
+        "cost": "コスト",
+        "date": "日付",
+        "spender": "支出者",
+        "status": "ステータス",
+        "trigger": "トリガー",
+        "wallet": "ウォレット"
+      },
+      "empty": "自動取り消しのアクティビティはまだありません。ルールに一致した承認が取り消されると、ここに表示されます。",
+      "empty_preview": "Ultimateにアップグレードして自動取り消しを設定すると、アクティビティがここに表示されます。",
+      "reasons": {
+        "awaiting_cheap_gas": "月間予算を有効に使うため、ガス価格が下がるのを待っています。",
+        "chain_pipeline_full": "このチェーン上の他の取り消しが確定するのを待っています。",
+        "cooling": "実行前に短い安全待機時間を設けています。この間はルール変更でキャンセルできます。",
+        "execution_failed": "取り消しトランザクションを完了できませんでした。",
+        "monthly_budget": "月間予算を使い切ったため待機しています。エクスプロイトによる取り消しは引き続き実行されます。",
+        "monthly_budget_urgent": "エクスプロイトによる取り消しの今月の支出上限に達したため待機しています。",
+        "nonce_consumed": "トランザクションの競合が発生したため、再送信しています。",
+        "per_action_cap": "推定コストが取り消し1件あたりの上限を超えているため待機しています。",
+        "queued": "実行待ちです。",
+        "subscription_inactive": "このウォレットをカバーする有効なサブスクリプションを待っています。",
+        "transaction_reverted": "取り消しトランザクションがオンチェーンでリバートしました。",
+        "transient_error": "一時的なエラーが発生しました。自動的に再試行されます。"
+      },
+      "scope": {
+        "mine": "自分のアクティビティ",
+        "subscription": "全メンバー"
+      },
+      "status": {
+        "failed": "失敗",
+        "pending": "保留中",
+        "revoked": "取り消し済み",
+        "skipped": "不要",
+        "submitting": "送信中"
+      },
+      "title": "アクティビティ",
+      "triggers": {
+        "exploit": "エクスプロイト",
+        "risk_score": "リスクあり",
+        "stale": "古い承認"
+      }
+    },
+    "budget": {
+      "exploit_protection": "予算を使い切っても、エクスプロイトによる取り消しは引き続き実行されます。",
+      "per_action_cap": "取り消し1件あたりの上限は {cap} です。",
+      "resets": "{date} にリセット",
+      "shared": "ガス予算はサブスクリプション内のすべてのウォレットで共有されます。",
+      "used": "今月は {total} のうち {used} を使用済み"
+    },
+    "load_failed": "自動取り消しの設定を読み込めませんでした。ページを更新するか、後でもう一度お試しください。",
+    "metamask_not_connected": "MetaMaskが接続されていません",
+    "metamask_required": "自動取り消しにはMetaMaskが必要です。この機能を使用するには、MetaMaskで接続してください。",
+    "permissions": {
+      "connect_to_manage": "権限を管理するには、このウォレットを接続してください。",
+      "decode_failed": "権限のデコードに失敗しました",
+      "grant_description": "各アドレスが個別に、MetaMask経由で自動取り消しの権限を付与する必要があります。",
+      "grant_failed": "自動取り消し権限の付与に失敗しました。",
+      "networks_enabled": "{enabled}/{total} ネットワーク有効",
+      "no_active_permission_returned": "有効な権限が返されませんでした",
+      "revoke_failed": "自動取り消し権限の取り消しに失敗しました。",
+      "revoke_transaction_reverted": "権限を無効化するトランザクションがオンチェーンで失敗しました。ウォレットから同期して、もう一度お試しください。",
+      "sync": "ウォレットから同期",
+      "sync_failed": "ウォレットからの自動取り消し権限の同期に失敗しました。",
+      "sync_success": "自動取り消し権限をウォレットから同期しました。",
+      "title": "権限"
+    },
+    "rules": {
+      "days": "日",
+      "defaults_description": "これらのルールは、デフォルトでこのサブスクリプション内のすべてのウォレットに適用されますが、ウォレットごとに上書きできます。",
+      "managed_by": "{owner} が管理",
+      "risk_detection": "リスクのある承認の検出",
+      "risk_detection_description": "リスクのある、またはエクスプロイトされた支出者への承認を自動的に取り消します。",
+      "save_failed": "ルールの保存に失敗しました。",
+      "sensitivity_exploits_only": "エクスプロイトのみ",
+      "sensitivity_high": "高リスク",
+      "sensitivity_medium": "中リスク以上",
+      "stale_approval": "古い承認のクリーンアップ",
+      "stale_approval_description": "指定した日数より古い承認を取り消します。",
+      "title": "ルール",
+      "title_defaults": "デフォルトルール"
+    },
+    "rules_source": {
+      "custom": "カスタムルール",
+      "subscription_defaults": "{owner} が管理",
+      "switch_failed": "ルールソースの切り替えに失敗しました。",
+      "title": "ルールソース"
+    },
+    "setup": {
+      "banner": "このウォレットでは自動取り消しはまだ有効になっていません。",
+      "banner_cta": "設定する",
+      "get_started": "このウォレットでは自動取り消しはまだ有効になっていません。保護したいネットワークを以下で切り替えてください。サブスクリプション内の各ウォレットで、MetaMaskを使用してこの設定を一度行う必要があります。"
+    },
+    "title": "自動取り消し",
+    "upsell": "自動取り消しは、危険な承認や古い承認をあなたに代わって自動的に取り消します。ご利用にはUltimateサブスクリプションが必要です。"
+  },
+  "billing": {
+    "columns": {
+      "amount": "金額",
+      "date": "日付",
+      "plan": "プラン",
+      "status": "ステータス",
+      "transaction": "トランザクション"
+    },
+    "details": {
+      "refund_available": "このお支払いはまだキャンセルでき、全額返金を受け取れます。",
+      "refund_transaction": "返金トランザクション",
+      "requested_at": "リクエスト日"
+    },
+    "no_payments": "支払い履歴はまだありません。",
+    "status": {
+      "final": "確定",
+      "pending_refund": "返金待ち",
+      "refunded": "返金済み",
+      "within_refund_window": "返金期間内"
+    },
+    "title": "請求"
+  },
+  "coverage": {
+    "active": "アクティブ",
+    "extension": {
+      "get_extension": "Revoke Sidekickを入手",
+      "lite_description": "拡張機能がLiteプランのため、カバレッジは無効です。Standardに切り替えると、最大3万ドルの盗難カバレッジが有効になります。",
+      "not_installed_description": "現在、Revoke Sidekick拡張機能によるカバレッジは適用されていません。Revoke Sidekick拡張機能をインストールすると、リアルタイムのトランザクション警告と最大3万ドルの盗難カバレッジが利用できます。",
+      "standard_description": "Revoke Sidekick拡張機能により、最大3万ドルの盗難補償が適用されています。",
+      "title": "Revoke Sidekickカバレッジ"
+    },
+    "fairside": {
+      "active_description": "Fairsideにより、最大 {amount} の盗難補償が適用されています。",
+      "covered": "{amount} をカバー中",
+      "covered_wallets": "カバーされるウォレット",
+      "description": "Fairsideカバレッジで、フィッシングやソーシャルエンジニアリングによる資金流出からウォレットを守りましょう。",
+      "errors": {
+        "authentication_failed": "認証に失敗しました",
+        "authentication_failed_fairside": "Fairsideでの認証に失敗しました",
+        "connect_wallet": "認証するにはウォレットを接続してください",
+        "generate_message_failed": "認証メッセージを生成できませんでした"
+      },
+      "get_coverage": "カバレッジを受ける",
+      "manage": "カバレッジを管理",
+      "title": "Fairsideカバレッジ",
+      "valid_until": "{date} まで有効。",
+      "wallets_description": "認証メッセージに署名すると、カバーされるウォレットを表示できます。"
+    },
+    "inactive": "非アクティブ",
+    "title": "盗難カバレッジ"
+  },
+  "description": "プレミアムサブスクリプションとアカウント設定を管理します。",
+  "error": "サブスクリプションデータのロード中に問題が発生しました。後ほど再度お試しください。",
+  "granted": {
+    "active": "アクティブ",
+    "granted_by": "{address} により付与 • {date} まで有効",
+    "title": "付与されたプレミアムアクセス"
+  },
+  "meta": {
+    "description": "アカウントとプレミアム設定を管理します。",
+    "title": "アカウント設定"
+  },
+  "subscription": {
+    "active": "アクティブ",
+    "buttons": {
+      "confirming": "支払いを確認中",
+      "creating": "支払いを作成中",
+      "extend": "延長",
+      "paying": "ウォレットで確認",
+      "renew": "更新",
+      "subscribe": "購読",
+      "try_again": "もう一度お試しください",
+      "upgrade": "アップグレード"
+    },
+    "cancellation": {
+      "cancelled": "キャンセル済み",
+      "cancelled_on": "{date} にキャンセルされました。お支払いは返金されました。",
+      "confirm_button": "返金をリクエスト",
+      "download_confirmation": "確認書をダウンロード",
+      "error_fallback": "返金のリクエストに失敗しました",
+      "modal_access_notice": "返金が処理されるまで、サブスクリプションへのアクセスは維持されます。返金はお支払いに使用したウォレットに送金されます。",
+      "modal_description": "{planName} のお支払いをキャンセルし、全額返金します。他のお支払いがある場合、サブスクリプションはこのお支払いを除いて再計算されます。",
+      "modal_title": "サブスクリプションのキャンセル",
+      "network": "ネットワーク",
+      "reason_label": "キャンセルの理由（任意）",
+      "reason_placeholder": "キャンセルの理由をお聞かせください",
+      "refund_amount": "返金額",
+      "refund_destination": "返金先",
+      "requested": "キャンセル申請済み",
+      "success": "返金をリクエストしました。返金が処理されるまでアクセスは維持されます。"
+    },
+    "downgrade_not_supported": "有効なサブスクリプションをダウングレードすることはできません。",
+    "expired": "期限切れ",
+    "expired_on": "{date} に期限切れになりました。",
+    "expired_preserved": "ウォレットスロットと自動取り消しのルールは保持されています。更新すれば、そのまま再開できます。",
+    "expired_ultimate_stopped": "自動取り消しによるウォレットの監視は停止しています。",
+    "expires_in": "有効期限まであと {days, plural, other {# 日}}（{date}）",
+    "expires_soon": "まもなく期限切れ",
+    "granted_by": "{address} により付与",
+    "legal_notice": "サブスクリプションに登録することで、<terms-link>利用規約</terms-link>に同意したものとみなされます。",
+    "next_setup_auto_revoke": "次のステップ：自動取り消しの設定",
+    "no_subscription": "有効なプレミアムサブスクリプションはありません。購読して始めましょう。<premium-link>プレミアムについて詳しく見る</premium-link>。",
+    "optional_own_subscription": "すでに付与されたサブスクリプションを通じてアクセスをお持ちです。ご希望であれば、ご自身のプランを購読することもできます。",
+    "payment_confirmed": "支払いが確認されました！プレミアムサブスクリプションが有効になりました。",
+    "payment_expired": "お支払いの期限が切れました。すでにUSDCの全額を送金済みの場合は、オンチェーンで着金し次第、自動的に反映されます。数分後にサブスクリプションの状態をご確認ください。",
+    "payment_failed": "サブスクリプションの支払いに失敗しました",
+    "payment_help": "お困りの場合は、<support-link>サポートにチャットでお問い合わせください</support-link>。",
+    "payment_network": "決済ネットワーク",
+    "payment_status_error": "お支払いのステータス：{status}",
+    "payment_summary": "{days} 日間分として {amount} {token} をお支払いいただきます。最大 {maxAddresses, plural, other {# 個のウォレット}}が含まれます。",
+    "plan": "プラン",
+    "plan_description": "${price}/年",
+    "plan_options": {
+      "basic_access": "基本アクセス",
+      "current": "現在",
+      "free": "無料"
+    },
+    "plans_unavailable": "チェックアウトは一時的にご利用いただけません。後でもう一度お試しください。",
+    "slots_summary": "{used}/{max} 個のウォレットスロットを使用中",
+    "title": "プレミアムサブスクリプション",
+    "ultimate_requires_metamask": "自動取り消しにはMetaMaskが必要です。お支払いは任意のウォレットで行い、その後MetaMaskで接続して自動取り消しを設定できます。",
+    "valid_until": "{date} まで有効",
+    "wallet": "ウォレット",
+    "wrong_wallet_error": "お支払いは {address} から送金する必要があります。そのウォレットに切り替えて、もう一度お試しください。"
+  },
+  "tabs": {
+    "auto_revoke": "自動取り消し",
+    "billing": "請求",
+    "coverage": "カバレッジ",
+    "subscription": "サブスクリプション"
+  },
+  "unauthenticated": {
+    "benefits": {
+      "auto_revoke": "自動取り消しの設定と監視",
+      "billing": "請求履歴の確認",
+      "coverage": "Fairsideカバレッジの確認と管理",
+      "manage_subscription": "プレミアムサブスクリプションの管理",
+      "title": "このページでできること"
+    },
+    "description": "ログインして、プレミアムサブスクリプション、自動取り消し、ウォレットスロット、カバレッジを管理しましょう。",
+    "selected_plan": {
+      "summary": "年間 {price} で、最大 {maxAddresses} 個のウォレットが含まれます。続行するにはウォレットを接続してください。",
+      "title": "{planName} を購読する"
+    }
+  }
+}

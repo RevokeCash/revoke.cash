@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "description": "Respuestas a todas tus preguntas sobre autorizaciones de tokens, Revoke.cash y seguridad de la cartera.",
+    "title": "Preguntas Frecuentes"
+  },
+  "questions": {
+    "costs": {
+      "answer": "Las herramientas principales de Revoke.cash son gratuitas: inspeccionar autorizaciones y revocarlas una por una solo cuesta la tarifa de gas de la red. Al usar la función de <i>revocación por lotes</i>, se cobra una pequeña tarifa de <b>${BASE_FEE}</b> a los usuarios gratuitos, mientras que <b>Revoke Premium</b> incluye revocaciones por lotes ilimitadas. Premium añade comodidad multicadena y protección proactiva, y ayuda a financiar las herramientas públicas gratuitas. En determinadas redes, la tarifa por lotes corre a cargo de un patrocinador.",
+      "question": "¿Cuánto cuesta usar Revoke.cash?"
+    },
+    "deposited_tokens": {
+      "answer": "Revocar autorizaciones no afecta a tus tokens depositados o en staking. Estos tokens permanecerán depositados y podrás seguir retirándolos. Sin embargo, si quieres añadir más tokens a tu posición depositada, tendrás que volver a conceder una autorización.",
+      "question": "¿Qué pasa con mis tokens depositados o en staking cuando revoco las autorizaciones?"
+    },
+    "enough_to_disconnect": {
+      "answer": "No. Desconectar tu cartera (como MetaMask) no hace <i>nada</i> para protegerte de los exploits de autorización - ni de la mayoría de los demás exploits. Lo único que pasa cuando desconectas tu cartera de un sitio web es que ese sitio web ya no puede ver tu dirección. Pero tus autorizaciones se mantienen activas.",
+      "question": "¿Es suficiente solo \"desconectar\" mi cartera en lugar de revocar las autorizaciones?"
+    },
+    "hardware_wallets": {
+      "answer": "No. En general, las carteras de hardware son mucho más seguras que las carteras móviles o basadas en navegador porque las claves de la cartera se almacenan de forma segura en el dispositivo, lo que hace imposible robar las claves sin el acceso adecuado al dispositivo. Pero con las autorizaciones nadie <i>necesita</i> robar tus claves para llevarse tus tokens. Debido a eso, las carteras de hardware no ofrecen protección adicional contra los exploits de autorización.",
+      "question": "¿Pueden las carteras de hardware salvarme de los exploits de autorización?"
+    },
+    "other_question": {
+      "answer": "Si tienes alguna pregunta que no aparezca en estas preguntas frecuentes, por favor ponte en contacto con nosotros en <twitter-link>Twitter</twitter-link> o <discord-link>Discord</discord-link>.",
+      "question": "Mi pregunta no está aquí."
+    },
+    "recover_assets": {
+      "answer": "No. Revoke.cash es una herramienta <i>preventiva</i> que te ayuda a mantener una higiene adecuada de tu cartera. Al revocar regularmente las autorizaciones activas, reduces las posibilidades de convertirte en una víctima de exploits de autorización. Pero desafortunadamente no puede ser usada para recuperar fondos robados. De todas formas, debes asegurarte de revocar las autorizaciones que fueron usadas para robar tus fondos para que no puedan robar más en el futuro.",
+      "question": "¿Puedo usar Revoke.cash para recuperar activos robados?"
+    },
+    "sweeper_bot": {
+      "answer": "Si tienes un llamado \"sweeper bot\" en tu cuenta que roba cualquier ETH en cuanto ingresa, tu frase semilla fue comprometida. Esto quiere decir que revocar autorizaciones no te va a ayudar con la seguridad de tu cartera. Desafortunadamente, no hay ninguna manera de que tu cartera se recupere de esto. Debes abandonar esta cartera y crear una nueva.",
+      "question": "Quiero revocar las autorizaciones, pero cuando añado ETH a mi cuenta me lo roban."
+    },
+    "testnet_allowances": {
+      "answer": "Por lo general, no es necesario revocar las autorizaciones de tokens en las redes de prueba, ya que los tokens en las redes de prueba no tienen ningún valor. Cada autorización de token individual se aplica <i>solo</i> a un único token en una única red. Por lo tanto, las autorizaciones de tokens en las redes de prueba no son un riesgo de seguridad para los tokens de tu red principal.",
+      "question": "¿Necesito revocar las autorizaciones en las redes de prueba?"
+    },
+    "wallet_mentions_approve": {
+      "answer": "En los contratos inteligentes de los tokens, las funciones para autorizar y revocar autorizaciones son la misma función. La diferencia es que estableces la autorización en 0 (para tokens ERC20) o \"false\" (para NFTs) cuando revocas la autorización. Puedes verificar que Revoke.cash está realmente revocando la autorización haciendo clic en \"Editar permiso\" (para tokens ERC20), o en la pestaña de \"datos\" (para NFTs) en MetaMask.",
+      "question": "¿Por qué la ventana emergente de mi cartera menciona \"dar permiso\", \"autorizar\" o \"establecer autorización para todos\" al revocar?"
+    },
+    "which_allowances": {
+      "answer": "Elegir qué autorizaciones revocar siempre implica un equilibrio entre seguridad y comodidad. Para ciertos protocolos bien conocidos (como Uniswap) lo más probable es que esté bien dejar las autorizaciones activas, pero para contratos inteligentes más nuevos y menos conocidos, es más prudente revocar autorizaciones. También considera que algunos casos de uso requieren que mantengas las autorizaciones activas. Por ejemplo, si tienes listados activos en OpenSea tendrás que dejar las autorizaciones activas para que los listados sigan activos.",
+      "question": "¿Qué autorizaciones necesito revocar?"
+    },
+    "which_chains": {
+      "answer": "La <extension-link>extensión de navegador</extension-link> de Revoke.cash es compatible con todas las redes EVM. El sitio web de Revoke.cash es compatible con un gran número de redes EVM; la lista completa se incluye a continuación. Si hay alguna otra red que te gustaría que fuera compatible, por favor escríbenos en <twitter-link>Twitter</twitter-link> o <discord-link>Discord</discord-link>.",
+      "question": "¿Qué redes admite Revoke.cash?"
+    },
+    "which_domains": {
+      "answer": "Al buscar cuentas en la barra de búsqueda, puedes usar varios servicios de nombres de dominio diferentes. Actualmente admitimos <ens-link>ENS</ens-link>, <uns-link>Unstoppable Domains</uns-link> y <avvy-link>Avvy Domains</avvy-link>. Es posible que añadamos otros servicios de nombres de dominio en el futuro.",
+      "question": "¿Qué tipos de dominios admite Revoke.cash?"
+    }
+  },
+  "title": "Preguntas Frecuentes"
+}

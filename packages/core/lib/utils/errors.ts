@@ -1,0 +1,279 @@
+import { stringify } from 'viem';
+
+// Base class for errors thrown by core that map to a specific HTTP response shape. Subclasses
+// own their HTTP status and response body; route handlers can catch the base class and serialize
+// uniformly without needing to know about each subclass.
+export abstract class ExportableError extends Error {
+  abstract export(): { status: number; body: Record<string, unknown> };
+}
+
+export class ApiError extends ExportableError {
+  constructor(
+    public readonly status: number,
+    message: string,
+    public readonly body: Record<string, unknown> = { message },
+  ) {
+    super(message);
+    this.name = 'ApiError';
+  }
+
+  export() {
+    return { status: this.status, body: this.body };
+  }
+}
+
+export const isUserRejectionError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isUserRejectionError(parseErrorMessage(error)) || isUserRejectionError(stringifyError(error));
+  }
+
+  // This is a user rejection error, but we want to handle it separately to fall back to "queued" batching
+  if (isAccountUpgradeRejectionError(error)) return false;
+
+  const lowercaseMessage = error?.toLowerCase();
+
+  if (lowercaseMessage?.includes('user denied')) return true;
+  if (lowercaseMessage?.includes('user rejected')) return true;
+  if (lowercaseMessage?.includes('transaction was rejected')) return true;
+  if (lowercaseMessage?.includes('cancelled by the user')) return true;
+
+  return false;
+};
+
+export const isNoFeeRequiredError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isNoFeeRequiredError(parseErrorMessage(error)) || isNoFeeRequiredError(stringifyError(error));
+  }
+
+  return error?.toLowerCase()?.includes('no fee required');
+};
+
+export const isAccountUpgradeRejectionError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return (
+      isAccountUpgradeRejectionError(parseErrorMessage(error)) || isAccountUpgradeRejectionError(stringifyError(error))
+    );
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
+  if (lowercaseMessage?.includes('user rejected account upgrade')) return true;
+  return false;
+};
+
+export const isBatchSizeError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isBatchSizeError(parseErrorMessage(error)) || isBatchSizeError(stringifyError(error));
+  }
+
+  return error?.toLowerCase()?.includes('batch size cannot exceed');
+};
+
+export const isLedgerNanoSError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isLedgerNanoSError(parseErrorMessage(error)) || isLedgerNanoSError(stringifyError(error));
+  }
+
+  return error?.toLowerCase()?.includes('ethappnftnotsupported');
+};
+
+export const isRevertedError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isRevertedError(parseErrorMessage(error)) || isRevertedError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
+  if (lowercaseMessage?.includes('ethappnftnotsupported')) return false;
+  if (lowercaseMessage?.includes('blind signing')) return false;
+  if (lowercaseMessage?.includes('revert')) return true;
+  return false;
+};
+
+export const isOutOfGasError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isOutOfGasError(parseErrorMessage(error)) || isOutOfGasError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
+  if (lowercaseMessage?.includes('out of gas')) return true;
+  return false;
+};
+
+export const isLogResponseSizeError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isLogResponseSizeError(parseErrorMessage(error)) || isLogResponseSizeError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
+  if (lowercaseMessage?.includes('query returned more than 10000 results')) return true; // Infura
+  if (lowercaseMessage?.includes('log response size exceeded')) return true; // Alchemy
+  if (lowercaseMessage?.includes('query timeout exceeded')) return true; // Also Alchemy
+  // This is also a partial match for a network error, but the checks for these two error categories are mutually exclusive
+  if (lowercaseMessage?.includes('queued request timed out')) return true;
+  if (lowercaseMessage?.includes('query returned more than 1024 results')) return true; // ZERO network
+  return false;
+};
+
+export const isEventGetterTimeoutError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isEventGetterTimeoutError(parseErrorMessage(error)) || isEventGetterTimeoutError(stringifyError(error));
+  }
+
+  if (error.toLowerCase().includes('event getter timed out')) return true;
+  return false;
+};
+
+export const isLogRequestSizeError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isLogRequestSizeError(parseErrorMessage(error)) || isLogRequestSizeError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
+  if (lowercaseMessage?.includes('query must be smaller than')) return true;
+  if (lowercaseMessage?.includes('block range is too large')) return true;
+  if (lowercaseMessage?.includes('block range exceeds')) return true; // Somnia ("block range exceeds 1000")
+  if (lowercaseMessage?.includes('block range too wide')) return true;
+  if (lowercaseMessage?.includes('block range exceeds')) return true;
+  if (lowercaseMessage?.includes('exceeds the maximum block range')) return true;
+  if (lowercaseMessage?.includes('eth_getlogs is limited to')) return true;
+  if (lowercaseMessage?.includes('you can make eth_getlogs requests with up to')) return true;
+  return false;
+};
+
+export const isRateLimitError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isRateLimitError(parseErrorMessage(error)) || isRateLimitError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
+  if (lowercaseMessage?.includes('max rate limit reached')) return true;
+  if (lowercaseMessage?.includes('request failed with status code 429')) return true;
+  if (lowercaseMessage?.includes('429 too many requests')) return true;
+  if (lowercaseMessage?.includes('rate limited')) return true;
+  return false;
+};
+
+export const isNetworkError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  // These error types might sometimes also meet the criteria for a network error, but they are handled separately
+  if (isRateLimitError(error)) return false;
+  if (isLogResponseSizeError(error)) return false;
+  if (isRevertedError(error)) return false;
+  if (isOutOfGasError(error)) return false;
+
+  if (typeof error !== 'string') {
+    return isNetworkError(parseErrorMessage(error)) || isNetworkError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
+  if (lowercaseMessage?.includes('request failed')) return true;
+  if (lowercaseMessage?.includes('request timed out')) return true;
+  if (lowercaseMessage?.includes('request took too long to respond')) return true;
+  if (lowercaseMessage?.includes('did not respond')) return true;
+  if (lowercaseMessage?.includes('failed to fetch')) return true;
+  if (lowercaseMessage?.includes('service temporarily unavailable')) return true;
+  if (lowercaseMessage?.includes('rpc is unresponsive')) return true;
+  return false;
+};
+
+export const isSwitchChainNotSupportedError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return (
+      isSwitchChainNotSupportedError(parseErrorMessage(error)) || isSwitchChainNotSupportedError(stringifyError(error))
+    );
+  }
+
+  return error?.toLowerCase()?.includes('does not support programmatic chain switching');
+};
+
+export const isCovalentError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isCovalentError(parseErrorMessage(error)) || isCovalentError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
+  return lowercaseMessage?.includes('block not found: chain-height');
+};
+
+// Transient errors are expected to resolve themselves after some time
+export const isTransientError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isTransientError(parseErrorMessage(error)) || isTransientError(stringifyError(error));
+  }
+
+  return isNetworkError(error) || isRateLimitError(error) || isCovalentError(error);
+};
+
+export const parseErrorMessage = (error: any): string => {
+  // Drizzle puts the SQL text in message, so we need to parse the cause to get the real error.
+  if (typeof error?.query === 'string' && error?.message?.startsWith('Failed query') && error?.cause) {
+    return parseErrorMessage(error.cause);
+  }
+
+  const errorMessage =
+    error?.cause?.details || // Abstract Global Wallet
+    error?.error?.message ||
+    error?.data?.message ||
+    error?.response?.data?.message ||
+    error?.shortMessage ||
+    error?.message ||
+    error;
+
+  if (typeof errorMessage === 'object') {
+    return stringifyError(errorMessage);
+  }
+
+  return String(errorMessage);
+};
+
+export const stringifyError = (error: any, indent?: number): string => {
+  try {
+    return stringify(error, undefined, indent);
+  } catch {
+    return String(error);
+  }
+};
+
+export type SpamReason = 'whois' | 'symbol' | 'bytecode';
+
+export class SpamError extends Error {
+  readonly reason: SpamReason;
+
+  constructor(reason: SpamReason) {
+    super(`Token classified as spam: ${reason}`);
+    this.name = 'SpamError';
+    this.reason = reason;
+  }
+}
+
+export const isSpamError = (error: unknown): error is SpamError => {
+  return error instanceof Error && error.name === 'SpamError' && 'reason' in error;
+};

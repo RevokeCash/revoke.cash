@@ -1,0 +1,179 @@
+{
+  "announcements": {
+    "premium_launch": {
+      "learn_more": "Learn More",
+      "text": "Introducing <b>Revoke Premium & Ultimate</b>: Unified Multichain Dashboard & Automated Revoking",
+      "view_pricing": "View Pricing"
+    }
+  },
+  "article_meta": {
+    "author": "Written by <person-link>{author}</person-link>",
+    "reading_time": "{readingTime} min read",
+    "translator": "Translated by <person-link>{translator}</person-link>"
+  },
+  "buttons": {
+    "authenticate": "Authenticate",
+    "authenticate_wallet": "Authenticate Wallet",
+    "authenticated": "Authenticated",
+    "authenticating": "Authenticating",
+    "back_to_exploits": "Back to Exploits",
+    "cancel": "Cancel",
+    "check": "Check",
+    "check_connected_address": "Check Connected Address",
+    "close": "Close",
+    "collapse_all": "Collapse All",
+    "connect": "Connect Wallet",
+    "connecting": "Connecting",
+    "disconnect": "Disconnect",
+    "download": "Download",
+    "expand_all": "Expand All",
+    "get_premium": "Get Premium",
+    "get_started": "Get Started",
+    "get_ultimate": "Get Ultimate",
+    "loading": "Loading",
+    "my_account": "Account Settings",
+    "my_allowances": "My Dashboard",
+    "next": "Next",
+    "previous": "Previous",
+    "remove": "Remove",
+    "retrying": "Retrying",
+    "revoke": "Revoke",
+    "revoke_selected": "Revoke Selected",
+    "revoking": "Revoking",
+    "send": "Send",
+    "sending": "Sending",
+    "share_on_x": "Share on X",
+    "try_again": "Try Again",
+    "understand": "I Understand",
+    "update": "Update",
+    "updating": "Updating",
+    "upgrade_to_premium": "Upgrade to Premium",
+    "upgrade_to_ultimate": "Upgrade to Ultimate"
+  },
+  "chain_select": {
+    "mainnets": "Mainnets",
+    "testnets": "Testnets"
+  },
+  "color_themes": {
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
+  },
+  "connect_wallet": {
+    "title": "Connect Your Wallet"
+  },
+  "errors": {
+    "404": {
+      "go_home": "Or go back home",
+      "subtitle": "The page you are looking for could not be found.",
+      "suggested_pages": {
+        "faq": {
+          "description": "Answers to all your questions.",
+          "title": "FAQ"
+        },
+        "title": "Are you looking for one of these?",
+        "your_allowances": {
+          "description": "Inspect your own approvals.",
+          "title": "Your Approvals"
+        }
+      },
+      "title": "This page does not exist."
+    },
+    "messages": {
+      "chain_could_not_connect": "Could not connect to {chainName}, please try again later.",
+      "connect_wallet_to_supported_network": "Please connect your web3 wallet to a supported network",
+      "eip5792_batch_call_failed": "An error occurred related to EIP5792 batch calls",
+      "page_load_failed": "Something went wrong while loading this page. Please try again later."
+    }
+  },
+  "footer": {
+    "about": "About Us",
+    "acknowledgements": "Acknowledgements",
+    "blog": "Blog",
+    "brand_assets": "Brand Assets",
+    "community": "Community",
+    "company": "Company",
+    "donations": "Donations",
+    "exploit_checker": "Exploit Checker",
+    "extension": "Browser Extension",
+    "faq": "FAQ",
+    "knowledgebase": "Knowledgebase",
+    "learn": "Learn",
+    "premium": "Premium",
+    "privacy": "Privacy Policy",
+    "product": "Product",
+    "terms": "Terms",
+    "token_approval_checker": "Token Approval Checker",
+    "what_are_token_approvals": "What Are Token Approvals?",
+    "what_to_do_when_scammed": "What to Do When Scammed?"
+  },
+  "labels": {
+    "premium": "Premium",
+    "ultimate": "Ultimate"
+  },
+  "meta": {
+    "acknowledgements": {
+      "description": "Revoke.cash depends on several third-party tools and services. This page lists them.",
+      "title": "Acknowledgements"
+    },
+    "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on {chainName} and over 100 other networks.",
+    "disclaimer": {
+      "description": "Disclaimer for Revoke.cash",
+      "title": "Disclaimer"
+    },
+    "privacy_policy": {
+      "description": "Privacy Policy for Revoke.cash",
+      "title": "Privacy Policy"
+    },
+    "terms": {
+      "description": "Terms and Conditions for Revoke.cash",
+      "title": "Terms and Conditions"
+    },
+    "title": "Revoke Your Token Approvals on Over 100 Networks"
+  },
+  "nav": {
+    "about": "About Us",
+    "blog": "Blog",
+    "exploits": "Exploits",
+    "extension": "Extension",
+    "learn": "Learn",
+    "merchandise": "Merchandise",
+    "more": "More",
+    "premium": "Premium",
+    "search": "Search Accounts by Address or Domain"
+  },
+  "pagination": {
+    "first": "First",
+    "last": "Last",
+    "page": "Page {page} of {total}",
+    "show": "Show",
+    "showing": "Showing {start} to {end} of {total} results"
+  },
+  "quiz": {
+    "check_answer": "Check Answer",
+    "check_selected_answers": "Check Selected Answers",
+    "correct_answer": "Correct! Well done.",
+    "incorrect_answer": "Incorrect. Here is the correct answer:",
+    "next_question": "Next Question",
+    "question_progress": "Question {current} of {total}",
+    "select_all_that_apply": "Select all that apply",
+    "select_correct_answer": "Select the correct answer",
+    "wait_and_read": "Wait and Read"
+  },
+  "select": {
+    "no_options": "No options"
+  },
+  "toasts": {
+    "clipboard_failed": "❌ Couldn't copy to clipboard",
+    "clipboard_success": "✅ Copied to clipboard",
+    "fee_payment_failed": "❌ Fee payment failed: {message}",
+    "fee_payment_rejected": "❌ Please pay the batch revoke fee to continue",
+    "revoke_failed": "❌ Revoking failed: {message}",
+    "revoke_failed_ledger_nano_s": "❌ Ledger Nano S was deprecated by Ledger and does not support revoking NFT approvals any more. It is recommended to upgrade to a newer Ledger device.",
+    "revoke_failed_revert": "❌ The creator of this token has disabled or paused approving and revoking approvals ({message})",
+    "switch_chain_failed": "❌ Switching chain failed, please switch to {chainName} manually in your wallet.",
+    "transaction_failed": "❌ Transaction failed: {message}",
+    "transaction_submitted": "✅ Transaction submitted!",
+    "update_failed": "❌ This token does not support updating approvals, please revoke instead."
+  }
+}

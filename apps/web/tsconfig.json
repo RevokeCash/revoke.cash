@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "lib": ["dom", "dom.iterable", "esnext", "es2021"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "paths": {
+      "app/*": ["./app/*"],
+      "components/*": ["./components/*"],
+      "cypress/*": ["./cypress/*"],
+      "lib/*": ["./lib/*"],
+      "locales/*": ["./locales/*"],
+      "@revoke.cash/core/*": ["../../packages/core/lib/*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    "postcss.config.cjs",
+    "next.config.cjs",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    ".claude/.next/types/**/*.ts",
+    ".claude/.next/dev/types/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}

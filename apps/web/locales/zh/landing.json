@@ -1,0 +1,81 @@
+{
+  "faq": {
+    "subtitle": "这些是用户的常见问题。如需查看完整列表，请访问我们的<faq-link>常见问题页面</faq-link>。",
+    "title": "常见问题"
+  },
+  "features": {
+    "auto_revoke": {
+      "description": "让 Revoke.cash 全天候监控您的授权，并自动替您撤销存在风险的授权。一次设置即可持续保护您的钱包，即使在您熟睡时也不例外。",
+      "title": "自动撤销"
+    },
+    "dashboard": {
+      "description": "清晰纵览您曾授予的每一个代币授权，在一个简洁的仪表盘中即可完成排序、筛选，并撤销不再需要的授权。",
+      "title": "授权仪表盘"
+    },
+    "exploit_checker": {
+      "description": "自动将您的授权与已知漏洞进行比对，检查您是否有授权面临风险。",
+      "title": "漏洞检查器"
+    },
+    "title": "为钱包安全而生"
+  },
+  "hero_section": {
+    "subtitle": "检查并撤销代币授权，保护您的钱包免受漏洞攻击和诈骗侵害。",
+    "title": "重新掌控<highlight>自己的钱包。</highlight>"
+  },
+  "how_to": {
+    "paragraph_1": {
+      "description": "点击右上角的<b>连接钱包</b>，或在搜索栏中输入地址。",
+      "title": "1. 连接"
+    },
+    "paragraph_2": {
+      "description": "使用网络选择、排序和筛选选项检查您的代币授权。",
+      "title": "2. 检查"
+    },
+    "paragraph_3": {
+      "description": "撤销不再使用的授权，防止您的资金被擅自动用。",
+      "title": "3. 撤销"
+    },
+    "title": "如何撤销授权"
+  },
+  "premium": {
+    "best_protection": "最佳保护",
+    "description": "监控并保护您在 100+ 个网络上的代币授权。{price}/年起。",
+    "free_features": {
+      "batch_revoke": "批量撤销（$1.50/批次）",
+      "exploit_checker": "单链漏洞检查器",
+      "single_chain": "单链授权仪表盘"
+    },
+    "free_title": "免费版",
+    "highlights": {
+      "multichain_dashboard": "多链仪表盘",
+      "multichain_exploit_checker": "多链漏洞检查器",
+      "time_machine": "Time Machine 历史授权回溯",
+      "unlimited_batch_revokes": "无限次批量撤销"
+    },
+    "most_popular": "最受欢迎",
+    "premium_price": "{price}/年",
+    "premium_title": "Premium",
+    "title": "Revoke Premium",
+    "ultimate_features": {
+      "automated_revoking": "自动撤销",
+      "automated_revoking_tooltip": "需要使用 MetaMask。仅支持部分网络。",
+      "continuous_monitoring": "持续监控",
+      "gas_allowance": "包含每月 $5 的 Gas 预算"
+    },
+    "ultimate_price": "{price}/年",
+    "ultimate_title": "Ultimate"
+  },
+  "stats": {
+    "approvals_revoked": "已撤销授权",
+    "networks_supported": "支持的网络 {count}",
+    "protected_from_exploits": "免受漏洞攻击的资金",
+    "total_users": "总用户数"
+  },
+  "testimonials": {
+    "quotes": {
+      "beausecurity": "超级重要的提醒：一个智能合约还没被攻击过，不代表它以后不会被攻击。把那些你不再使用的智能合约的旧授权撤销掉，绝对值得一做。快用 Revoke.cash 吧。",
+      "nft_dreww": "大家都有手机，现在就设个提醒，每周访问 Revoke.cash 检查一次自己的授权。只需 30 秒，就能防止黑客盗走你的资产。",
+      "rsquare": "在需要快速应对安全事件时，用 Safe 能做的最有用的事之一，就是通过 Revoke.cash Safe App 便捷地撤销授权。"
+    }
+  }
+}

@@ -1,0 +1,193 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-zinc-200, currentColor);
+    /* Somehow we need to specify this, or borders don't work on Firefox*/
+    --tw-border-style: solid;
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    @apply leading-tight;
+    @apply bg-white dark:bg-black;
+    @apply text-zinc-900 dark:text-zinc-100;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl font-semibold tracking-tight m-0 font-heading;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl font-bold m-0;
+  }
+
+  h3 {
+    @apply text-2xl font-bold m-0;
+  }
+
+  h4 {
+    @apply text-xl font-bold m-0;
+  }
+
+  h5,
+  h6 {
+    @apply text-lg font-bold m-0;
+  }
+
+  p {
+    @apply text-base leading-normal text-zinc-700 dark:text-zinc-300;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  div:focus {
+    @apply outline-black;
+  }
+}
+
+.dev {
+  @apply border border-yellow-500;
+}
+
+#nprogress .bar {
+  @apply bg-brand dark:bg-brand;
+}
+
+.Toastify__toast--error {
+  @apply border-red-500;
+}
+
+.Toastify__toast--success {
+  @apply border-green-500;
+}
+
+.animate-spin-fast {
+  animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* For Webkit-based browsers (Chrome, Safari and Opera) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.fade-video {
+  width: 600px;
+  height: auto;
+
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, black 5%, black 95%, transparent),
+    linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-composite: destination-in; /* Safari/Chrome */
+  mask-composite: intersect; /* Firefox */
+
+  mask-image:
+    linear-gradient(to right, transparent, black 5%, black 95%, transparent),
+    linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
+}
+
+.nav-tabs-scope {
+  timeline-scope: --nav-tabs-scroll;
+}
+
+.nav-tabs-scroll {
+  scroll-timeline: --nav-tabs-scroll x;
+}
+
+.nav-tabs-fade {
+  opacity: 0;
+  animation-duration: auto;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-timeline: --nav-tabs-scroll;
+}
+
+.nav-tabs-fade-left {
+  animation-name: nav-tabs-fade-in;
+  animation-range: 0% 2rem;
+}
+
+.nav-tabs-fade-right {
+  animation-name: nav-tabs-fade-out;
+  animation-range: calc(100% - 2rem) 100%;
+}
+
+@keyframes nav-tabs-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nav-tabs-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The toast progress bar is excluded because react-toastify implements its autoClose timer
+     as that bar's animation (inline animation-duration + onAnimationEnd), so shortening it
+     would dismiss toasts after milliseconds; we hide the bar's shrink motion below instead */
+  *:not(.Toastify__progress-bar),
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .Toastify__progress-bar {
+    opacity: 0 !important;
+  }
+
+  /* Keep loading spinners animating; a frozen spinner reads as a hung app */
+  .animate-spin,
+  .animate-spin-fast {
+    animation-duration: 1.5s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  /* These scroll-driven fades indicate scroll position rather than playing motion,
+     and freezing them at their initial state would hide the nav tab overflow fades */
+  .nav-tabs-fade {
+    animation-duration: auto !important;
+  }
+}

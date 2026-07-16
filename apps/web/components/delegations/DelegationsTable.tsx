@@ -1,0 +1,42 @@
+'use client';
+
+import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
+import Card, { CardTitle } from 'components/common/Card';
+import Table from 'components/common/table/Table';
+import { useTable } from 'lib/hooks/useTable';
+import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
+import { columns } from './columns';
+
+interface Props {
+  delegations: Delegation[];
+  isLoading: boolean;
+  error: Error | null;
+  onRevoke: (delegation: Delegation) => void;
+}
+
+const DelegationsTable = ({ delegations, isLoading, error, onRevoke }: Props) => {
+  const t = useTranslations();
+
+  const data = useMemo(() => delegations ?? [], [delegations]);
+
+  const table = useTable({
+    data,
+    columns,
+    meta: { onRevoke } as any,
+  });
+
+  return (
+    <Card header={<CardTitle title={t('address.navigation.delegations')} />} className="p-0">
+      <Table
+        table={table}
+        loading={isLoading}
+        emptyChildren={t('address.delegations.no_delegations')}
+        error={error}
+        className="border-none"
+      />
+    </Card>
+  );
+};
+
+export default DelegationsTable;

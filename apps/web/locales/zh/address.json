@@ -1,0 +1,227 @@
+{
+  "allowances": {
+    "amount": "{amount} {symbol}",
+    "count": "{count, plural, =0 {没有授权} other {# 项授权}}",
+    "empty_chains_count": "{count, plural, =0 {没有无授权的网络} other {# 个无授权的网络}}",
+    "none_found": "未找到授权",
+    "none_found_filtered": "所选筛选条件下未找到授权",
+    "none_found_premium": "在所有支持的网络上均未找到授权。一切安全！",
+    "token_id": "代币 #{tokenId}",
+    "unknown": "未知",
+    "unlimited": "无限"
+  },
+  "batch_revoke": {
+    "failed": "失败",
+    "fee": {
+      "eip5792_notice": "注意：您的钱包不支持原子批量撤销，即便使用付费批量撤销服务，也需要发送多笔交易。",
+      "eip5792_notice_chain": "注意：您的钱包不支持{chainName}上的原子批量撤销。因此，即便使用付费批量撤销功能，也需要发送多笔交易。",
+      "notice": "进行批量撤销，您需要支付<m>${feeDollarAmount}</m>的少量费用来支持 Revoke.cash 的持续发展。",
+      "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link>正在赞助<m>{chainName}</m>网络上的批量撤销费用！🥳",
+      "tooltip": "每次批量操作收取<m>${BASE_FEE}</m>的固定费用用于支持基础设施成本及持续开发。您也可免费逐笔撤销授权。",
+      "upgrade_prompt": "想要无限次批量撤销？"
+    },
+    "revoked": "已撤销",
+    "title": "批量撤销",
+    "total": "总计"
+  },
+  "delegations": {
+    "columns": {
+      "chain": "网络",
+      "contract": "资产/合约",
+      "delegate": "被委托人",
+      "delegator": "委托人",
+      "platform": "平台",
+      "type": "类型"
+    },
+    "contract": {
+      "not_applicable": "不适用"
+    },
+    "count": "{count, plural, =0 {没有委托} other {# 项委托}}",
+    "delegated_to": "委托给",
+    "eip7702_delegations": "EIP7702 委托",
+    "empty_chains_count": "{count, plural, =0 {没有无委托的网络} other {# 个无委托的网络}}",
+    "info_panel": {
+      "description": "委托是一种授权其他地址代表您进行操作的方式，例如在验证资产所有权或领取空投时。这有利于安全性，因为您可以使用<b>热钱包</b>来管理资产，而不必每次交互都使用<b>冷钱包</b>。但是，如果您的热钱包遭到入侵，请务必撤销委托，避免攻击者利用它冒充您。请注意，这些委托与 EIP7702 委托<b>不同</b>，EIP7702 委托<i>只</i>能在您的钱包应用内撤销。",
+      "title": "什么是委托？"
+    },
+    "no_delegations": "未找到委托",
+    "no_eip7702_delegations": "未找到 EIP7702 委托",
+    "none_found_premium": "在所有支持的网络上均未找到委托。一切安全！",
+    "this_wallet": "此钱包",
+    "tooltips": {
+      "contract": "合约级别的委托授予被委托人针对特定合约在支持的平台上代表您进行操作的权限。",
+      "eip7702": "EIP7702 委托为您的钱包添加智能合约功能。",
+      "eip7702_revoke": "EIP7702 委托必须在您的钱包应用内撤销",
+      "erc1155": "ERC1155 代币委托允许被委托人针对特定 ERC1155 代币在支持的平台上代表您进行操作。",
+      "erc20": "ERC20 代币委托允许被委托人针对特定 ERC20 代币在支持的平台上代表您进行操作。",
+      "erc721": "ERC721 代币委托允许被委托人针对特定 ERC721 代币在支持的平台上代表您进行操作。",
+      "wallet": "钱包级别的委托允许被委托人在支持的平台上代表您进行操作。"
+    },
+    "types": {
+      "contract": "合约",
+      "eip7702": "EIP7702",
+      "erc1155": "ERC1155",
+      "erc20": "ERC20",
+      "erc721": "ERC721",
+      "wallet": "钱包"
+    }
+  },
+  "headers": {
+    "actions": "操作",
+    "allowance": "授权金额",
+    "amount": "金额",
+    "asset": "资产",
+    "asset_type": "类型",
+    "chain": "网络",
+    "date": "日期",
+    "event_type": "事件类型",
+    "expiration": "到期",
+    "last_checked": "上次检查",
+    "last_updated": "上次更新",
+    "policy_type": "权限类型",
+    "session_hash": "会话标识符",
+    "signer": "授权签署人",
+    "spender": "被授权人（Spender）",
+    "status": "状态",
+    "transaction": "交易",
+    "value_at_risk": "存在风险金额"
+  },
+  "history": {
+    "approved": "已授权",
+    "cancelled_signatures": "已取消的签名",
+    "none_found": "未找到授权历史记录",
+    "revoked": "已撤销",
+    "status_failed": "失败",
+    "status_loaded": "已加载",
+    "status_loading": "加载中",
+    "title": "授权历史"
+  },
+  "labels": {
+    "account_types": {
+      "eip7702": "EIP7702 账户",
+      "eoa": "EOA",
+      "smart_contract": "智能合约"
+    },
+    "connected": "已连接",
+    "nft": "NFT",
+    "not_connected": "未连接",
+    "policy_type": {
+      "all": "转账与调用",
+      "calls": "合约调用",
+      "none": "无",
+      "transfers": "转账"
+    },
+    "token": "代币"
+  },
+  "meta": {
+    "title": "地址 {addressDisplay} 的授权情况",
+    "title_chain": "地址 {addressDisplay} 在 {chainName} 上的授权情况"
+  },
+  "navigation": {
+    "allowances": "授权",
+    "delegations": "委托",
+    "exploits": "漏洞",
+    "history": "历史",
+    "sessions": "会话"
+  },
+  "permit2": {
+    "expiration": "于 {inTime} 过期"
+  },
+  "premium": {
+    "banner": {
+      "cta": "升级至 Premium",
+      "description": "想要多链仪表盘？"
+    },
+    "subscription_expiry": {
+      "cta": "续订",
+      "description": "您的 Premium 订阅将在 {days, plural, other {# 天}}后到期。"
+    }
+  },
+  "risk_factors": {
+    "allowlist": "知名被授权人（Spender）地址",
+    "blocklist": "危险或恶意",
+    "closed_source": "闭源",
+    "deprecated": "已弃用或已过时",
+    "eoa": "外部拥有账户",
+    "excessive_expiration": "到期时间过长",
+    "exploit": "涉及 {data}",
+    "levels": {
+      "high": "高风险",
+      "low": "低风险",
+      "medium": "中风险"
+    },
+    "phishing_risk": "遭遇网络钓鱼时会增加风险面",
+    "proxy": "可升级的代理合约",
+    "source": "由 <source-link>{source}</source-link> 报告",
+    "suspicious_address": "可疑地址",
+    "uninitialized": "没有部署到此地址的合约",
+    "unsafe": "可能不安全的合约代码"
+  },
+  "search": {
+    "history": "按被授权人或代币搜索",
+    "spender": "按被授权人（Spender）搜索"
+  },
+  "sessions": {
+    "info": {
+      "description": "会话是一种权限系统，类似代币授权，但有一些关键区别。代币授权授予某个地址从您的钱包中转出代币的权限，而会话则可用于授予另一个地址在与智能合约交互时代表您签署特定交易的权限。这些会话目前只有在使用<i>Abstract Global Wallet</i>时才能在 Abstract 上使用，但将来可能会应用到其他链上。",
+      "title": "什么是会话？"
+    },
+    "table": {
+      "none_found": "未找到会话",
+      "title": "活跃会话"
+    },
+    "tooltips": {
+      "policy_type": {
+        "all": "此会话有权调用 {callPoliciesCount} 个不同的函数，并将代币转移到 {transferPoliciesCount} 个不同的地址",
+        "calls": "此会话有权调用 {callPoliciesCount} 个不同的函数",
+        "none": "此会话没有权限",
+        "transfers": "此会话有权将代币转移到 {transferPoliciesCount} 个不同的地址"
+      }
+    }
+  },
+  "sorting": {
+    "columns": {
+      "allowance": "授权金额",
+      "approved_spender": "被授权人（Spender）",
+      "asset_name": "资产名称",
+      "last_updated": "上次更新",
+      "value_at_risk": "存在风险金额"
+    },
+    "fns": {
+      "date": {
+        "asc": "从旧到新",
+        "desc": "从新到旧"
+      },
+      "number": {
+        "asc": "从低到高",
+        "desc": "从高到低"
+      },
+      "text": {
+        "asc": "A 到 Z",
+        "desc": "Z 到 A"
+      }
+    },
+    "label": "排序"
+  },
+  "time_machine": {
+    "apply": "应用",
+    "description": "回到过去，查看您的授权在过去某个时间点的状态。查看历史数据时，撤销操作将被禁用。",
+    "exit": "返回现在",
+    "label": "Time Machine",
+    "now": "现在",
+    "viewing_as_of": "正在查看截至 {date} {time} 的授权"
+  },
+  "tooltips": {
+    "connect_wallet": "请连接钱包继续下一步",
+    "connected_account": "您只能操作已连接的账户",
+    "filter_by_spender": "按该被授权人筛选",
+    "filter_by_token": "按此代币筛选",
+    "permit2_expiration": "这是 Permit2 授权，将于 {inTime} 到期",
+    "risk_factors": "此地址为{riskLevel}，原因如下："
+  },
+  "viewing_on": "在以下网络上查看地址",
+  "wallet_health": {
+    "allowances": "授权",
+    "value_at_risk": "存在风险金额"
+  }
+}

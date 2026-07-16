@@ -1,0 +1,301 @@
+import { ERC20_ABI, ERC721_ABI, PERMIT2_ABI } from '@revoke.cash/core/abis';
+import { type AllowancePayload, AllowanceType } from '@revoke.cash/core/allowances';
+import { ADDRESS_ZERO, DUMMY_ADDRESS } from '@revoke.cash/core/constants';
+import type { TokenMetadata } from '@revoke.cash/core/tokens';
+import type { Nullable } from '@revoke.cash/core/types';
+import { isNullish } from '@revoke.cash/core/utils';
+import type { SpenderRiskData } from '@revoke.cash/core/whois';
+import { type Address, decodeEventLog, getAbiItem, type Hash, type Hex, toEventSelector } from 'viem';
+import { logSorterChronological } from './utils';
+
+// Topic-0 selectors for every event type we parse. Computed once at import.
+// ERC20 and ERC721 share the Transfer(address,address,uint256) signature, so their topics are equal.
+export const ERC20_TRANSFER_TOPIC = toEventSelector(getAbiItem({ abi: ERC20_ABI, name: 'Transfer' }));
+export const ERC721_TRANSFER_TOPIC = toEventSelector(getAbiItem({ abi: ERC721_ABI, name: 'Transfer' }));
+export const ERC721_APPROVAL_TOPIC = toEventSelector(getAbiItem({ abi: ERC721_ABI, name: 'Approval' }));
+export const ERC721_APPROVAL_FOR_ALL_TOPIC = toEventSelector(getAbiItem({ abi: ERC721_ABI, name: 'ApprovalForAll' }));
+export const PERMIT2_APPROVAL_TOPIC = toEventSelector(getAbiItem({ abi: PERMIT2_ABI, name: 'Approval' }));
+export const PERMIT2_PERMIT_TOPIC = toEventSelector(getAbiItem({ abi: PERMIT2_ABI, name: 'Permit' }));
+export const PERMIT2_LOCKDOWN_TOPIC = toEventSelector(getAbiItem({ abi: PERMIT2_ABI, name: 'Lockdown' }));
+
+export interface Log {
+  address: Address;
+  topics: [topic0: Hex, ...rest: Hex[]];
+  data: Hex;
+  transactionHash: Hash;
+  blockNumber: number;
+  transactionIndex: number;
+  logIndex: number;
+  timestamp?: number;
+}
+
+export type TimeLog = Pick<Log, 'transactionHash' | 'blockNumber' | 'timestamp'>;
+export type ResolvedTimeLog = TimeLog & { timestamp: number };
+
+export interface Filter {
+  address?: Address;
+  topics: Array<Hex | null>;
+  fromBlock: number;
+  toBlock: number;
+}
+
+export enum TokenEventType {
+  APPROVAL_ERC20 = 'APPROVAL_ERC20',
+  APPROVAL_ERC721 = 'APPROVAL_ERC721',
+  APPROVAL_FOR_ALL = 'APPROVAL_FOR_ALL',
+  PERMIT2 = 'PERMIT2',
+  TRANSFER_ERC20 = 'TRANSFER_ERC20',
+  TRANSFER_ERC721 = 'TRANSFER_ERC721',
+}
+
+export interface BaseTokenEvent {
+  type: TokenEventType;
+  chainId: number;
+  token: Address;
+  owner: Address;
+  time: TimeLog;
+  payload: any;
+  rawLog: Log;
+}
+
+export interface Erc20ApprovalEvent extends BaseTokenEvent {
+  type: TokenEventType.APPROVAL_ERC20;
+  payload: {
+    spender: Address;
+    spenderData?: Nullable<SpenderRiskData>;
+    amount: bigint;
+  };
+}
+
+export interface Erc721ApprovalEvent extends BaseTokenEvent {
+  type: TokenEventType.APPROVAL_ERC721;
+  payload: {
+    spender: Address;
+    oldSpender?: Address;
+    spenderData?: Nullable<SpenderRiskData>;
+    tokenId: bigint;
+  };
+}
+
+export interface Erc721ApprovalForAllEvent extends BaseTokenEvent {
+  type: TokenEventType.APPROVAL_FOR_ALL;
+  payload: {
+    spender: Address;
+    spenderData?: Nullable<SpenderRiskData>;
+    approved: boolean;
+  };
+}
+
+export interface Permit2Event extends BaseTokenEvent {
+  type: TokenEventType.PERMIT2;
+  payload: {
+    spender: Address;
+    spenderData?: Nullable<SpenderRiskData>;
+    permit2Address: Address;
+    amount: bigint;
+    expiration: number;
+  };
+}
+
+export interface Erc20TransferEvent extends BaseTokenEvent {
+  type: TokenEventType.TRANSFER_ERC20;
+  payload: {
+    from: Address;
+    to: Address;
+    amount: bigint;
+  };
+}
+
+export interface Erc721TransferEvent extends BaseTokenEvent {
+  type: TokenEventType.TRANSFER_ERC721;
+  payload: {
+    from: Address;
+    to: Address;
+    tokenId: bigint;
+  };
+}
+
+export type ApprovalTokenEvent = Erc20ApprovalEvent | Erc721ApprovalEvent | Erc721ApprovalForAllEvent | Permit2Event;
+export type TransferTokenEvent = Erc20TransferEvent | Erc721TransferEvent;
+export type TokenEvent = ApprovalTokenEvent | TransferTokenEvent;
+
+// Enriched event with guaranteed timestamp and token metadata attached
+export type Enriched<T extends TokenEvent> = T & { metadata: TokenMetadata; time: ResolvedTimeLog };
+export type EnrichedTokenEvent = Enriched<TokenEvent>;
+
+export const isTransferTokenEvent = (event: TokenEvent): event is TransferTokenEvent => {
+  return event.type === TokenEventType.TRANSFER_ERC20 || event.type === TokenEventType.TRANSFER_ERC721;
+};
+
+export const isApprovalTokenEvent = (event: TokenEvent): event is ApprovalTokenEvent => {
+  return (
+    event.type === TokenEventType.APPROVAL_ERC20 ||
+    event.type === TokenEventType.APPROVAL_ERC721 ||
+    event.type === TokenEventType.APPROVAL_FOR_ALL ||
+    event.type === TokenEventType.PERMIT2
+  );
+};
+
+export const parseLog = (log: Log, chainId: number, owner: Address): TokenEvent | undefined => {
+  switch (log.topics[0]) {
+    case ERC721_APPROVAL_FOR_ALL_TOPIC:
+      return parseApprovalForAllLog(log, chainId);
+    case ERC721_APPROVAL_TOPIC:
+      return parseApprovalLog(log, chainId);
+    case PERMIT2_APPROVAL_TOPIC:
+    case PERMIT2_PERMIT_TOPIC:
+    case PERMIT2_LOCKDOWN_TOPIC:
+      return parsePermit2Log(log, chainId);
+    case ERC721_TRANSFER_TOPIC:
+      return parseTransferLog(log, chainId, owner);
+    default:
+      return undefined;
+  }
+};
+
+export const parsePermit2Log = (log: Log, chainId: number): Permit2Event | undefined => {
+  try {
+    const parsedEvent = decodeEventLog({ abi: PERMIT2_ABI, data: log.data, topics: log.topics, strict: false }) as any;
+
+    const isLockdownEvent = parsedEvent.eventName === 'Lockdown';
+    const { owner, token, spender } = parsedEvent.args;
+    const amount = isLockdownEvent ? 0n : parsedEvent.args.amount;
+    const expiration = isLockdownEvent ? 0 : parsedEvent.args.expiration;
+    const time = { transactionHash: log.transactionHash, blockNumber: log.blockNumber, timestamp: log.timestamp };
+
+    if ([owner, token, spender, amount, expiration].some((arg) => isNullish(arg))) return undefined;
+
+    // Different chains may have different instances of Permit2, so we use the address of the instance that emitted the approval event
+    const payload = { spender, permit2Address: log.address, amount, expiration };
+    return { type: TokenEventType.PERMIT2, rawLog: log, token, chainId, owner, time, payload };
+  } catch {
+    console.error('Malformed Permit2 log:', log);
+    return undefined;
+  }
+};
+
+export const parseApprovalLog = (log: Log, chainId: number): Erc20ApprovalEvent | Erc721ApprovalEvent | undefined => {
+  try {
+    // We are aware that there are certain old contracts that implement ERC721 incorrectly (like CryptoStrikers)
+    // We previously had edge cases for this, but since limited approvals are very uncommon and are reset on transfer,
+    // we no longer handle this edge case. ApprovalForAll should be unaffected.
+    const type = log.topics.length === 4 ? TokenEventType.APPROVAL_ERC721 : TokenEventType.APPROVAL_ERC20;
+    const abi = type === TokenEventType.APPROVAL_ERC721 ? ERC721_ABI : ERC20_ABI;
+
+    const parsedEvent = decodeEventLog({ abi, data: log.data, topics: log.topics, strict: false }) as any;
+
+    const { owner, spender, tokenId, amount } = parsedEvent.args;
+    const time = { transactionHash: log.transactionHash, blockNumber: log.blockNumber, timestamp: log.timestamp };
+
+    if ([owner, spender].some((arg) => isNullish(arg)) || [tokenId, amount].every((arg) => isNullish(arg))) {
+      return undefined;
+    }
+
+    const payload = { spender, tokenId, amount };
+    return { type, rawLog: log, token: log.address, chainId, owner, time, payload };
+  } catch {
+    console.error('Malformed approval log:', log);
+    return undefined;
+  }
+};
+
+export const parseApprovalForAllLog = (log: Log, chainId: number): Erc721ApprovalForAllEvent | undefined => {
+  try {
+    const parsedEvent = decodeEventLog({ abi: ERC721_ABI, data: log.data, topics: log.topics, strict: false }) as any;
+
+    const { owner, spender, approved } = parsedEvent.args;
+    const time = { transactionHash: log.transactionHash, blockNumber: log.blockNumber, timestamp: log.timestamp };
+
+    if ([owner, spender, approved].some((arg) => isNullish(arg))) return undefined;
+
+    const payload = { spender, approved };
+    return { type: TokenEventType.APPROVAL_FOR_ALL, rawLog: log, token: log.address, chainId, owner, time, payload };
+  } catch {
+    console.error('Malformed approval for all log:', log);
+    return undefined;
+  }
+};
+
+export const parseTransferLog = (
+  log: Log,
+  chainId: number,
+  owner: Address,
+): Erc20TransferEvent | Erc721TransferEvent | undefined => {
+  try {
+    const type = log.topics.length === 4 ? TokenEventType.TRANSFER_ERC721 : TokenEventType.TRANSFER_ERC20;
+    const abi = type === TokenEventType.TRANSFER_ERC721 ? ERC721_ABI : ERC20_ABI;
+
+    const parsedEvent = decodeEventLog({ abi, data: log.data, topics: log.topics, strict: false }) as any;
+
+    const { from, to, tokenId, amount } = parsedEvent.args;
+    const time = { transactionHash: log.transactionHash, blockNumber: log.blockNumber, timestamp: log.timestamp };
+
+    if ([owner, from, to].some((arg) => isNullish(arg)) || [tokenId, amount].every((arg) => isNullish(arg))) {
+      return undefined;
+    }
+
+    const payload = { from, to, tokenId, amount };
+
+    return { type, rawLog: log, token: log.address, chainId, owner, time, payload };
+  } catch {
+    console.error('Malformed transfer log:', log);
+    return undefined;
+  }
+};
+
+export const getEventKey = (event: TokenEvent) => {
+  return JSON.stringify(event.rawLog);
+};
+
+// This is a utility function to convert an approval event to an allowance payload used to display the allowance amount in the history table
+// We can safely cast the result to AllowancePayload because the type is known to be valid
+export const eventToAllowance = (event: ApprovalTokenEvent): AllowancePayload => {
+  return {
+    type:
+      event.type === TokenEventType.APPROVAL_ERC20
+        ? AllowanceType.ERC20
+        : event.type === TokenEventType.APPROVAL_ERC721
+          ? AllowanceType.ERC721_SINGLE
+          : event.type === TokenEventType.APPROVAL_FOR_ALL
+            ? AllowanceType.ERC721_ALL
+            : AllowanceType.PERMIT2,
+    ...event.payload,
+    lastUpdated: event.time,
+  } as unknown as AllowancePayload;
+};
+
+export const isRevokeEvent = (event: ApprovalTokenEvent): boolean => {
+  if (event.type === TokenEventType.APPROVAL_ERC721) {
+    return event.payload.spender === ADDRESS_ZERO;
+  }
+
+  if (event.type === TokenEventType.APPROVAL_FOR_ALL) {
+    return !event.payload.approved;
+  }
+
+  return event.payload.amount === 0n;
+};
+
+export const isCancelPermitEvent = (event: ApprovalTokenEvent): boolean => {
+  if (event.type !== TokenEventType.APPROVAL_ERC20) return false;
+
+  const hasDummySpender = event.payload.spender === DUMMY_ADDRESS;
+  const hasZeroValue = event.payload.amount === 0n;
+
+  return hasDummySpender && hasZeroValue;
+};
+
+// Check if any ERC20 transfers from the owner occurred after a given event, which would indicate
+// that an allowance may have been partially consumed through transferFrom
+export const hasTransfersFromOwnerAfterEvent = (
+  owner: Address,
+  events: TokenEvent[],
+  afterEvent: TokenEvent,
+): boolean => {
+  return events.some(
+    (event) =>
+      event.type === TokenEventType.TRANSFER_ERC20 &&
+      event.payload.from === owner &&
+      logSorterChronological(event.rawLog, afterEvent.rawLog) > 0,
+  );
+};

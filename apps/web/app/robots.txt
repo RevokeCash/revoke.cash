@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /private/
+Disallow: /admin
+
+Sitemap: https://revoke.cash/sitemap.xml

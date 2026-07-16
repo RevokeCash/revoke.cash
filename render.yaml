@@ -1,0 +1,85 @@
+services:
+  # The manager is a public web service so the exploit webhook is reachable from the outside;
+  # Bull Board is behind basic auth and the webhook requires its bearer token.
+  - type: web
+    name: indexer-manager
+    runtime: docker
+    repo: https://github.com/RevokeCash/revoke.cash
+    branch: master
+    dockerfilePath: ./apps/indexer/Dockerfile
+    dockerContext: .
+    region: virginia
+    plan: standard
+    numInstances: 1
+    healthCheckPath: /health
+    envVars:
+      - key: IS_MANAGER
+        value: 'true'
+      - key: PORT
+        value: '3001'
+      - key: NEON_USE_WEBSOCKET
+        value: 'true'
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: BULL_BOARD_USER
+        sync: false
+      - key: BULL_BOARD_PASSWORD
+        sync: false
+      - key: EXPLOIT_WEBHOOK_TOKEN
+        sync: false
+
+  - type: pserv
+    name: indexer-worker
+    runtime: docker
+    repo: https://github.com/RevokeCash/revoke.cash
+    branch: master
+    dockerfilePath: ./apps/indexer/Dockerfile
+    dockerContext: .
+    region: virginia
+    plan: standard
+    scaling:
+      minInstances: 1
+      maxInstances: 8
+      targetCPUPercent: 75
+      targetMemoryPercent: 75
+    envVars:
+      - key: PORT
+        value: '3002'
+      - key: NEON_USE_WEBSOCKET
+        value: 'true'
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+
+  - type: pserv
+    name: auto-revoke-executor
+    runtime: docker
+    repo: https://github.com/RevokeCash/revoke.cash
+    branch: master
+    dockerfilePath: ./apps/auto-revoke-executor/Dockerfile
+    dockerContext: .
+    region: virginia
+    plan: standard
+    numInstances: 1
+    envVars:
+      - key: PORT
+        value: '3003'
+      - key: NEON_USE_WEBSOCKET
+        value: 'true'
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: AUTO_REVOKE_EXECUTOR_PRIVATE_KEY
+        sync: false
+      - key: AUTO_REVOKE_URGENT_EXECUTOR_PRIVATE_KEY
+        sync: false
+      - key: COINGECKO_API_KEY
+        sync: false
+      - key: UPSTASH_REDIS_REST_URL
+        sync: false
+      - key: UPSTASH_REDIS_REST_TOKEN
+        sync: false

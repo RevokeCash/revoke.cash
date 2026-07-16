@@ -1,0 +1,151 @@
+{
+  "automated_revoking": {
+    "cta": {
+      "button": "Ver planes",
+      "title": "¿Listo para una protección del tipo configúralo y olvídate?"
+    },
+    "description": "Todo lo que debes saber sobre la revocación automática antes de suscribirte: cómo te protege, qué requiere y cuáles son sus límites.",
+    "gas": {
+      "description": "Tu suscripción incluye un presupuesto mensual de gas de {budget} que cubre el coste de las transacciones de revocación automáticas. Cuando se agota el presupuesto, las revocaciones rutinarias esperan al siguiente ciclo mensual, pero las revocaciones provocadas por exploits se siguen ejecutando. Para que aproveches bien tu presupuesto, las revocaciones individuales tienen un límite de {cap} y pueden aplazarse temporalmente durante los picos de gas.",
+      "title": "Las tarifas de gas están incluidas"
+    },
+    "limitations": {
+      "description": "La revocación automática es una protección de mejor esfuerzo: reduce significativamente tu riesgo, pero no puede garantizar que se eviten las pérdidas. La detección puede demorarse, ya que es necesario identificar un exploit antes de que pueda activar una revocación, y un atacante podría actuar primero. La ejecución en la cadena depende de condiciones ajenas al control de cualquiera, como la congestión de la red y los precios del gas. Consulta nuestros <terms-link>Términos y Condiciones</terms-link> para obtener más detalles.",
+      "title": "Qué no es la revocación automática"
+    },
+    "meta": {
+      "description": "Cómo protege tu cartera la función de revocación automática: reglas, redes compatibles, presupuesto de gas y sus límites.",
+      "title": "Cómo funciona la revocación automática"
+    },
+    "networks": {
+      "description": "La revocación automática requiere actualmente MetaMask, la primera cartera que admite los permisos ERC-7715. Para conceder estos permisos es necesario actualizar tu cartera a una smart account ERC-7702. Se irá añadiendo compatibilidad con más carteras y redes a medida que se vaya adoptando el estándar. De momento funciona en {count} redes:",
+      "title": "Carteras y redes compatibles"
+    },
+    "steps": {
+      "execution": {
+        "description": "Cuando una aprobación cumple tus reglas, se envía una transacción de revocación en tu nombre y aparece en tu registro de actividad. Las revocaciones provocadas por exploits se tratan con mayor urgencia.",
+        "title": "Se revocan las aprobaciones peligrosas"
+      },
+      "monitoring": {
+        "description": "Revoke.cash supervisa constantemente tus aprobaciones en todas las redes compatibles y las compara con tus reglas y nuestra base de datos de exploits, las 24 horas del día.",
+        "title": "Estamos atentos"
+      },
+      "permission": {
+        "description": "Conéctate con MetaMask y concede a Revoke.cash un permiso ERC-7715 que solo se puede usar para revocar aprobaciones. No puede transferir fondos, firmar mensajes ni hacer nada más, y puedes retirarlo en cualquier momento.",
+        "title": "Concede un permiso de solo revocación"
+      },
+      "rules": {
+        "description": "Elige qué se debe revocar automáticamente: las aprobaciones concedidas a gastadores de riesgo o afectados por exploits, las aprobaciones más antiguas que tu umbral de antigüedad, o ambas cosas. Cada cartera de tu suscripción puede configurar sus propias reglas.",
+        "title": "Establece tus reglas"
+      },
+      "title": "Desde la configuración hasta la protección"
+    },
+    "title": "Cómo funciona la revocación automática"
+  },
+  "pricing": {
+    "best_protection": "La mejor protección",
+    "compare_plans": "Comparar planes",
+    "description": "Mantente seguro en web3 con las herramientas que necesitas. Actualiza a Premium para disfrutar de una experiencia completa.",
+    "faq": {
+      "best_effort": {
+        "answer": "No. La revocación automática es una protección de mejor esfuerzo: supervisa y revoca automáticamente tus aprobaciones, lo que reduce significativamente tu riesgo. Pero la detección puede demorarse y las redes pueden congestionarse, por lo que nunca puede garantizar que se eviten las pérdidas.",
+        "question": "¿Está garantizado que la revocación automática protege mis fondos?"
+      },
+      "multiple_wallets": {
+        "answer": "Sí. Tanto la versión Premium como la Ultimate incluyen {count} espacios de cartera. El titular de la suscripción puede añadir direcciones de cartera y todas las carteras tienen las mismas funciones. Con la versión Ultimate, cada cartera puede, además, gestionar de forma independiente su propia configuración de revocación automática.",
+        "question": "¿Puedo usar una misma suscripción para varias carteras?"
+      },
+      "subscription_expiry": {
+        "answer": "Tu panel de control y tus herramientas multicadena dejarán de estar disponibles hasta que renueves tu suscripción. Con el plan Ultimate, la revocación automática también deja de supervisar tus aprobaciones, pero se conserva la configuración de tus reglas, así que todo volverá a funcionar como antes en cuanto te vuelvas a suscribir.",
+        "question": "¿Qué pasa cuando caduca mi suscripción?"
+      },
+      "supported_wallets": {
+        "answer": "La revocación automática es una función Ultimate que actualmente funciona con MetaMask en {count} redes compatibles, incluyendo Ethereum, Polygon, Base y más. La compatibilidad con carteras adicionales depende de la adopción del estándar ERC-7715. <link>Ver la lista completa de redes compatibles</link>.",
+        "question": "¿Qué carteras y redes admiten la revocación automática?"
+      },
+      "title": "Preguntas Frecuentes"
+    },
+    "feature_column": "Característica",
+    "feature_sections": {
+      "automated_revoking": {
+        "description": "Establece tus reglas y Revoke.cash supervisará tus aprobaciones las 24 horas del día. Cuando una aprobación cumpla con tus reglas, se revocará automáticamente en tu nombre, incluso mientras duermes.",
+        "link_label": "Descubre cómo funciona la revocación automática",
+        "title": "Revocación automática"
+      },
+      "multichain_dashboard": {
+        "description": "Consulta y gestiona todas tus aprobaciones de tokens en más de 100 redes desde un único panel de control unificado, incluido tu historial completo de aprobaciones. Se acabó tener que cambiar de cadena una por una.",
+        "link_label": "Míralo en acción",
+        "title": "Panel de control multicadena"
+      },
+      "multichain_exploit_checker": {
+        "description": "Comprueba tus carteras contra todos los exploits conocidos en todas las redes compatibles. Consulta si alguna de tus aprobaciones está asociada a contratos comprometidos para que puedas revocarlas de inmediato.",
+        "title": "Comprobador de exploits multicadena"
+      },
+      "time_machine": {
+        "description": "Viaja en el tiempo para ver cómo eran tus aprobaciones en cualquier momento del pasado. Usa la Time Machine para investigar cómo ha cambiado el estado de tus aprobaciones a lo largo del tiempo en todas las redes compatibles.",
+        "title": "Time Machine"
+      },
+      "title": "Lo que obtienes con Premium y Ultimate",
+      "unlimited_batch_revokes": {
+        "description": "Revoca múltiples aprobaciones de tokens en una sola transacción sin coste adicional. Los usuarios gratuitos pagan una tarifa por lote, pero los suscriptores Premium disfrutan de revocaciones por lotes ilimitadas en todas las redes.",
+        "title": "Revocaciones por lotes ilimitadas"
+      }
+    },
+    "features": {
+      "address_slots": "Espacios de cartera",
+      "address_slots_count": "{count} carteras",
+      "approval_history": "Historial de aprobaciones",
+      "automated_revoking": "Revocación automática",
+      "batch_revoke": "Revocación por lotes",
+      "batch_revoke_paid": "Revocación por lotes ({price}/lote)",
+      "continuous_monitoring": "Monitoreo continuo",
+      "exploit_checker": "Comprobador de exploits",
+      "gas_allowance": "Presupuesto de gas",
+      "gas_allowance_amount": "{budget}/mes",
+      "gas_allowance_included": "Presupuesto de gas de {budget}/mes incluido",
+      "multichain_dashboard": "Panel de control multicadena",
+      "multichain_exploit_checker": "Comprobador de exploits multicadena",
+      "one_chain": "Una cadena a la vez",
+      "per_batch": "{price} por lote",
+      "priority_support": "Soporte prioritario",
+      "revoke_approvals": "Revoca aprobaciones en más de 100 redes",
+      "time_machine": "Time Machine",
+      "unlimited": "Ilimitada",
+      "unlimited_batch_revokes": "Revocaciones por lotes ilimitadas"
+    },
+    "includes_tier": "Todo lo de la versión {tierName}, y además:",
+    "meta": {
+      "description": "Compara los planes Revoke Premium. Obtén el panel de control multicadena, revocaciones por lotes ilimitadas y mucho más.",
+      "title": "Precios Premium"
+    },
+    "most_popular_label": "Más popular",
+    "payment_note": "Paga con USDC en Ethereum u otras redes populares. Un pago único por un año completo, sin renovación automática y sin necesidad de aprobaciones de tokens.",
+    "per_year": "/año",
+    "tiers": {
+      "free": {
+        "cta": "Empezar",
+        "description": "Herramientas esenciales para inspeccionar y revocar aprobaciones de tokens.",
+        "name": "Gratis",
+        "savings": "Placeholder"
+      },
+      "premium": {
+        "cta": "Suscribirse",
+        "description": "Supervisa y gestiona las aprobaciones de tokens en un único panel de control multicadena.",
+        "name": "Premium",
+        "price_note": "Incluye {count} carteras",
+        "savings": "Eso equivale a {price} por cartera al mes"
+      },
+      "ultimate": {
+        "cta": "Suscribirse",
+        "description": "Protección del tipo configúralo y olvídate gracias a la revocación automática.",
+        "name": "Ultimate",
+        "price_note": "Incluye {count} carteras",
+        "savings": "Eso equivale a {price} por cartera al mes"
+      }
+    },
+    "title": "Precios Premium",
+    "tooltips": {
+      "automated_revoking": "Requiere MetaMask. Compatible con determinadas redes. La revocación automática es una protección de mejor esfuerzo y no puede garantizar que se eviten las pérdidas."
+    }
+  }
+}

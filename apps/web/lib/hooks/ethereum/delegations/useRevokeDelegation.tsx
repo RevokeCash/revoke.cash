@@ -1,0 +1,66 @@
+'use client';
+
+import { AggregateDelegatePlatform } from '@revoke.cash/core/delegations/AggregateDelegatePlatform';
+import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
+import { TransactionType } from '@revoke.cash/core/types';
+import {
+  getWalletAddress,
+  waitForTransactionConfirmation,
+  writeContractUnlessExcessiveGas,
+} from '@revoke.cash/core/wallet';
+import { useTransactionStore, wrapTransaction } from 'lib/stores/transaction-store';
+import analytics from 'lib/utils/analytics';
+import { usePublicClient } from 'wagmi';
+import { useEnsureWalletClient } from '../ensureWalletClient';
+import { useHandleTransaction } from '../useHandleTransaction';
+
+// Function to generate a unique key for a delegation
+export const getDelegationKey = (delegation: Delegation) => {
+  return `${delegation.chainId}-${delegation.platform}-${delegation.type}-${delegation.delegator}-${delegation.delegate}-${delegation.contract || 'null'}-${delegation.tokenId || 'null'}-${'rights' in delegation ? delegation.rights : 'null'}`;
+};
+
+export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegation: Delegation) => void) => {
+  const { updateTransaction } = useTransactionStore();
+  const publicClient = usePublicClient({ chainId: delegation.chainId })!;
+  const { ensureWalletClient } = useEnsureWalletClient();
+  const handleTransaction = useHandleTransaction(delegation.chainId);
+
+  // Create revoking function for a single delegation
+  const revoke = wrapTransaction({
+    transactionKey: getDelegationKey(delegation),
+    transactionType: TransactionType.DELEGATION_REVOKE,
+    executeTransaction: async () => {
+      const walletClient = await ensureWalletClient(delegation.chainId);
+
+      const delegationPlatform = new AggregateDelegatePlatform(publicClient, delegation.chainId);
+      const transactionData = await delegationPlatform.prepareRevokeDelegation(delegation);
+
+      const hash = await writeContractUnlessExcessiveGas(publicClient, walletClient, {
+        ...transactionData,
+        chain: walletClient.chain,
+        account: await getWalletAddress(walletClient),
+      });
+
+      const waitForConfirmation = async () => {
+        const receipt = await waitForTransactionConfirmation(hash, publicClient);
+        onRevoke(delegation);
+        return receipt;
+      };
+
+      return { hash, confirmation: waitForConfirmation() };
+    },
+    trackTransaction: () => {
+      analytics.track('Delegation Revoked', {
+        chainId: delegation.chainId,
+        delegator: delegation.delegator,
+        delegate: delegation.delegate,
+        type: delegation.type,
+        platform: delegation.platform,
+      });
+    },
+    updateTransaction,
+    handleTransaction,
+  });
+
+  return { revoke };
+};

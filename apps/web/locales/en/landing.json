@@ -1,0 +1,81 @@
+{
+  "faq": {
+    "subtitle": "These are some of the most common questions we get asked. For a full list of FAQs please visit our <faq-link>FAQ page</faq-link>.",
+    "title": "Frequently Asked Questions"
+  },
+  "features": {
+    "auto_revoke": {
+      "description": "Let Revoke.cash watch your approvals around the clock and revoke risky ones automatically on your behalf. Set-and-forget protection for your wallet, even while you sleep.",
+      "title": "Automated Revoking"
+    },
+    "dashboard": {
+      "description": "Get a clear overview of every token approval you've ever granted. Sort, filter, and revoke the ones you no longer need all from one simple dashboard.",
+      "title": "Approval Dashboard"
+    },
+    "exploit_checker": {
+      "description": "Automatically check your approvals against known exploits to see if any of your approvals are at risk.",
+      "title": "Exploit Checker"
+    },
+    "title": "Built for Wallet Security"
+  },
+  "hero_section": {
+    "subtitle": "Inspect and revoke token approvals to protect your wallet from exploits and scams.",
+    "title": "Take Back Control of <highlight>Your Wallet.</highlight>"
+  },
+  "how_to": {
+    "paragraph_1": {
+      "description": "Click <b>Connect Wallet</b> on the top right or enter an address in the search bar.",
+      "title": "1. Connect"
+    },
+    "paragraph_2": {
+      "description": "Inspect your approvals by using the network selection, sorting and filtering options.",
+      "title": "2. Inspect"
+    },
+    "paragraph_3": {
+      "description": "Revoke the approvals that you no longer use to prevent unwanted access to your funds.",
+      "title": "3. Revoke"
+    },
+    "title": "How To Revoke Your Approvals"
+  },
+  "premium": {
+    "best_protection": "Best Protection",
+    "description": "Monitor and protect your token approvals across 100+ networks. Starting at {price}/year.",
+    "free_features": {
+      "batch_revoke": "Batch revoke ($1.50/batch)",
+      "exploit_checker": "Single-chain exploit checker",
+      "single_chain": "Single-chain approval dashboard"
+    },
+    "free_title": "Free",
+    "highlights": {
+      "multichain_dashboard": "Multichain dashboard",
+      "multichain_exploit_checker": "Multichain exploit checker",
+      "time_machine": "Time machine for historical approvals",
+      "unlimited_batch_revokes": "Unlimited batch revokes"
+    },
+    "most_popular": "Most Popular",
+    "premium_price": "{price}/year",
+    "premium_title": "Premium",
+    "title": "Revoke Premium",
+    "ultimate_features": {
+      "automated_revoking": "Automated revoking",
+      "automated_revoking_tooltip": "Requires MetaMask. Supported on select networks.",
+      "continuous_monitoring": "Continuous monitoring",
+      "gas_allowance": "$5/month gas budget included"
+    },
+    "ultimate_price": "{price}/year",
+    "ultimate_title": "Ultimate"
+  },
+  "stats": {
+    "approvals_revoked": "Approvals Revoked",
+    "networks_supported": "{count} Networks Supported",
+    "protected_from_exploits": "Protected from Exploits",
+    "total_users": "Total Users"
+  },
+  "testimonials": {
+    "quotes": {
+      "beausecurity": "Super important reminder that just because a smart contract hasn't been exploited yet, doesn't mean it won't be. Revoke old approvals to smart contracts you aren't using anymore. It's well worth it. Use Revoke.cash.",
+      "nft_dreww": "We all have phones, set a reminder right now to visit Revoke.cash and check your approvals weekly. This takes 30 seconds and can prevent hackers from stealing your assets.",
+      "rsquare": "One of the best things you can do with Safe when it comes to reacting quickly to incidents is to conveniently revoke approvals with the Revoke.cash Safe App."
+    }
+  }
+}
