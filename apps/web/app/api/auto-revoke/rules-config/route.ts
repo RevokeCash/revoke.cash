@@ -1,3 +1,4 @@
+import { recordAuditEvent } from '@revoke.cash/core/audit/events';
 import { getAddressRulesConfig, switchRulesSource } from '@revoke.cash/core/auto-revoke/evaluation/rules';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
@@ -42,6 +43,13 @@ export async function PUT(req: NextRequest) {
     const { subscriptionId } = body;
 
     await switchRulesSource(siweAddress, { subscriptionId });
+
+    await recordAuditEvent({
+      action: 'auto_revoke_rules_source_switched',
+      actorAddress: siweAddress,
+      subscriptionId: subscriptionId ?? undefined,
+      details: { subscriptionId },
+    });
 
     return NextResponse.json({ ok: true });
   } catch (error) {

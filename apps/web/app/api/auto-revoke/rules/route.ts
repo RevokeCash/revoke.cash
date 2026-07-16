@@ -1,3 +1,4 @@
+import { recordAuditEvent } from '@revoke.cash/core/audit/events';
 import { upsertAddressRules } from '@revoke.cash/core/auto-revoke/evaluation/rules';
 import { rulesDataBodySchema } from 'app/api/auto-revoke/schemas';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
@@ -23,6 +24,9 @@ export async function PUT(req: NextRequest) {
     const { body } = await parseRequest(req, undefined, updateSchemas);
 
     await upsertAddressRules(siweAddress, body);
+
+    await recordAuditEvent({ action: 'auto_revoke_rules_updated', actorAddress: siweAddress, details: body });
+
     return NextResponse.json({ ok: true });
   } catch (error) {
     return handleApiRouteError(error, { errorMessage: 'Failed to update rules' });

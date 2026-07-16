@@ -1,3 +1,4 @@
+import { recordAuditEvent } from '@revoke.cash/core/audit/events';
 import { addSubscriptionAddress } from '@revoke.cash/core/premium/subscriptions';
 import { addressSchema } from '@revoke.cash/core/schemas';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
@@ -31,6 +32,14 @@ export async function POST(req: NextRequest, props: Props) {
       ownerAddress: siweAddress,
       subscriptionId,
       address,
+    });
+
+    await recordAuditEvent({
+      action: 'subscription_address_added',
+      actorAddress: siweAddress,
+      targetAddress: address,
+      subscriptionId,
+      details: {},
     });
 
     return NextResponse.json({ ok: true });

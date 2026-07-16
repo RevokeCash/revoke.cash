@@ -1,3 +1,4 @@
+import { recordAuditEvent } from '@revoke.cash/core/audit/events';
 import { isSupportedPaymentChainId } from '@revoke.cash/core/premium/payment-config';
 import { createPayment } from '@revoke.cash/core/premium/payments';
 import { chainIdSchema } from '@revoke.cash/core/schemas';
@@ -34,6 +35,13 @@ export async function POST(req: NextRequest) {
       planId,
       chainId,
       vatRegion: getClientCountryEdge(req),
+    });
+
+    await recordAuditEvent({
+      action: 'payment_created',
+      actorAddress: siweAddress,
+      chainId,
+      details: { paymentId: payment.paymentId, planId, amountUsdCents: payment.amountUsdCents },
     });
 
     return NextResponse.json(payment);

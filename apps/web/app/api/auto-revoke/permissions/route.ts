@@ -1,3 +1,4 @@
+import { recordAuditEvent } from '@revoke.cash/core/audit/events';
 import {
   getPermissionsByAddress,
   resolvePermissionRecord,
@@ -47,6 +48,14 @@ export async function POST(req: NextRequest) {
 
     const resolvedPermission = await resolvePermissionRecord(siweAddress, body);
     const result = await savePermission(resolvedPermission);
+
+    await recordAuditEvent({
+      action: 'auto_revoke_permission_granted',
+      actorAddress: siweAddress,
+      chainId: resolvedPermission.chainId,
+      details: { permissionId: result.id, expiresAt: resolvedPermission.expiresAt },
+    });
+
     return NextResponse.json(result);
   } catch (error) {
     return handleApiRouteError(error, { errorMessage: 'Failed to grant permission' });

@@ -58,6 +58,10 @@ interface SiweNonceSession {
 }
 
 export const RateLimiters = {
+  AUTH: new RateLimiterMemory({
+    points: 5,
+    duration: 1,
+  }),
   LOGS: new RateLimiterMemory({
     points: 200,
     duration: 1,

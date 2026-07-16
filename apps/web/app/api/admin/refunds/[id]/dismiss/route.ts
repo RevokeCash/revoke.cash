@@ -1,7 +1,9 @@
+import { recordAuditEvent } from '@revoke.cash/core/audit/events';
 import { dismissRefundRequest } from '@revoke.cash/core/premium/refunds';
 import { handleAdminWrite } from 'lib/api/admin';
 import { parseRequest } from 'lib/api/validation';
 import type { NextRequest } from 'next/server';
+import type { Address } from 'viem';
 import { z } from 'zod';
 
 interface Props {
@@ -19,9 +21,19 @@ export const runtime = 'nodejs';
 // user changed their mind via support); dismissed requests are terminal and free the payment
 // for a new request while it remains inside the refund window
 export async function POST(req: NextRequest, props: Props) {
-  const handler = async () => {
+  const handler = async (adminAddress: Address) => {
     const { params } = await parseRequest(req, props, schemas);
-    return dismissRefundRequest(params.id);
+    const { ownerAddress, subscriptionId } = await dismissRefundRequest(params.id);
+
+    await recordAuditEvent({
+      action: 'admin_refund_dismissed',
+      actorAddress: adminAddress,
+      targetAddress: ownerAddress,
+      subscriptionId: subscriptionId ?? undefined,
+      details: { refundRequestId: params.id },
+    });
+
+    return { success: true };
   };
 
   return handleAdminWrite(req, handler, 'Failed to dismiss refund request');

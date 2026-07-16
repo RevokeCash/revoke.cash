@@ -1,3 +1,4 @@
+import { recordAuditEvent } from '@revoke.cash/core/audit/events';
 import { revokePermission } from '@revoke.cash/core/auto-revoke/permissions';
 import { autoRevokeSupportedChainIdSchema } from '@revoke.cash/core/schemas';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
@@ -26,7 +27,17 @@ export async function DELETE(req: NextRequest, props: Props) {
     });
     const { params } = await parseRequest(req, props, schemas);
 
-    await revokePermission(siweAddress, params.chainId);
+    const { revokedCount } = await revokePermission(siweAddress, params.chainId);
+
+    if (revokedCount > 0) {
+      await recordAuditEvent({
+        action: 'auto_revoke_permission_revoked',
+        actorAddress: siweAddress,
+        chainId: params.chainId,
+        details: {},
+      });
+    }
+
     return NextResponse.json({ ok: true });
   } catch (error) {
     return handleApiRouteError(error, { errorMessage: 'Failed to revoke permission' });

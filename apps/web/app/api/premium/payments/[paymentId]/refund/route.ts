@@ -1,3 +1,4 @@
+import { recordAuditEvent } from '@revoke.cash/core/audit/events';
 import { createRefundRequest } from '@revoke.cash/core/premium/refunds';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
@@ -30,6 +31,12 @@ export async function POST(req: NextRequest, props: Props) {
       ownerAddress: siweAddress,
       paymentId: params.paymentId,
       reason: body.reason,
+    });
+
+    await recordAuditEvent({
+      action: 'refund_requested',
+      actorAddress: siweAddress,
+      details: { refundRequestId: refundRequest.id, paymentId: params.paymentId },
     });
 
     return NextResponse.json(refundRequest);

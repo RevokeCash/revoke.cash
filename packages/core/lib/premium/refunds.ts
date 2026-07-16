@@ -238,8 +238,19 @@ const getPaymentConsumption = async (
   };
 };
 
-export const dismissRefundRequest = async (requestId: string): Promise<{ success: true }> => {
+export const dismissRefundRequest = async (
+  requestId: string,
+): Promise<{ success: true; ownerAddress: Address; subscriptionId: string | null }> => {
   const db = getDb();
+
+  const request = await db.query.premiumRefundRequests.findFirst({
+    where: eq(premiumRefundRequests.id, requestId),
+    with: { payment: { columns: { ownerAddress: true, subscriptionId: true } } },
+  });
+
+  if (!request) {
+    throw new PremiumRefundError('Refund request is not pending');
+  }
 
   const [dismissed] = await db
     .update(premiumRefundRequests)
@@ -257,7 +268,7 @@ export const dismissRefundRequest = async (requestId: string): Promise<{ success
     throw new PremiumRefundError('Refund request is not pending');
   }
 
-  return { success: true };
+  return { success: true, ownerAddress: request.payment.ownerAddress, subscriptionId: request.payment.subscriptionId };
 };
 
 export type ProcessRefundOutcome = 'processed' | 'already_processed';
@@ -265,7 +276,7 @@ export type ProcessRefundOutcome = 'processed' | 'already_processed';
 export const processRefundRequest = async (
   requestId: string,
   refundTxHash: Hash,
-): Promise<{ outcome: ProcessRefundOutcome }> => {
+): Promise<{ outcome: ProcessRefundOutcome; ownerAddress: Address; subscriptionId: string | null }> => {
   const db = getTransactionalDb();
 
   // Loaded without locks: the on-chain verification below is an RPC call and must not hold any
@@ -275,8 +286,11 @@ export const processRefundRequest = async (
   });
 
   if (!request) throw new PremiumRefundError('Refund request not found', 404);
+
+  const { ownerAddress, subscriptionId } = request.payment;
+
   if (request.processedAt) {
-    if (request.refundTxHash === refundTxHash) return { outcome: 'already_processed' };
+    if (request.refundTxHash === refundTxHash) return { outcome: 'already_processed', ownerAddress, subscriptionId };
     throw new PremiumRefundError('Refund request was already processed with a different transaction', 409);
   }
 
@@ -323,7 +337,7 @@ export const processRefundRequest = async (
     throw new PremiumRefundError(`${reason}; the refund transaction was recorded for manual review`);
   }
 
-  return { outcome };
+  return { outcome, ownerAddress, subscriptionId };
 };
 
 const recordRefundTxHashForReview = async (requestId: string, refundTxHash: Hash): Promise<void> => {

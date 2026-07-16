@@ -1,4 +1,4 @@
-import { storeSiweNonceCookieEdge } from 'lib/api/auth';
+import { RateLimiters, requireRateLimit, storeSiweNonceCookieEdge } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
 import { type NextRequest, NextResponse } from 'next/server';
 import { generateSiweNonce } from 'viem/siwe';
@@ -9,6 +9,7 @@ export const runtime = 'edge';
 // sealed cookie. The verify route only accepts messages carrying the nonce from this cookie.
 export async function GET(req: NextRequest) {
   try {
+    await requireRateLimit(req, RateLimiters.AUTH);
     const nonce = generateSiweNonce();
 
     const res = NextResponse.json({ nonce }, { headers: { 'Cache-Control': 'no-store' } });

@@ -1,3 +1,4 @@
+import { recordAuditEvent } from '@revoke.cash/core/audit/events';
 import { getSubscriptionRules, upsertSubscriptionRules } from '@revoke.cash/core/auto-revoke/evaluation/rules';
 import { isActiveUltimateSubscriptionOwnedBy } from '@revoke.cash/core/premium/subscriptions';
 import { ApiError } from '@revoke.cash/core/utils/errors';
@@ -59,6 +60,14 @@ export async function PUT(req: NextRequest, props: Props) {
     }
 
     await upsertSubscriptionRules(subscriptionId, body);
+
+    await recordAuditEvent({
+      action: 'auto_revoke_subscription_rules_updated',
+      actorAddress: siweAddress,
+      subscriptionId,
+      details: body,
+    });
+
     return NextResponse.json({ ok: true });
   } catch (error) {
     return handleApiRouteError(error, { errorMessage: 'Failed to update rules' });

@@ -63,6 +63,12 @@ const SubscriptionSummaryCard = ({ subscription }: Props) => {
             {subscription.addresses.length} / {subscription.plan.maxAddresses} used
           </span>
         </SummaryField>
+        <SummaryField label="Address changes (30d)">
+          <span>
+            {subscription.addressChangesLast30Days.addedCount} added,{' '}
+            {subscription.addressChangesLast30Days.removedCount} removed
+          </span>
+        </SummaryField>
       </div>
     </Card>
   );

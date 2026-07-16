@@ -100,10 +100,15 @@ const scheduleReindexForGrantedChains = async (address: Address, chainIds: numbe
   }
 };
 
+export interface SyncPermissionsResult {
+  granted: Array<Pick<PermissionRecord, 'id' | 'address' | 'chainId'>>;
+  revokedChainIds: number[];
+}
+
 export const syncPermissions = async (
   address: Address,
   items: Array<Omit<AutoRevokePermission, 'address' | 'isActive'>>,
-): Promise<Array<Pick<PermissionRecord, 'id' | 'address' | 'chainId'>>> => {
+): Promise<SyncPermissionsResult> => {
   const db = getTransactionalDb();
   const syncedChainIds = items.map((item) => item.chainId);
 
@@ -117,22 +122,25 @@ export const syncPermissions = async (
 
   const permissionIdsToRevoke = (await filterAsync(candidates, isPermissionDisabledOrExpired)).map((row) => row.id);
 
-  const results = await db.transaction(async (trx) => {
+  const { granted, revokedChainIds } = await db.transaction(async (trx) => {
     const batch = await applyPermissionBatch(trx, address, items);
 
-    if (permissionIdsToRevoke.length > 0) {
-      await trx
-        .update(autoRevokePermissions)
-        .set({ revokedAt: new Date() })
-        .where(and(inArray(autoRevokePermissions.id, permissionIdsToRevoke), isNull(autoRevokePermissions.revokedAt)));
+    if (permissionIdsToRevoke.length === 0) {
+      return { granted: batch, revokedChainIds: [] };
     }
 
-    return batch;
+    const revokedRows = await trx
+      .update(autoRevokePermissions)
+      .set({ revokedAt: new Date() })
+      .where(and(inArray(autoRevokePermissions.id, permissionIdsToRevoke), isNull(autoRevokePermissions.revokedAt)))
+      .returning({ chainId: autoRevokePermissions.chainId });
+
+    return { granted: batch, revokedChainIds: deduplicateArray(revokedRows.map((row) => row.chainId)) };
   });
 
-  const grantedChainIds = results.map((result) => result.chainId);
+  const grantedChainIds = granted.map((result) => result.chainId);
   await scheduleReindexForGrantedChains(address, grantedChainIds);
-  return results;
+  return { granted, revokedChainIds };
 };
 
 const isPermissionDisabledOrExpired = async (row: PermissionRecord): Promise<boolean> => {
@@ -152,10 +160,10 @@ const isPermissionDisabledOrExpired = async (row: PermissionRecord): Promise<boo
   }
 };
 
-export const revokePermission = async (address: Address, chainId: number): Promise<void> => {
+export const revokePermission = async (address: Address, chainId: number): Promise<{ revokedCount: number }> => {
   const db = getDb();
 
-  await db
+  const revokedRows = await db
     .update(autoRevokePermissions)
     .set({ revokedAt: new Date() })
     .where(
@@ -164,7 +172,10 @@ export const revokePermission = async (address: Address, chainId: number): Promi
         eq(autoRevokePermissions.chainId, chainId),
         isNull(autoRevokePermissions.revokedAt),
       ),
-    );
+    )
+    .returning({ id: autoRevokePermissions.id });
+
+  return { revokedCount: revokedRows.length };
 };
 
 export const markPermissionRevoked = async (permissionId: string): Promise<void> => {

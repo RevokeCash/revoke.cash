@@ -46,6 +46,7 @@ export const useResetIndexing = (address: Address) => {
       queryClient.invalidateQueries({ queryKey: getAdminLookupQueryKey(address) });
       queryClient.invalidateQueries({ queryKey: ['admin', 'health'] });
       queryClient.invalidateQueries({ queryKey: ['admin', 'overview', 'health'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'audit'] });
     },
     onError: (error) => {
       toast.error(parseErrorMessage(error) ?? 'Failed to reset indexing');

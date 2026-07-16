@@ -44,7 +44,9 @@ export const resetAddressIndexing = async (address: Address): Promise<number> =>
 // late is never rescanned. The admin reconcile revives it to pending first; the regular
 // reconciliation then either confirms it against a matching transfer (with the usual row lock
 // and unique matched-tx-hash protections) or flips it back to expired.
-export const reconcilePaymentAsAdmin = async (paymentId: string): Promise<PaymentStatusResponse | null> => {
+export const reconcilePaymentAsAdmin = async (
+  paymentId: string,
+): Promise<(PaymentStatusResponse & { ownerAddress: Address }) | null> => {
   const payment = await getDb().query.premiumPayments.findFirst({
     where: eq(premiumPayments.id, paymentId),
     columns: { ownerAddress: true, status: true },
@@ -58,7 +60,10 @@ export const reconcilePaymentAsAdmin = async (paymentId: string): Promise<Paymen
       .where(and(eq(premiumPayments.id, paymentId), eq(premiumPayments.status, 'expired')));
   }
 
-  return reconcilePaymentByOwner(paymentId, payment.ownerAddress);
+  const paymentStatus = await reconcilePaymentByOwner(paymentId, payment.ownerAddress);
+  if (!paymentStatus) return null;
+
+  return { ...paymentStatus, ownerAddress: payment.ownerAddress };
 };
 
 // Recomputes the subscription's plan and end date by replaying its confirmed payments in order.

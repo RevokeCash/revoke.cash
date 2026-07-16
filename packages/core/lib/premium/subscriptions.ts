@@ -277,16 +277,17 @@ export const removeSubscriptionAddress = async ({
   return db.transaction(async (trx) => {
     const subscription = await findActiveSubscriptionForOwner(trx, subscriptionId, ownerAddress);
 
-    await trx
+    const deletedRows = await trx
       .delete(premiumSubscriptionAddresses)
       .where(
         and(
           eq(premiumSubscriptionAddresses.subscriptionId, subscription.id),
           eq(premiumSubscriptionAddresses.address, address),
         ),
-      );
+      )
+      .returning({ id: premiumSubscriptionAddresses.id });
 
-    return { success: true };
+    return { success: true, removed: deletedRows.length > 0 };
   });
 };
 

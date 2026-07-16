@@ -1,3 +1,4 @@
+import { recordAuditEvent } from '@revoke.cash/core/audit/events';
 import { resolvePermissionRecord, syncPermissions } from '@revoke.cash/core/auto-revoke/permissions';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
@@ -25,8 +26,15 @@ export async function POST(req: NextRequest) {
     const resolvedPermissions = await Promise.all(
       body.permissions.map((item) => resolvePermissionRecord(siweAddress, item)),
     );
-    const results = await syncPermissions(siweAddress, resolvedPermissions);
-    return NextResponse.json({ results });
+    const { granted, revokedChainIds } = await syncPermissions(siweAddress, resolvedPermissions);
+
+    await recordAuditEvent({
+      action: 'auto_revoke_permissions_synced',
+      actorAddress: siweAddress,
+      details: { syncedChainIds: granted.map((result) => result.chainId), revokedChainIds },
+    });
+
+    return NextResponse.json({ results: granted });
   } catch (error) {
     return handleApiRouteError(error, { errorMessage: 'Failed to sync permissions' });
   }

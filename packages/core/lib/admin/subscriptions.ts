@@ -1,3 +1,7 @@
+import {
+  getSubscriptionAddressChangeCounts,
+  type SubscriptionAddressChangeCounts,
+} from '@revoke.cash/core/admin/audit';
 import { REVENUE_EXCLUDED_CHAIN_IDS } from '@revoke.cash/core/admin/revenue';
 import { getDb } from '@revoke.cash/core/db/client';
 import { premiumPayments, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
@@ -167,25 +171,29 @@ export interface AdminSubscriptionDetail {
   endsAt: string;
   createdAt: string;
   addresses: Array<{ address: Address; addedBy: Address; createdAt: string }>;
+  addressChangesLast30Days: SubscriptionAddressChangeCounts;
   payments: AdminPayment[];
 }
 
 export const getAdminSubscription = async (subscriptionId: string): Promise<AdminSubscriptionDetail | null> => {
   const db = getDb();
 
-  const subscription = await db.query.premiumSubscriptions.findFirst({
-    where: eq(premiumSubscriptions.id, subscriptionId),
-    with: {
-      plan: {
-        columns: { id: true, name: true, priceUsdCents: true, durationDays: true, maxAddresses: true, tier: true },
+  const [subscription, addressChangesLast30Days] = await Promise.all([
+    db.query.premiumSubscriptions.findFirst({
+      where: eq(premiumSubscriptions.id, subscriptionId),
+      with: {
+        plan: {
+          columns: { id: true, name: true, priceUsdCents: true, durationDays: true, maxAddresses: true, tier: true },
+        },
+        addresses: { columns: { address: true, addedBy: true, createdAt: true } },
+        payments: {
+          orderBy: (payments, { desc }) => [desc(payments.createdAt)],
+          with: { plan: { columns: { id: true, name: true } } },
+        },
       },
-      addresses: { columns: { address: true, addedBy: true, createdAt: true } },
-      payments: {
-        orderBy: (payments, { desc }) => [desc(payments.createdAt)],
-        with: { plan: { columns: { id: true, name: true } } },
-      },
-    },
-  });
+    }),
+    getSubscriptionAddressChangeCounts(subscriptionId, new Date(Date.now() - 30 * DAY)),
+  ]);
 
   if (!subscription) return null;
 
@@ -202,6 +210,7 @@ export const getAdminSubscription = async (subscriptionId: string): Promise<Admi
       addedBy: entry.addedBy,
       createdAt: entry.createdAt.toISOString(),
     })),
+    addressChangesLast30Days,
     payments: subscription.payments.map(
       (payment): AdminPayment => ({
         id: payment.id,

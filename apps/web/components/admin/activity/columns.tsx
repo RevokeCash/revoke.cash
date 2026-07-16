@@ -1,4 +1,3 @@
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import type { AdminActivityItem } from '@revoke.cash/core/admin/activity';
 import type { ActionStatus } from '@revoke.cash/core/auto-revoke/actions';
 import { shortenAddress } from '@revoke.cash/core/utils/formatting';
@@ -6,12 +5,11 @@ import { createColumnHelper } from '@tanstack/react-table';
 import AutoRevokeActivityTriggerBadge from 'components/account/auto-revoke/activity/AutoRevokeActivityTriggerBadge';
 import AddressCell from 'components/allowances/dashboard/cells/AddressCell';
 import AssetDisplay from 'components/allowances/dashboard/cells/AssetDisplay';
-import Button from 'components/common/Button';
 import Href from 'components/common/Href';
 import TimeAgo from 'components/common/TimeAgo';
+import ExpanderCell from 'components/common/table/ExpanderCell';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import HistoryChainCell from 'components/history/cells/HistoryChainCell';
-import { twMerge } from 'tailwind-merge';
 import ActivityStatusCell from './ActivityStatusCell';
 import ActivityTxHashCell from './ActivityTxHashCell';
 import RetryActionButton from './RetryActionButton';
@@ -153,17 +151,9 @@ export const columns = [
     id: 'actions',
     header: () => null,
     cell: ({ row }) => (
-      <div className="flex items-center justify-end gap-2 py-1.5 text-sm">
+      <ExpanderCell row={row}>
         {RETRYABLE_STATUSES.includes(row.original.status) && <RetryActionButton actionId={row.original.id} />}
-        <Button
-          style="tertiary"
-          size="sm"
-          onClick={row.getToggleExpandedHandler()}
-          aria-label={row.getIsExpanded() ? 'Hide diagnostics' : 'Show diagnostics'}
-        >
-          <ChevronDownIcon className={twMerge('w-4 h-4 duration-150', row.getIsExpanded() && 'rotate-180')} />
-        </Button>
-      </div>
+      </ExpanderCell>
     ),
   }),
 ];

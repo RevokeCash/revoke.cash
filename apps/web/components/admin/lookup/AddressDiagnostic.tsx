@@ -2,6 +2,7 @@
 
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import ActivityTable from 'components/admin/activity/ActivityTable';
+import AuditTable from 'components/admin/audit/AuditTable';
 import PermissionsCard from 'components/admin/common/PermissionsCard';
 import RulesCard from 'components/admin/common/RulesCard';
 import CopyButton from 'components/common/CopyButton';
@@ -38,6 +39,11 @@ const AddressDiagnostic = ({ address }: Props) => {
         scope={{ address }}
         title="Activity"
         subtitle="All auto-revoke actions for this address, including hidden statuses"
+      />
+      <AuditTable
+        scope={{ address }}
+        title="Audit"
+        subtitle="All audit events where this address is the actor or the target"
       />
     </div>
   );

@@ -1,3 +1,4 @@
+import { recordAuditEvent } from '@revoke.cash/core/audit/events';
 import { removeSubscriptionAddress } from '@revoke.cash/core/premium/subscriptions';
 import { addressSchema } from '@revoke.cash/core/schemas';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
@@ -26,11 +27,21 @@ export async function DELETE(req: NextRequest, props: Props) {
     const { params } = await parseRequest(req, props, schemas);
     const { id: subscriptionId, address } = params;
 
-    await removeSubscriptionAddress({
+    const { removed } = await removeSubscriptionAddress({
       ownerAddress: siweAddress,
       subscriptionId,
       address,
     });
+
+    if (removed) {
+      await recordAuditEvent({
+        action: 'subscription_address_removed',
+        actorAddress: siweAddress,
+        targetAddress: address,
+        subscriptionId,
+        details: {},
+      });
+    }
 
     return NextResponse.json({ ok: true });
   } catch (error) {

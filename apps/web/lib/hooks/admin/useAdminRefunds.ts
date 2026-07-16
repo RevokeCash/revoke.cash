@@ -24,6 +24,7 @@ const invalidateRefundQueries = (queryClient: QueryClient) => {
   queryClient.invalidateQueries({ queryKey: ['admin', 'overview', 'health'] });
   // Processing flips the payment to 'refunded' and rebuilds the subscription
   queryClient.invalidateQueries({ queryKey: ['admin', 'subscriptions'] });
+  queryClient.invalidateQueries({ queryKey: ['admin', 'audit'] });
 };
 
 const toastProcessOutcome = (outcome: ProcessRefundOutcome) => {

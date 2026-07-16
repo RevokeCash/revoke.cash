@@ -1,9 +1,12 @@
 import { ChainId } from '@revoke.cash/chains';
+import { recordAuditEvent } from '@revoke.cash/core/audit/events';
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import { addressSchema, hexStringSchema } from '@revoke.cash/core/schemas';
 import {
   destroySiweNonceCookieEdge,
   getSiweNonceCookieEdge,
+  RateLimiters,
+  requireRateLimit,
   storeSessionEdge,
   storeSiweCookieEdge,
 } from 'lib/api/auth';
@@ -25,6 +28,7 @@ const schemas = {
 
 export async function POST(req: NextRequest) {
   try {
+    await requireRateLimit(req, RateLimiters.AUTH);
     const { body } = await parseRequest(req, undefined, schemas);
     const { message, address, signature } = body;
 
@@ -50,6 +54,9 @@ export async function POST(req: NextRequest) {
     await storeSessionEdge(req, res, { siwe });
     await storeSiweCookieEdge(req, res, siwe);
     await destroySiweNonceCookieEdge(req, res);
+
+    await recordAuditEvent({ action: 'signed_in', actorAddress: address, details: {} });
+
     return res;
   } catch (error) {
     return handleApiRouteError(error);

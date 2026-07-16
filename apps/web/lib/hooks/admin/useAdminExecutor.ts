@@ -40,6 +40,7 @@ export const useAdminRetryAction = () => {
       toast.success('Action scheduled for immediate retry');
       queryClient.invalidateQueries({ queryKey: ['admin', 'executor'] });
       queryClient.invalidateQueries({ queryKey: ['admin', 'activity'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'audit'] });
     },
     onError: (error) => {
       toast.error(parseErrorMessage(error) ?? 'Failed to retry action');

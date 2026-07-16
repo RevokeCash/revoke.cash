@@ -64,6 +64,13 @@
       "when": 1782837483206,
       "tag": "0008_auto_revoke_actions",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1784190008844,
+      "tag": "0009_audit_events",
+      "breakpoints": true
     }
   ]
 }

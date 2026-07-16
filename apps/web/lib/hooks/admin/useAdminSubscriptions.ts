@@ -68,6 +68,7 @@ export const useRebuildSubscription = (subscriptionId: string) => {
     mutationFn: () => ky.post(`/api/admin/subscriptions/${subscriptionId}/rebuild`).json<{ ok: boolean }>(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'subscriptions'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'audit'] });
       toast.success('Subscription rebuilt from payments');
     },
     onError: (error) => {
@@ -86,6 +87,7 @@ export const useReconcilePayment = () => {
         .json<{ paymentId: string; status: string; matchedTxHash: string | null }>(),
     onSuccess: (result) => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'subscriptions'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'audit'] });
       if (result.status === 'confirmed') {
         toast.success('Payment confirmed against a matching transfer');
       } else {
