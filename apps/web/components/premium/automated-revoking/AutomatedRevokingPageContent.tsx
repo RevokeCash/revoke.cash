@@ -8,7 +8,13 @@ import Button from 'components/common/Button';
 import ChainLogo from 'components/common/ChainLogo';
 import ContentPageHero from 'components/common/ContentPageHero';
 import Href from 'components/common/Href';
+import Logo from 'components/common/Logo';
 import { useTranslations } from 'next-intl';
+
+const SUPPORTED_WALLETS = [
+  { name: 'MetaMask', logoPath: '/assets/images/vendor/wallets/metamask.svg' },
+  { name: 'WalletChan', logoPath: '/assets/images/vendor/wallets/walletchan.png' },
+];
 
 const AutomatedRevokingPageContent = () => {
   const t = useTranslations();
@@ -36,6 +42,20 @@ const AutomatedRevokingPageContent = () => {
         <h2 className="text-3xl font-semibold font-heading text-center">
           {t('premium.automated_revoking.networks.title')}
         </h2>
+        <p className="mx-auto max-w-3xl text-center text-base leading-7 text-zinc-600 dark:text-zinc-400">
+          {t('premium.automated_revoking.wallets.description')}
+        </p>
+        <div className="flex flex-wrap justify-center gap-3">
+          {SUPPORTED_WALLETS.map((wallet) => (
+            <div
+              key={wallet.name}
+              className="flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 px-4 py-2"
+            >
+              <Logo src={wallet.logoPath} alt={wallet.name} size={24} border />
+              <span className="text-base font-medium">{wallet.name}</span>
+            </div>
+          ))}
+        </div>
         <p className="mx-auto max-w-3xl text-center text-base leading-7 text-zinc-600 dark:text-zinc-400">
           {t('premium.automated_revoking.networks.description', { count: AUTO_REVOKE_SUPPORTED_CHAINS.length })}
         </p>

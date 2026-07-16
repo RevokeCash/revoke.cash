@@ -58,7 +58,7 @@
     "title": "Revoke Premium",
     "ultimate_features": {
       "automated_revoking": "自動取り消し",
-      "automated_revoking_tooltip": "MetaMaskが必要です。一部のネットワークで対応しています。",
+      "automated_revoking_tooltip": "MetaMaskまたは一部の対応ウォレットが必要です。一部のネットワークで対応しています。",
       "continuous_monitoring": "継続的な監視",
       "gas_allowance": "月5ドルのガス予算付き"
     },

@@ -58,7 +58,7 @@
     "title": "Revoke Premium",
     "ultimate_features": {
       "automated_revoking": "Автоматический отзыв",
-      "automated_revoking_tooltip": "Требуется MetaMask. Поддерживается в отдельных сетях.",
+      "automated_revoking_tooltip": "Требуется MetaMask или некоторые другие кошельки. Поддерживается в отдельных сетях.",
       "continuous_monitoring": "Непрерывный мониторинг",
       "gas_allowance": "Включен бюджет на газ $5 в месяц"
     },

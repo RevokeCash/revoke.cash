@@ -18,7 +18,7 @@
       "title": "How Auto-Revoking Works"
     },
     "networks": {
-      "description": "Auto-Revoking currently requires MetaMask, the first wallet to support ERC-7715 permissions. Granting these permissions requires upgrading your wallet to an ERC-7702 smart account. Support for more wallets and networks will follow as the standard gets adopted. It currently works on {count} networks:",
+      "description": "Auto-Revoking currently works on {count} networks:",
       "title": "Supported wallets & networks"
     },
     "steps": {
@@ -31,7 +31,7 @@
         "title": "We keep watch"
       },
       "permission": {
-        "description": "Connect with MetaMask and grant Revoke.cash an ERC-7715 permission that can only be used to revoke approvals. It cannot transfer funds, sign messages, or do anything else, and you can withdraw it at any time.",
+        "description": "Connect with a supported wallet and grant Revoke.cash an ERC-7715 permission that can only be used to revoke approvals. It cannot transfer funds, sign messages, or do anything else, and you can withdraw it at any time.",
         "title": "Grant a revoke-only permission"
       },
       "rules": {
@@ -40,7 +40,10 @@
       },
       "title": "From setup to protection"
     },
-    "title": "How Auto-Revoking Works"
+    "title": "How Auto-Revoking Works",
+    "wallets": {
+      "description": "Auto-Revoking works with any wallet that supports ERC-7715 permissions. Granting these permissions requires upgrading your wallet to an ERC-7702 smart account. These wallets are currently known to support it, and more will follow as the standard gets adopted:"
+    }
   },
   "pricing": {
     "best_protection": "Best Protection",
@@ -60,7 +63,7 @@
         "question": "What happens when my subscription expires?"
       },
       "supported_wallets": {
-        "answer": "Automated revoking is an Ultimate feature that currently works with MetaMask on {count} supported networks including Ethereum, Polygon, Base, and more. Support for additional wallets depends on adoption of the ERC-7715 standard. <link>See the full list of supported networks</link>.",
+        "answer": "Automated revoking is an Ultimate feature that works with MetaMask and select other wallets that support the ERC-7715 standard, on {count} supported networks including Ethereum, Polygon, Base, and more. <link>See the full list of supported wallets and networks</link>.",
         "question": "What wallets and networks support auto-revoking?"
       },
       "title": "Frequently Asked Questions"
@@ -145,7 +148,7 @@
     },
     "title": "Premium Pricing",
     "tooltips": {
-      "automated_revoking": "Requires MetaMask. Supported on select networks. Automated revoking is best-effort and cannot guarantee that losses are prevented."
+      "automated_revoking": "Requires MetaMask or select other wallets. Supported on select networks. Automated revoking is best-effort and cannot guarantee that losses are prevented."
     }
   }
 }

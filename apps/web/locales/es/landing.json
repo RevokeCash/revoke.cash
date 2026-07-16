@@ -58,7 +58,7 @@
     "title": "Revoke Premium",
     "ultimate_features": {
       "automated_revoking": "Revocación automática",
-      "automated_revoking_tooltip": "Requiere MetaMask. Compatible con determinadas redes.",
+      "automated_revoking_tooltip": "Requiere MetaMask o algunas otras carteras. Compatible con determinadas redes.",
       "continuous_monitoring": "Monitoreo continuo",
       "gas_allowance": "Presupuesto de gas de $5/mes incluido"
     },

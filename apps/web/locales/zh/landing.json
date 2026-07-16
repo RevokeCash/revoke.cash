@@ -58,7 +58,7 @@
     "title": "Revoke Premium",
     "ultimate_features": {
       "automated_revoking": "自动撤销",
-      "automated_revoking_tooltip": "需要使用 MetaMask。仅支持部分网络。",
+      "automated_revoking_tooltip": "需要使用 MetaMask 或部分其他钱包。仅支持部分网络。",
       "continuous_monitoring": "持续监控",
       "gas_allowance": "包含每月 $5 的 Gas 预算"
     },

@@ -18,7 +18,7 @@
       "title": "Cómo funciona la revocación automática"
     },
     "networks": {
-      "description": "La revocación automática requiere actualmente MetaMask, la primera cartera que admite los permisos ERC-7715. Para conceder estos permisos es necesario actualizar tu cartera a una smart account ERC-7702. Se irá añadiendo compatibilidad con más carteras y redes a medida que se vaya adoptando el estándar. De momento funciona en {count} redes:",
+      "description": "De momento la revocación automática funciona en {count} redes:",
       "title": "Carteras y redes compatibles"
     },
     "steps": {
@@ -31,7 +31,7 @@
         "title": "Estamos atentos"
       },
       "permission": {
-        "description": "Conéctate con MetaMask y concede a Revoke.cash un permiso ERC-7715 que solo se puede usar para revocar aprobaciones. No puede transferir fondos, firmar mensajes ni hacer nada más, y puedes retirarlo en cualquier momento.",
+        "description": "Conéctate con una cartera compatible y concede a Revoke.cash un permiso ERC-7715 que solo se puede usar para revocar aprobaciones. No puede transferir fondos, firmar mensajes ni hacer nada más, y puedes retirarlo en cualquier momento.",
         "title": "Concede un permiso de solo revocación"
       },
       "rules": {
@@ -40,7 +40,10 @@
       },
       "title": "Desde la configuración hasta la protección"
     },
-    "title": "Cómo funciona la revocación automática"
+    "title": "Cómo funciona la revocación automática",
+    "wallets": {
+      "description": "La revocación automática funciona con cualquier cartera que admita los permisos ERC-7715. Para conceder estos permisos es necesario actualizar tu cartera a una smart account ERC-7702. Actualmente se sabe que estas carteras los admiten, y se irán añadiendo más a medida que se vaya adoptando el estándar:"
+    }
   },
   "pricing": {
     "best_protection": "La mejor protección",
@@ -60,7 +63,7 @@
         "question": "¿Qué pasa cuando caduca mi suscripción?"
       },
       "supported_wallets": {
-        "answer": "La revocación automática es una función Ultimate que actualmente funciona con MetaMask en {count} redes compatibles, incluyendo Ethereum, Polygon, Base y más. La compatibilidad con carteras adicionales depende de la adopción del estándar ERC-7715. <link>Ver la lista completa de redes compatibles</link>.",
+        "answer": "La revocación automática es una función Ultimate que funciona con MetaMask y algunas otras carteras que admiten el estándar ERC-7715, en {count} redes compatibles, incluyendo Ethereum, Polygon, Base y más. <link>Ver la lista completa de carteras y redes compatibles</link>.",
         "question": "¿Qué carteras y redes admiten la revocación automática?"
       },
       "title": "Preguntas Frecuentes"
@@ -145,7 +148,7 @@
     },
     "title": "Precios Premium",
     "tooltips": {
-      "automated_revoking": "Requiere MetaMask. Compatible con determinadas redes. La revocación automática es una protección de mejor esfuerzo y no puede garantizar que se eviten las pérdidas."
+      "automated_revoking": "Requiere MetaMask o algunas otras carteras. Compatible con determinadas redes. La revocación automática es una protección de mejor esfuerzo y no puede garantizar que se eviten las pérdidas."
     }
   }
 }

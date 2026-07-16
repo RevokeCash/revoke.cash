@@ -18,7 +18,7 @@
       "title": "自动撤销的工作原理"
     },
     "networks": {
-      "description": "自动撤销目前需要使用 MetaMask，它是第一个支持 ERC-7715 权限的钱包。授予这些权限需要将您的钱包升级为 ERC-7702 智能账户。随着该标准逐步得到采用，我们将支持更多钱包和网络。目前它可在 {count} 个网络上使用：",
+      "description": "自动撤销目前可在 {count} 个网络上使用：",
       "title": "支持的钱包和网络"
     },
     "steps": {
@@ -31,7 +31,7 @@
         "title": "我们时刻守护"
       },
       "permission": {
-        "description": "使用 MetaMask 连接，并授予 Revoke.cash 一项仅可用于撤销授权的 ERC-7715 权限。该权限无法转移资金、签署消息或执行任何其他操作，并且您可以随时撤销。",
+        "description": "使用受支持的钱包连接，并授予 Revoke.cash 一项仅可用于撤销授权的 ERC-7715 权限。该权限无法转移资金、签署消息或执行任何其他操作，并且您可以随时撤销。",
         "title": "授予仅限撤销的权限"
       },
       "rules": {
@@ -40,7 +40,10 @@
       },
       "title": "从设置到保护"
     },
-    "title": "自动撤销的工作原理"
+    "title": "自动撤销的工作原理",
+    "wallets": {
+      "description": "自动撤销适用于任何支持 ERC-7715 权限的钱包。授予这些权限需要将您的钱包升级为 ERC-7702 智能账户。目前已知支持该标准的钱包如下，随着标准逐步得到采用，还会有更多钱包加入："
+    }
   },
   "pricing": {
     "best_protection": "最佳保护",
@@ -60,7 +63,7 @@
         "question": "订阅到期后会发生什么？"
       },
       "supported_wallets": {
-        "answer": "自动撤销是 Ultimate 专属功能，目前支持在 MetaMask 上使用，覆盖 Ethereum、Polygon、Base 等 {count} 个受支持的网络。对更多钱包的支持取决于 ERC-7715 标准的采用情况。<link>查看受支持网络的完整列表</link>。",
+        "answer": "自动撤销是 Ultimate 专属功能，支持在 MetaMask 及部分其他支持 ERC-7715 标准的钱包上使用，覆盖 Ethereum、Polygon、Base 等 {count} 个受支持的网络。<link>查看受支持钱包和网络的完整列表</link>。",
         "question": "哪些钱包和网络支持自动撤销？"
       },
       "title": "常见问题"
@@ -145,7 +148,7 @@
     },
     "title": "Premium 定价",
     "tooltips": {
-      "automated_revoking": "需要使用 MetaMask。仅支持部分网络。自动撤销是尽力而为的保护，无法保证完全避免损失。"
+      "automated_revoking": "需要使用 MetaMask 或部分其他钱包。仅支持部分网络。自动撤销是尽力而为的保护，无法保证完全避免损失。"
     }
   }
 }

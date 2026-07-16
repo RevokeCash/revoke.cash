@@ -58,7 +58,7 @@
     "title": "Revoke Premium",
     "ultimate_features": {
       "automated_revoking": "Automated revoking",
-      "automated_revoking_tooltip": "Requires MetaMask. Supported on select networks.",
+      "automated_revoking_tooltip": "Requires MetaMask or select other wallets. Supported on select networks.",
       "continuous_monitoring": "Continuous monitoring",
       "gas_allowance": "$5/month gas budget included"
     },

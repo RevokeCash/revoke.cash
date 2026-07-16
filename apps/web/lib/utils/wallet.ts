@@ -47,6 +47,7 @@ export const getWalletIcon = (connector: Connector): string | undefined => {
     tokenpocket: '/assets/images/vendor/wallets/tokenpocket.svg',
     'trust wallet': `${BASE_URL}/trustWallet/trustWallet.svg`,
     ttwallet: '/assets/images/vendor/wallets/ttwallet.webp',
+    walletchan: '/assets/images/vendor/wallets/walletchan.png',
     'xdefi wallet': `${BASE_URL}/xdefiWallet/xdefiWallet.svg`,
     zerion: `${BASE_URL}/zerionWallet/zerionWallet.svg`,
     // Other connectors
