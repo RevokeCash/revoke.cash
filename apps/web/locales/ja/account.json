@@ -190,6 +190,8 @@
       "modal_description": "{planName} のお支払いをキャンセルし、全額返金します。他のお支払いがある場合、サブスクリプションはこのお支払いを除いて再計算されます。",
       "modal_title": "サブスクリプションのキャンセル",
       "network": "ネットワーク",
+      "reason_label": "キャンセルの理由（任意）",
+      "reason_placeholder": "キャンセルの理由をお聞かせください",
       "refund_amount": "返金額",
       "refund_destination": "返金先",
       "requested": "キャンセル申請済み",

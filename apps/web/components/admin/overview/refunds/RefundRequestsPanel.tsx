@@ -103,6 +103,15 @@ const columns = [
       </div>
     ),
   }),
+  columnHelper.accessor('reason', {
+    id: 'reason',
+    header: 'Reason',
+    cell: (info) => (
+      <div className="py-1.5 pr-4 text-sm text-zinc-600 dark:text-zinc-400 max-w-xs whitespace-pre-wrap wrap-break-word">
+        {info.getValue() ?? '—'}
+      </div>
+    ),
+  }),
   columnHelper.display({
     id: 'state',
     header: 'State',

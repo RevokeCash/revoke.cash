@@ -154,6 +154,7 @@ export const premiumRefundRequests = premiumSchema.table(
       .notNull()
       .references(() => premiumPayments.id),
     refundAmountUsdCents: integer('refund_amount_usd_cents').notNull(),
+    reason: text('reason'),
     refundTxHash: text('refund_tx_hash').$type<Hash>(),
     processedAt: timestamp('processed_at', { withTimezone: true }),
     dismissedAt: timestamp('dismissed_at', { withTimezone: true }),

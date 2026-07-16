@@ -190,6 +190,8 @@
       "modal_description": "This cancels your {planName} payment and refunds it in full. If you have other payments, your subscription is recalculated without this one.",
       "modal_title": "Cancel subscription",
       "network": "Network",
+      "reason_label": "Reason for cancelling (optional)",
+      "reason_placeholder": "Let us know why you're cancelling",
       "refund_amount": "Refund amount",
       "refund_destination": "Refund destination",
       "requested": "Cancellation requested",

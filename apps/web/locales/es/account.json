@@ -190,6 +190,8 @@
       "modal_description": "Esto cancela tu pago de {planName} y lo reembolsa íntegramente. Si tienes otros pagos, tu suscripción se recalcula sin este.",
       "modal_title": "Cancelar suscripción",
       "network": "Red",
+      "reason_label": "Motivo de la cancelación (opcional)",
+      "reason_placeholder": "Cuéntanos por qué cancelas",
       "refund_amount": "Monto del reembolso",
       "refund_destination": "Destino del reembolso",
       "requested": "Cancelación solicitada",

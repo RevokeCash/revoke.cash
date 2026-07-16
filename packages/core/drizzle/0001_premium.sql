@@ -41,6 +41,7 @@ CREATE TABLE "premium"."refund_requests" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"payment_id" uuid NOT NULL,
 	"refund_amount_usd_cents" integer NOT NULL,
+	"reason" text,
 	"refund_tx_hash" text,
 	"processed_at" timestamp with time zone,
 	"dismissed_at" timestamp with time zone,

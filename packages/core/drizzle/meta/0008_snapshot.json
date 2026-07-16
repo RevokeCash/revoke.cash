@@ -2050,6 +2050,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "refund_tx_hash": {
           "name": "refund_tx_hash",
           "type": "text",

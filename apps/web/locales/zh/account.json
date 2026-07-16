@@ -190,6 +190,8 @@
       "modal_description": "此操作将取消您的 {planName} 付款并全额退款。如果您还有其他付款，您的订阅将在扣除这笔付款后重新计算。",
       "modal_title": "取消订阅",
       "network": "网络",
+      "reason_label": "Reason for cancelling (optional)",
+      "reason_placeholder": "Let us know why you're cancelling",
       "refund_amount": "退款金额",
       "refund_destination": "退款接收地址",
       "requested": "已申请取消",

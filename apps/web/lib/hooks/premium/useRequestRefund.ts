@@ -11,8 +11,8 @@ export const useRequestRefund = (ownerAddress: Address) => {
   const queryClient = useQueryClient();
 
   const requestRefundMutation = useMutation({
-    mutationFn: async ({ paymentId }: { paymentId: string }) => {
-      return ky.post(`/api/premium/payments/${paymentId}/refund`).json<{ id: string }>();
+    mutationFn: async ({ paymentId, reason }: { paymentId: string; reason?: string }) => {
+      return ky.post(`/api/premium/payments/${paymentId}/refund`, { json: { reason } }).json<{ id: string }>();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getSubscriptionsQueryKey(ownerAddress) });

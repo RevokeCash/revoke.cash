@@ -190,6 +190,8 @@
       "modal_description": "Это отменит ваш платеж за {planName} и вернет его в полном объеме. Если у вас есть другие платежи, подписка будет пересчитана без этого платежа.",
       "modal_title": "Отменить подписку",
       "network": "Сеть",
+      "reason_label": "Reason for cancelling (optional)",
+      "reason_placeholder": "Let us know why you're cancelling",
       "refund_amount": "Сумма возврата",
       "refund_destination": "Адрес для возврата",
       "requested": "Запрошена отмена",

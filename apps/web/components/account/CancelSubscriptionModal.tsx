@@ -20,11 +20,12 @@ interface Props {
 const CancelSubscriptionModal = ({ payment, ownerAddress, trigger }: Props) => {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
+  const [reason, setReason] = useState('');
   const { requestRefund, isRequestingRefund } = useRequestRefund(ownerAddress);
 
   const confirmCancellation = () => {
     requestRefund(
-      { paymentId: payment.id },
+      { paymentId: payment.id, reason: reason.trim() || undefined },
       {
         onSuccess: () => setOpen(false),
       },
@@ -67,6 +68,20 @@ const CancelSubscriptionModal = ({ payment, ownerAddress, trigger }: Props) => {
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
             {t('account.subscription.cancellation.modal_access_notice')}
           </p>
+
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="text-zinc-600 dark:text-zinc-400">
+              {t('account.subscription.cancellation.reason_label')}
+            </span>
+            <textarea
+              value={reason}
+              onChange={(event) => setReason(event.target.value)}
+              maxLength={500}
+              rows={3}
+              placeholder={t('account.subscription.cancellation.reason_placeholder')}
+              className="rounded-lg border border-zinc-300 dark:border-zinc-700 bg-transparent p-2 text-sm resize-none focus-visible:outline-hidden focus-visible:border-black dark:focus-visible:border-white"
+            />
+          </label>
 
           <div className="flex justify-end pt-2 border-t border-zinc-200 dark:border-zinc-800">
             <Button

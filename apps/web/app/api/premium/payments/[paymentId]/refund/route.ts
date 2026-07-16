@@ -11,7 +11,9 @@ interface Props {
 
 const schemas = {
   params: z.object({ paymentId: z.uuid() }),
-  body: z.undefined(),
+  body: z.strictObject({
+    reason: z.string().trim().max(500).optional(),
+  }),
 };
 
 export const runtime = 'edge';
@@ -22,11 +24,12 @@ export async function POST(req: NextRequest, props: Props) {
       auth: 'siwe',
       rateLimiter: RateLimiters.PREMIUM_WRITE,
     });
-    const { params } = await parseRequest(req, props, schemas);
+    const { params, body } = await parseRequest(req, props, schemas);
 
     const refundRequest = await createRefundRequest({
       ownerAddress: siweAddress,
       paymentId: params.paymentId,
+      reason: body.reason,
     });
 
     return NextResponse.json(refundRequest);

@@ -34,11 +34,13 @@ export class PremiumRefundError extends ExportableError {
 interface CreateRefundRequestParams {
   ownerAddress: Address;
   paymentId: string;
+  reason?: string;
 }
 
 export const createRefundRequest = async ({
   ownerAddress,
   paymentId,
+  reason,
 }: CreateRefundRequestParams): Promise<{ id: string }> => {
   const db = getTransactionalDb();
 
@@ -80,7 +82,7 @@ export const createRefundRequest = async ({
     // v1 refunds the payment in full; the column supports pro-rata or consumption deductions later
     const [request] = await trx
       .insert(premiumRefundRequests)
-      .values({ paymentId, refundAmountUsdCents: payment.amountUsdCents })
+      .values({ paymentId, refundAmountUsdCents: payment.amountUsdCents, reason: reason || null })
       .returning({ id: premiumRefundRequests.id });
 
     return request;
@@ -93,6 +95,7 @@ export interface PendingRefundRequest {
   refundDeadlineAt: string;
   refundTxHash: Hash | null;
   refundAmountUsdCents: number;
+  reason: string | null;
   payment: {
     ownerAddress: Address;
     subscriptionId: string | null;
@@ -127,6 +130,7 @@ export const getPendingRefundRequests = async (): Promise<PendingRefundRequest[]
       refundDeadlineAt: new Date(request.createdAt.getTime() + REFUND_DEADLINE_DAYS * DAY).toISOString(),
       refundTxHash: request.refundTxHash,
       refundAmountUsdCents: request.refundAmountUsdCents,
+      reason: request.reason,
       payment: {
         ownerAddress: request.payment.ownerAddress,
         subscriptionId: request.payment.subscriptionId,
