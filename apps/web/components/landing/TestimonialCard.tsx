@@ -1,17 +1,15 @@
 import Href from 'components/common/Href';
 import Image from 'next/image';
 import { twMerge } from 'tailwind-merge';
-import type { Testimonial } from './testimonials-data';
+import type { TranslatedTestimonial } from './testimonials-data';
 
 interface Props {
-  testimonial: Testimonial;
+  testimonial: TranslatedTestimonial;
 }
 
 const TestimonialCard = ({ testimonial }: Props) => {
   const className = twMerge(
-    // Bottom padding reserves space for the carousel's avatar controls; on sm+ the quotes' last lines
-    // are short enough that the controls can share that row, so the reserve is dropped
-    'flex h-full flex-col gap-3 rounded-xl border border-zinc-200 dark:border-zinc-800 p-5 pb-12 sm:pb-5',
+    'flex h-full flex-col gap-3 rounded-xl border border-zinc-200 dark:border-zinc-800 p-5',
     'transition bg-white dark:bg-zinc-900 hover:border-brand/50 dark:hover:border-brand/40',
   );
 
@@ -32,7 +30,12 @@ const TestimonialCard = ({ testimonial }: Props) => {
         </div>
         <XLogo className="ml-auto h-4 w-4 shrink-0 self-start text-zinc-300 dark:text-zinc-600" />
       </div>
-      <p className="whitespace-pre-line text-sm leading-6 text-zinc-800 dark:text-zinc-200">{testimonial.quote}</p>
+      <p className="whitespace-pre-line text-sm leading-6 text-zinc-800 dark:text-zinc-200">
+        {testimonial.quote}
+        {/* Invisible spacer sized to the carousel's avatar controls: it shares the last line of the quote
+            when there is room, and otherwise wraps so the text never runs underneath the controls */}
+        <span aria-hidden="true" className="inline-block align-top h-6 w-28" />
+      </p>
     </Href>
   );
 };

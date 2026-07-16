@@ -1,158 +1,150 @@
 {
   "automated_revoking": {
     "cta": {
-      "button": "View plans",
-      "title": "Ready for set-and-forget protection?"
+      "button": "查看订阅方案",
+      "title": "准备好享受一次设置、持续保护了吗？"
     },
-    "description": "Everything you should know about Auto-Revoking before you subscribe: how it protects you, what it needs, and where its limits are.",
+    "description": "订阅前您应了解的关于自动撤销的一切：它如何保护您、需要哪些条件，以及它的局限所在。",
     "gas": {
-      "description": "Your subscription includes a {budget} monthly gas budget that pays for automated revoke transactions. When the budget is used up, routine revokes wait for the next monthly cycle, but exploit-triggered revokes still go through. To spend your budget efficiently, individual revokes are capped at {cap} and may be deferred temporarily during gas spikes.",
-      "title": "Gas fees are included"
+      "description": "您的订阅包含每月 {budget} 的 Gas 预算，用于支付自动撤销交易的费用。预算用完后，常规撤销将等待下一个月度周期，但由漏洞触发的撤销仍会执行。为了高效使用预算，单次撤销的费用上限为 {cap}，且在 Gas 费用飙升期间可能会暂时推迟。",
+      "title": "Gas 费用已包含在内"
     },
     "limitations": {
-      "description": "Auto-Revoking is best-effort protection: it meaningfully reduces your risk, but it cannot guarantee that losses are prevented. Detection can lag since an exploit must be identified before it can trigger a revoke, and an attacker may act first. On-chain execution depends on conditions outside anyone's control, such as network congestion and gas prices. See our <terms-link>Terms and Conditions</terms-link> for details.",
-      "title": "What Auto-Revoking is not"
+      "description": "自动撤销是尽力而为的保护：它能显著降低您的风险，但无法保证完全避免损失。由于必须先识别出漏洞才能触发撤销，检测可能存在延迟，攻击者也可能抢先行动。链上执行还取决于网络拥堵和 Gas 价格等任何人都无法控制的因素。详情请参阅我们的<terms-link>条款和条件</terms-link>。",
+      "title": "自动撤销不是什么"
     },
     "meta": {
-      "description": "How Auto-Revoking protects your wallet: rules, supported networks, gas budget, and its limits.",
-      "title": "How Auto-Revoking Works"
+      "description": "自动撤销如何保护您的钱包：规则、支持的网络、Gas 预算及其局限。",
+      "title": "自动撤销的工作原理"
     },
     "networks": {
-      "description": "Auto-Revoking currently requires MetaMask, the first wallet to support ERC-7715 permissions. Granting these permissions requires upgrading your wallet to an ERC-7702 smart account, which MetaMask walks you through during setup. Support for more wallets and networks will follow as the standard gets adopted. It currently works on {count} networks:",
-      "title": "Supported wallets & networks"
+      "description": "自动撤销目前需要使用 MetaMask，它是第一个支持 ERC-7715 权限的钱包。授予这些权限需要将您的钱包升级为 ERC-7702 智能账户。随着该标准逐步得到采用，我们将支持更多钱包和网络。目前它可在 {count} 个网络上使用：",
+      "title": "支持的钱包和网络"
     },
     "steps": {
       "execution": {
-        "description": "When an approval matches your rules, a revoke transaction is sent on your behalf and appears in your activity log. Exploit-triggered revokes are treated with higher urgency.",
-        "title": "Dangerous approvals get revoked"
+        "description": "当某项授权符合您的规则时，系统会代您发送撤销交易，并显示在您的活动记录中。由漏洞触发的撤销会以更高的优先级处理。",
+        "title": "危险授权会被撤销"
       },
       "monitoring": {
-        "description": "Revoke.cash continuously monitors your approvals across all supported networks and checks them against your rules and our exploit database, around the clock.",
-        "title": "We keep watch"
+        "description": "Revoke.cash 全天候持续监控您在所有受支持网络上的授权，并将其与您的规则和我们的漏洞数据库进行比对。",
+        "title": "我们时刻守护"
       },
       "permission": {
-        "description": "Connect with MetaMask and grant Revoke.cash an ERC-7715 permission that can only be used to revoke approvals. It cannot transfer funds, sign messages, or do anything else, and you can withdraw it at any time.",
-        "title": "Grant a revoke-only permission"
+        "description": "使用 MetaMask 连接，并授予 Revoke.cash 一项仅可用于撤销授权的 ERC-7715 权限。该权限无法转移资金、签署消息或执行任何其他操作，并且您可以随时撤销。",
+        "title": "授予仅限撤销的权限"
       },
       "rules": {
-        "description": "Choose what should be revoked automatically: approvals to exploited or risky spenders, approvals older than your staleness threshold, or both. Every wallet on your subscription can tune its own rules.",
-        "title": "Set your rules"
+        "description": "选择应自动撤销的内容：给已遭漏洞攻击或有风险的被授权人的授权、超过您设定天数的陈旧授权，或两者兼选。订阅中的每个钱包都可以调整自己的规则。",
+        "title": "设置您的规则"
       },
-      "title": "From setup to protection"
+      "title": "从设置到保护"
     },
-    "title": "How Auto-Revoking Works"
-  },
-  "banner": {
-    "cta": "Upgrade to Premium",
-    "description": "Want a unified view across all networks?"
+    "title": "自动撤销的工作原理"
   },
   "pricing": {
-    "best_protection": "Best Protection",
-    "compare_plans": "Compare plans",
-    "description": "Stay safe in web3 with the tools you need. Upgrade to Premium for the full experience.",
+    "best_protection": "最佳保护",
+    "compare_plans": "比较方案",
+    "description": "使用必备工具，保障您的 web3 安全。升级至 Premium，享受完整体验。",
     "faq": {
       "best_effort": {
-        "answer": "No. Automated revoking is best-effort: it monitors and automatically revokes your approvals, which meaningfully reduces your risk. But detection can lag and networks can be congested, so it can never guarantee that losses are prevented.",
-        "question": "Is auto-revoking guaranteed to protect my funds?"
+        "answer": "不能。自动撤销是尽力而为的保护：它会监控并自动撤销您的授权，从而显著降低您的风险。但检测可能存在延迟，网络也可能拥堵，因此无法保证完全避免损失。",
+        "question": "自动撤销能保证保护我的资金吗？"
       },
       "multiple_wallets": {
-        "answer": "Yes. Both Premium and Ultimate include {count} wallet slots. The subscription owner can add wallet addresses and all wallets get the same features. With Ultimate, each wallet can additionally manage its own auto-revoking configuration independently.",
-        "question": "Can I use one subscription for multiple wallets?"
+        "answer": "可以。Premium 和 Ultimate 均包含 {count} 个钱包名额。订阅所有者可以添加钱包地址，所有钱包都享有相同的功能。使用 Ultimate 时，每个钱包还可以独立管理自己的自动撤销配置。",
+        "question": "一个订阅可以用于多个钱包吗？"
       },
       "subscription_expiry": {
-        "answer": "Your multichain dashboard and tools become unavailable until you renew. With Ultimate, automated revoking also stops monitoring your approvals, but your rule configuration is preserved, so everything can pick up where it left off once you resubscribe.",
-        "question": "What happens when my subscription expires?"
+        "answer": "您的多链仪表盘和相关工具将无法使用，直到您续订为止。对于 Ultimate，自动撤销也会停止监控您的授权，但您的规则配置会被保留，重新订阅后一切都能从中断处继续。",
+        "question": "订阅到期后会发生什么？"
       },
       "supported_wallets": {
-        "answer": "Automated revoking is an Ultimate feature that currently works with MetaMask on {count} supported networks including Ethereum, Polygon, Base, and more. Support for additional wallets depends on adoption of the ERC-7715 standard. <link>See the full list of supported networks</link>.",
-        "question": "What wallets and networks support auto-revoking?"
+        "answer": "自动撤销是 Ultimate 专属功能，目前支持在 MetaMask 上使用，覆盖 Ethereum、Polygon、Base 等 {count} 个受支持的网络。对更多钱包的支持取决于 ERC-7715 标准的采用情况。<link>查看受支持网络的完整列表</link>。",
+        "question": "哪些钱包和网络支持自动撤销？"
       },
-      "title": "Frequently Asked Questions"
+      "title": "常见问题"
     },
-    "feature_column": "Feature",
+    "feature_column": "功能",
     "feature_sections": {
       "automated_revoking": {
-        "description": "Set your rules and Revoke.cash watches your approvals around the clock. When an approval matches your rules, it gets revoked automatically on your behalf, even while you sleep.",
-        "link_label": "See how Auto-Revoking works",
-        "title": "Automated Revoking"
+        "description": "设置好规则后，Revoke.cash 会全天候监控您的授权。当某项授权符合您的规则时，系统会代您自动将其撤销，即使在您熟睡时也不例外。",
+        "link_label": "了解自动撤销的工作原理",
+        "title": "自动撤销"
       },
       "multichain_dashboard": {
-        "description": "View and manage all your token approvals across 100+ networks from a single unified dashboard, including your full approval history. No more switching chains one by one.",
-        "title": "Multichain Dashboard"
+        "description": "在一个统一的仪表盘中查看和管理您在 100+ 个网络上的全部代币授权，包括完整的授权历史。无需再逐个切换网络。",
+        "title": "多链仪表盘"
       },
       "multichain_exploit_checker": {
-        "description": "Check your wallets against all known exploits across every supported network. See if any of your approvals are associated with compromised contracts so you can revoke them immediately.",
-        "title": "Multichain Exploit Checker"
-      },
-      "priority_support": {
-        "description": "Get faster responses from the Revoke.cash team when you need help. Premium subscribers are prioritized in our support queue so you never have to wait long for assistance.",
-        "title": "Priority Support"
+        "description": "将您的钱包与所有受支持网络上的全部已知漏洞进行比对。查看您是否有授权与被入侵的合约相关联，以便立即撤销。",
+        "title": "多链漏洞检查器"
       },
       "time_machine": {
-        "description": "Travel back in time to see what your approvals looked like at any point in the past. Use the Time Machine to investigate how your approval state has changed over time across all supported networks.",
+        "description": "回到过去，查看您的授权在过去任意时间点的状态。使用 Time Machine 调查您的授权状态在所有受支持网络上随时间发生的变化。",
         "title": "Time Machine"
       },
-      "title": "What you get with Premium & Ultimate",
+      "title": "Premium 和 Ultimate 为您提供的功能",
       "unlimited_batch_revokes": {
-        "description": "Revoke multiple token approvals in a single transaction at no extra cost. Free users pay a per-batch fee, but Premium subscribers enjoy unlimited batch revokes across all networks.",
-        "title": "Unlimited Batch Revokes"
+        "description": "在一笔交易中撤销多个代币授权，无需额外费用。免费用户需按批次付费，而 Premium 订阅用户可在所有网络上享受无限次批量撤销。",
+        "title": "无限次批量撤销"
       }
     },
     "features": {
-      "address_slots": "Wallet slots",
-      "address_slots_count": "{count} wallets",
-      "approval_history": "Approval history",
-      "automated_revoking": "Automated revoking",
-      "batch_revoke": "Batch revoke",
-      "batch_revoke_paid": "Batch revoke ({price}/batch)",
-      "continuous_monitoring": "Continuous monitoring",
-      "exploit_checker": "Exploit checker",
-      "gas_allowance": "Gas budget",
-      "gas_allowance_amount": "{budget}/month",
-      "gas_allowance_included": "{budget}/month gas budget included",
-      "multichain_dashboard": "Multichain dashboard",
-      "multichain_exploit_checker": "Multichain exploit checker",
-      "one_chain": "One chain at a time",
-      "per_batch": "{price} per batch",
-      "priority_support": "Priority support",
-      "revoke_approvals": "Revoke approvals on 100+ networks",
-      "time_machine": "Time machine",
-      "unlimited": "Unlimited",
-      "unlimited_batch_revokes": "Unlimited batch revokes"
+      "address_slots": "钱包名额",
+      "address_slots_count": "{count} 个钱包",
+      "approval_history": "授权历史",
+      "automated_revoking": "自动撤销",
+      "batch_revoke": "批量撤销",
+      "batch_revoke_paid": "批量撤销（{price}/批次）",
+      "continuous_monitoring": "持续监控",
+      "exploit_checker": "漏洞检查器",
+      "gas_allowance": "Gas 预算",
+      "gas_allowance_amount": "{budget}/月",
+      "gas_allowance_included": "包含每月 {budget} 的 Gas 预算",
+      "multichain_dashboard": "多链仪表盘",
+      "multichain_exploit_checker": "多链漏洞检查器",
+      "one_chain": "一次一条链",
+      "per_batch": "每批次 {price}",
+      "priority_support": "优先支持",
+      "revoke_approvals": "在 100+ 个网络上撤销授权",
+      "time_machine": "Time Machine",
+      "unlimited": "无限次",
+      "unlimited_batch_revokes": "无限次批量撤销"
     },
-    "includes_tier": "Everything in {tierName}, plus:",
+    "includes_tier": "包含 {tierName} 的全部功能，此外还有：",
     "meta": {
-      "description": "Compare Revoke Premium plans. Get the multichain dashboard, unlimited batch revokes, and more.",
-      "title": "Premium Pricing"
+      "description": "比较 Revoke Premium 各方案。获取多链仪表盘、无限次批量撤销等更多功能。",
+      "title": "Premium 定价"
     },
-    "most_popular": "Most popular",
-    "most_popular_label": "Most Popular",
-    "payment_note": "Pay with USDC on Ethereum or other popular networks. One-time payment for a full year, no auto-renew, and no token approvals needed.",
-    "per_year": "/year",
+    "most_popular_label": "最受欢迎",
+    "payment_note": "使用 Ethereum 或其他主流网络上的 USDC 支付。一次性支付全年费用，不自动续订，也无需任何代币授权。",
+    "per_year": "/年",
     "tiers": {
       "free": {
-        "cta": "Get started",
-        "description": "Essential tools to inspect and revoke token approvals.",
-        "name": "Free"
+        "cta": "开始使用",
+        "description": "检查和撤销代币授权的必备工具。",
+        "name": "免费版",
+        "savings": "Placeholder"
       },
       "premium": {
-        "cta": "Subscribe",
-        "description": "Monitor and manage token approvals in a single multichain dashboard.",
+        "cta": "订阅",
+        "description": "在一个多链仪表盘中监控和管理代币授权。",
         "name": "Premium",
-        "price_note": "{count} wallets included",
-        "savings": "That's {price} per wallet per month"
+        "price_note": "包含 {count} 个钱包",
+        "savings": "相当于每个钱包每月 {price}"
       },
       "ultimate": {
-        "cta": "Subscribe",
-        "description": "Set-and-forget protection with automated revoking.",
+        "cta": "订阅",
+        "description": "通过自动撤销实现一次设置、持续保护。",
         "name": "Ultimate",
-        "price_note": "{count} wallets included",
-        "savings": "That's {price} per wallet per month"
+        "price_note": "包含 {count} 个钱包",
+        "savings": "相当于每个钱包每月 {price}"
       }
     },
-    "title": "Premium Pricing",
+    "title": "Premium 定价",
     "tooltips": {
-      "automated_revoking": "Requires MetaMask. Supported on select networks. Automated revoking is best-effort and cannot guarantee that losses are prevented."
+      "automated_revoking": "需要使用 MetaMask。仅支持部分网络。自动撤销是尽力而为的保护，无法保证完全避免损失。"
     }
   }
 }

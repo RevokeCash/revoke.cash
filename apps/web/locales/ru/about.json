@@ -5,58 +5,58 @@
   },
   "timeline": {
     "batch_revoke": {
-      "description": "A much-requested feature, users can now revoke multiple approvals in a single flow with queued transactions.",
-      "title": "Batch Revoking"
+      "description": "Одна из самых востребованных функций: теперь пользователи могут отзывать несколько одобрений за один процесс с помощью очереди транзакций.",
+      "title": "Пакетный отзыв"
     },
     "beyond_approvals": {
-      "description": "Revoke.cash expands beyond approval management with new tabs for managing delegations and viewing approval history.",
-      "title": "Delegations & History Tabs"
+      "description": "Revoke.cash выходит за рамки управления одобрениями: появляются новые вкладки для управления делегациями и просмотра истории одобрений.",
+      "title": "Вкладки «Делегации» и «История»"
     },
     "created": {
-      "description": "Inspired by Paul Berg's talk at Devcon 5, Rosco Kalis builds the first token approval management tool, giving users a way to revoke unlimited approvals.",
-      "title": "Revoke.cash Created"
+      "description": "Вдохновившись докладом Пола Берга на Devcon 5, Роско Калис создает первый инструмент для управления одобрениями токенов, дав пользователям возможность отзывать неограниченные одобрения.",
+      "title": "Создание Revoke.cash"
     },
     "extension": {
-      "description": "The crypto ecosystem sees a large increase in scams and phishing attacks. Rosco releases a browser extension that warns users before signing risky approvals, providing proactive protection.",
-      "title": "Browser Extension Launch"
+      "description": "В криптоэкосистеме резко растет число случаев мошенничества и фишинговых атак. Роско выпускает браузерное расширение, которое предупреждает пользователей перед подписанием рискованных одобрений, обеспечивая проактивную защиту.",
+      "title": "Запуск браузерного расширения"
     },
     "extension_overhaul": {
-      "description": "The threat landscape is constantly evolving, and the browser extension needs to stay ahead. Revoke.cash partners with Fairside to build a new extension with improved detection, UX and risk coverage.",
-      "title": "Extension Overhaul"
+      "description": "Ландшафт угроз постоянно меняется, и браузерное расширение должно оставаться на шаг впереди. Revoke.cash в партнерстве с Fairside создает новое расширение с улучшенным обнаружением угроз, UX и охватом рисков.",
+      "title": "Переработка расширения"
     },
     "full_time": {
-      "description": "After leaving his previous startup, Rosco decides to focus on Revoke.cash full-time, turning it from a side project into a mission.",
-      "title": "Going Full-Time"
+      "description": "После ухода из своего предыдущего стартапа Роско решает полностью посвятить себя Revoke.cash, превратив его из побочного проекта в миссию.",
+      "title": "Переход на полную занятость"
     },
     "learn_section": {
-      "description": "While tools are an important part of security, it does not replace the need for education. A Learn Section is added to help users understand wallet security.",
-      "title": "Learn Section"
+      "description": "Хотя инструменты — важная часть безопасности, они не заменяют необходимость в обучении. Добавляется раздел «Обучение», который помогает пользователям разобраться в безопасности кошельков.",
+      "title": "Раздел «Обучение»"
     },
     "multichain": {
-      "description": "The EVM ecosystem is growing rapidly, and Revoke.cash expands beyond Ethereum to support dozens of EVM-compatible networks.",
-      "title": "Multichain Expansion"
+      "description": "Экосистема EVM быстро растет, и Revoke.cash выходит за пределы Ethereum, добавляя поддержку десятков EVM-совместимых сетей.",
+      "title": "Мультичейн-экспансия"
     },
     "nft_support": {
-      "description": "As NFTs rise in popularity, many users are giving approvals to marketplaces like OpenSea. Revoke.cash becomes the first tool to support revoking NFT approvals, expanding beyond ERC20 tokens.",
-      "title": "NFT Approval Support"
+      "description": "С ростом популярности NFT многие пользователи выдают одобрения таким маркетплейсам, как OpenSea. Revoke.cash становится первым инструментом с поддержкой отзыва одобрений NFT, выходя за рамки токенов ERC20.",
+      "title": "Поддержка одобрений NFT"
     },
     "premium": {
-      "description": "With a decline in public goods funding, Revoke.cash needs to find a sustainable business model. Revoke Premium is launched to generate real revenue.",
+      "description": "Из-за сокращения финансирования общественных благ Revoke.cash нужна устойчивая бизнес-модель. Запускается Revoke Premium, чтобы приносить реальный доход.",
       "title": "Revoke Premium"
     },
     "redesign": {
-      "description": "At this point, Revoke.cash has had the same visual design since 2019. To pave the way for the future, a complete visual overhaul of the Revoke.cash dashboard and website is released.",
-      "title": "Website Redesign"
+      "description": "К этому моменту визуальный дизайн Revoke.cash не менялся с 2019 года. Чтобы заложить основу для будущего, выходит полностью обновленный дизайн панели управления и сайта Revoke.cash.",
+      "title": "Редизайн сайта"
     },
     "single_tx_batch": {
-      "description": "EIP7702 enables revoking multiple approvals in a single transaction, massively improving the user experience of batch revoking.",
-      "title": "Single-Transaction Batch Revoke"
+      "description": "EIP7702 позволяет отзывать несколько одобрений в одной транзакции, что значительно улучшает удобство пакетного отзыва.",
+      "title": "Пакетный отзыв в одной транзакции"
     },
     "team_retropgf": {
-      "description": "Optimism RetroPGF provides major funding, enabling the first team expansion. In 2024, the team grows to include Dries and WiiMee as part-time team members.",
-      "title": "Team Growth & RetroPGF"
+      "description": "Optimism RetroPGF обеспечивает крупное финансирование, позволяя впервые расширить команду. В 2024 году к команде на частичную занятость присоединяются Dries и WiiMee.",
+      "title": "Рост команды и RetroPGF"
     },
-    "today": "Today"
+    "today": "Сегодня"
   },
   "title": "О нас"
 }

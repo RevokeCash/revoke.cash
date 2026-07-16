@@ -42,10 +42,6 @@
     },
     "title": "How Auto-Revoking Works"
   },
-  "banner": {
-    "cta": "Upgrade to Premium",
-    "description": "Want a unified view across all networks?"
-  },
   "pricing": {
     "best_protection": "Best Protection",
     "compare_plans": "Compare plans",
@@ -84,10 +80,6 @@
         "description": "Check your wallets against all known exploits across every supported network. See if any of your approvals are associated with compromised contracts so you can revoke them immediately.",
         "title": "Multichain Exploit Checker"
       },
-      "priority_support": {
-        "description": "Get faster responses from the Revoke.cash team when you need help. Premium subscribers are prioritized in our support queue so you never have to wait long for assistance.",
-        "title": "Priority Support"
-      },
       "time_machine": {
         "description": "Travel back in time to see what your approvals looked like at any point in the past. Use the Time Machine to investigate how your approval state has changed over time across all supported networks.",
         "title": "Time Machine"
@@ -125,7 +117,6 @@
       "description": "Compare Revoke Premium plans. Get the multichain dashboard, unlimited batch revokes, and more.",
       "title": "Premium Pricing"
     },
-    "most_popular": "Most popular",
     "most_popular_label": "Most Popular",
     "payment_note": "Pay with USDC on Ethereum or other popular networks. One-time payment for a full year, no auto-renew, and no token approvals needed.",
     "per_year": "/year",

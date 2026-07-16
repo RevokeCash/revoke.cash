@@ -1,115 +1,107 @@
 {
   "automated_revoking": {
     "cta": {
-      "button": "View plans",
-      "title": "Ready for set-and-forget protection?"
+      "button": "プランを見る",
+      "title": "一度設定すればあとはおまかせの保護を始めませんか？"
     },
-    "description": "Everything you should know about Auto-Revoking before you subscribe: how it protects you, what it needs, and where its limits are.",
+    "description": "購読前に知っておくべき自動取り消しのすべてをご紹介します。どのようにあなたを保護するのか、何が必要なのか、そしてどこに限界があるのか。",
     "gas": {
-      "description": "Your subscription includes a {budget} monthly gas budget that pays for automated revoke transactions. When the budget is used up, routine revokes wait for the next monthly cycle, but exploit-triggered revokes still go through. To spend your budget efficiently, individual revokes are capped at {cap} and may be deferred temporarily during gas spikes.",
-      "title": "Gas fees are included"
+      "description": "サブスクリプションには、自動取り消しトランザクションの費用をまかなう月間{budget}のガス予算が含まれています。予算を使い切ると、通常の取り消しは翌月のサイクルまで待機しますが、エクスプロイトによる取り消しは引き続き実行されます。予算を有効に使うため、取り消し1件あたりの費用は{cap}が上限となり、ガス価格の高騰時には一時的に延期されることがあります。",
+      "title": "ガス料金は含まれています"
     },
     "limitations": {
-      "description": "Auto-Revoking is best-effort protection: it meaningfully reduces your risk, but it cannot guarantee that losses are prevented. Detection can lag since an exploit must be identified before it can trigger a revoke, and an attacker may act first. On-chain execution depends on conditions outside anyone's control, such as network congestion and gas prices. See our <terms-link>Terms and Conditions</terms-link> for details.",
-      "title": "What Auto-Revoking is not"
+      "description": "自動取り消しはベストエフォート型の保護です。リスクを大幅に減らすことはできますが、損失を確実に防げると保証するものではありません。エクスプロイトが特定されて初めて取り消しがトリガーされるため、検知が遅れることがあり、攻撃者が先に行動する可能性もあります。また、オンチェーンでの実行は、ネットワークの混雑やガス価格など、誰にも制御できない状況に左右されます。詳しくは<terms-link>利用規約</terms-link>をご覧ください。",
+      "title": "自動取り消しにできないこと"
     },
     "meta": {
-      "description": "How Auto-Revoking protects your wallet: rules, supported networks, gas budget, and its limits.",
-      "title": "How Auto-Revoking Works"
+      "description": "自動取り消しがウォレットを保護する仕組み：ルール、対応ネットワーク、ガス予算、そしてその限界。",
+      "title": "自動取り消しの仕組み"
     },
     "networks": {
-      "description": "Auto-Revoking currently requires MetaMask, the first wallet to support ERC-7715 permissions. Granting these permissions requires upgrading your wallet to an ERC-7702 smart account, which MetaMask walks you through during setup. Support for more wallets and networks will follow as the standard gets adopted. It currently works on {count} networks:",
-      "title": "Supported wallets & networks"
+      "description": "自動取り消しには現在、ERC-7715権限に最初に対応したウォレットであるMetaMaskが必要です。この権限を付与するには、ウォレットをERC-7702スマートアカウントにアップグレードする必要があります。標準の普及に伴い、対応するウォレットとネットワークは今後拡大していく予定です。現在は{count}個のネットワークで利用できます：",
+      "title": "対応ウォレットとネットワーク"
     },
     "steps": {
       "execution": {
-        "description": "When an approval matches your rules, a revoke transaction is sent on your behalf and appears in your activity log. Exploit-triggered revokes are treated with higher urgency.",
-        "title": "Dangerous approvals get revoked"
+        "description": "承認がルールに一致すると、あなたに代わって取り消しトランザクションが送信され、アクティビティログに表示されます。エクスプロイトによる取り消しは、より高い緊急度で処理されます。",
+        "title": "危険な承認は取り消されます"
       },
       "monitoring": {
-        "description": "Revoke.cash continuously monitors your approvals across all supported networks and checks them against your rules and our exploit database, around the clock.",
-        "title": "We keep watch"
+        "description": "Revoke.cashは、対応しているすべてのネットワーク上の承認を24時間体制で継続的に監視し、設定されたルールと当社のエクスプロイトデータベースに照らしてチェックします。",
+        "title": "私たちが見守ります"
       },
       "permission": {
-        "description": "Connect with MetaMask and grant Revoke.cash an ERC-7715 permission that can only be used to revoke approvals. It cannot transfer funds, sign messages, or do anything else, and you can withdraw it at any time.",
-        "title": "Grant a revoke-only permission"
+        "description": "MetaMaskで接続し、承認の取り消しにのみ使用できるERC-7715権限をRevoke.cashに付与します。この権限では資金の移動やメッセージへの署名など、それ以外の操作は一切できず、いつでも撤回できます。",
+        "title": "取り消し専用の権限を付与"
       },
       "rules": {
-        "description": "Choose what should be revoked automatically: approvals to exploited or risky spenders, approvals older than your staleness threshold, or both. Every wallet on your subscription can tune its own rules.",
-        "title": "Set your rules"
+        "description": "自動的に取り消す対象を選択します。エクスプロイトされた、またはリスクのある支出者への承認、指定した日数より古い承認、あるいはその両方です。サブスクリプション内の各ウォレットは、それぞれ独自のルールを設定できます。",
+        "title": "ルールを設定"
       },
-      "title": "From setup to protection"
+      "title": "設定から保護まで"
     },
-    "title": "How Auto-Revoking Works"
-  },
-  "banner": {
-    "cta": "プレミアムにアップグレード",
-    "description": "すべてのネットワークを統合的に把握したいですか？"
+    "title": "自動取り消しの仕組み"
   },
   "pricing": {
-    "best_protection": "Best Protection",
+    "best_protection": "最高の保護",
     "compare_plans": "プランを比較",
     "description": "必要なツールを活用して、Web3の世界で安全に過ごしましょう。プレミアムプランにアップグレードして、すべての機能をお楽しみください。",
     "faq": {
       "best_effort": {
-        "answer": "No. Automated revoking is best-effort: it monitors and automatically revokes your approvals, which meaningfully reduces your risk. But detection can lag and networks can be congested, so it can never guarantee that losses are prevented.",
-        "question": "Is auto-revoking guaranteed to protect my funds?"
+        "answer": "いいえ。自動取り消しはベストエフォート型です。承認を監視して自動的に取り消すことでリスクを大幅に減らせますが、検知が遅れたりネットワークが混雑したりすることがあるため、損失を確実に防げると保証することはできません。",
+        "question": "自動取り消しは資金の保護を保証しますか？"
       },
       "multiple_wallets": {
-        "answer": "Yes. Both Premium and Ultimate include {count} wallet slots. The subscription owner can add wallet addresses and all wallets get the same features. With Ultimate, each wallet can additionally manage its own auto-revoking configuration independently.",
-        "question": "Can I use one subscription for multiple wallets?"
+        "answer": "はい。プレミアムとUltimateのどちらにも{count}個のウォレットスロットが含まれています。サブスクリプションの所有者がウォレットアドレスを追加でき、すべてのウォレットで同じ機能を利用できます。Ultimateでは、さらに各ウォレットが独立して自動取り消しの設定を管理できます。",
+        "question": "1つのサブスクリプションを複数のウォレットで使えますか？"
       },
       "subscription_expiry": {
-        "answer": "Your multichain dashboard and tools become unavailable until you renew. With Ultimate, automated revoking also stops monitoring your approvals, but your rule configuration is preserved, so everything can pick up where it left off once you resubscribe.",
-        "question": "What happens when my subscription expires?"
+        "answer": "更新するまで、マルチチェーンダッシュボードとツールは利用できなくなります。Ultimateの場合、自動取り消しによる承認の監視も停止しますが、ルールの設定は保持されるため、再度購読すればそのまま再開できます。",
+        "question": "サブスクリプションの有効期限が切れるとどうなりますか？"
       },
       "supported_wallets": {
-        "answer": "Automated revoking is an Ultimate feature that currently works with MetaMask on {count} supported networks including Ethereum, Polygon, Base, and more. Support for additional wallets depends on adoption of the ERC-7715 standard. <link>See the full list of supported networks</link>.",
-        "question": "What wallets and networks support auto-revoking?"
+        "answer": "自動取り消しはUltimateの機能で、現在はMetaMaskを使用して、Ethereum、Polygon、Baseなど{count}個の対応ネットワークで利用できます。その他のウォレットへの対応は、ERC-7715標準の普及次第です。<link>対応ネットワークの全リストを見る</link>。",
+        "question": "自動取り消しに対応しているウォレットとネットワークは？"
       },
-      "title": "Frequently Asked Questions"
+      "title": "よくある質問"
     },
     "feature_column": "機能",
     "feature_sections": {
       "automated_revoking": {
-        "description": "Set your rules and Revoke.cash watches your approvals around the clock. When an approval matches your rules, it gets revoked automatically on your behalf, even while you sleep.",
-        "link_label": "See how Auto-Revoking works",
-        "title": "Automated Revoking"
+        "description": "ルールを設定すれば、Revoke.cashが24時間体制で承認を見守ります。承認がルールに一致すると、眠っている間でも、あなたに代わって自動的に取り消されます。",
+        "link_label": "自動取り消しの仕組みを見る",
+        "title": "自動取り消し"
       },
       "multichain_dashboard": {
-        "description": "View and manage all your token approvals across 100+ networks from a single unified dashboard, including your full approval history. No more switching chains one by one.",
-        "title": "Multichain Dashboard"
+        "description": "100以上のネットワークにわたるすべてのトークン承認を、完全な承認履歴も含めて、1つの統合ダッシュボードから表示・管理できます。チェーンを1つずつ切り替える必要はもうありません。",
+        "title": "マルチチェーンダッシュボード"
       },
       "multichain_exploit_checker": {
-        "description": "サポートされているすべてのネットワークにおいて、既知の脆弱性に対してすべてのウォレットを自動的にチェックします。承認した取引が侵害されたコントラクトに関連している場合は通知が届くため、直ちに承認を取り消すことができます。",
+        "description": "サポートされているすべてのネットワークで、既知のすべてのエクスプロイトに対してウォレットをチェックします。侵害されたコントラクトに関連する承認がないかを確認し、直ちに取り消すことができます。",
         "title": "マルチチェーンエクスプロイトチェッカー"
-      },
-      "priority_support": {
-        "description": "サポートが必要な際は、Revoke.cashチームからより迅速な対応を受けられます。プレミアム会員はサポート対応の優先順位が高いため、サポートを長く待つ必要はありません。",
-        "title": "優先サポート"
       },
       "time_machine": {
         "description": "タイムマシンを使って過去へ遡り、過去の任意の時点での承認状況を確認しましょう。タイムマシンを使用して、サポートされているすべてのネットワークにおいて、承認状態が時間とともにどのように変化したかを調査できます。",
         "title": "タイムマシン"
       },
-      "title": "プレミアム会員特典",
+      "title": "プレミアムとUltimateで利用できる機能",
       "unlimited_batch_revokes": {
-        "description": "追加費用なしで、1回のトランザクションで複数のトークン承認を取り消すことができます。無料ユーザーはバッチごとの手数料を支払う必要がありますが、プレミアム会員はすべてのネットワークにおいて無制限のバッチ取り消しを利用できます。",
-        "title": "無制限のバッチ取り消し"
+        "description": "追加費用なしで、1回のトランザクションで複数のトークン承認を取り消すことができます。無料ユーザーはバッチごとの手数料を支払う必要がありますが、プレミアム会員はすべてのネットワークにおいて無制限の一括取り消しを利用できます。",
+        "title": "無制限の一括取り消し"
       }
     },
     "features": {
-      "address_slots": "アドレススロット",
-      "address_slots_count": "{count}つのアドレススロット",
+      "address_slots": "ウォレットスロット",
+      "address_slots_count": "{count}個のウォレット",
       "approval_history": "承認履歴",
-      "automated_revoking": "Automated revoking",
-      "batch_revoke": "バッチ取り消し",
-      "batch_revoke_paid": "バッチ取り消し（{price}/バッチ）",
-      "continuous_monitoring": "Continuous monitoring",
+      "automated_revoking": "自動取り消し",
+      "batch_revoke": "一括取り消し",
+      "batch_revoke_paid": "一括取り消し（{price}/バッチ）",
+      "continuous_monitoring": "継続的な監視",
       "exploit_checker": "エクスプロイトチェッカー",
-      "gas_allowance": "Gas budget",
-      "gas_allowance_amount": "{budget}/month",
-      "gas_allowance_included": "{budget}/month gas budget included",
+      "gas_allowance": "ガス予算",
+      "gas_allowance_amount": "{budget}/月",
+      "gas_allowance_included": "{budget}/月のガス予算付き",
       "multichain_dashboard": "マルチチェーンダッシュボード",
       "multichain_exploit_checker": "マルチチェーンエクスプロイトチェッカー",
       "one_chain": "チェーンは一度に1つずつ",
@@ -118,41 +110,41 @@
       "revoke_approvals": "100以上のネットワークで承認を取り消す",
       "time_machine": "タイムマシン",
       "unlimited": "無制限",
-      "unlimited_batch_revokes": "無制限のバッチ取り消し"
+      "unlimited_batch_revokes": "無制限の一括取り消し"
     },
-    "includes_tier": "Everything in {tierName}, plus:",
+    "includes_tier": "{tierName}のすべての機能に加えて：",
     "meta": {
-      "description": "Revoke Premiumプランを比較しましょう。マルチチェーンダッシュボードや無制限のバッチリコール機能など、多彩な機能をご利用いただけます。",
-      "title": "プレミアム価格"
+      "description": "Revoke Premiumのプランを比較しましょう。マルチチェーンダッシュボードや無制限の一括取り消しなどをご利用いただけます。",
+      "title": "プレミアムの料金プラン"
     },
-    "most_popular": "最も人気",
-    "most_popular_label": "Most Popular",
-    "payment_note": "Pay with USDC on Ethereum or other popular networks. One-time payment for a full year, no auto-renew, and no token approvals needed.",
+    "most_popular_label": "最も人気",
+    "payment_note": "Ethereumやその他の主要ネットワーク上のUSDCでお支払いいただけます。1年分の一括払いで、自動更新はなく、トークン承認も不要です。",
     "per_year": "/年",
     "tiers": {
       "free": {
-        "cta": "始める",
+        "cta": "開始する",
         "description": "トークンの承認を確認・取り消すための必須ツール。",
-        "name": "無料"
+        "name": "無料",
+        "savings": "Placeholder"
       },
       "premium": {
         "cta": "購読",
-        "description": "マルチチェーンダッシュボードへのフルアクセス、履歴の確認、および無制限のバッチ取り消し機能。",
+        "description": "1つのマルチチェーンダッシュボードでトークン承認を監視・管理できます。",
         "name": "プレミアム",
-        "price_note": "{count} wallets included",
-        "savings": "That's {price} per wallet per month"
+        "price_note": "{count}個のウォレットを含む",
+        "savings": "ウォレット1個あたり月々{price}です"
       },
       "ultimate": {
-        "cta": "Subscribe",
-        "description": "Set-and-forget protection with automated revoking.",
+        "cta": "購読",
+        "description": "自動取り消しによる、一度設定すればあとはおまかせの保護。",
         "name": "Ultimate",
-        "price_note": "{count} wallets included",
-        "savings": "That's {price} per wallet per month"
+        "price_note": "{count}個のウォレットを含む",
+        "savings": "ウォレット1個あたり月々{price}です"
       }
     },
-    "title": "価格設定",
+    "title": "プレミアムの料金プラン",
     "tooltips": {
-      "automated_revoking": "Requires MetaMask. Supported on select networks. Automated revoking is best-effort and cannot guarantee that losses are prevented."
+      "automated_revoking": "MetaMaskが必要です。一部のネットワークで対応しています。自動取り消しはベストエフォート型であり、損失を確実に防げると保証するものではありません。"
     }
   }
 }

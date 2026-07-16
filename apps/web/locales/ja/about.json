@@ -1,62 +1,62 @@
 {
   "meta": {
-    "description": "Revoke.cashは、2019年にトークンの承認を管理するためのツールとしてRosco Kalis氏によって開発されました。それ以来、Revoke.cashはweb3セキュリティの定番ツールとなっています。",
+    "description": "Revoke.cashは、2019年にトークンの承認を管理するためのツールとしてRosco Kalis氏によって開発されました。それ以来、Revoke.cashはweb3セキュリティーの定番ツールとなっています。",
     "title": "私たちについて"
   },
   "timeline": {
     "batch_revoke": {
-      "description": "A much-requested feature, users can now revoke multiple approvals in a single flow with queued transactions.",
-      "title": "Batch Revoking"
+      "description": "多くの要望が寄せられていた機能として、キューに入れたトランザクションによる一連のフローで複数の承認を取り消せるようになりました。",
+      "title": "一括取り消し"
     },
     "beyond_approvals": {
-      "description": "Revoke.cash expands beyond approval management with new tabs for managing delegations and viewing approval history.",
-      "title": "Delegations & History Tabs"
+      "description": "Revoke.cashは、委任を管理し承認履歴を閲覧できる新しいタブを追加し、承認管理の枠を超えて拡大しました。",
+      "title": "委任・履歴タブ"
     },
     "created": {
-      "description": "Inspired by Paul Berg's talk at Devcon 5, Rosco Kalis builds the first token approval management tool, giving users a way to revoke unlimited approvals.",
-      "title": "Revoke.cash Created"
+      "description": "Devcon 5でのPaul Berg氏の講演に触発され、Rosco Kalis氏が初のトークン承認管理ツールを開発し、ユーザーに無制限の承認を取り消す手段を提供しました。",
+      "title": "Revoke.cashの誕生"
     },
     "extension": {
-      "description": "The crypto ecosystem sees a large increase in scams and phishing attacks. Rosco releases a browser extension that warns users before signing risky approvals, providing proactive protection.",
-      "title": "Browser Extension Launch"
+      "description": "暗号資産エコシステムでは、詐欺やフィッシング攻撃が大幅に増加しました。Rosco氏は、リスクの高い承認に署名する前にユーザーに警告するブラウザ拡張機能をリリースし、事前の保護を提供しました。",
+      "title": "ブラウザ拡張機能の公開"
     },
     "extension_overhaul": {
-      "description": "The threat landscape is constantly evolving, and the browser extension needs to stay ahead. Revoke.cash partners with Fairside to build a new extension with improved detection, UX and risk coverage.",
-      "title": "Extension Overhaul"
+      "description": "脅威の状況は常に変化しており、ブラウザ拡張機能はその先を行く必要があります。Revoke.cashはFairsideと提携し、検出機能、UX、リスクカバレッジを改善した新しい拡張機能を開発しました。",
+      "title": "拡張機能の全面刷新"
     },
     "full_time": {
-      "description": "After leaving his previous startup, Rosco decides to focus on Revoke.cash full-time, turning it from a side project into a mission.",
-      "title": "Going Full-Time"
+      "description": "以前のスタートアップを離れた後、Rosco氏はRevoke.cashにフルタイムで専念することを決め、サイドプロジェクトからミッションへと変えました。",
+      "title": "フルタイム化"
     },
     "learn_section": {
-      "description": "While tools are an important part of security, it does not replace the need for education. A Learn Section is added to help users understand wallet security.",
-      "title": "Learn Section"
+      "description": "ツールはセキュリティーの重要な要素ですが、教育の必要性に取って代わるものではありません。ユーザーがウォレットセキュリティーを理解できるよう、「学ぶ」セクションが追加されました。",
+      "title": "「学ぶ」セクション"
     },
     "multichain": {
-      "description": "The EVM ecosystem is growing rapidly, and Revoke.cash expands beyond Ethereum to support dozens of EVM-compatible networks.",
-      "title": "Multichain Expansion"
+      "description": "EVMエコシステムが急速に成長する中、Revoke.cashはEthereumの枠を超えて、数十のEVM互換ネットワークに対応するよう拡大しました。",
+      "title": "マルチチェーンへの拡大"
     },
     "nft_support": {
-      "description": "As NFTs rise in popularity, many users are giving approvals to marketplaces like OpenSea. Revoke.cash becomes the first tool to support revoking NFT approvals, expanding beyond ERC20 tokens.",
-      "title": "NFT Approval Support"
+      "description": "NFTの人気が高まる中、多くのユーザーがOpenSeaなどのマーケットプレイスに承認を与えるようになりました。Revoke.cashは、ERC20トークンの枠を超えて、NFT承認の取り消しに対応した初のツールとなりました。",
+      "title": "NFT承認への対応"
     },
     "premium": {
-      "description": "With a decline in public goods funding, Revoke.cash needs to find a sustainable business model. Revoke Premium is launched to generate real revenue.",
+      "description": "公共財への資金提供が減少する中、Revoke.cashは持続可能なビジネスモデルを見つける必要がありました。実際の収益を生み出すために、Revoke Premiumが開始されました。",
       "title": "Revoke Premium"
     },
     "redesign": {
-      "description": "At this point, Revoke.cash has had the same visual design since 2019. To pave the way for the future, a complete visual overhaul of the Revoke.cash dashboard and website is released.",
-      "title": "Website Redesign"
+      "description": "この時点で、Revoke.cashは2019年から同じビジュアルデザインを使い続けていました。将来への布石として、Revoke.cashのダッシュボードとウェブサイトのビジュアルを全面的に刷新しました。",
+      "title": "ウェブサイトの刷新"
     },
     "single_tx_batch": {
-      "description": "EIP7702 enables revoking multiple approvals in a single transaction, massively improving the user experience of batch revoking.",
-      "title": "Single-Transaction Batch Revoke"
+      "description": "EIP7702により、1回のトランザクションで複数の承認を取り消せるようになり、一括取り消しのユーザー体験が大幅に向上しました。",
+      "title": "単一トランザクションでの一括取り消し"
     },
     "team_retropgf": {
-      "description": "Optimism RetroPGF provides major funding, enabling the first team expansion. In 2024, the team grows to include Dries and WiiMee as part-time team members.",
-      "title": "Team Growth & RetroPGF"
+      "description": "Optimism RetroPGFによる大規模な資金提供により、初のチーム拡大が可能になりました。2024年には、DriesとWiiMeeがパートタイムメンバーとしてチームに加わりました。",
+      "title": "チームの成長とRetroPGF"
     },
-    "today": "Today"
+    "today": "現在"
   },
   "title": "私たちについて"
 }

@@ -1,254 +1,252 @@
 {
   "addresses": {
-    "add_address": "Add wallet",
-    "add_failed": "Failed to add wallet",
-    "placeholder": "Wallet address or domain name",
-    "remove": "Remove",
-    "remove_failed": "Failed to remove wallet",
-    "resolve_failed": "Could not resolve wallet address or name",
-    "title": "Premium Wallets"
+    "add_address": "Добавить кошелек",
+    "add_failed": "Не удалось добавить кошелек",
+    "placeholder": "Адрес кошелька или доменное имя",
+    "remove_failed": "Не удалось удалить кошелек",
+    "resolve_failed": "Не удалось определить адрес или имя кошелька",
+    "title": "Кошельки Premium"
   },
   "auto_revoke": {
     "activity": {
       "columns": {
-        "asset": "Asset",
-        "chain": "Network",
-        "cost": "Cost",
-        "date": "Date",
-        "spender": "Spender",
-        "status": "Status",
-        "trigger": "Trigger",
-        "wallet": "Wallet"
+        "asset": "Актив",
+        "chain": "Сеть",
+        "cost": "Стоимость",
+        "date": "Дата",
+        "spender": "Распорядитель",
+        "status": "Статус",
+        "trigger": "Триггер",
+        "wallet": "Кошелек"
       },
-      "empty": "No auto-revoke activity yet. Approvals matching your rules will appear here as they are revoked.",
-      "empty_preview": "Auto-revoke activity will appear here once you upgrade to Ultimate and set up Auto-Revoking.",
+      "empty": "Активности автоматического отзыва пока нет. Доступы, соответствующие вашим правилам, будут появляться здесь по мере их отзыва.",
+      "empty_preview": "Активность автоматического отзыва появится здесь, когда вы перейдете на Ultimate и настроите автоматический отзыв.",
       "reasons": {
-        "awaiting_cheap_gas": "Waiting for lower gas prices to stretch your monthly budget.",
-        "chain_pipeline_full": "Waiting for other revokes on this chain to confirm.",
-        "cooling": "Waiting out a short safety delay before executing, so rule changes can still cancel it.",
-        "execution_failed": "The revoke transaction could not be completed.",
-        "monthly_budget": "Waiting because the monthly budget is used up. Exploit-triggered revokes still go through.",
-        "monthly_budget_urgent": "Waiting because this month's maximum spend for exploit-triggered revokes has been reached.",
-        "nonce_consumed": "Resubmitting after a transaction conflict.",
-        "per_action_cap": "Waiting because the estimated cost exceeds the per-revoke limit.",
-        "queued": "Waiting to be executed.",
-        "subscription_inactive": "Waiting for an active subscription to cover this wallet.",
-        "transaction_reverted": "The revoke transaction reverted on-chain.",
-        "transient_error": "A temporary error occurred; this will be retried."
+        "awaiting_cheap_gas": "Ожидание снижения цен на газ для более экономного расходования месячного бюджета.",
+        "chain_pipeline_full": "Ожидание подтверждения других отзывов в этой сети.",
+        "cooling": "Короткая защитная задержка перед выполнением, чтобы изменение правил еще могло отменить отзыв.",
+        "execution_failed": "Не удалось выполнить транзакцию отзыва.",
+        "monthly_budget": "Ожидание, так как месячный бюджет исчерпан. Отзывы, вызванные эксплойтами, по-прежнему выполняются.",
+        "monthly_budget_urgent": "Ожидание, так как достигнут месячный лимит расходов на отзывы, вызванные эксплойтами.",
+        "nonce_consumed": "Повторная отправка после конфликта транзакций.",
+        "per_action_cap": "Ожидание, так как расчетная стоимость превышает лимит на один отзыв.",
+        "queued": "Ожидает выполнения.",
+        "subscription_inactive": "Ожидание активной подписки, покрывающей этот кошелек.",
+        "transaction_reverted": "Транзакция отзыва была отклонена в блокчейне.",
+        "transient_error": "Произошла временная ошибка; попытка будет повторена."
       },
       "scope": {
-        "mine": "Your activity",
-        "subscription": "All members"
+        "mine": "Ваша активность",
+        "subscription": "Все участники"
       },
       "status": {
-        "failed": "Failed",
-        "pending": "Pending",
-        "revoked": "Revoked",
-        "skipped": "Not needed",
-        "submitting": "Submitting"
+        "failed": "Не удалось",
+        "pending": "В ожидании",
+        "revoked": "Отозвано",
+        "skipped": "Не требуется",
+        "submitting": "Отправка"
       },
-      "title": "Activity",
+      "title": "Активность",
       "triggers": {
-        "exploit": "Exploit",
-        "risk_score": "Risky",
-        "stale": "Stale"
+        "exploit": "Эксплойт",
+        "risk_score": "Рискованный",
+        "stale": "Устаревший"
       }
     },
     "budget": {
-      "exploit_protection": "Exploit-triggered revokes still go through when the budget is used up.",
-      "per_action_cap": "Each revoke is capped at {cap}.",
-      "resets": "Resets {date}",
-      "shared": "The gas budget is shared by all wallets in the subscription.",
-      "used": "{used} of {total} used this month"
+      "exploit_protection": "Отзывы, вызванные эксплойтами, выполняются даже при исчерпанном бюджете.",
+      "per_action_cap": "Каждый отзыв ограничен суммой {cap}.",
+      "resets": "Обновится {date}",
+      "shared": "Бюджет на газ общий для всех кошельков в подписке.",
+      "used": "Использовано {used} из {total} в этом месяце"
     },
-    "load_failed": "Failed to load your Auto-Revoking configuration. Please refresh the page or try again later.",
-    "metamask_not_connected": "MetaMask not connected",
-    "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",
+    "load_failed": "Не удалось загрузить вашу конфигурацию автоматического отзыва. Обновите страницу или повторите попытку позже.",
+    "metamask_not_connected": "MetaMask не подключен",
+    "metamask_required": "Для автоматического отзыва требуется MetaMask. Подключитесь через MetaMask, чтобы использовать эту функцию.",
     "permissions": {
-      "connect_to_manage": "Connect this wallet to manage its permissions.",
-      "decode_failed": "Failed to decode permission",
-      "grant": "Grant",
-      "grant_description": "Each address must individually grant auto-revoke permission via MetaMask.",
-      "grant_failed": "Failed to grant auto-revoke permission.",
-      "networks_enabled": "{enabled}/{total} networks enabled",
-      "no_active_permission_returned": "No active permission returned",
-      "revoke_failed": "Failed to revoke auto-revoke permission.",
-      "revoke_transaction_reverted": "The transaction to disable the permission failed onchain. Sync from wallet and try again.",
-      "sync": "Sync from wallet",
-      "sync_failed": "Failed to sync auto-revoke permissions from wallet.",
-      "sync_success": "Auto-revoke permissions synced from wallet.",
-      "title": "Permissions"
+      "connect_to_manage": "Подключите этот кошелек, чтобы управлять его разрешениями.",
+      "decode_failed": "Не удалось декодировать разрешение",
+      "grant_description": "Каждый адрес должен отдельно выдать разрешение на автоматический отзыв через MetaMask.",
+      "grant_failed": "Не удалось выдать разрешение на автоматический отзыв.",
+      "networks_enabled": "Включено сетей: {enabled}/{total}",
+      "no_active_permission_returned": "Активное разрешение не получено",
+      "revoke_failed": "Не удалось отозвать разрешение на автоматический отзыв.",
+      "revoke_transaction_reverted": "Транзакция отключения разрешения завершилась ошибкой в блокчейне. Выполните синхронизацию из кошелька и повторите попытку.",
+      "sync": "Синхронизировать из кошелька",
+      "sync_failed": "Не удалось синхронизировать разрешения на автоматический отзыв из кошелька.",
+      "sync_success": "Разрешения на автоматический отзыв синхронизированы из кошелька.",
+      "title": "Разрешения"
     },
     "rules": {
-      "days": "days",
-      "defaults_description": "These rules apply to all wallets in this subscription by default, but each wallet can override them.",
-      "managed_by": "Managed by {owner}",
-      "risk_detection": "Risky Approval Detection",
-      "risk_detection_description": "Auto-revoke approvals to risky or exploited spenders.",
-      "save_failed": "Failed to save rules.",
-      "sensitivity_exploits_only": "Exploits only",
-      "sensitivity_high": "High risk",
-      "sensitivity_medium": "Medium risk and above",
-      "stale_approval": "Stale Approval Cleanup",
-      "stale_approval_description": "Revoke approvals older than the specified number of days.",
-      "title": "Rules",
-      "title_defaults": "Default Rules"
+      "days": "дн.",
+      "defaults_description": "Эти правила по умолчанию применяются ко всем кошелькам в подписке, но каждый кошелек может их переопределить.",
+      "managed_by": "Управляется {owner}",
+      "risk_detection": "Обнаружение рискованных доступов",
+      "risk_detection_description": "Автоматически отзывать доступы, выданные рискованным или взломанным адресам.",
+      "save_failed": "Не удалось сохранить правила.",
+      "sensitivity_exploits_only": "Только эксплойты",
+      "sensitivity_high": "Высокий риск",
+      "sensitivity_medium": "Средний риск и выше",
+      "stale_approval": "Очистка устаревших доступов",
+      "stale_approval_description": "Отзывать доступы старше указанного количества дней.",
+      "title": "Правила",
+      "title_defaults": "Правила по умолчанию"
     },
     "rules_source": {
-      "custom": "Custom rules",
-      "subscription_defaults": "Managed by {owner}",
-      "switch_failed": "Failed to switch rules source.",
-      "title": "Rules Source"
+      "custom": "Собственные правила",
+      "subscription_defaults": "Управляется {owner}",
+      "switch_failed": "Не удалось переключить источник правил.",
+      "title": "Источник правил"
     },
     "setup": {
-      "banner": "Auto-Revoking is not active for this wallet yet.",
-      "banner_cta": "Set it up",
-      "get_started": "Auto-Revoking is not active for this wallet yet. Toggle the networks you want protected below. Every wallet in the subscription needs to do this once, using MetaMask."
+      "banner": "Автоматический отзыв для этого кошелька еще не активен.",
+      "banner_cta": "Настроить",
+      "get_started": "Автоматический отзыв для этого кошелька еще не активен. Включите ниже сети, которые вы хотите защитить. Каждому кошельку в подписке нужно сделать это один раз через MetaMask."
     },
-    "title": "Auto-Revoking",
-    "upsell": "Auto-Revoking automatically revokes dangerous or stale approvals on your behalf. It requires an Ultimate subscription."
+    "title": "Автоматический отзыв",
+    "upsell": "Функция автоматического отзыва отзывает опасные или устаревшие доступы от вашего имени. Для ее использования требуется подписка Ultimate."
   },
   "billing": {
     "columns": {
-      "amount": "Amount",
-      "date": "Date",
-      "plan": "Plan",
-      "status": "Status",
-      "transaction": "Transaction"
+      "amount": "Сумма",
+      "date": "Дата",
+      "plan": "План",
+      "status": "Статус",
+      "transaction": "Транзакция"
     },
     "details": {
-      "refund_available": "You can still cancel this payment and receive a full refund.",
-      "refund_transaction": "Refund transaction",
-      "requested_at": "Requested on"
+      "refund_available": "Вы еще можете отменить этот платеж и получить полный возврат средств.",
+      "refund_transaction": "Транзакция возврата",
+      "requested_at": "Запрошено"
     },
-    "no_payments": "No payment history yet.",
+    "no_payments": "Истории платежей пока нет.",
     "status": {
-      "final": "Final",
-      "pending_refund": "Pending refund",
-      "refunded": "Refunded",
-      "within_refund_window": "Within refund window"
+      "final": "Окончательный",
+      "pending_refund": "Ожидает возврата",
+      "refunded": "Возвращен",
+      "within_refund_window": "Доступен возврат"
     },
-    "title": "Billing"
+    "title": "Платежи"
   },
   "coverage": {
-    "active": "Active",
+    "active": "Активно",
     "extension": {
-      "get_extension": "Get Revoke Sidekick",
-      "lite_description": "Coverage is inactive because the extension is on the Lite tier. Switch to Standard to activate up to $30k in theft coverage.",
-      "not_installed_description": "You are currently not covered by the Revoke Sidekick extension. Install the Revoke Sidekick extension for real-time transaction warnings and up to $30k in theft coverage.",
-      "standard_description": "You are covered for up to $30k in theft protection through the Revoke Sidekick extension.",
-      "title": "Revoke Sidekick Coverage"
+      "get_extension": "Установить Revoke Sidekick",
+      "lite_description": "Покрытие неактивно, так как расширение использует тариф Lite. Переключитесь на Standard, чтобы активировать покрытие от кражи на сумму до $30 000.",
+      "not_installed_description": "Сейчас вы не защищены расширением Revoke Sidekick. Установите расширение Revoke Sidekick, чтобы получать предупреждения о транзакциях в реальном времени и покрытие от кражи на сумму до $30 000.",
+      "standard_description": "Вы защищены от кражи на сумму до $30 000 через расширение Revoke Sidekick.",
+      "title": "Покрытие Revoke Sidekick"
     },
     "fairside": {
-      "active_description": "You are covered for up to {amount} in theft protection through Fairside.",
-      "covered": "{amount} covered",
-      "covered_wallets": "Covered Wallets",
-      "description": "Protect your wallet against phishing and social engineering drains with Fairside coverage.",
+      "active_description": "Вы защищены от кражи на сумму до {amount} через Fairside.",
+      "covered": "Покрыто {amount}",
+      "covered_wallets": "Покрытые кошельки",
+      "description": "Защитите свой кошелек от кражи средств через фишинг и социальную инженерию с покрытием Fairside.",
       "errors": {
-        "authentication_failed": "Failed to authenticate",
-        "authentication_failed_fairside": "Failed to authenticate with Fairside",
-        "connect_wallet": "Please connect your wallet to authenticate",
-        "generate_message_failed": "Could not generate authentication message"
+        "authentication_failed": "Не удалось пройти аутентификацию",
+        "authentication_failed_fairside": "Не удалось пройти аутентификацию в Fairside",
+        "connect_wallet": "Пожалуйста, подключите кошелек для аутентификации",
+        "generate_message_failed": "Не удалось сгенерировать сообщение для аутентификации"
       },
-      "get_coverage": "Get Coverage",
-      "manage": "Manage Coverage",
-      "title": "Fairside Coverage",
-      "valid_until": "Valid until {date}.",
-      "wallets_description": "Sign an authentication message to view your covered wallets."
+      "get_coverage": "Получить покрытие",
+      "manage": "Управлять покрытием",
+      "title": "Покрытие Fairside",
+      "valid_until": "Действует до {date}.",
+      "wallets_description": "Подпишите сообщение об аутентификации, чтобы просмотреть покрытые кошельки."
     },
-    "inactive": "Inactive",
-    "title": "Theft Coverage"
+    "inactive": "Неактивно",
+    "title": "Покрытие от кражи"
   },
-  "description": "Manage your premium subscription and account settings.",
-  "error": "Something went wrong loading your subscription data. Please try again later.",
+  "description": "Управляйте своей подпиской Premium и настройками аккаунта.",
+  "error": "При загрузке данных подписки произошла ошибка. Пожалуйста, повторите попытку позже.",
   "granted": {
-    "active": "Active",
-    "granted_by": "Granted by {address} · Valid until {date}",
-    "title": "Granted Premium Access"
+    "active": "Активен",
+    "granted_by": "Предоставлен {address} • Действует до {date}",
+    "title": "Предоставленный доступ к Premium"
   },
   "meta": {
-    "description": "Manage your account and premium settings.",
-    "title": "Account Settings"
+    "description": "Управление аккаунтом и настройками Premium.",
+    "title": "Настройки аккаунта"
   },
   "subscription": {
-    "active": "Active",
+    "active": "Активна",
     "buttons": {
-      "confirming": "Confirming payment",
-      "creating": "Creating payment",
-      "extend": "Extend",
-      "paying": "Confirm in wallet",
-      "renew": "Renew",
-      "subscribe": "Subscribe",
-      "try_again": "Try again",
-      "upgrade": "Upgrade"
+      "confirming": "Подтверждение платежа",
+      "creating": "Создание платежа",
+      "extend": "Продлить",
+      "paying": "Подтвердите в кошельке",
+      "renew": "Возобновить",
+      "subscribe": "Подписаться",
+      "try_again": "Повторить попытку",
+      "upgrade": "Повысить план"
     },
     "cancellation": {
-      "cancelled": "Cancelled",
-      "cancelled_on": "Cancelled on {date}. Your payment was refunded.",
-      "confirm_button": "Request refund",
-      "download_confirmation": "Download confirmation",
-      "error_fallback": "Failed to request a refund",
-      "modal_access_notice": "You keep access to your subscription until the refund is processed. The refund is sent to the wallet that paid.",
-      "modal_description": "This cancels your {planName} payment and refunds it in full. If you have other payments, your subscription is recalculated without this one.",
-      "modal_title": "Cancel subscription",
-      "network": "Network",
-      "refund_amount": "Refund amount",
-      "refund_destination": "Refund destination",
-      "requested": "Cancellation requested",
-      "success": "Refund requested. You keep access until the refund is processed."
+      "cancelled": "Отменена",
+      "cancelled_on": "Отменена {date}. Ваш платеж возвращен.",
+      "confirm_button": "Запросить возврат",
+      "download_confirmation": "Скачать подтверждение",
+      "error_fallback": "Не удалось запросить возврат",
+      "modal_access_notice": "Доступ к подписке сохраняется до обработки возврата. Возврат отправляется на кошелек, с которого был совершен платеж.",
+      "modal_description": "Это отменит ваш платеж за {planName} и вернет его в полном объеме. Если у вас есть другие платежи, подписка будет пересчитана без этого платежа.",
+      "modal_title": "Отменить подписку",
+      "network": "Сеть",
+      "refund_amount": "Сумма возврата",
+      "refund_destination": "Адрес для возврата",
+      "requested": "Запрошена отмена",
+      "success": "Возврат запрошен. Доступ сохраняется до обработки возврата."
     },
-    "downgrade_not_supported": "You cannot downgrade an active subscription.",
-    "expired": "Expired",
-    "expired_on": "Expired on {date}.",
-    "expired_preserved": "Your wallet slots and Auto-Revoking rules are preserved. Renew to pick up where you left off.",
-    "expired_ultimate_stopped": "Auto-Revoking is no longer monitoring your wallets.",
-    "expires_in": "Expires in {days, plural, =1 {1 day} other {# days}} ({date})",
-    "expires_soon": "Expires soon",
-    "granted_by": "Granted by {address}",
-    "legal_notice": "By subscribing, you agree to our <terms-link>Terms of Service</terms-link>.",
-    "next_setup_auto_revoke": "Next step: set up Auto-Revoking",
-    "no_subscription": "You don't have an active premium subscription. Subscribe below to get started. <premium-link>Learn more about Premium</premium-link>.",
-    "optional_own_subscription": "You already have access through a granted subscription. You can still subscribe for your own plan if you'd like.",
-    "payment_confirmed": "Payment confirmed! Your premium subscription is now active.",
-    "payment_expired": "The payment window expired. If you already sent the full USDC amount, it will be credited automatically once it lands on-chain. Check your subscription status in a few minutes.",
-    "payment_failed": "Subscription payment failed",
-    "payment_help": "Need help? <support-link>Chat with support</support-link>.",
-    "payment_network": "Payment network",
-    "payment_status_error": "Payment {status}",
-    "payment_summary": "You will pay {amount} {token} for {days} days. Includes up to {maxAddresses} {maxAddresses, plural, =1 {wallet} other {wallets}}.",
-    "plan": "Plan",
-    "plan_description": "${price}/year",
+    "downgrade_not_supported": "Вы не можете понизить план активной подписки.",
+    "expired": "Истекла",
+    "expired_on": "Истекла {date}.",
+    "expired_preserved": "Ваши слоты для кошельков и правила автоматического отзыва сохранены. Возобновите подписку, чтобы продолжить с того места, где остановились.",
+    "expired_ultimate_stopped": "Автоматический отзыв больше не отслеживает ваши кошельки.",
+    "expires_in": "Истекает через {days, plural, one {# день} few {# дня} many {# дней} other {# дня}} ({date})",
+    "expires_soon": "Скоро истекает",
+    "granted_by": "Предоставлена {address}",
+    "legal_notice": "Оформляя подписку, вы соглашаетесь с нашими <terms-link>Условиями использования</terms-link>.",
+    "next_setup_auto_revoke": "Следующий шаг: настройте автоматический отзыв",
+    "no_subscription": "У вас нет активной подписки Premium. Оформите подписку, чтобы начать. <premium-link>Узнать больше о Premium</premium-link>.",
+    "optional_own_subscription": "У вас уже есть доступ через предоставленную подписку. При желании вы можете оформить и собственную подписку.",
+    "payment_confirmed": "Платеж подтвержден! Ваша подписка Premium теперь активна.",
+    "payment_expired": "Время на оплату истекло. Если вы уже отправили полную сумму в USDC, она будет зачислена автоматически, как только поступит в блокчейн. Проверьте статус подписки через несколько минут.",
+    "payment_failed": "Не удалось оплатить подписку",
+    "payment_help": "Нужна помощь? <support-link>Напишите в поддержку</support-link>.",
+    "payment_network": "Сеть платежа",
+    "payment_status_error": "Платеж: {status}",
+    "payment_summary": "Вы заплатите {amount} {token} за {days, plural, one {# день} few {# дня} many {# дней} other {# дня}}. Включает до {maxAddresses} {maxAddresses, plural, one {кошелька} few {кошельков} many {кошельков} other {кошелька}}.",
+    "plan": "План",
+    "plan_description": "${price}/год",
     "plan_options": {
-      "basic_access": "Basic Access",
-      "current": "Current",
-      "free": "Free"
+      "basic_access": "Базовый доступ",
+      "current": "Текущий",
+      "free": "Бесплатный"
     },
-    "plans_unavailable": "Checkout is temporarily unavailable. Please try again later.",
-    "slots_summary": "{used}/{max} wallet {max, plural, =1 {slot} other {slots}} used",
-    "title": "Premium Subscription",
-    "ultimate_requires_metamask": "Auto-Revoking requires MetaMask. You can pay with any wallet, and set up Auto-Revoking afterwards by connecting with MetaMask.",
-    "valid_until": "Valid until {date}",
-    "wallet": "Wallet",
-    "wrong_wallet_error": "The payment must be sent from {address}. Please switch to that wallet and try again."
+    "plans_unavailable": "Оформление подписки временно недоступно. Пожалуйста, повторите попытку позже.",
+    "slots_summary": "Использовано {used} из {max} {max, plural, one {слота} few {слотов} many {слотов} other {слота}} для кошельков",
+    "title": "Подписка Premium",
+    "ultimate_requires_metamask": "Для автоматического отзыва требуется MetaMask. Оплатить можно любым кошельком, а затем настроить автоматический отзыв, подключившись через MetaMask.",
+    "valid_until": "Действует до {date}",
+    "wallet": "Кошелек",
+    "wrong_wallet_error": "Платеж должен быть отправлен с адреса {address}. Пожалуйста, переключитесь на этот кошелек и повторите попытку."
   },
   "tabs": {
-    "auto_revoke": "Auto-Revoking",
-    "billing": "Billing",
-    "coverage": "Coverage",
-    "subscription": "Subscription"
+    "auto_revoke": "Автоматический отзыв",
+    "billing": "Платежи",
+    "coverage": "Покрытие",
+    "subscription": "Подписка"
   },
   "unauthenticated": {
     "benefits": {
-      "auto_revoke": "Set up and monitor Auto-Revoking",
-      "billing": "View your billing history",
-      "coverage": "View and manage Fairside coverage",
-      "manage_subscription": "Manage your Premium subscription",
-      "title": "What you can do here"
+      "auto_revoke": "Настройка и мониторинг автоматического отзыва",
+      "billing": "Просмотр истории платежей",
+      "coverage": "Просмотр покрытия Fairside и управление им",
+      "manage_subscription": "Управление подпиской Premium",
+      "title": "Что здесь можно сделать"
     },
-    "description": "Sign in to manage your Premium subscription, Auto-Revoking, wallet slots, and coverage.",
+    "description": "Войдите, чтобы управлять подпиской Premium, автоматическим отзывом, слотами для кошельков и покрытием.",
     "selected_plan": {
-      "summary": "{price} per year with up to {maxAddresses} wallets included. Connect your wallet to continue.",
-      "title": "Subscribe to {planName}"
+      "summary": "{price} в год, включая до {maxAddresses} кошельков. Подключите кошелек, чтобы продолжить.",
+      "title": "Оформить подписку {planName}"
     }
   }
 }

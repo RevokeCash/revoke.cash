@@ -1,30 +1,30 @@
 {
   "faq": {
-    "subtitle": "Здесь находятся самые часто задаваемые вопросы. Чтобы посмотреть полный список перейдите на страницу <faq-link>ЧаВо</faq-link>.",
+    "subtitle": "Здесь находятся самые часто задаваемые вопросы. Чтобы посмотреть полный список, перейдите на страницу <faq-link>ЧаВо</faq-link>.",
     "title": "Часто задаваемые вопросы"
   },
   "features": {
     "auto_revoke": {
-      "description": "Let Revoke.cash watch your approvals around the clock and revoke risky ones automatically on your behalf. Set-and-forget protection for your wallet, even while you sleep.",
-      "title": "Automated Revoking"
+      "description": "Позвольте Revoke.cash круглосуточно следить за вашими доступами и автоматически отзывать рискованные от вашего имени. Настройте один раз, и ваш кошелек будет под защитой, даже пока вы спите.",
+      "title": "Автоматический отзыв"
     },
     "dashboard": {
-      "description": "Get a clear overview of every token approval you've ever granted. Sort, filter, and revoke the ones you no longer need all from one simple dashboard.",
-      "title": "Approval Dashboard"
+      "description": "Получите наглядный обзор всех одобрений токенов, которые вы когда-либо выдавали. Сортируйте, фильтруйте и отзывайте ненужные в одной удобной панели.",
+      "title": "Панель доступов"
     },
     "exploit_checker": {
-      "description": "Automatically check your approvals against known exploits to see if any of your approvals are at risk.",
-      "title": "Exploit Checker"
+      "description": "Автоматически сверяйте свои доступы с известными эксплойтами, чтобы узнать, находятся ли какие-то из них под угрозой.",
+      "title": "Проверка эксплойтов"
     },
-    "title": "Built for Wallet Security"
+    "title": "Создано для безопасности кошелька"
   },
   "hero_section": {
-    "subtitle": "Inspect and revoke token approvals to protect your wallet from exploits and scams.",
-    "title": "Полностью контролируйте свой кошелёк."
+    "subtitle": "Просматривайте и отзывайте одобрения токенов, чтобы защитить свой кошелек от эксплойтов и мошенничества.",
+    "title": "Верните себе контроль над <highlight>своим кошельком.</highlight>"
   },
   "how_to": {
     "paragraph_1": {
-      "description": "Нажмите <b>Подключить кошелёк</b> в правом верхнем углу или введите адрес в поисковую строку.",
+      "description": "Нажмите <b>Подключить кошелек</b> в правом верхнем углу или введите адрес в поисковую строку.",
       "title": "1. Подключение"
     },
     "paragraph_2": {
@@ -32,46 +32,50 @@
       "title": "2. Просмотр"
     },
     "paragraph_3": {
-      "description": "Отмените доступы к сервисам, которые вы больше не используете, чтобы избежать кражи средств.",
-      "title": "3. Отмена доступа"
+      "description": "Отзовите доступы, которые вы больше не используете, чтобы предотвратить нежелательный доступ к вашим средствам.",
+      "title": "3. Отзыв"
     },
-    "title": "Как отменить доступы."
+    "title": "Как отозвать доступы"
   },
   "premium": {
-    "best_protection": "Best Protection",
-    "description": "Monitor and protect your token approvals across 100+ networks. Starting at {price}/year.",
+    "best_protection": "Лучшая защита",
+    "description": "Отслеживайте и защищайте одобрения токенов более чем в 100 сетях. От {price} в год.",
     "free_features": {
-      "batch_revoke": "Batch revoke ($1.50/batch)",
-      "exploit_checker": "Single-chain exploit checker",
-      "history": "Single-chain approval history",
-      "single_chain": "Single-chain approval dashboard"
+      "batch_revoke": "Пакетный отзыв ($1.50 за пакет)",
+      "exploit_checker": "Проверка эксплойтов для одной сети",
+      "single_chain": "Панель доступов для одной сети"
     },
-    "free_title": "Free",
+    "free_title": "Бесплатный",
     "highlights": {
-      "multichain_dashboard": "Multichain dashboard",
-      "multichain_exploit_checker": "Multichain exploit checker",
-      "priority_support": "Priority support",
-      "time_machine": "Time machine for historical approvals",
-      "unlimited_batch_revokes": "Unlimited batch revokes"
+      "multichain_dashboard": "Мультичейн-панель",
+      "multichain_exploit_checker": "Мультичейн-проверка эксплойтов",
+      "time_machine": "Time Machine для истории одобрений",
+      "unlimited_batch_revokes": "Неограниченные пакетные отзывы"
     },
-    "includes_premium": "Everything in Premium, plus:",
-    "most_popular": "Most Popular",
-    "premium_price": "{price}/year",
+    "most_popular": "Самый популярный",
+    "premium_price": "{price}/год",
     "premium_title": "Premium",
     "title": "Revoke Premium",
     "ultimate_features": {
-      "automated_revoking": "Automated revoking",
-      "automated_revoking_tooltip": "Requires MetaMask. Supported on select networks.",
-      "continuous_monitoring": "Continuous monitoring",
-      "gas_allowance": "$5/month gas budget included"
+      "automated_revoking": "Автоматический отзыв",
+      "automated_revoking_tooltip": "Требуется MetaMask. Поддерживается в отдельных сетях.",
+      "continuous_monitoring": "Непрерывный мониторинг",
+      "gas_allowance": "Включен бюджет на газ $5 в месяц"
     },
-    "ultimate_price": "{price}/year",
+    "ultimate_price": "{price}/год",
     "ultimate_title": "Ultimate"
   },
   "stats": {
-    "approvals_revoked": "Approvals Revoked",
-    "networks_supported": "{count} Networks Supported",
-    "protected_from_exploits": "Protected from Exploits",
-    "total_users": "Total Users"
+    "approvals_revoked": "Отозвано доступов",
+    "networks_supported": "{count} поддерживаемых сетей",
+    "protected_from_exploits": "Защищено от эксплойтов",
+    "total_users": "Всего пользователей"
+  },
+  "testimonials": {
+    "quotes": {
+      "beausecurity": "Суперважное напоминание: если смарт-контракт еще не взломали, это не значит, что не взломают. Отзывайте старые доступы к смарт-контрактам, которыми больше не пользуетесь. Оно того стоит. Пользуйтесь Revoke.cash.",
+      "nft_dreww": "У всех нас есть телефоны: прямо сейчас поставьте напоминание раз в неделю заходить на Revoke.cash и проверять свои доступы. Это занимает 30 секунд и может помешать хакерам украсть ваши активы.",
+      "rsquare": "Одна из лучших возможностей Safe, когда речь идет о быстром реагировании на инциденты, — это удобный отзыв доступов через Revoke.cash Safe App."
+    }
   }
 }

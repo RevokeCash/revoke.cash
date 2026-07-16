@@ -1,254 +1,252 @@
 {
   "addresses": {
-    "add_address": "Add wallet",
-    "add_failed": "Failed to add wallet",
-    "placeholder": "Wallet address or domain name",
-    "remove": "Remove",
-    "remove_failed": "Failed to remove wallet",
-    "resolve_failed": "Could not resolve wallet address or name",
-    "title": "Premium Wallets"
+    "add_address": "添加钱包",
+    "add_failed": "添加钱包失败",
+    "placeholder": "钱包地址或域名",
+    "remove_failed": "移除钱包失败",
+    "resolve_failed": "无法解析钱包地址或名称",
+    "title": "Premium 钱包"
   },
   "auto_revoke": {
     "activity": {
       "columns": {
-        "asset": "Asset",
-        "chain": "Network",
-        "cost": "Cost",
-        "date": "Date",
-        "spender": "Spender",
-        "status": "Status",
-        "trigger": "Trigger",
-        "wallet": "Wallet"
+        "asset": "资产",
+        "chain": "网络",
+        "cost": "费用",
+        "date": "日期",
+        "spender": "被授权人（Spender）",
+        "status": "状态",
+        "trigger": "触发原因",
+        "wallet": "钱包"
       },
-      "empty": "No auto-revoke activity yet. Approvals matching your rules will appear here as they are revoked.",
-      "empty_preview": "Auto-revoke activity will appear here once you upgrade to Ultimate and set up Auto-Revoking.",
+      "empty": "暂无自动撤销活动。符合您规则的授权在被撤销后将显示在此处。",
+      "empty_preview": "升级至 Ultimate 并设置自动撤销后，自动撤销活动将显示在此处。",
       "reasons": {
-        "awaiting_cheap_gas": "Waiting for lower gas prices to stretch your monthly budget.",
-        "chain_pipeline_full": "Waiting for other revokes on this chain to confirm.",
-        "cooling": "Waiting out a short safety delay before executing, so rule changes can still cancel it.",
-        "execution_failed": "The revoke transaction could not be completed.",
-        "monthly_budget": "Waiting because the monthly budget is used up. Exploit-triggered revokes still go through.",
-        "monthly_budget_urgent": "Waiting because this month's maximum spend for exploit-triggered revokes has been reached.",
-        "nonce_consumed": "Resubmitting after a transaction conflict.",
-        "per_action_cap": "Waiting because the estimated cost exceeds the per-revoke limit.",
-        "queued": "Waiting to be executed.",
-        "subscription_inactive": "Waiting for an active subscription to cover this wallet.",
-        "transaction_reverted": "The revoke transaction reverted on-chain.",
-        "transient_error": "A temporary error occurred; this will be retried."
+        "awaiting_cheap_gas": "正在等待更低的 Gas 价格，以充分利用您的每月预算。",
+        "chain_pipeline_full": "正在等待此链上的其他撤销交易确认。",
+        "cooling": "执行前需等待一段短暂的安全延迟，期间修改规则仍可取消此次撤销。",
+        "execution_failed": "撤销交易未能完成。",
+        "monthly_budget": "每月预算已用完，正在等待。由漏洞触发的撤销仍会执行。",
+        "monthly_budget_urgent": "本月由漏洞触发的撤销支出已达上限，正在等待。",
+        "nonce_consumed": "交易发生冲突，正在重新提交。",
+        "per_action_cap": "预估费用超过单次撤销上限，正在等待。",
+        "queued": "等待执行中。",
+        "subscription_inactive": "正在等待生效的订阅来覆盖此钱包。",
+        "transaction_reverted": "撤销交易已在链上回滚。",
+        "transient_error": "发生临时错误，稍后将重试。"
       },
       "scope": {
-        "mine": "Your activity",
-        "subscription": "All members"
+        "mine": "您的活动",
+        "subscription": "所有成员"
       },
       "status": {
-        "failed": "Failed",
-        "pending": "Pending",
-        "revoked": "Revoked",
-        "skipped": "Not needed",
-        "submitting": "Submitting"
+        "failed": "失败",
+        "pending": "待处理",
+        "revoked": "已撤销",
+        "skipped": "无需撤销",
+        "submitting": "提交中"
       },
-      "title": "Activity",
+      "title": "活动",
       "triggers": {
-        "exploit": "Exploit",
-        "risk_score": "Risky",
-        "stale": "Stale"
+        "exploit": "漏洞",
+        "risk_score": "有风险",
+        "stale": "陈旧"
       }
     },
     "budget": {
-      "exploit_protection": "Exploit-triggered revokes still go through when the budget is used up.",
-      "per_action_cap": "Each revoke is capped at {cap}.",
-      "resets": "Resets {date}",
-      "shared": "The gas budget is shared by all wallets in the subscription.",
-      "used": "{used} of {total} used this month"
+      "exploit_protection": "即使预算已用完，由漏洞触发的撤销仍会执行。",
+      "per_action_cap": "每次撤销的费用上限为 {cap}。",
+      "resets": "将于 {date} 重置",
+      "shared": "Gas 预算由订阅中的所有钱包共享。",
+      "used": "本月已使用 {used} / {total}"
     },
-    "load_failed": "Failed to load your Auto-Revoking configuration. Please refresh the page or try again later.",
-    "metamask_not_connected": "MetaMask not connected",
-    "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",
+    "load_failed": "加载您的自动撤销配置失败。请刷新页面或稍后重试。",
+    "metamask_not_connected": "未连接 MetaMask",
+    "metamask_required": "自动撤销需要 MetaMask。请连接 MetaMask 以使用此功能。",
     "permissions": {
-      "connect_to_manage": "Connect this wallet to manage its permissions.",
-      "decode_failed": "Failed to decode permission",
-      "grant": "Grant",
-      "grant_description": "Each address must individually grant auto-revoke permission via MetaMask.",
-      "grant_failed": "Failed to grant auto-revoke permission.",
-      "networks_enabled": "{enabled}/{total} networks enabled",
-      "no_active_permission_returned": "No active permission returned",
-      "revoke_failed": "Failed to revoke auto-revoke permission.",
-      "revoke_transaction_reverted": "The transaction to disable the permission failed onchain. Sync from wallet and try again.",
-      "sync": "Sync from wallet",
-      "sync_failed": "Failed to sync auto-revoke permissions from wallet.",
-      "sync_success": "Auto-revoke permissions synced from wallet.",
-      "title": "Permissions"
+      "connect_to_manage": "连接此钱包以管理其权限。",
+      "decode_failed": "解码权限失败",
+      "grant_description": "每个地址都必须通过 MetaMask 单独授予自动撤销权限。",
+      "grant_failed": "授予自动撤销权限失败。",
+      "networks_enabled": "已启用 {enabled}/{total} 个网络",
+      "no_active_permission_returned": "未返回有效权限",
+      "revoke_failed": "撤销自动撤销权限失败。",
+      "revoke_transaction_reverted": "停用该权限的交易在链上执行失败。请从钱包同步后重试。",
+      "sync": "从钱包同步",
+      "sync_failed": "从钱包同步自动撤销权限失败。",
+      "sync_success": "已从钱包同步自动撤销权限。",
+      "title": "权限"
     },
     "rules": {
-      "days": "days",
-      "defaults_description": "These rules apply to all wallets in this subscription by default, but each wallet can override them.",
-      "managed_by": "Managed by {owner}",
-      "risk_detection": "Risky Approval Detection",
-      "risk_detection_description": "Auto-revoke approvals to risky or exploited spenders.",
-      "save_failed": "Failed to save rules.",
-      "sensitivity_exploits_only": "Exploits only",
-      "sensitivity_high": "High risk",
-      "sensitivity_medium": "Medium risk and above",
-      "stale_approval": "Stale Approval Cleanup",
-      "stale_approval_description": "Revoke approvals older than the specified number of days.",
-      "title": "Rules",
-      "title_defaults": "Default Rules"
+      "days": "天",
+      "defaults_description": "这些规则默认适用于此订阅中的所有钱包，但每个钱包都可以单独覆盖这些规则。",
+      "managed_by": "由 {owner} 管理",
+      "risk_detection": "风险授权检测",
+      "risk_detection_description": "自动撤销给有风险或已遭漏洞攻击的被授权人的授权。",
+      "save_failed": "保存规则失败。",
+      "sensitivity_exploits_only": "仅限漏洞",
+      "sensitivity_high": "高风险",
+      "sensitivity_medium": "中风险及以上",
+      "stale_approval": "陈旧授权清理",
+      "stale_approval_description": "撤销超过指定天数的授权。",
+      "title": "规则",
+      "title_defaults": "默认规则"
     },
     "rules_source": {
-      "custom": "Custom rules",
-      "subscription_defaults": "Managed by {owner}",
-      "switch_failed": "Failed to switch rules source.",
-      "title": "Rules Source"
+      "custom": "自定义规则",
+      "subscription_defaults": "由 {owner} 管理",
+      "switch_failed": "切换规则来源失败。",
+      "title": "规则来源"
     },
     "setup": {
-      "banner": "Auto-Revoking is not active for this wallet yet.",
-      "banner_cta": "Set it up",
-      "get_started": "Auto-Revoking is not active for this wallet yet. Toggle the networks you want protected below. Every wallet in the subscription needs to do this once, using MetaMask."
+      "banner": "此钱包尚未启用自动撤销。",
+      "banner_cta": "立即设置",
+      "get_started": "此钱包尚未启用自动撤销。请在下方开启您想要保护的网络。订阅中的每个钱包都需要使用 MetaMask 完成一次此设置。"
     },
-    "title": "Auto-Revoking",
-    "upsell": "Auto-Revoking automatically revokes dangerous or stale approvals on your behalf. It requires an Ultimate subscription."
+    "title": "自动撤销",
+    "upsell": "自动撤销会代您自动撤销危险或陈旧的授权。此功能需要 Ultimate 订阅。"
   },
   "billing": {
     "columns": {
-      "amount": "Amount",
-      "date": "Date",
-      "plan": "Plan",
-      "status": "Status",
-      "transaction": "Transaction"
+      "amount": "金额",
+      "date": "日期",
+      "plan": "方案",
+      "status": "状态",
+      "transaction": "交易"
     },
     "details": {
-      "refund_available": "You can still cancel this payment and receive a full refund.",
-      "refund_transaction": "Refund transaction",
-      "requested_at": "Requested on"
+      "refund_available": "您仍可以取消此笔付款并获得全额退款。",
+      "refund_transaction": "退款交易",
+      "requested_at": "申请日期"
     },
-    "no_payments": "No payment history yet.",
+    "no_payments": "暂无付款记录。",
     "status": {
-      "final": "Final",
-      "pending_refund": "Pending refund",
-      "refunded": "Refunded",
-      "within_refund_window": "Within refund window"
+      "final": "已完成",
+      "pending_refund": "退款处理中",
+      "refunded": "已退款",
+      "within_refund_window": "可退款期内"
     },
-    "title": "Billing"
+    "title": "账单"
   },
   "coverage": {
-    "active": "Active",
+    "active": "生效中",
     "extension": {
-      "get_extension": "Get Revoke Sidekick",
-      "lite_description": "Coverage is inactive because the extension is on the Lite tier. Switch to Standard to activate up to $30k in theft coverage.",
-      "not_installed_description": "You are currently not covered by the Revoke Sidekick extension. Install the Revoke Sidekick extension for real-time transaction warnings and up to $30k in theft coverage.",
-      "standard_description": "You are covered for up to $30k in theft protection through the Revoke Sidekick extension.",
-      "title": "Revoke Sidekick Coverage"
+      "get_extension": "获取 Revoke Sidekick",
+      "lite_description": "由于扩展当前为 Lite 档位，保障未生效。切换到 Standard 即可激活最高 $30k 的被盗保障。",
+      "not_installed_description": "您目前未受 Revoke Sidekick 扩展的保障。安装 Revoke Sidekick 扩展即可获得实时交易警告以及最高 $30k 的被盗保障。",
+      "standard_description": "您已通过 Revoke Sidekick 扩展获得最高 $30k 的被盗保障。",
+      "title": "Revoke Sidekick 保障"
     },
     "fairside": {
-      "active_description": "You are covered for up to {amount} in theft protection through Fairside.",
-      "covered": "{amount} covered",
-      "covered_wallets": "Covered Wallets",
-      "description": "Protect your wallet against phishing and social engineering drains with Fairside coverage.",
+      "active_description": "您已通过 Fairside 获得最高 {amount} 的被盗保障。",
+      "covered": "已保障 {amount}",
+      "covered_wallets": "覆盖钱包",
+      "description": "通过 Fairside 保障，保护您的钱包免受网络钓鱼和社交工程攻击导致的资金损失。",
       "errors": {
-        "authentication_failed": "Failed to authenticate",
-        "authentication_failed_fairside": "Failed to authenticate with Fairside",
-        "connect_wallet": "Please connect your wallet to authenticate",
-        "generate_message_failed": "Could not generate authentication message"
+        "authentication_failed": "身份验证失败",
+        "authentication_failed_fairside": "Fairside 身份验证失败",
+        "connect_wallet": "请连接钱包以进行身份验证",
+        "generate_message_failed": "无法生成身份验证信息"
       },
-      "get_coverage": "Get Coverage",
-      "manage": "Manage Coverage",
-      "title": "Fairside Coverage",
-      "valid_until": "Valid until {date}.",
-      "wallets_description": "Sign an authentication message to view your covered wallets."
+      "get_coverage": "获得保障",
+      "manage": "管理保障",
+      "title": "Fairside 保障",
+      "valid_until": "有效期至 {date}。",
+      "wallets_description": "签署身份验证信息以查看您的覆盖钱包。"
     },
-    "inactive": "Inactive",
-    "title": "Theft Coverage"
+    "inactive": "未生效",
+    "title": "被盗保障"
   },
-  "description": "Manage your premium subscription and account settings.",
-  "error": "Something went wrong loading your subscription data. Please try again later.",
+  "description": "管理您的 Premium 订阅和账户设置。",
+  "error": "加载您的订阅数据时出现问题。请稍后重试。",
   "granted": {
-    "active": "Active",
-    "granted_by": "Granted by {address} · Valid until {date}",
-    "title": "Granted Premium Access"
+    "active": "生效中",
+    "granted_by": "由 {address} 授予 • 有效期至 {date}",
+    "title": "已获授予的 Premium 访问权限"
   },
   "meta": {
-    "description": "Manage your account and premium settings.",
-    "title": "Account Settings"
+    "description": "管理您的账户和 Premium 设置。",
+    "title": "账户设置"
   },
   "subscription": {
-    "active": "Active",
+    "active": "生效中",
     "buttons": {
-      "confirming": "Confirming payment",
-      "creating": "Creating payment",
-      "extend": "Extend",
-      "paying": "Confirm in wallet",
-      "renew": "Renew",
-      "subscribe": "Subscribe",
-      "try_again": "Try again",
-      "upgrade": "Upgrade"
+      "confirming": "正在确认付款",
+      "creating": "正在创建付款",
+      "extend": "延长",
+      "paying": "请在钱包中确认",
+      "renew": "续订",
+      "subscribe": "订阅",
+      "try_again": "重试",
+      "upgrade": "升级"
     },
     "cancellation": {
-      "cancelled": "Cancelled",
-      "cancelled_on": "Cancelled on {date}. Your payment was refunded.",
-      "confirm_button": "Request refund",
-      "download_confirmation": "Download confirmation",
-      "error_fallback": "Failed to request a refund",
-      "modal_access_notice": "You keep access to your subscription until the refund is processed. The refund is sent to the wallet that paid.",
-      "modal_description": "This cancels your {planName} payment and refunds it in full. If you have other payments, your subscription is recalculated without this one.",
-      "modal_title": "Cancel subscription",
-      "network": "Network",
-      "refund_amount": "Refund amount",
-      "refund_destination": "Refund destination",
-      "requested": "Cancellation requested",
-      "success": "Refund requested. You keep access until the refund is processed."
+      "cancelled": "已取消",
+      "cancelled_on": "已于 {date} 取消。您的付款已退还。",
+      "confirm_button": "申请退款",
+      "download_confirmation": "下载确认函",
+      "error_fallback": "申请退款失败",
+      "modal_access_notice": "在退款处理完成之前，您仍可继续使用订阅。退款将发送至付款钱包。",
+      "modal_description": "此操作将取消您的 {planName} 付款并全额退款。如果您还有其他付款，您的订阅将在扣除这笔付款后重新计算。",
+      "modal_title": "取消订阅",
+      "network": "网络",
+      "refund_amount": "退款金额",
+      "refund_destination": "退款接收地址",
+      "requested": "已申请取消",
+      "success": "退款已申请。在退款处理完成之前，您仍可继续使用。"
     },
-    "downgrade_not_supported": "You cannot downgrade an active subscription.",
-    "expired": "Expired",
-    "expired_on": "Expired on {date}.",
-    "expired_preserved": "Your wallet slots and Auto-Revoking rules are preserved. Renew to pick up where you left off.",
-    "expired_ultimate_stopped": "Auto-Revoking is no longer monitoring your wallets.",
-    "expires_in": "Expires in {days, plural, =1 {1 day} other {# days}} ({date})",
-    "expires_soon": "Expires soon",
-    "granted_by": "Granted by {address}",
-    "legal_notice": "By subscribing, you agree to our <terms-link>Terms of Service</terms-link>.",
-    "next_setup_auto_revoke": "Next step: set up Auto-Revoking",
-    "no_subscription": "You don't have an active premium subscription. Subscribe below to get started. <premium-link>Learn more about Premium</premium-link>.",
-    "optional_own_subscription": "You already have access through a granted subscription. You can still subscribe for your own plan if you'd like.",
-    "payment_confirmed": "Payment confirmed! Your premium subscription is now active.",
-    "payment_expired": "The payment window expired. If you already sent the full USDC amount, it will be credited automatically once it lands on-chain. Check your subscription status in a few minutes.",
-    "payment_failed": "Subscription payment failed",
-    "payment_help": "Need help? <support-link>Chat with support</support-link>.",
-    "payment_network": "Payment network",
-    "payment_status_error": "Payment {status}",
-    "payment_summary": "You will pay {amount} {token} for {days} days. Includes up to {maxAddresses} {maxAddresses, plural, =1 {wallet} other {wallets}}.",
-    "plan": "Plan",
-    "plan_description": "${price}/year",
+    "downgrade_not_supported": "无法降级生效中的订阅。",
+    "expired": "已过期",
+    "expired_on": "已于 {date} 过期。",
+    "expired_preserved": "您的钱包名额和自动撤销规则已保留。续订后即可继续使用。",
+    "expired_ultimate_stopped": "自动撤销已不再监控您的钱包。",
+    "expires_in": "将于 {days, plural, other {# 天}}后到期（{date}）",
+    "expires_soon": "即将到期",
+    "granted_by": "由 {address} 授予",
+    "legal_notice": "订阅即表示您同意我们的<terms-link>服务条款</terms-link>。",
+    "next_setup_auto_revoke": "下一步：设置自动撤销",
+    "no_subscription": "您目前没有生效中的 Premium 订阅。立即订阅即可开始使用。<premium-link>了解更多关于 Premium 的信息</premium-link>。",
+    "optional_own_subscription": "您已通过他人授予的订阅获得访问权限。如果需要，您仍然可以订阅自己的方案。",
+    "payment_confirmed": "付款已确认！您的 Premium 订阅现已生效。",
+    "payment_expired": "付款时限已过。如果您已发送全额 USDC，款项上链后将自动入账。请几分钟后查看您的订阅状态。",
+    "payment_failed": "订阅付款失败",
+    "payment_help": "需要帮助？<support-link>联系客服</support-link>。",
+    "payment_network": "付款网络",
+    "payment_status_error": "付款状态：{status}",
+    "payment_summary": "您将支付 {amount} {token}，有效期 {days} 天，最多包含 {maxAddresses, plural, other {# 个钱包}}。",
+    "plan": "方案",
+    "plan_description": "${price}/年",
     "plan_options": {
-      "basic_access": "Basic Access",
-      "current": "Current",
-      "free": "Free"
+      "basic_access": "基础访问权限",
+      "current": "当前方案",
+      "free": "免费版"
     },
-    "plans_unavailable": "Checkout is temporarily unavailable. Please try again later.",
-    "slots_summary": "{used}/{max} wallet {max, plural, =1 {slot} other {slots}} used",
-    "title": "Premium Subscription",
-    "ultimate_requires_metamask": "Auto-Revoking requires MetaMask. You can pay with any wallet, and set up Auto-Revoking afterwards by connecting with MetaMask.",
-    "valid_until": "Valid until {date}",
-    "wallet": "Wallet",
-    "wrong_wallet_error": "The payment must be sent from {address}. Please switch to that wallet and try again."
+    "plans_unavailable": "结账功能暂时不可用。请稍后重试。",
+    "slots_summary": "已使用 {used}/{max} 个钱包名额",
+    "title": "Premium 订阅",
+    "ultimate_requires_metamask": "自动撤销需要 MetaMask。您可以使用任意钱包付款，之后再连接 MetaMask 设置自动撤销。",
+    "valid_until": "有效期至 {date}",
+    "wallet": "钱包",
+    "wrong_wallet_error": "付款必须从 {address} 发送。请切换到该钱包后重试。"
   },
   "tabs": {
-    "auto_revoke": "Auto-Revoking",
-    "billing": "Billing",
-    "coverage": "Coverage",
-    "subscription": "Subscription"
+    "auto_revoke": "自动撤销",
+    "billing": "账单",
+    "coverage": "覆盖范围",
+    "subscription": "订阅"
   },
   "unauthenticated": {
     "benefits": {
-      "auto_revoke": "Set up and monitor Auto-Revoking",
-      "billing": "View your billing history",
-      "coverage": "View and manage Fairside coverage",
-      "manage_subscription": "Manage your Premium subscription",
-      "title": "What you can do here"
+      "auto_revoke": "设置并监控自动撤销",
+      "billing": "查看您的账单记录",
+      "coverage": "查看并管理 Fairside 保障",
+      "manage_subscription": "管理您的 Premium 订阅",
+      "title": "您可以在这里进行的操作"
     },
-    "description": "Sign in to manage your Premium subscription, Auto-Revoking, wallet slots, and coverage.",
+    "description": "登录以管理您的 Premium 订阅、自动撤销、钱包名额和保障。",
     "selected_plan": {
-      "summary": "{price} per year with up to {maxAddresses} wallets included. Connect your wallet to continue.",
-      "title": "Subscribe to {planName}"
+      "summary": "每年 {price}，最多包含 {maxAddresses} 个钱包。连接钱包以继续。",
+      "title": "订阅 {planName}"
     }
   }
 }

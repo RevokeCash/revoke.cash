@@ -1,11 +1,11 @@
 {
   "allowances": {
     "amount": "{amount} {symbol}",
-    "count": "{count, plural, =0 {承認なし} =1 {# 承認} other {# 承認}}",
-    "empty_chains_count": "{count, plural, =0 {承認のないネットワークなし} =1 {# 承認のないネットワーク} other {# 承認のないネットワーク}}",
-    "none_found": "許可がされていません",
-    "none_found_filtered": "選択したフィルタに対しての許可がありません",
-    "none_found_premium": "No approvals found on any of the supported networks. You're all clear!",
+    "count": "{count, plural, =0 {承認なし} other {#件の承認}}",
+    "empty_chains_count": "{count, plural, =0 {承認のないネットワークはありません} other {承認のないネットワーク#件}}",
+    "none_found": "承認は見つかりませんでした",
+    "none_found_filtered": "選択したフィルターに一致する承認は見つかりませんでした",
+    "none_found_premium": "対応しているいずれのネットワークでも承認は見つかりませんでした。すべて問題ありません！",
     "token_id": "トークン #{tokenId}",
     "unknown": "不明",
     "unlimited": "無制限"
@@ -13,107 +13,52 @@
   "batch_revoke": {
     "failed": "失敗",
     "fee": {
-      "eip5792_notice": "注意：ウォレットはアトミックバッチ取り消しをサポートしていないため、有料のバッチ取り消しを使用する場合でも、複数のトランザクションを送信する必要があります。",
-      "eip5792_notice_chain": "注意：ウォレットは{chainName}のアトミックバッチ取り消しをサポートしていないため、有料のバッチ取り消しを使用する場合でも、複数のトランザクションを送信する必要があります。",
+      "eip5792_notice": "注意：ウォレットはアトミックな一括取り消しをサポートしていないため、有料の一括取り消しを使用する場合でも、複数のトランザクションを送信する必要があります。",
+      "eip5792_notice_chain": "注意：ウォレットは{chainName}のアトミックな一括取り消しをサポートしていないため、有料の一括取り消しを使用する場合でも、複数のトランザクションを送信する必要があります。",
       "notice": "一括取り消しには、Revoke.cashの継続的な開発のサポートとなる<m>${feeDollarAmount}</m>の少額の手数料がかかります。",
       "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link>は<m>{chainName}</m>ネットワークで一括取り消し手数料を負担しています！🥳",
-      "tooltip": "バッチごとの<m>${BASE_FEE}</m>の定額料金は、インフラコストと継続的な開発をサポートします。また、承認を1つずつ無料で取り消すこともできます。",
-      "upgrade_prompt": "Want unlimited batch revokes?"
+      "tooltip": "バッチごとの<m>${BASE_FEE}</m>の定額手数料は、インフラコストと継続的な開発をサポートします。また、承認を1つずつ無料で取り消すこともできます。",
+      "upgrade_prompt": "無制限の一括取り消しをご希望ですか？"
     },
-    "revoked": "取り消された",
+    "revoked": "取り消し済み",
     "title": "一括取り消し",
     "total": "合計"
-  },
-  "coverage": {
-    "info": {
-      "chains": {
-        "evm": "EVM互換",
-        "non_evm": "非EVM",
-        "title": "対応ブロックチェーン"
-      },
-      "description": "Revoke.cashでは、暗号資産分野におけるリスク管理を支援します。資金の流出や損失を防ぐツールを提供していますが、それでも詐欺やハッキングは発生します。そこで保険が役立ちます。保険は、ウォレットの資金が流出した場合にその価値を補償する手段です。スマートコントラクトのハッキングからフィッシング攻撃まで、複数の種類の保険が存在します。当社は<fairside-link>Fairside</fairside-link>と提携し、フィッシングやソーシャルエンジニアリングによる資金流出に対する補償を提供しています。一方、<nexus-link>Nexus Mutual</nexus-link>など、スマートコントラクトハッキング向けの補償商品も存在します。",
-      "important": {
-        "coverage_amount": "カバレッジは特定のETH金額で購入されます。ポートフォリオの価値がETHで上昇した場合、設定されたETH金額のみがカバーされます。",
-        "fee": "支払いには10％の個人責任額があります。",
-        "kyc": "KYCは保険申請時にのみ必要で、保険の購入時には必要ありません。",
-        "title": "重要な情報",
-        "wallets": "メンバーシップに追加すれば、1つのメンバーシップで最大10個のウォレットをカバーできます。"
-      },
-      "main": {
-        "covered_items": {
-          "malware": "マルウェア（最低10ETHカバレッジ）",
-          "poisoning": "アドレスポイズニング",
-          "signatures": "悪意のある取引と署名"
-        },
-        "covered_title": "Fairsideがカバーするもの",
-        "description": "資金が枯渇した場合には、支払いを受けられます。Fairsideは、資金が枯渇した場合にウォレットのカバレッジを購入できる、初の暗号通貨ネイティブ プラットフォームです。フィッシングやソーシャルエンジニアリングによる配信方法によるさまざまな損失イベントをカバーします。",
-        "not_covered_items": {
-          "custodial-accounts": "カストディアル口座の流出",
-          "rug_pulls": "ラグプル",
-          "seed_phrase": "シードフレーズの公開",
-          "smart_contracts": "スマートコントラクトハック"
-        },
-        "not_covered_title": "Fairsideがカバーしないもの",
-        "title": "Fairsideウォレットドレインカバレッジ"
-      },
-      "quiz": {
-        "get_coverage": "今すぐカバレッジを受ける",
-        "start": "クイズに答えて始めましょう",
-        "title": "クイックカバレッジクイズ"
-      },
-      "title": "カバレッジとは何ですか。"
-    },
-    "membership": {
-      "claims": "{count, plural, =0 {クレーム無し} =1 {#件のクレーム} other {#件のクレーム}}",
-      "labels": {
-        "amount": "金額",
-        "claims": "クレーム",
-        "timeframe": "タイムフレーム"
-      },
-      "title": "Fairsideメンバーシップ"
-    },
-    "wallets": {
-      "add": "ウォレットを追加",
-      "description": "認証メッセージに署名すると、カバーされるウォレットを表示および管理できます。",
-      "title": "カバーされるウォレット",
-      "wallets": "ウォレット"
-    }
   },
   "delegations": {
     "columns": {
       "chain": "ネットワーク",
-      "contract": "資産/契約",
-      "delegate": "委任者",
-      "delegator": "委任させる者",
+      "contract": "資産/コントラクト",
+      "delegate": "委任先",
+      "delegator": "委任者",
       "platform": "プラットフォーム",
       "type": "タイプ"
     },
     "contract": {
       "not_applicable": "該当なし"
     },
-    "count": "{count, plural, =0 {委任なし} =1 {# 委任} other {# 委任}}",
+    "count": "{count, plural, =0 {委任なし} other {#件の委任}}",
     "delegated_to": "委任先",
     "eip7702_delegations": "EIP7702委任",
-    "empty_chains_count": "{count, plural, =0 {委任のないネットワークなし} =1 {# 委任のないネットワーク} other {# 委任のないネットワーク}}",
+    "empty_chains_count": "{count, plural, =0 {委任のないネットワークはありません} other {委任のないネットワーク#件}}",
     "info_panel": {
-      "description": "委任とは、他のアドレスにあなたの代わりに行動することを承認する方法です。例えば、資産の所有権を確認したり、エアドロップを請求したりする場合などです。これは、セキュリティー上有益であり、<b>ホットウォレット</b>を使って資産を管理できるため、<b>コールドウォレット</b>を毎回のやり取りに対して使用する必要がなくなります。ただし、ホットウォレットが侵害された場合、攻撃者がそれを悪用してなりすまさないよう、委任を必ず取り消す必要があります。これらの委任は<b>異なる</b>ものであり、EIP7702委任とは異なり、ウォレットアプリケーション内で<i>のみ</i>取り消すことができます。",
+      "description": "委任とは、他のアドレスにあなたの代わりに行動することを承認する方法です。例えば、資産の所有権を確認したり、エアドロップを請求したりする場合などです。これは、セキュリティー上有益であり、<b>ホットウォレット</b>を使って資産を管理できるため、<b>コールドウォレット</b>を毎回のやり取りに対して使用する必要がなくなります。ただし、ホットウォレットが侵害された場合、攻撃者がそれを悪用してなりすまさないよう、委任を必ず取り消す必要があります。なお、これらの委任はEIP7702委任とは<b>異なる</b>ものであり、EIP7702委任はウォレットアプリケーション内で<i>のみ</i>取り消すことができます。",
       "title": "委任とは何ですか。"
     },
     "no_delegations": "委任は見つかりませんでした",
     "no_eip7702_delegations": "EIP7702委任は見つかりませんでした",
-    "none_found_premium": "No delegations found on any of the supported networks. You're all clear!",
+    "none_found_premium": "対応しているいずれのネットワークでも委任は見つかりませんでした。すべて問題ありません！",
     "this_wallet": "このウォレット",
     "tooltips": {
-      "contract": "契約レベルの委任は、特定の契約でサポートされているプラットフォーム上でユーザーに代わって行動する許可を委任者に与えます。",
+      "contract": "コントラクトレベルの委任は、特定のコントラクトについて、サポートされているプラットフォーム上でユーザーに代わって行動する許可を委任先に与えます。",
       "eip7702": "EIP7702委任は、ウォレットにスマートコントラクト機能を追加します。",
       "eip7702_revoke": "EIP7702委任は、ウォレットアプリケーション内で取り消す必要があります。",
-      "erc1155": "ERC1155トークンの委任により、委任者は特定のERC1155トークンについて、サポートされているプラットフォーム上でユーザーに代わって行動することができます。",
-      "erc20": "ERC20トークンの委任により、委任者は特定のERC20トークンについて、サポートされているプラットフォーム上でユーザーに代わって行動することができます。",
-      "erc721": "ERC721トークンの委任により、委任者は特定のERC721トークンについて、サポートされているプラットフォーム上でユーザーに代わって行動することができます。",
-      "wallet": "ウォレットレベルの委任により、委任者はサポートされているプラットフォーム上でユーザーに代わって行動することができます。"
+      "erc1155": "ERC1155トークンの委任により、委任先は特定のERC1155トークンについて、サポートされているプラットフォーム上でユーザーに代わって行動することができます。",
+      "erc20": "ERC20トークンの委任により、委任先は特定のERC20トークンについて、サポートされているプラットフォーム上でユーザーに代わって行動することができます。",
+      "erc721": "ERC721トークンの委任により、委任先は特定のERC721トークンについて、サポートされているプラットフォーム上でユーザーに代わって行動することができます。",
+      "wallet": "ウォレットレベルの委任により、委任先はサポートされているプラットフォーム上でユーザーに代わって行動することができます。"
     },
     "types": {
-      "contract": "契約",
+      "contract": "コントラクト",
       "eip7702": "EIP7702",
       "erc1155": "ERC1155",
       "erc20": "ERC20",
@@ -121,35 +66,9 @@
       "wallet": "ウォレット"
     }
   },
-  "filters": {
-    "allowances": {
-      "label": "許可したもの",
-      "options": {
-        "limited": "制限",
-        "none": "無し",
-        "unlimited": "無制限"
-      }
-    },
-    "asset_balance": {
-      "label": "資産残高",
-      "options": {
-        "non_zero": "ゼロではない",
-        "zero": "零"
-      }
-    },
-    "asset_type": {
-      "label": "資産の種類",
-      "options": {
-        "nft": "NFT",
-        "token": "トークン"
-      }
-    },
-    "label": "フィルター",
-    "showing_everything": "全てを表示"
-  },
   "headers": {
     "actions": "アクション",
-    "allowance": "許可したもの",
+    "allowance": "承認額",
     "amount": "金額",
     "asset": "資産",
     "asset_type": "種類",
@@ -157,12 +76,12 @@
     "date": "日付",
     "event_type": "イベントの種類",
     "expiration": "有効期限",
-    "last_checked": "Last Checked",
+    "last_checked": "最終確認日",
     "last_updated": "最終更新日",
     "policy_type": "許可タイプ",
     "session_hash": "セッション識別子",
     "signer": "承認済み署名者",
-    "spender": "認定支出者",
+    "spender": "承認済み支出者",
     "status": "ステータス",
     "transaction": "トランザクション",
     "value_at_risk": "リスクがある価値"
@@ -170,18 +89,18 @@
   "history": {
     "approved": "承認済み",
     "cancelled_signatures": "取り消された署名",
-    "none_found": "承認履歴が見つかりません",
-    "revoked": "取り消されました",
+    "none_found": "承認履歴は見つかりませんでした",
+    "revoked": "取り消し済み",
     "status_failed": "失敗",
-    "status_loaded": "ロード済み",
-    "status_loading": "ロード中",
+    "status_loaded": "読み込み済み",
+    "status_loading": "読み込み中",
     "title": "承認履歴"
   },
   "labels": {
     "account_types": {
-      "eip7702": "EIP7702 Account",
+      "eip7702": "EIP7702アカウント",
       "eoa": "EOA",
-      "smart_contract": "Smart Contract"
+      "smart_contract": "スマートコントラクト"
     },
     "connected": "接続中",
     "nft": "NFT",
@@ -196,20 +115,17 @@
   },
   "meta": {
     "title": "アドレス {addressDisplay}の承認",
-    "title_chain": "{chainName}におけるアドレス {addressDisplay} の承認"
+    "title_chain": "{chainName}におけるアドレス {addressDisplay}の承認"
   },
   "navigation": {
     "allowances": "許可",
-    "coverage": "カバレッジ",
-    "delegations": "委任の対象",
+    "delegations": "委任",
     "exploits": "エクスプロイト",
     "history": "履歴",
-    "more": "その他",
-    "sessions": "セッション",
-    "settings": "設定"
+    "sessions": "セッション"
   },
   "permit2": {
-    "expiration": "{inTime}で期限が切れます"
+    "expiration": "{inTime}に期限が切れます"
   },
   "premium": {
     "banner": {
@@ -217,33 +133,33 @@
       "description": "すべてのネットワークを統合的に把握したいですか？"
     },
     "subscription_expiry": {
-      "cta": "Extend",
-      "description": "Your premium subscription expires in {days, plural, =1 {1 day} other {# days}}."
+      "cta": "延長",
+      "description": "プレミアムサブスクリプションは、あと{days, plural, other {#日}}で有効期限が切れます。"
     }
   },
   "risk_factors": {
     "allowlist": "よく知られている支出者のアドレス",
     "blocklist": "危険または悪意のある",
-    "closed_source": "ソースがクローズになっている",
+    "closed_source": "クローズドソース",
     "deprecated": "非推奨または古い",
-    "eoa": "外部所有口座",
-    "excessive_expiration": "期限切れが多すぎる",
+    "eoa": "外部所有アカウント",
+    "excessive_expiration": "有効期限が長すぎる",
     "exploit": "{data}に関与していました",
     "levels": {
       "high": "高リスク",
       "low": "低リスク",
       "medium": "中リスク"
     },
-    "phishing_risk": "フィッシングの場合のリスク領域が増加",
-    "proxy": "アップグレード可能なプロキシ契約",
-    "source": "<source-link>{source}</source-link>に報告された",
-    "suspicious_address": "不審な住所",
-    "uninitialized": "この住所にはコントラクトがデプロイされていません",
-    "unsafe": "安全でない可能性のある契約コード"
+    "phishing_risk": "フィッシング被害時のリスク領域が増加",
+    "proxy": "アップグレード可能なプロキシコントラクト",
+    "source": "<source-link>{source}</source-link>による報告",
+    "suspicious_address": "不審なアドレス",
+    "uninitialized": "このアドレスにはコントラクトがデプロイされていません",
+    "unsafe": "安全でない可能性のあるコントラクトコード"
   },
   "search": {
     "history": "支出者またはトークンで検索する",
-    "spender": "支出者で検索"
+    "spender": "支出者で検索する"
   },
   "sessions": {
     "info": {
@@ -251,22 +167,22 @@
       "title": "セッションとは何ですか。"
     },
     "table": {
-      "none_found": "セッションが見つかりません",
+      "none_found": "セッションは見つかりませんでした",
       "title": "アクティブセッション"
     },
     "tooltips": {
       "policy_type": {
-        "all": "このセッションには、{callPoliciesCount}つのさまざまな関数を呼び出し、{transferPoliciesCount}つのさまざまなアドレスにトークンを転送する権限があります。",
-        "calls": "このセッションには、{callPoliciesCount}つのさまざまな関数を呼び出す権限があります",
-        "none": "このセッションには権限がありません",
-        "transfers": "このセッションには、{transferPoliciesCount}つのさまざまなアドレスにトークンを転送する権限があります"
+        "all": "このセッションには、{callPoliciesCount}個の異なる関数を呼び出し、{transferPoliciesCount}個の異なるアドレスにトークンを転送する権限があります。",
+        "calls": "このセッションには、{callPoliciesCount}個の異なる関数を呼び出す権限があります。",
+        "none": "このセッションには権限がありません。",
+        "transfers": "このセッションには、{transferPoliciesCount}個の異なるアドレスにトークンを転送する権限があります。"
       }
     }
   },
   "sorting": {
     "columns": {
-      "allowance": "許可したもの",
-      "approved_spender": "認定支出者",
+      "allowance": "承認額",
+      "approved_spender": "承認済み支出者",
       "asset_name": "資産名",
       "last_updated": "最終更新日",
       "value_at_risk": "リスクがある価値"
@@ -288,24 +204,24 @@
     "label": "並べ替え"
   },
   "time_machine": {
-    "apply": "申し込む",
+    "apply": "適用",
     "description": "過去のある時点での承認状況を確認するために、履歴をさかのぼることができます。履歴データを閲覧中は、承認の取り消し操作は利用できません。",
     "exit": "現在に戻る",
     "label": "タイムマシン",
     "now": "今",
-    "viewing_as_of": "{date}、{time} 時点での承認状況"
+    "viewing_as_of": "{date}、{time}時点での承認状況"
   },
   "tooltips": {
     "connect_wallet": "続けるにはウォレットを接続してください",
     "connected_account": "接続されているアカウントに対してのみアクションを実行できます",
     "filter_by_spender": "この支出者でフィルタリングする",
     "filter_by_token": "このトークンでフィルタリングする",
-    "permit2_expiration": "これは{inTime}で期限が切れる許可2の承認です。",
+    "permit2_expiration": "これは{inTime}に期限が切れるPermit2の承認です",
     "risk_factors": "これは下記の理由により{riskLevel}です："
   },
-  "viewing_on": "Viewing address on",
+  "viewing_on": "アドレスを表示中のネットワーク",
   "wallet_health": {
-    "allowances": "Approvals",
-    "value_at_risk": "Value at Risk"
+    "allowances": "承認数",
+    "value_at_risk": "リスクがある価値"
   }
 }

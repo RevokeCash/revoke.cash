@@ -1,15 +1,15 @@
 {
-  "different_chain": "O verifique las aprobaciones de sus tokens en una red diferente",
+  "different_chain": "O comprueba las autorizaciones de tus tokens en una red diferente",
   "how_to_revoke": {
-    "content": "Cuando ingreses tu dirección arriba, verás una lista de todas tus autorizaciones de token {chainName}. La lista contendrá todos los detalles de autorización del token, como la fecha, el monto y el inversionista. Puedes ordenar la lista y filtrarla por cualquiera de estas propiedades. Luego puedes revocar cualquier autorización de token haciendo clic en el botón revocar, lo que le pedirá a tu cartera que confirmes la transacción de revocación, lo que te costará una pequeña tarifa de gas. Además {chainName} también puedes verificar tus autorizaciones en más de 100+ redes usando el menú desplegable. Obtén más información sobre cómo revocar autorizaciones de tokens en nuestro artículo <revoking-approvals>Aprender</revoking-approvals>.",
-    "title": "Cómo Revocar Autorizaciones de Tokens {chainName}."
+    "content": "Cuando ingreses tu dirección arriba, verás una lista de todas tus autorizaciones de tokens de {chainName}. La lista contendrá todos los detalles de cada autorización, como la fecha, el monto y el gastador. Puedes ordenar la lista y filtrarla por cualquiera de estas propiedades. Luego puedes revocar cualquier autorización de tokens haciendo clic en el botón revocar, lo que hará que tu cartera te pida confirmar la transacción de revocación, que cuesta una pequeña tarifa de gas. Además de {chainName}, también puedes comprobar tus autorizaciones en más de 100 redes usando el menú desplegable. Obtén más información sobre cómo revocar autorizaciones de tokens en nuestro <revoking-approvals>artículo de la sección Aprender</revoking-approvals>.",
+    "title": "Cómo Revocar Autorizaciones de Tokens de {chainName}."
   },
   "meta": {
-    "title": "{chainName} Comprobador de Autorización"
+    "title": "Comprobador de Autorización de Tokens de {chainName}"
   },
-  "title": "{chainName} Comprobador de Autorización",
+  "title": "Comprobador de Autorización de Tokens de {chainName}",
   "what_are_token_approvals": {
-    "content": "Las autorizaciones de tokens se utilizan para dar permiso a un contrato inteligente para que gaste tus tokens en tu nombre. Se trata de un patrón común utilizado por las bolsas descentralizadas y otras aplicaciones descentralizadas. Es una característica importante para el funcionamiento de las aplicaciones descentralizadas en {chainName} y otras redes blockchain, pero también puede ser peligrosa si no se controla. Aprende más sobre las autorizaciones de tokens en nuestro artículo <what-are-token-approvals>Aprender</what-are-token-approvals>.",
-    "title": "¿Qué son las autorizaciones de tokens {chainName}?"
+    "content": "Las autorizaciones de tokens se utilizan para dar permiso a un contrato inteligente para que gaste tus tokens en tu nombre. Se trata de un patrón común utilizado por los exchanges descentralizados y otras aplicaciones descentralizadas. Es una característica importante para el funcionamiento de las aplicaciones descentralizadas en {chainName} y otras redes blockchain, pero también puede ser peligrosa si no se controla. Aprende más sobre las autorizaciones de tokens en nuestro <what-are-token-approvals>artículo de la sección Aprender</what-are-token-approvals>.",
+    "title": "¿Qué son las Autorizaciones de Tokens de {chainName}?"
   }
 }

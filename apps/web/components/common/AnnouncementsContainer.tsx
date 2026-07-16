@@ -1,16 +1,19 @@
 'use client';
 
 import analytics from 'lib/utils/analytics';
+import { useTranslations } from 'next-intl';
 import AnnouncementBanner from './AnnouncementBanner';
 import Button from './Button';
+import RichText from './RichText';
 
 const AnnouncementsContainer = () => {
+  const t = useTranslations();
+
   return (
     <AnnouncementBanner storageKey="introducing-revoke-premium-and-ultimate">
       <div className="flex flex-col sm:flex-row items-center gap-4">
         <div className="text-center">
-          Introducing <strong>Revoke Premium &amp; Ultimate</strong>: Unified Multichain Dashboard &amp; Automated
-          Revoking
+          <RichText>{(tags) => t.rich('common.announcements.premium_launch.text', tags)}</RichText>
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -26,7 +29,7 @@ const AnnouncementsContainer = () => {
             }
             className="bg-black text-white dark:bg-black dark:text-white dark:visited:text-white border-black dark:border-black dark:hover:bg-zinc-800"
           >
-            View Pricing
+            {t('common.announcements.premium_launch.view_pricing')}
           </Button>
           <Button
             style="secondary"
@@ -41,7 +44,7 @@ const AnnouncementsContainer = () => {
             }
             className="border-none bg-brand dark:bg-brand text-black dark:text-black dark:visited:text-black hover:bg-black/10 dark:hover:bg-black/10"
           >
-            Learn More
+            {t('common.announcements.premium_launch.learn_more')}
           </Button>
         </div>
       </div>

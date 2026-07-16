@@ -1,158 +1,150 @@
 {
   "automated_revoking": {
     "cta": {
-      "button": "View plans",
-      "title": "Ready for set-and-forget protection?"
+      "button": "Посмотреть планы",
+      "title": "Готовы к защите по принципу «настроил и забыл»?"
     },
-    "description": "Everything you should know about Auto-Revoking before you subscribe: how it protects you, what it needs, and where its limits are.",
+    "description": "Все, что нужно знать об автоматическом отзыве перед оформлением подписки: как он защищает вас, что для него требуется и каковы его ограничения.",
     "gas": {
-      "description": "Your subscription includes a {budget} monthly gas budget that pays for automated revoke transactions. When the budget is used up, routine revokes wait for the next monthly cycle, but exploit-triggered revokes still go through. To spend your budget efficiently, individual revokes are capped at {cap} and may be deferred temporarily during gas spikes.",
-      "title": "Gas fees are included"
+      "description": "Ваша подписка включает месячный бюджет на газ в размере {budget}, из которого оплачиваются транзакции автоматического отзыва. Когда бюджет исчерпан, обычные отзывы ждут следующего месячного цикла, но отзывы, вызванные эксплойтами, по-прежнему выполняются. Для экономного расходования бюджета каждый отзыв ограничен суммой {cap} и может быть временно отложен при скачках цен на газ.",
+      "title": "Комиссии за газ включены"
     },
     "limitations": {
-      "description": "Auto-Revoking is best-effort protection: it meaningfully reduces your risk, but it cannot guarantee that losses are prevented. Detection can lag since an exploit must be identified before it can trigger a revoke, and an attacker may act first. On-chain execution depends on conditions outside anyone's control, such as network congestion and gas prices. See our <terms-link>Terms and Conditions</terms-link> for details.",
-      "title": "What Auto-Revoking is not"
+      "description": "Автоматический отзыв — это защита по принципу максимальных усилий: он существенно снижает ваши риски, но не может гарантировать предотвращение потерь. Обнаружение может запаздывать, поскольку эксплойт сначала должен быть выявлен, прежде чем он вызовет отзыв, и злоумышленник может успеть первым. Выполнение транзакций в блокчейне зависит от условий, которые никто не контролирует, таких как загруженность сети и цены на газ. Подробности см. в наших <terms-link>Условиях использования</terms-link>.",
+      "title": "Чем автоматический отзыв не является"
     },
     "meta": {
-      "description": "How Auto-Revoking protects your wallet: rules, supported networks, gas budget, and its limits.",
-      "title": "How Auto-Revoking Works"
+      "description": "Как автоматический отзыв защищает ваш кошелек: правила, поддерживаемые сети, бюджет на газ и ограничения.",
+      "title": "Как работает автоматический отзыв"
     },
     "networks": {
-      "description": "Auto-Revoking currently requires MetaMask, the first wallet to support ERC-7715 permissions. Granting these permissions requires upgrading your wallet to an ERC-7702 smart account, which MetaMask walks you through during setup. Support for more wallets and networks will follow as the standard gets adopted. It currently works on {count} networks:",
-      "title": "Supported wallets & networks"
+      "description": "Для автоматического отзыва сейчас требуется MetaMask — первый кошелек с поддержкой разрешений ERC-7715. Для выдачи этих разрешений нужно обновить кошелек до смарт-аккаунта ERC-7702. Поддержка других кошельков и сетей появится по мере распространения стандарта. Сейчас автоматический отзыв работает в {count} сетях:",
+      "title": "Поддерживаемые кошельки и сети"
     },
     "steps": {
       "execution": {
-        "description": "When an approval matches your rules, a revoke transaction is sent on your behalf and appears in your activity log. Exploit-triggered revokes are treated with higher urgency.",
-        "title": "Dangerous approvals get revoked"
+        "description": "Когда доступ соответствует вашим правилам, транзакция отзыва отправляется от вашего имени и появляется в вашем журнале активности. Отзывы, вызванные эксплойтами, обрабатываются с повышенной срочностью.",
+        "title": "Опасные доступы отзываются"
       },
       "monitoring": {
-        "description": "Revoke.cash continuously monitors your approvals across all supported networks and checks them against your rules and our exploit database, around the clock.",
-        "title": "We keep watch"
+        "description": "Revoke.cash непрерывно отслеживает ваши доступы во всех поддерживаемых сетях и круглосуточно сверяет их с вашими правилами и нашей базой данных эксплойтов.",
+        "title": "Мы на страже"
       },
       "permission": {
-        "description": "Connect with MetaMask and grant Revoke.cash an ERC-7715 permission that can only be used to revoke approvals. It cannot transfer funds, sign messages, or do anything else, and you can withdraw it at any time.",
-        "title": "Grant a revoke-only permission"
+        "description": "Подключитесь через MetaMask и выдайте Revoke.cash разрешение ERC-7715, которое может использоваться только для отзыва доступов. Оно не может переводить средства, подписывать сообщения или делать что-либо еще, и вы можете отозвать его в любой момент.",
+        "title": "Выдайте разрешение только на отзыв"
       },
       "rules": {
-        "description": "Choose what should be revoked automatically: approvals to exploited or risky spenders, approvals older than your staleness threshold, or both. Every wallet on your subscription can tune its own rules.",
-        "title": "Set your rules"
+        "description": "Выберите, что отзывать автоматически: доступы, выданные взломанным или рискованным распорядителям, доступы старше заданного порога давности, или и то и другое. Каждый кошелек в подписке может настроить собственные правила.",
+        "title": "Настройте свои правила"
       },
-      "title": "From setup to protection"
+      "title": "От настройки до защиты"
     },
-    "title": "How Auto-Revoking Works"
-  },
-  "banner": {
-    "cta": "Upgrade to Premium",
-    "description": "Want a unified view across all networks?"
+    "title": "Как работает автоматический отзыв"
   },
   "pricing": {
-    "best_protection": "Best Protection",
-    "compare_plans": "Compare plans",
-    "description": "Stay safe in web3 with the tools you need. Upgrade to Premium for the full experience.",
+    "best_protection": "Лучшая защита",
+    "compare_plans": "Сравнить планы",
+    "description": "Оставайтесь в безопасности в web3 с необходимыми инструментами. Перейдите на Premium, чтобы получить все возможности.",
     "faq": {
       "best_effort": {
-        "answer": "No. Automated revoking is best-effort: it monitors and automatically revokes your approvals, which meaningfully reduces your risk. But detection can lag and networks can be congested, so it can never guarantee that losses are prevented.",
-        "question": "Is auto-revoking guaranteed to protect my funds?"
+        "answer": "Нет. Автоматический отзыв работает по принципу максимальных усилий: он отслеживает и автоматически отзывает ваши доступы, что существенно снижает риски. Но обнаружение может запаздывать, а сети могут быть перегружены, поэтому он не может гарантировать предотвращение потерь.",
+        "question": "Гарантирует ли автоматический отзыв защиту моих средств?"
       },
       "multiple_wallets": {
-        "answer": "Yes. Both Premium and Ultimate include {count} wallet slots. The subscription owner can add wallet addresses and all wallets get the same features. With Ultimate, each wallet can additionally manage its own auto-revoking configuration independently.",
-        "question": "Can I use one subscription for multiple wallets?"
+        "answer": "Да. И Premium, и Ultimate включают {count} слотов для кошельков. Владелец подписки может добавлять адреса кошельков, и все кошельки получают одинаковые функции. С Ultimate каждый кошелек может дополнительно независимо управлять собственной конфигурацией автоматического отзыва.",
+        "question": "Можно ли использовать одну подписку для нескольких кошельков?"
       },
       "subscription_expiry": {
-        "answer": "Your multichain dashboard and tools become unavailable until you renew. With Ultimate, automated revoking also stops monitoring your approvals, but your rule configuration is preserved, so everything can pick up where it left off once you resubscribe.",
-        "question": "What happens when my subscription expires?"
+        "answer": "Ваша мультичейн-панель и инструменты становятся недоступны до возобновления подписки. С Ultimate автоматический отзыв также перестает отслеживать ваши доступы, но конфигурация правил сохраняется, поэтому после повторной подписки все продолжится с того места, где остановилось.",
+        "question": "Что происходит, когда истекает моя подписка?"
       },
       "supported_wallets": {
-        "answer": "Automated revoking is an Ultimate feature that currently works with MetaMask on {count} supported networks including Ethereum, Polygon, Base, and more. Support for additional wallets depends on adoption of the ERC-7715 standard. <link>See the full list of supported networks</link>.",
-        "question": "What wallets and networks support auto-revoking?"
+        "answer": "Автоматический отзыв — это функция Ultimate, которая сейчас работает с MetaMask в {count} поддерживаемых сетях, включая Ethereum, Polygon, Base и другие. Поддержка дополнительных кошельков зависит от распространения стандарта ERC-7715. <link>Посмотреть полный список поддерживаемых сетей</link>.",
+        "question": "Какие кошельки и сети поддерживают автоматический отзыв?"
       },
-      "title": "Frequently Asked Questions"
+      "title": "Часто задаваемые вопросы"
     },
-    "feature_column": "Feature",
+    "feature_column": "Функция",
     "feature_sections": {
       "automated_revoking": {
-        "description": "Set your rules and Revoke.cash watches your approvals around the clock. When an approval matches your rules, it gets revoked automatically on your behalf, even while you sleep.",
-        "link_label": "See how Auto-Revoking works",
-        "title": "Automated Revoking"
+        "description": "Настройте правила, и Revoke.cash будет круглосуточно следить за вашими доступами. Когда доступ соответствует вашим правилам, он автоматически отзывается от вашего имени, даже пока вы спите.",
+        "link_label": "Узнать, как работает автоматический отзыв",
+        "title": "Автоматический отзыв"
       },
       "multichain_dashboard": {
-        "description": "View and manage all your token approvals across 100+ networks from a single unified dashboard, including your full approval history. No more switching chains one by one.",
-        "title": "Multichain Dashboard"
+        "description": "Просматривайте все свои одобрения токенов более чем в 100 сетях и управляйте ими из единой панели, включая полную историю одобрений. Больше не нужно переключаться между сетями по одной.",
+        "title": "Мультичейн-панель"
       },
       "multichain_exploit_checker": {
-        "description": "Check your wallets against all known exploits across every supported network. See if any of your approvals are associated with compromised contracts so you can revoke them immediately.",
-        "title": "Multichain Exploit Checker"
-      },
-      "priority_support": {
-        "description": "Get faster responses from the Revoke.cash team when you need help. Premium subscribers are prioritized in our support queue so you never have to wait long for assistance.",
-        "title": "Priority Support"
+        "description": "Проверяйте свои кошельки на все известные эксплойты во всех поддерживаемых сетях. Узнайте, связаны ли какие-либо из ваших доступов со взломанными контрактами, чтобы немедленно их отозвать.",
+        "title": "Мультичейн-проверка эксплойтов"
       },
       "time_machine": {
-        "description": "Travel back in time to see what your approvals looked like at any point in the past. Use the Time Machine to investigate how your approval state has changed over time across all supported networks.",
+        "description": "Вернитесь в прошлое, чтобы увидеть, как выглядели ваши доступы в любой момент времени. Используйте Time Machine, чтобы изучить, как состояние ваших доступов менялось со временем во всех поддерживаемых сетях.",
         "title": "Time Machine"
       },
-      "title": "What you get with Premium & Ultimate",
+      "title": "Что вы получаете с Premium и Ultimate",
       "unlimited_batch_revokes": {
-        "description": "Revoke multiple token approvals in a single transaction at no extra cost. Free users pay a per-batch fee, but Premium subscribers enjoy unlimited batch revokes across all networks.",
-        "title": "Unlimited Batch Revokes"
+        "description": "Отзывайте несколько одобрений токенов одной транзакцией без дополнительной платы. Бесплатные пользователи платят комиссию за каждый пакет, а подписчики Premium получают неограниченные пакетные отзывы во всех сетях.",
+        "title": "Неограниченные пакетные отзывы"
       }
     },
     "features": {
-      "address_slots": "Wallet slots",
-      "address_slots_count": "{count} wallets",
-      "approval_history": "Approval history",
-      "automated_revoking": "Automated revoking",
-      "batch_revoke": "Batch revoke",
-      "batch_revoke_paid": "Batch revoke ({price}/batch)",
-      "continuous_monitoring": "Continuous monitoring",
-      "exploit_checker": "Exploit checker",
-      "gas_allowance": "Gas budget",
-      "gas_allowance_amount": "{budget}/month",
-      "gas_allowance_included": "{budget}/month gas budget included",
-      "multichain_dashboard": "Multichain dashboard",
-      "multichain_exploit_checker": "Multichain exploit checker",
-      "one_chain": "One chain at a time",
-      "per_batch": "{price} per batch",
-      "priority_support": "Priority support",
-      "revoke_approvals": "Revoke approvals on 100+ networks",
-      "time_machine": "Time machine",
-      "unlimited": "Unlimited",
-      "unlimited_batch_revokes": "Unlimited batch revokes"
+      "address_slots": "Слоты для кошельков",
+      "address_slots_count": "{count} кошельков",
+      "approval_history": "История одобрений",
+      "automated_revoking": "Автоматический отзыв",
+      "batch_revoke": "Пакетный отзыв",
+      "batch_revoke_paid": "Пакетный отзыв ({price} за пакет)",
+      "continuous_monitoring": "Непрерывный мониторинг",
+      "exploit_checker": "Проверка эксплойтов",
+      "gas_allowance": "Бюджет на газ",
+      "gas_allowance_amount": "{budget} в месяц",
+      "gas_allowance_included": "Включен бюджет на газ {budget} в месяц",
+      "multichain_dashboard": "Мультичейн-панель",
+      "multichain_exploit_checker": "Мультичейн-проверка эксплойтов",
+      "one_chain": "По одной сети за раз",
+      "per_batch": "{price} за пакет",
+      "priority_support": "Приоритетная поддержка",
+      "revoke_approvals": "Отзыв доступов более чем в 100 сетях",
+      "time_machine": "Time Machine",
+      "unlimited": "Неограниченно",
+      "unlimited_batch_revokes": "Неограниченные пакетные отзывы"
     },
-    "includes_tier": "Everything in {tierName}, plus:",
+    "includes_tier": "Все из {tierName}, а также:",
     "meta": {
-      "description": "Compare Revoke Premium plans. Get the multichain dashboard, unlimited batch revokes, and more.",
-      "title": "Premium Pricing"
+      "description": "Сравните планы Revoke Premium. Получите мультичейн-панель, неограниченные пакетные отзывы и многое другое.",
+      "title": "Тарифы Premium"
     },
-    "most_popular": "Most popular",
-    "most_popular_label": "Most Popular",
-    "payment_note": "Pay with USDC on Ethereum or other popular networks. One-time payment for a full year, no auto-renew, and no token approvals needed.",
-    "per_year": "/year",
+    "most_popular_label": "Самый популярный",
+    "payment_note": "Оплачивайте в USDC в сети Ethereum или других популярных сетях. Единоразовый платеж за целый год, без автопродления и без одобрений токенов.",
+    "per_year": "/год",
     "tiers": {
       "free": {
-        "cta": "Get started",
-        "description": "Essential tools to inspect and revoke token approvals.",
-        "name": "Free"
+        "cta": "Начать",
+        "description": "Основные инструменты для просмотра и отзыва одобрений токенов.",
+        "name": "Бесплатный",
+        "savings": "Placeholder"
       },
       "premium": {
-        "cta": "Subscribe",
-        "description": "Monitor and manage token approvals in a single multichain dashboard.",
+        "cta": "Подписаться",
+        "description": "Отслеживайте одобрения токенов и управляйте ими в единой мультичейн-панели.",
         "name": "Premium",
-        "price_note": "{count} wallets included",
-        "savings": "That's {price} per wallet per month"
+        "price_note": "Включено {count} кошельков",
+        "savings": "Это {price} за кошелек в месяц"
       },
       "ultimate": {
-        "cta": "Subscribe",
-        "description": "Set-and-forget protection with automated revoking.",
+        "cta": "Подписаться",
+        "description": "Защита по принципу «настроил и забыл» с автоматическим отзывом.",
         "name": "Ultimate",
-        "price_note": "{count} wallets included",
-        "savings": "That's {price} per wallet per month"
+        "price_note": "Включено {count} кошельков",
+        "savings": "Это {price} за кошелек в месяц"
       }
     },
-    "title": "Premium Pricing",
+    "title": "Тарифы Premium",
     "tooltips": {
-      "automated_revoking": "Requires MetaMask. Supported on select networks. Automated revoking is best-effort and cannot guarantee that losses are prevented."
+      "automated_revoking": "Требуется MetaMask. Поддерживается в отдельных сетях. Автоматический отзыв работает по принципу максимальных усилий и не может гарантировать предотвращение потерь."
     }
   }
 }

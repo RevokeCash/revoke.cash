@@ -3,12 +3,18 @@ import { CHAIN_SELECT_MAINNETS } from '@revoke.cash/core/chains';
 import Button from 'components/common/Button';
 import ChainLogoStack from 'components/common/ChainLogoStack';
 import TestimonialCarousel from 'components/landing/TestimonialCarousel';
+import { TESTIMONIALS } from 'components/landing/testimonials-data';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
 const HeroSection = () => {
   const t = useTranslations();
   const featuredChainIds = CHAIN_SELECT_MAINNETS.slice(0, 6);
+
+  const testimonials = TESTIMONIALS.map((testimonial) => ({
+    ...testimonial,
+    quote: t(`landing.testimonials.quotes.${testimonial.quoteKey}`),
+  }));
 
   return (
     <div className="w-full px-4">
@@ -34,7 +40,7 @@ const HeroSection = () => {
               <HeroShowcaseMedia />
             </div>
             <div className="flex flex-col gap-6 max-w-xl mx-auto lg:mx-0">
-              <TestimonialCarousel />
+              <TestimonialCarousel testimonials={testimonials} />
               <div className="flex items-center gap-2">
                 <ChainLogoStack
                   chainIds={featuredChainIds}

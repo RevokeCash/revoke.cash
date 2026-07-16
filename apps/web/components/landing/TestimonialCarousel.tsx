@@ -4,11 +4,15 @@ import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import TestimonialCard from './TestimonialCard';
-import { TESTIMONIALS } from './testimonials-data';
+import type { TranslatedTestimonial } from './testimonials-data';
 
 const INTERVAL_MS = 6000;
 
-const TestimonialCarousel = () => {
+interface Props {
+  testimonials: TranslatedTestimonial[];
+}
+
+const TestimonialCarousel = ({ testimonials }: Props) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
@@ -20,9 +24,9 @@ const TestimonialCarousel = () => {
     clearInterval(timerRef.current);
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     timerRef.current = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % TESTIMONIALS.length);
+      setActiveIndex((prev) => (prev + 1) % testimonials.length);
     }, INTERVAL_MS);
-  }, []);
+  }, [testimonials.length]);
 
   useEffect(() => {
     restartTimer();
@@ -47,7 +51,7 @@ const TestimonialCarousel = () => {
     >
       {/* Grid trick: all cards occupy the same cell, so the container sizes to the tallest */}
       <div className="grid">
-        {TESTIMONIALS.map((testimonial, index) => (
+        {testimonials.map((testimonial, index) => (
           <div
             key={testimonial.tweetUrl}
             className={twMerge(
@@ -61,7 +65,7 @@ const TestimonialCarousel = () => {
       </div>
       {/* Positioned inside the card's reserved bottom padding, so the controls fill its footer space */}
       <div className="absolute bottom-4 right-4 flex items-center gap-2">
-        {TESTIMONIALS.map((testimonial, index) => (
+        {testimonials.map((testimonial, index) => (
           <button
             key={testimonial.tweetUrl}
             type="button"

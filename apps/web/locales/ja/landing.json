@@ -1,77 +1,81 @@
 {
   "faq": {
-    "subtitle": "これらは、よくあるご質問です。ご質問の一覧は <faq-link>FAQページ</faq-link> をご覧ください。",
+    "subtitle": "これらは、よくあるご質問です。ご質問の全一覧は<faq-link>FAQページ</faq-link>をご覧ください。",
     "title": "よくある質問"
   },
   "features": {
     "auto_revoke": {
-      "description": "Let Revoke.cash watch your approvals around the clock and revoke risky ones automatically on your behalf. Set-and-forget protection for your wallet, even while you sleep.",
-      "title": "Automated Revoking"
+      "description": "Revoke.cashがあなたの承認を24時間体制で監視し、リスクのある承認を自動的に取り消します。一度設定すれば、眠っている間もウォレットを保護し続けます。",
+      "title": "自動取り消し"
     },
     "dashboard": {
       "description": "これまでに付与したすべてのトークン承認を明確に把握できます。不要になった承認を並べ替え、フィルタリングし、取り消すことができます。これらすべてを、シンプルなダッシュボードから行えます。",
       "title": "承認ダッシュボード"
     },
     "exploit_checker": {
-      "description": "既知の悪用や詐欺のデータベースと照合して、承認を自動的にチェックします。承認にリスクがある場合は警告が表示されます。",
+      "description": "承認を既知のエクスプロイトと自動的に照合し、リスクのある承認がないかを確認します。",
       "title": "エクスプロイトチェッカー"
     },
-    "title": "ウォレットのセキュリティのために構築"
+    "title": "ウォレットのセキュリティーのために構築"
   },
   "hero_section": {
     "subtitle": "トークンの承認を確認・取り消し、ウォレットを悪用や詐欺から保護しましょう。",
-    "title": "ウォレットのコントロールを取り戻しましょう。"
+    "title": "<highlight>あなたのウォレット</highlight>のコントロールを取り戻しましょう。"
   },
   "how_to": {
     "paragraph_1": {
-      "description": "画面右上の <b>ウォレット接続</b> をクリックするか、検索バーにアドレスを入力してください。",
+      "description": "画面右上の<b>ウォレットを接続する</b>をクリックするか、検索バーにアドレスを入力してください。",
       "title": "1. 接続"
     },
     "paragraph_2": {
-      "description": "ネットワーク選択、ソート、フィルタリングオプションを使用して、許可を検査します。",
-      "title": "2. 検査"
+      "description": "ネットワーク選択、並べ替え、フィルタリングのオプションを使用して、承認を確認します。",
+      "title": "2. 確認"
     },
     "paragraph_3": {
-      "description": "あなたの資金への不要なアクセスを防ぐために、使用しなくなった許可を取り消します。",
-      "title": "3. 取り消す"
+      "description": "あなたの資金への不要なアクセスを防ぐために、使用しなくなった承認を取り消します。",
+      "title": "3. 取り消し"
     },
-    "title": "許可をリボーク(取消)する方法。"
+    "title": "承認を取り消す方法"
   },
   "premium": {
-    "best_protection": "Best Protection",
-    "description": "1つのダッシュボードから100以上のネットワークの承認を一元管理できます。年間{price}からご利用いただけます。",
+    "best_protection": "最高の保護",
+    "description": "100以上のネットワークでトークン承認を監視・保護できます。年間{price}からご利用いただけます。",
     "free_features": {
-      "batch_revoke": "バッチ取り消し（1.50ドル/バッチ）",
+      "batch_revoke": "一括取り消し（1.50ドル/バッチ）",
       "exploit_checker": "シングルチェーンエクスプロイトチェッカー",
-      "history": "Single-chain approval history",
       "single_chain": "シングルチェーン承認ダッシュボード"
     },
     "free_title": "無料",
     "highlights": {
-      "multichain_dashboard": "マルチチェーンダッシュボード — すべてのチェーンを一元管理",
+      "multichain_dashboard": "マルチチェーンダッシュボード",
       "multichain_exploit_checker": "マルチチェーンエクスプロイトチェッカー",
-      "priority_support": "優先サポート",
       "time_machine": "過去の承認履歴を確認するタイムマシン",
-      "unlimited_batch_revokes": "無制限のバッチ取り消し"
+      "unlimited_batch_revokes": "無制限の一括取り消し"
     },
-    "includes_premium": "Everything in Premium, plus:",
-    "most_popular": "Most Popular",
-    "premium_price": "{price}/year",
+    "most_popular": "最も人気",
+    "premium_price": "{price}/年",
     "premium_title": "プレミアム",
-    "title": "プレミアムを取り消す",
+    "title": "Revoke Premium",
     "ultimate_features": {
-      "automated_revoking": "Automated revoking",
-      "automated_revoking_tooltip": "Requires MetaMask. Supported on select networks.",
-      "continuous_monitoring": "Continuous monitoring",
-      "gas_allowance": "$5/month gas budget included"
+      "automated_revoking": "自動取り消し",
+      "automated_revoking_tooltip": "MetaMaskが必要です。一部のネットワークで対応しています。",
+      "continuous_monitoring": "継続的な監視",
+      "gas_allowance": "月5ドルのガス予算付き"
     },
-    "ultimate_price": "{price}/year",
+    "ultimate_price": "{price}/年",
     "ultimate_title": "Ultimate"
   },
   "stats": {
-    "approvals_revoked": "承認が取り消された",
-    "networks_supported": "対応ネットワーク",
+    "approvals_revoked": "取り消された承認数",
+    "networks_supported": "対応ネットワーク {count}",
     "protected_from_exploits": "エクスプロイトから保護",
     "total_users": "総ユーザー数"
+  },
+  "testimonials": {
+    "quotes": {
+      "beausecurity": "超重要なリマインダー：スマートコントラクトがまだエクスプロイトされていないからといって、今後もされないとは限りません。もう使っていないスマートコントラクトへの古い承認は取り消しましょう。やる価値は十分あります。Revoke.cashを使いましょう。",
+      "nft_dreww": "誰でもスマホは持っているのだから、今すぐリマインダーをセットして、毎週Revoke.cashで承認をチェックしましょう。たった30秒で、ハッカーに資産を盗まれるのを防げます。",
+      "rsquare": "インシデントに素早く対応するという点でSafeでできる最善策のひとつは、Revoke.cash Safe Appで手軽に承認を取り消せることです。"
+    }
   }
 }

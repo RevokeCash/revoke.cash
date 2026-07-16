@@ -1,64 +1,63 @@
 {
+  "announcements": {
+    "premium_launch": {
+      "learn_more": "了解更多",
+      "text": "隆重推出 <b>Revoke Premium & Ultimate</b>：统一多链仪表盘与自动撤销",
+      "view_pricing": "查看定价"
+    }
+  },
   "article_meta": {
     "author": "作者：<person-link>{author}</person-link>",
     "reading_time": "{readingTime} 分钟阅读时间",
     "translator": "翻译：<person-link>{translator}</person-link>"
   },
   "buttons": {
-    "authenticate": "身份验证",
-    "authenticate_wallet": "Authenticate Wallet",
-    "authenticated": "Authenticated",
-    "authenticating": "认证中",
-    "back_to_exploits": "返回漏洞",
+    "authenticate": "验证身份",
+    "authenticate_wallet": "验证钱包",
+    "authenticated": "已验证",
+    "authenticating": "验证中",
+    "back_to_exploits": "返回漏洞列表",
     "cancel": "取消",
     "check": "检查",
-    "check_connected_address": "检查连接地址",
-    "clear_filters": "清除筛选条件",
+    "check_connected_address": "检查已连接地址",
     "close": "关闭",
-    "collapse_all": "Collapse All",
+    "collapse_all": "全部收起",
     "connect": "连接钱包",
     "connecting": "正在连接",
     "disconnect": "断开连接",
-    "disconnecting": "正在断开连接",
-    "donate": "捐赠",
-    "donating": "正在捐赠",
     "download": "下载",
-    "expand_all": "Expand All",
-    "explorer_links": "浏览器链接",
-    "get_premium": "Get Premium",
+    "expand_all": "全部展开",
+    "get_premium": "获取 Premium",
     "get_started": "开始使用",
-    "get_ultimate": "Get Ultimate",
-    "increase": "增加",
-    "loading": "Loading",
-    "my_account": "Account Settings",
-    "my_allowances": "我的授权",
+    "get_ultimate": "获取 Ultimate",
+    "loading": "加载中",
+    "my_account": "账户设置",
+    "my_allowances": "我的仪表盘",
     "next": "下一个",
     "previous": "上一个",
-    "remove": "Remove",
-    "report_exploit": "报告漏洞",
-    "retrying": "Retrying",
+    "remove": "移除",
+    "retrying": "重试中",
     "revoke": "撤销",
-    "revoke_selected": "撤销选定",
+    "revoke_selected": "撤销所选",
     "revoking": "正在撤销",
     "send": "发送",
-    "sending": "发送给",
+    "sending": "正在发送",
     "share_on_x": "分享至 X",
-    "sign_in_with_ethereum": "Sign In with Ethereum",
     "translate": "帮助我们翻译这个页面",
-    "try_again": "Try Again",
+    "try_again": "重试",
     "understand": "我理解",
     "update": "更新",
     "updating": "更新中",
-    "upgrade_to_premium": "Upgrade to Premium",
-    "upgrade_to_ultimate": "Upgrade to Ultimate"
+    "upgrade_to_premium": "升级至 Premium",
+    "upgrade_to_ultimate": "升级至 Ultimate"
   },
   "chain_select": {
     "mainnets": "主网",
     "testnets": "测试网"
   },
   "color_themes": {
-    "dark": "暗色",
-    "light": "明亮",
+    "dark": "深色",
+    "light": "浅色",
     "system": "系统"
   },
   "connect_wallet": {
@@ -66,26 +65,26 @@
   },
   "errors": {
     "404": {
-      "go_home": "返回主页",
-      "subtitle": "找不到页面。",
+      "go_home": "或返回主页",
+      "subtitle": "找不到您要查找的页面。",
       "suggested_pages": {
         "faq": {
-          "description": "回答你所有的问题。",
+          "description": "解答您所有的问题。",
           "title": "常见问题"
         },
-        "title": "你在找其中一个吗？",
+        "title": "您是否在寻找以下页面？",
         "your_allowances": {
-          "description": "检查你的授权。",
-          "title": "你的授权"
+          "description": "检查您自己的授权。",
+          "title": "您的授权"
         }
       },
       "title": "此页面不存在。"
     },
     "messages": {
       "chain_could_not_connect": "无法连接到{chainName}，请稍后重试。",
-      "connect_wallet_to_supported_network": "Please connect your web3 wallet to a supported network",
-      "eip5792_batch_call_failed": "An error occurred related to EIP5792 batch calls",
-      "page_load_failed": "Something went wrong while loading this page. Please try again later."
+      "connect_wallet_to_supported_network": "请将您的 web3 钱包连接到受支持的网络",
+      "eip5792_batch_call_failed": "发生了与 EIP5792 批量调用相关的错误",
+      "page_load_failed": "加载此页面时出现问题，请稍后重试。"
     }
   },
   "footer": {
@@ -115,21 +114,21 @@
   },
   "meta": {
     "acknowledgements": {
-      "description": "Revoke.cash depends on several third-party tools and services. This page lists them.",
-      "title": "Acknowledgements"
+      "description": "Revoke.cash 依赖多个第三方工具和服务，本页面将它们一一列出。",
+      "title": "致谢"
     },
-    "description": "撤销在 {chainName} 等 100+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",
+    "description": "撤销您在 {chainName} 及其他 100 多个网络上授予的代币授权和权限，重新掌控自己的钱包，确保资金安全。",
     "disclaimer": {
-      "description": "Disclaimer for Revoke.cash",
-      "title": "Disclaimer"
+      "description": "Revoke.cash 免责声明",
+      "title": "免责声明"
     },
     "privacy_policy": {
-      "description": "Privacy Policy for Revoke.cash",
-      "title": "Privacy Policy"
+      "description": "Revoke.cash 隐私政策",
+      "title": "隐私政策"
     },
     "terms": {
-      "description": "Terms and Conditions for Revoke.cash",
-      "title": "Terms and Conditions"
+      "description": "Revoke.cash 条款和条件",
+      "title": "条款和条件"
     },
     "title": "撤销 100+ 区块链网络上的代币授权"
   },
@@ -138,7 +137,6 @@
     "blog": "博客",
     "exploits": "漏洞",
     "extension": "扩展",
-    "faq": "常见问题",
     "learn": "学习资源",
     "merchandise": "商品",
     "more": "更多",
@@ -146,36 +144,36 @@
     "search": "通过输入地址或域名来搜索账户"
   },
   "pagination": {
-    "first": "第一",
-    "last": "最后",
+    "first": "第一页",
+    "last": "最后一页",
     "page": "第 {page} 页，共 {total} 页",
-    "show": "Show",
-    "showing": "显示{start}到{end}共{total}个结果"
+    "show": "显示",
+    "showing": "显示第 {start} 至 {end} 项，共 {total} 个结果"
   },
   "quiz": {
-    "check_answer": "查看回答",
-    "check_selected_answers": "查看已选回答",
+    "check_answer": "检查答案",
+    "check_selected_answers": "检查所选答案",
     "correct_answer": "正确！做得好。",
     "incorrect_answer": "错误。以下是正确答案：",
     "next_question": "下一个问题",
-    "question_progress": "问题{current}，共{total}",
+    "question_progress": "第 {current} 题，共 {total} 题",
     "select_all_that_apply": "选择所有适用项",
     "select_correct_answer": "选择正确答案",
     "wait_and_read": "等待并阅读"
   },
   "select": {
-    "no_options": "No options"
+    "no_options": "无选项"
   },
   "toasts": {
     "clipboard_failed": "❌ 无法复制到剪贴板",
     "clipboard_success": "✅ 已复制到剪贴板",
-    "fee_payment_failed": "❌费用支付失败：{message}",
-    "fee_payment_rejected": "❌请支付批量撤销费用才能继续",
-    "revoke_failed": "❌ 撤销授权许可失败：{message}",
+    "fee_payment_failed": "❌ 费用支付失败：{message}",
+    "fee_payment_rejected": "❌ 请支付批量撤销费用才能继续",
+    "revoke_failed": "❌ 撤销失败：{message}",
     "revoke_failed_ledger_nano_s": "❌ Ledger Nano S 已被 Ledger 弃用，不再支持撤销 NFT 授权。建议升级到较新的 Ledger 设备。",
-    "revoke_failed_revert": "❌该代币创建者已禁用或暂停批准及撤销批准功能（{message}）",
-    "switch_chain_failed": "❌切换链失败，请在钱包中手动切换到{chainName}。",
-    "transaction_failed": "交易失败：{message}",
+    "revoke_failed_revert": "❌ 该代币的创建者已禁用或暂停授权及撤销授权功能（{message}）",
+    "switch_chain_failed": "❌ 切换链失败，请在钱包中手动切换到{chainName}。",
+    "transaction_failed": "❌ 交易失败：{message}",
     "transaction_submitted": "✅ 交易已提交！",
     "update_failed": "❌ 此代币不支持更新授权，请改为撤销。"
   }

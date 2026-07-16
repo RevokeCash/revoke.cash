@@ -3,7 +3,6 @@
     "add_address": "Add wallet",
     "add_failed": "Failed to add wallet",
     "placeholder": "Wallet address or domain name",
-    "remove": "Remove",
     "remove_failed": "Failed to remove wallet",
     "resolve_failed": "Could not resolve wallet address or name",
     "title": "Premium Wallets"
@@ -67,7 +66,6 @@
     "permissions": {
       "connect_to_manage": "Connect this wallet to manage its permissions.",
       "decode_failed": "Failed to decode permission",
-      "grant": "Grant",
       "grant_description": "Each address must individually grant auto-revoke permission via MetaMask.",
       "grant_failed": "Failed to grant auto-revoke permission.",
       "networks_enabled": "{enabled}/{total} networks enabled",

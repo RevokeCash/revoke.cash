@@ -43,18 +43,15 @@
     "free_features": {
       "batch_revoke": "Batch revoke ($1.50/batch)",
       "exploit_checker": "Single-chain exploit checker",
-      "history": "Single-chain approval history",
       "single_chain": "Single-chain approval dashboard"
     },
     "free_title": "Free",
     "highlights": {
       "multichain_dashboard": "Multichain dashboard",
       "multichain_exploit_checker": "Multichain exploit checker",
-      "priority_support": "Priority support",
       "time_machine": "Time machine for historical approvals",
       "unlimited_batch_revokes": "Unlimited batch revokes"
     },
-    "includes_premium": "Everything in Premium, plus:",
     "most_popular": "Most Popular",
     "premium_price": "{price}/year",
     "premium_title": "Premium",
@@ -73,5 +70,12 @@
     "networks_supported": "{count} Networks Supported",
     "protected_from_exploits": "Protected from Exploits",
     "total_users": "Total Users"
+  },
+  "testimonials": {
+    "quotes": {
+      "beausecurity": "Super important reminder that just because a smart contract hasn't been exploited yet, doesn't mean it won't be. Revoke old approvals to smart contracts you aren't using anymore. It's well worth it. Use Revoke.cash.",
+      "nft_dreww": "We all have phones, set a reminder right now to visit Revoke.cash and check your approvals weekly. This takes 30 seconds and can prevent hackers from stealing your assets.",
+      "rsquare": "One of the best things you can do with Safe when it comes to reacting quickly to incidents is to conveniently revoke approvals with the Revoke.cash Safe App."
+    }
   }
 }

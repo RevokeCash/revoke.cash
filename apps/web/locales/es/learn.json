@@ -9,14 +9,14 @@
     },
     "step_2": {
       "form": {
-        "block_explorer_url": "Block explorer URL (Optional)",
-        "chain_id": "Chain ID",
-        "currency_symbol": "Currency symbol",
-        "network_name": "Network name",
-        "new_rpc_url": "New RPC URL"
+        "block_explorer_url": "URL del explorador de bloques (opcional)",
+        "chain_id": "ID de cadena",
+        "currency_symbol": "Símbolo de moneda",
+        "network_name": "Nombre de la red",
+        "new_rpc_url": "Nueva URL de RPC"
       },
       "paragraph_1": "Después de introducir todos los datos necesarios, haz clic en \"Guardar\" para añadir {chainName} a MetaMask.",
-      "paragraph_2": "Como alternativa, puedes utilizar nuestro botón de un solo clic para no tener que introducir los detalles requeridos manualmente.",
+      "paragraph_2": "Como alternativa, puedes utilizar nuestro botón de un solo clic para no tener que introducir los datos necesarios manualmente.",
       "title": "2. Introduce los datos necesarios y haz clic en \"Guardar\"."
     },
     "steps_heading": "Pasos para añadir {chainName} a MetaMask",
@@ -28,24 +28,24 @@
   },
   "sections": {
     "approvals": {
-      "intro_paragraph": "En la sección Autorizaciones de Token, puedes obtener más información sobre las autorizaciones de token. Esto te ayudará a entender qué son las autorizaciones de token y cómo puedes gestionarlas. También cubre algunos esquemas de autorización alternativa, como las firmas de Permisos.",
-      "title": "Más Información Sobre la Autorización de Tokens"
+      "intro_paragraph": "En la sección Autorizaciones de Tokens, puedes aprender todo sobre las autorizaciones de tokens. Esto te ayudará a entender qué son las autorizaciones de tokens y cómo puedes gestionarlas. También cubre algunos esquemas de autorización alternativos, como las firmas Permit.",
+      "title": "Aprender Sobre las Autorizaciones de Tokens"
     },
     "basics": {
-      "intro_paragraph": "En las secciones Conceptos básicos, puedes aprender todo sobre los componentes básicos de las criptomonedas, como los tokens, las NFT y las carteras. Esto te permitirá familiarizarte con la terminología y los conceptos que encontrarás en el mundo de web3.",
-      "title": "Más información sobre los Conceptos Básicos de las Criptomonedas"
+      "intro_paragraph": "En la sección Conceptos Básicos, puedes aprender todo sobre los componentes básicos de las criptomonedas, como los tokens, los NFT y las carteras. Esto te permitirá familiarizarte con la terminología y los conceptos que encontrarás en el mundo de la web3.",
+      "title": "Aprender Sobre los Conceptos Básicos de las Criptomonedas"
     },
     "home": {
-      "intro_paragraph": "Creamos la sección Aprender de Revoke.cash para ayudarte a comprender cómo puedes mantenerte seguro en el mundo de web3. Cubre los conceptos básicos de web3 y luego pasa a temas más avanzados. Iremos agregando más artículos con el tiempo, así que asegúrate de revisarlo regularmente.",
+      "intro_paragraph": "Creamos la sección Aprender de Revoke.cash para ayudarte a comprender cómo puedes mantenerte seguro en el mundo de la web3. Cubre los conceptos básicos de la web3 y luego pasa a temas más avanzados. Iremos añadiendo más artículos con el tiempo, así que asegúrate de revisarla regularmente.",
       "title": "Aprender Sobre Web3, Seguridad y Más"
     },
     "security": {
       "intro_paragraph": "En la sección de Seguridad, te ayudamos a entender cómo puedes mantenerte seguro en el mundo de la web3. Esto te ayudará a comprender los diferentes tipos de ataques que pueden ocurrir y cómo puedes protegerte de ellos.",
-      "title": "Más información sobre Seguridad y Estafas"
+      "title": "Aprender Sobre Seguridad y Estafas"
     },
     "wallets": {
-      "intro_paragraph": "En la sección Carteras, puedes aprender todo sobre las carteras. Esto te ayudará a entender los diferentes tipos de carteras que existen y cómo puedes usarlas para interactuar con aplicaciones en diferentes redes de blockchains.",
-      "title": "Más información sobre las Carteras"
+      "intro_paragraph": "En la sección Carteras, puedes aprender todo sobre las carteras. Esto te ayudará a entender los diferentes tipos de carteras que existen y cómo puedes usarlas para interactuar con aplicaciones en diferentes redes de blockchain.",
+      "title": "Aprender Sobre las Carteras"
     }
   },
   "sidebar": {

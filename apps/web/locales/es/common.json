@@ -1,4 +1,11 @@
 {
+  "announcements": {
+    "premium_launch": {
+      "learn_more": "Más información",
+      "text": "Te presentamos <b>Revoke Premium & Ultimate</b>: Panel de Control Multicadena Unificado y Revocación Automática",
+      "view_pricing": "Ver precios"
+    }
+  },
   "article_meta": {
     "author": "Escrito por <person-link>{author}</person-link>",
     "reading_time": "{readingTime} min de lectura",
@@ -13,29 +20,22 @@
     "cancel": "Cancelar",
     "check": "Comprobar",
     "check_connected_address": "Comprobar Dirección Conectada",
-    "clear_filters": "Quitar Filtros",
     "close": "Cerrar",
     "collapse_all": "Contraer todo",
     "connect": "Conectar Cartera",
     "connecting": "Conectando",
     "disconnect": "Desconectar",
-    "disconnecting": "Desconectando",
-    "donate": "Donar",
-    "donating": "Donando",
     "download": "Descargar",
     "expand_all": "Expandir todo",
-    "explorer_links": "Enlaces del explorador",
-    "get_premium": "Get Premium",
+    "get_premium": "Obtén Premium",
     "get_started": "Empezar",
-    "get_ultimate": "Get Ultimate",
-    "increase": "Aumentar",
+    "get_ultimate": "Obtén Ultimate",
     "loading": "Cargando",
     "my_account": "Configuración de la Cuenta",
     "my_allowances": "Mi Panel",
     "next": "Siguiente",
     "previous": "Anterior",
     "remove": "Eliminar",
-    "report_exploit": "Informar de un Exploit",
     "retrying": "Reintentando",
     "revoke": "Revocar",
     "revoke_selected": "Revocar lo seleccionado",
@@ -43,14 +43,13 @@
     "send": "Enviar",
     "sending": "Enviando",
     "share_on_x": "Compartir en X",
-    "sign_in_with_ethereum": "Iniciar sesión con Ethereum",
     "translate": "Ayúdanos a traducir esta página",
     "try_again": "Inténtalo de nuevo",
     "understand": "Entiendo",
     "update": "Actualizar",
     "updating": "Actualizando",
     "upgrade_to_premium": "Actualizar a Premium",
-    "upgrade_to_ultimate": "Upgrade to Ultimate"
+    "upgrade_to_ultimate": "Actualizar a Ultimate"
   },
   "chain_select": {
     "mainnets": "Redes Principales",
@@ -66,8 +65,8 @@
   },
   "errors": {
     "404": {
-      "go_home": "Volver a la página principal",
-      "subtitle": "No se pudo encontrar la página que buscas",
+      "go_home": "O vuelve a la página principal",
+      "subtitle": "No se pudo encontrar la página que buscas.",
       "suggested_pages": {
         "faq": {
           "description": "Respuestas a todas tus preguntas.",
@@ -83,9 +82,9 @@
     },
     "messages": {
       "chain_could_not_connect": "No se ha podido conectar a {chainName}, por favor inténtalo de nuevo más tarde.",
-      "connect_wallet_to_supported_network": "Please connect your web3 wallet to a supported network",
-      "eip5792_batch_call_failed": "An error occurred related to EIP5792 batch calls",
-      "page_load_failed": "Something went wrong while loading this page. Please try again later."
+      "connect_wallet_to_supported_network": "Por favor, conecta tu cartera web3 a una red compatible",
+      "eip5792_batch_call_failed": "Se ha producido un error relacionado con las llamadas por lotes EIP5792",
+      "page_load_failed": "Algo salió mal al cargar esta página. Por favor, inténtalo de nuevo más tarde."
     }
   },
   "footer": {
@@ -107,29 +106,29 @@
     "terms": "Términos",
     "token_approval_checker": "Comprobador de Autorización de Tokens",
     "what_are_token_approvals": "¿Qué son las Autorizaciones de Tokens?",
-    "what_to_do_when_scammed": "¿Qué hacer cuando es estafado?"
+    "what_to_do_when_scammed": "¿Qué hacer si te estafan?"
   },
   "labels": {
-    "premium": "Prémium",
-    "ultimate": "Lo mejor"
+    "premium": "Premium",
+    "ultimate": "Ultimate"
   },
   "meta": {
     "acknowledgements": {
-      "description": "Revoke.cash depends on several third-party tools and services. This page lists them.",
-      "title": "Acknowledgements"
+      "description": "Revoke.cash depende de varias herramientas y servicios de terceros. Esta página los enumera.",
+      "title": "Agradecimientos"
     },
-    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en {chainName} y en 100 redes más.",
+    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones de tokens y los permisos que concediste en {chainName} y en más de otras 100 redes.",
     "disclaimer": {
-      "description": "Disclaimer for Revoke.cash",
-      "title": "Disclaimer"
+      "description": "Descargo de responsabilidad de Revoke.cash",
+      "title": "Descargo de responsabilidad"
     },
     "privacy_policy": {
-      "description": "Privacy Policy for Revoke.cash",
-      "title": "Privacy Policy"
+      "description": "Política de privacidad de Revoke.cash",
+      "title": "Política de privacidad"
     },
     "terms": {
-      "description": "Terms and Conditions for Revoke.cash",
-      "title": "Terms and Conditions"
+      "description": "Términos y condiciones de Revoke.cash",
+      "title": "Términos y condiciones"
     },
     "title": "Revoca las Aprobaciones de Tus Tokens en Más de 100 Redes"
   },
@@ -138,41 +137,40 @@
     "blog": "Blog",
     "exploits": "Exploits",
     "extension": "Extensión",
-    "faq": "FAQ",
     "learn": "Aprender",
     "merchandise": "Mercancía",
     "more": "Más",
-    "premium": "Prémium",
+    "premium": "Premium",
     "search": "Buscar Cuentas por Dirección o Dominio"
   },
   "pagination": {
-    "first": "Primero",
-    "last": "Último",
+    "first": "Primera",
+    "last": "Última",
     "page": "Página {page} de {total}",
     "show": "Mostrar",
     "showing": "Mostrando {start} a {end} de {total} resultados"
   },
   "quiz": {
     "check_answer": "Comprobar respuesta",
-    "check_selected_answers": "Verifica las respuestas seleccionadas",
+    "check_selected_answers": "Comprobar respuestas seleccionadas",
     "correct_answer": "¡Correcto! Bien hecho.",
     "incorrect_answer": "Incorrecto. Aquí está la respuesta correcta:",
     "next_question": "Siguiente pregunta",
     "question_progress": "Pregunta {current} de {total}",
-    "select_all_that_apply": "Selecciona todas las opciones que correspondan.",
+    "select_all_that_apply": "Selecciona todas las opciones que correspondan",
     "select_correct_answer": "Selecciona la respuesta correcta",
     "wait_and_read": "Espera y lee"
   },
   "select": {
-    "no_options": "No options"
+    "no_options": "Sin opciones"
   },
   "toasts": {
     "clipboard_failed": "❌ No se pudo copiar al portapapeles",
     "clipboard_success": "✅ Copiado al portapapeles",
     "fee_payment_failed": "❌ Fallo en el pago de la tarifa: {message}",
-    "fee_payment_rejected": "❌ Por favor, paga la tarifa de revocación por lotes para continuar.",
+    "fee_payment_rejected": "❌ Por favor, paga la tarifa de revocación por lotes para continuar",
     "revoke_failed": "❌ No se pudo revocar la autorización: {message}",
-    "revoke_failed_ledger_nano_s": "❌ Ledger Nano S fue obsoleto por Ledger y ya no admite la revocación de las aprobaciones de NFT. Se recomienda actualizar a un dispositivo Ledger más nuevo.",
+    "revoke_failed_ledger_nano_s": "❌ El Ledger Nano S fue descontinuado por Ledger y ya no admite la revocación de aprobaciones de NFT. Se recomienda actualizar a un dispositivo Ledger más nuevo.",
     "revoke_failed_revert": "❌ El creador de este token ha deshabilitado o pausado la aprobación y revocación de aprobaciones ({message})",
     "switch_chain_failed": "❌ Error al cambiar de cadena, por favor cambia manualmente a {chainName} en tu cartera.",
     "transaction_failed": "❌ Transacción fallida: {message}",

@@ -1,47 +1,47 @@
 {
   "add_network": {
-    "description": "了解如何在MetaMask等加密货币钱包中轻松添加{chainName}和其他区块链。",
-    "intro_paragraph": "向钱包添加{chainName}的过程可能略有不同，这取决于你使用的钱包。下面的步骤是针对MetaMask的。如果你使用其他钱包，很可能有一个类似的过程，你可以参考。",
-    "select_network": "选择想添加的区块链：",
-    "sidebar_title": "为钱包添加区块链",
+    "description": "了解如何在 MetaMask 等加密货币钱包中轻松添加 {chainName} 和其他网络。",
+    "intro_paragraph": "向钱包添加 {chainName} 的过程可能略有不同，这取决于您使用的钱包。下面的步骤是针对 MetaMask 的。如果您使用的是其他钱包，很可能也有类似的流程可以参考。",
+    "select_network": "选择您想添加的网络：",
+    "sidebar_title": "向钱包添加网络",
     "step_1": {
-      "title": "1.打开你的钱包，进入 \"添加区块链 \"页面。"
+      "title": "1. 打开您的钱包，进入“添加网络”页面。"
     },
     "step_2": {
       "form": {
-        "block_explorer_url": "Block explorer URL (Optional)",
-        "chain_id": "Chain ID",
-        "currency_symbol": "Currency symbol",
-        "network_name": "Network name",
-        "new_rpc_url": "New RPC URL"
+        "block_explorer_url": "区块浏览器 URL（可选）",
+        "chain_id": "链 ID",
+        "currency_symbol": "货币符号",
+        "network_name": "网络名称",
+        "new_rpc_url": "新的 RPC URL"
       },
-      "paragraph_1": "输入所需细节后，您可以点击 \"保存\"，将{chainName}添加到MetaMask。",
-      "paragraph_2": "或者，你可以使用我们的一键式按钮，这样你就不需要手动输入所需的细节。",
-      "title": "2.输入所需的细节并点击 \"保存\"。"
+      "paragraph_1": "输入所需信息后，您可以点击“保存”，将 {chainName} 添加到 MetaMask。",
+      "paragraph_2": "或者，您也可以使用我们的一键添加按钮，无需手动输入这些信息。",
+      "title": "2. 输入所需信息并点击“保存”。"
     },
-    "steps_heading": "添加{chainName}到MetaMask的步骤",
-    "title": "添加{chainName}到MetaMask"
+    "steps_heading": "将 {chainName} 添加到 MetaMask 的步骤",
+    "title": "将 {chainName} 添加到 MetaMask"
   },
   "meta": {
-    "description": "web3 世界可能让人疑惑不解，但也不必如此。我们已经收集了一些资源，以帮助你了解 web3、钱包安全等信息。",
-    "title": "了解 Web3、钱包安全和更多信息"
+    "description": "web3 世界可能让人疑惑不解，但也不必如此。我们整理了一系列资源，帮助您了解 web3、安全等更多内容。",
+    "title": "了解 Web3、安全等更多内容"
   },
   "sections": {
     "approvals": {
-      "intro_paragraph": "在代币授权部分，您可以了解所有关于代币授权的知识。您将了解代币授权是什么，以及如何管理。另外，该部分也涵盖了一些替代方案，例如许可签名。",
+      "intro_paragraph": "在代币授权部分，您可以了解所有关于代币授权的知识。您将了解代币授权是什么，以及如何管理。另外，该部分也涵盖了一些替代授权方案，例如 Permit 签名。",
       "title": "了解代币授权"
     },
     "basics": {
-      "intro_paragraph": "在基础知识部分，您将了解加密的基本组成部分，例如代币、NFT 和钱包。您可以熟悉 web3 世界中常见的术语和概念。",
-      "title": "了解加密基础知识"
+      "intro_paragraph": "在基础知识部分，您将了解加密货币领域的基本组成部分，例如代币、NFT 和钱包。您可以熟悉 web3 世界中常见的术语和概念。",
+      "title": "了解加密货币基础知识"
     },
     "home": {
-      "intro_paragraph": "我们创建了Revoke.cash学习部分，以帮助你了解如何在web3的世界中保持安全。它涵盖了web3的基本知识和更高阶的主题。随着时间的推移，我们将增加更多的文章，所以一定要定期回来查看。",
-      "title": "了解 Web3、钱包安全和更多信息"
+      "intro_paragraph": "我们创建了 Revoke.cash 学习资源部分，以帮助您了解如何在 web3 世界中保持安全。它从 web3 的基础知识讲起，再逐步深入更高级的主题。随着时间的推移，我们将增加更多的文章，请务必定期回来查看。",
+      "title": "了解 Web3、安全等更多内容"
     },
     "security": {
-      "intro_paragraph": "在 “安全” 部分，我们帮助您了解如何在 web3 世界中保持安全。您可以了解到可能发生的不同类型攻击，以及如何保护自己免受攻击。",
-      "title": "了解安全"
+      "intro_paragraph": "在安全部分，我们帮助您了解如何在 web3 世界中保持安全。您可以了解到可能发生的不同类型攻击，以及如何保护自己免受攻击。",
+      "title": "了解安全与诈骗"
     },
     "wallets": {
       "intro_paragraph": "在钱包部分，您可以了解有关钱包的所有信息，包括现有钱包的不同类型，以及如何使用钱包与不同区块链网络上的应用程序进行交互。",
@@ -50,7 +50,7 @@
   },
   "sidebar": {
     "approvals": "代币授权",
-    "basics": "基础",
+    "basics": "基础知识",
     "faq": "常见问题",
     "mobile_header": "浏览文章",
     "security": "安全与诈骗",

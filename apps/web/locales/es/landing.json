@@ -1,34 +1,34 @@
 {
   "faq": {
-    "subtitle": "Estas son algunas de las preguntas más comunes que nos hacen. Para obtener una lista completa de preguntas frecuentes, por favor visita nuestra página de <faq-link>Preguntas Frecuentes</faq-link>.",
+    "subtitle": "Estas son algunas de las preguntas más comunes que nos hacen. Para obtener una lista completa de preguntas frecuentes, por favor visita nuestra <faq-link>página de Preguntas Frecuentes</faq-link>.",
     "title": "Preguntas Frecuentes"
   },
   "features": {
     "auto_revoke": {
-      "description": "Let Revoke.cash watch your approvals around the clock and revoke risky ones automatically on your behalf. Set-and-forget protection for your wallet, even while you sleep.",
-      "title": "Automated Revoking"
+      "description": "Deja que Revoke.cash supervise tus aprobaciones las 24 horas del día y revoque automáticamente en tu nombre las que supongan un riesgo. Protección del tipo configúralo y olvídate para tu cartera, incluso mientras duermes.",
+      "title": "Revocación Automática"
     },
     "dashboard": {
-      "description": "Obtén una visión general clara de todas las autorizaciones de tokens que hayas concedido. Ordena, filtra y revoca las que ya no necesites, todo desde un sencillo panel de control.",
-      "title": "Panel de aprobación"
+      "description": "Obtén una visión general clara de todas las aprobaciones de tokens que hayas concedido. Ordena, filtra y revoca las que ya no necesites, todo desde un sencillo panel de control.",
+      "title": "Panel de Aprobaciones"
     },
     "exploit_checker": {
-      "description": "Comprueba automáticamente tus autorizaciones con una base de datos de vulnerabilidades y estafas conocidas. Recibe una alerta si alguna de tus autorizaciones está en riesgo.",
+      "description": "Comprueba automáticamente tus aprobaciones contra exploits conocidos para ver si alguna de ellas está en riesgo.",
       "title": "Comprobador de Exploits"
     },
     "title": "Diseñado para la Seguridad de la Cartera"
   },
   "hero_section": {
     "subtitle": "Revisa y revoca las autorizaciones de tokens para proteger tu cartera de exploits y estafas.",
-    "title": "Recupera el Control de <highlight>Tu Cartera</highlight>."
+    "title": "Recupera el Control de <highlight>Tu Cartera.</highlight>"
   },
   "how_to": {
     "paragraph_1": {
       "description": "Haz clic en <b>Conectar Cartera</b> en la parte superior derecha o introduce una dirección en la barra de búsqueda.",
-      "title": "1. Conectar"
+      "title": "1. Conecta"
     },
     "paragraph_2": {
-      "description": "Revisa tus autorizaciones usando las opciones de selección de red, y opciones de clasificación y filtrado.",
+      "description": "Revisa tus autorizaciones usando las opciones de selección de red, ordenación y filtrado.",
       "title": "2. Revisa"
     },
     "paragraph_3": {
@@ -38,40 +38,44 @@
     "title": "Cómo Revocar Tus Autorizaciones"
   },
   "premium": {
-    "best_protection": "Best Protection",
-    "description": "Gestiona las aprobaciones en más de 100 redes desde un único panel de control. A partir de {price}/año.",
+    "best_protection": "La mejor protección",
+    "description": "Supervisa y protege tus aprobaciones de tokens en más de 100 redes. A partir de {price}/año.",
     "free_features": {
       "batch_revoke": "Revocación por lotes ($1,50/lote)",
-      "exploit_checker": "Comprobador de vulnerabilidades de cadena única",
-      "history": "Historial de aprobaciones en una sola cadena",
-      "single_chain": "Panel de aprobación de cadena única"
+      "exploit_checker": "Comprobador de exploits de cadena única",
+      "single_chain": "Panel de aprobaciones de cadena única"
     },
     "free_title": "Gratis",
     "highlights": {
       "multichain_dashboard": "Panel de control multicadena",
       "multichain_exploit_checker": "Comprobador de exploits multicadena",
-      "priority_support": "Soporte prioritario",
-      "time_machine": "Máquina del tiempo para aprobaciones históricas",
-      "unlimited_batch_revokes": "Revocaciones de lotes ilimitadas"
+      "time_machine": "Time Machine para aprobaciones históricas",
+      "unlimited_batch_revokes": "Revocaciones por lotes ilimitadas"
     },
-    "includes_premium": "Everything in Premium, plus:",
-    "most_popular": "Most Popular",
+    "most_popular": "Más popular",
     "premium_price": "{price}/año",
-    "premium_title": "Prémium",
+    "premium_title": "Premium",
     "title": "Revoke Premium",
     "ultimate_features": {
       "automated_revoking": "Revocación automática",
       "automated_revoking_tooltip": "Requiere MetaMask. Compatible con determinadas redes.",
       "continuous_monitoring": "Monitoreo continuo",
-      "gas_allowance": "$5/month gas budget included"
+      "gas_allowance": "Presupuesto de gas de $5/mes incluido"
     },
     "ultimate_price": "{price}/año",
-    "ultimate_title": "Lo mejor"
+    "ultimate_title": "Ultimate"
   },
   "stats": {
     "approvals_revoked": "Autorizaciones Revocadas",
-    "networks_supported": "{count} redes compatibles",
+    "networks_supported": "{count} Redes Compatibles",
     "protected_from_exploits": "Protegido contra Exploits",
     "total_users": "Total de Usuarios"
+  },
+  "testimonials": {
+    "quotes": {
+      "beausecurity": "Recordatorio súper importante: que un contrato inteligente todavía no haya sufrido un exploit no significa que no vaya a sufrirlo. Revoca las aprobaciones antiguas a contratos inteligentes que ya no uses. Vale mucho la pena. Usa Revoke.cash.",
+      "nft_dreww": "Todos tenemos un teléfono, así que pon un recordatorio ahora mismo para entrar en Revoke.cash y revisar tus aprobaciones cada semana. Esto solo lleva 30 segundos y puede evitar que los hackers te roben los activos.",
+      "rsquare": "Una de las mejores cosas que puedes hacer con Safe a la hora de reaccionar rápido ante incidentes es revocar aprobaciones cómodamente con la Safe App de Revoke.cash."
+    }
   }
 }

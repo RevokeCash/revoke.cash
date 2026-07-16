@@ -1,11 +1,11 @@
 {
   "allowances": {
     "amount": "{amount} {symbol}",
-    "count": "{count, plural, =0 {No approvals} =1 {# approval} other {# approvals}}",
-    "empty_chains_count": "{count, plural, =0 {No networks without approvals} =1 {# network without approvals} other {# networks without approvals}}",
-    "none_found": "没有授权",
-    "none_found_filtered": "所选过滤条件下未找到授权",
-    "none_found_premium": "No approvals found on any of the supported networks. You're all clear!",
+    "count": "{count, plural, =0 {没有授权} other {# 项授权}}",
+    "empty_chains_count": "{count, plural, =0 {没有无授权的网络} other {# 个无授权的网络}}",
+    "none_found": "未找到授权",
+    "none_found_filtered": "所选筛选条件下未找到授权",
+    "none_found_premium": "在所有支持的网络上均未找到授权。一切安全！",
     "token_id": "代币 #{tokenId}",
     "unknown": "未知",
     "unlimited": "无限"
@@ -16,101 +16,46 @@
       "eip5792_notice": "注意：您的钱包不支持原子批量撤销，即便使用付费批量撤销服务，也需要发送多笔交易。",
       "eip5792_notice_chain": "注意：您的钱包不支持{chainName}上的原子批量撤销。因此，即便使用付费批量撤销功能，也需要发送多笔交易。",
       "notice": "进行批量撤销，您需要支付<m>${feeDollarAmount}</m>的少量费用来支持 Revoke.cash 的持续发展。",
-      "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link>将赞助<m>{chainName}</m>的批量撤销费用。🥳",
+      "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link>正在赞助<m>{chainName}</m>网络上的批量撤销费用！🥳",
       "tooltip": "每次批量操作收取<m>${BASE_FEE}</m>的固定费用用于支持基础设施成本及持续开发。您也可免费逐笔撤销授权。",
-      "upgrade_prompt": "Want unlimited batch revokes?"
+      "upgrade_prompt": "想要无限次批量撤销？"
     },
-    "revoked": "撤销",
+    "revoked": "已撤销",
     "title": "批量撤销",
     "total": "总计"
   },
-  "coverage": {
-    "info": {
-      "chains": {
-        "evm": "兼容 EVM",
-        "non_evm": "非 EVM",
-        "title": "支持的区块链"
-      },
-      "description": "Revoke.cash 可以帮助您管理加密货币领域的风险。我们提供的各种工具可以帮助您防止资金被盗或损失。但即便如此，依然可能遭受诈骗和黑客攻击。这就是保险的价值所在。保险可以在钱包被盗时依然保障钱包价值。保险类型有很多，从智能合约黑客攻击到网络钓鱼攻击都有覆盖。我们与<fairside-link>Fairside</fairside-link>合作，为您提供一些网络钓鱼和社交工程泄密的保险，也有其他针对智能合约黑客攻击的保险产品，如<nexus-link>Nexus Mutual</nexus-link>或<bright-union-link>Bright Union</bright-union-link>。",
-      "important": {
-        "coverage_amount": "为特定 ETH 金额购买保险——如果您的投资组合价值升值（折算成 ETH），您也只能获得之前配置的 ETH 金额的保障。",
-        "fee": "付款需支付 10% 的个人责任费。",
-        "kyc": "KYC 仅在申请索赔时需要，在购买保险时不需要。",
-        "title": "重要信息",
-        "wallets": "一个会员最多可覆盖 10 个钱包，只需将钱包绑定到相关会员账户即可。"
-      },
-      "main": {
-        "covered_items": {
-          "malware": "恶意软件（至少10个ETH）",
-          "poisoning": "地址中毒",
-          "signatures": "恶意交易和签名"
-        },
-        "covered_title": "Fairside 覆盖范围",
-        "description": "如果钱包被盗，您就可以获得赔偿。Fairside 是第一个允许购买钱包被盗保险的加密货币原生平台。他们承保范围覆盖网络钓鱼和社交工程交付方式下的各种损失。",
-        "not_covered_items": {
-          "custodial-accounts": "托管账户被盗",
-          "rug_pulls": "地毯式拉盘",
-          "seed_phrase": "泄露助记词",
-          "smart_contracts": "智能合约黑客"
-        },
-        "not_covered_title": "Fairside 不覆盖的范围",
-        "title": "Fairside 钱包被盗覆盖范围"
-      },
-      "quiz": {
-        "get_coverage": "立即获得保障",
-        "start": "参加测验以开始",
-        "title": "快速覆盖测验"
-      },
-      "title": "什么是覆盖范围？"
-    },
-    "membership": {
-      "claims": "{count, plural, =0 {无领取} =1 {# 领取} other {# 领取}}",
-      "labels": {
-        "amount": "金额",
-        "claims": "领取",
-        "timeframe": "时间范围"
-      },
-      "title": "Fairside 会员"
-    },
-    "wallets": {
-      "add": "添加钱包",
-      "description": "签署身份验证信息，查看和管理覆盖的钱包。",
-      "title": "覆盖钱包",
-      "wallets": "钱包"
-    }
-  },
   "delegations": {
     "columns": {
-      "chain": "Network",
+      "chain": "网络",
       "contract": "资产/合约",
-      "delegate": "授权",
-      "delegator": "授权人",
+      "delegate": "被委托人",
+      "delegator": "委托人",
       "platform": "平台",
       "type": "类型"
     },
     "contract": {
       "not_applicable": "不适用"
     },
-    "count": "{count, plural, =0 {No delegations} =1 {# delegation} other {# delegations}}",
-    "delegated_to": "Delegated To",
-    "eip7702_delegations": "EIP7702 授权",
-    "empty_chains_count": "{count, plural, =0 {No networks without delegations} =1 {# network without delegations} other {# networks without delegations}}",
+    "count": "{count, plural, =0 {没有委托} other {# 项委托}}",
+    "delegated_to": "委托给",
+    "eip7702_delegations": "EIP7702 委托",
+    "empty_chains_count": "{count, plural, =0 {没有无委托的网络} other {# 个无委托的网络}}",
     "info_panel": {
-      "description": "授权可允许其他地址代表你进行操作，例如验证资产所有权或申请空投。授权可以提高安全性，因为可以使用<b>热钱包</b>来管理资产，而不必在每次互动中都使用<b>冷钱包</b>。但是，如果热钱包遭到入侵，请务必确保撤销授权，避免攻击者冒充。请注意，这些授权和 EIP7702 授权<b>不同</b>，EIP7702 授权<i>只</i>能在您的钱包应用内撤销。",
+      "description": "委托是一种授权其他地址代表您进行操作的方式，例如在验证资产所有权或领取空投时。这有利于安全性，因为您可以使用<b>热钱包</b>来管理资产，而不必每次交互都使用<b>冷钱包</b>。但是，如果您的热钱包遭到入侵，请务必撤销委托，避免攻击者利用它冒充您。请注意，这些委托与 EIP7702 委托<b>不同</b>，EIP7702 委托<i>只</i>能在您的钱包应用内撤销。",
       "title": "什么是委托？"
     },
-    "no_delegations": "No delegations found",
-    "no_eip7702_delegations": "未找到 EIP7702 授权",
-    "none_found_premium": "No delegations found on any of the supported networks. You're all clear!",
-    "this_wallet": "This wallet",
+    "no_delegations": "未找到委托",
+    "no_eip7702_delegations": "未找到 EIP7702 委托",
+    "none_found_premium": "在所有支持的网络上均未找到委托。一切安全！",
+    "this_wallet": "此钱包",
     "tooltips": {
-      "contract": "合约级别的授权允许被授权人代表您在特定支持的合约平台上代表您行事。",
-      "eip7702": "EIP7702 授权为您的钱包添加了智能合约功能。",
-      "eip7702_revoke": "EIP7702 授权必须在您的钱包应用程序内撤销",
-      "erc1155": "ERC1155 代币授权允许被授权人在支持的特定 ERC1155 代币的平台上代表您进行操作。",
-      "erc20": "ERC20 代币授权允许被授权人在支持的特定 ERC20 代币的平台上代表您进行操作。",
-      "erc721": "ERC721 代币授权允许被授权人在支持的特定 ERC721 代币的平台上代表您进行操作。",
-      "wallet": "钱包级别授权允被授权人在支持的平台上代表你进行操作。"
+      "contract": "合约级别的委托授予被委托人针对特定合约在支持的平台上代表您进行操作的权限。",
+      "eip7702": "EIP7702 委托为您的钱包添加智能合约功能。",
+      "eip7702_revoke": "EIP7702 委托必须在您的钱包应用内撤销",
+      "erc1155": "ERC1155 代币委托允许被委托人针对特定 ERC1155 代币在支持的平台上代表您进行操作。",
+      "erc20": "ERC20 代币委托允许被委托人针对特定 ERC20 代币在支持的平台上代表您进行操作。",
+      "erc721": "ERC721 代币委托允许被委托人针对特定 ERC721 代币在支持的平台上代表您进行操作。",
+      "wallet": "钱包级别的委托允许被委托人在支持的平台上代表您进行操作。"
     },
     "types": {
       "contract": "合约",
@@ -121,43 +66,17 @@
       "wallet": "钱包"
     }
   },
-  "filters": {
-    "allowances": {
-      "label": "授权金额",
-      "options": {
-        "limited": "有限的",
-        "none": "没有",
-        "unlimited": "无限"
-      }
-    },
-    "asset_balance": {
-      "label": "资产余额",
-      "options": {
-        "non_zero": "非零",
-        "zero": "零"
-      }
-    },
-    "asset_type": {
-      "label": "资产类型",
-      "options": {
-        "nft": "NFT",
-        "token": "代币"
-      }
-    },
-    "label": "筛选",
-    "showing_everything": "显示一切"
-  },
   "headers": {
     "actions": "操作",
     "allowance": "授权金额",
     "amount": "金额",
     "asset": "资产",
     "asset_type": "类型",
-    "chain": "Network",
+    "chain": "网络",
     "date": "日期",
     "event_type": "事件类型",
     "expiration": "到期",
-    "last_checked": "Last Checked",
+    "last_checked": "上次检查",
     "last_updated": "上次更新",
     "policy_type": "权限类型",
     "session_hash": "会话标识符",
@@ -172,53 +91,50 @@
     "cancelled_signatures": "已取消的签名",
     "none_found": "未找到授权历史记录",
     "revoked": "已撤销",
-    "status_failed": "failed",
-    "status_loaded": "loaded",
-    "status_loading": "loading",
+    "status_failed": "失败",
+    "status_loaded": "已加载",
+    "status_loading": "加载中",
     "title": "授权历史"
   },
   "labels": {
     "account_types": {
-      "eip7702": "EIP7702 Account",
+      "eip7702": "EIP7702 账户",
       "eoa": "EOA",
-      "smart_contract": "Smart Contract"
+      "smart_contract": "智能合约"
     },
     "connected": "已连接",
     "nft": "NFT",
     "not_connected": "未连接",
     "policy_type": {
-      "all": "转账和通话",
-      "calls": "合同条款要求",
-      "none": "没有",
+      "all": "转账与调用",
+      "calls": "合约调用",
+      "none": "无",
       "transfers": "转账"
     },
     "token": "代币"
   },
   "meta": {
-    "title": "地址 {addressDisplay} 授权情况",
-    "title_chain": "地址{addressDisplay}在{chainName}上的授权情况"
+    "title": "地址 {addressDisplay} 的授权情况",
+    "title_chain": "地址 {addressDisplay} 在 {chainName} 上的授权情况"
   },
   "navigation": {
     "allowances": "授权",
-    "coverage": "覆盖范围",
-    "delegations": "授权",
-    "exploits": "Exploits",
+    "delegations": "委托",
+    "exploits": "漏洞",
     "history": "历史",
-    "more": "更多",
-    "sessions": "会话",
-    "settings": "设置"
+    "sessions": "会话"
   },
   "permit2": {
     "expiration": "于 {inTime} 过期"
   },
   "premium": {
     "banner": {
-      "cta": "Upgrade to Premium",
-      "description": "Multichain dashboard?"
+      "cta": "升级至 Premium",
+      "description": "想要多链仪表盘？"
     },
     "subscription_expiry": {
-      "cta": "Extend",
-      "description": "Your premium subscription expires in {days, plural, =1 {1 day} other {# days}}."
+      "cta": "续订",
+      "description": "您的 Premium 订阅将在 {days, plural, other {# 天}}后到期。"
     }
   },
   "risk_factors": {
@@ -226,28 +142,28 @@
     "blocklist": "危险或恶意",
     "closed_source": "闭源",
     "deprecated": "已弃用或已过时",
-    "eoa": "外部持有账户",
-    "excessive_expiration": "大量到期",
+    "eoa": "外部拥有账户",
+    "excessive_expiration": "到期时间过长",
     "exploit": "涉及 {data}",
     "levels": {
       "high": "高风险",
       "low": "低风险",
       "medium": "中风险"
     },
-    "phishing_risk": "增加钓鱼风险",
-    "proxy": "可升级的代理合同",
-    "source": "举报人：<source-link>{source}</source-link>",
+    "phishing_risk": "遭遇网络钓鱼时会增加风险面",
+    "proxy": "可升级的代理合约",
+    "source": "由 <source-link>{source}</source-link> 报告",
     "suspicious_address": "可疑地址",
     "uninitialized": "没有部署到此地址的合约",
     "unsafe": "可能不安全的合约代码"
   },
   "search": {
     "history": "按被授权人或代币搜索",
-    "spender": "按被授权人（Spender）地址搜索"
+    "spender": "按被授权人（Spender）搜索"
   },
   "sessions": {
     "info": {
-      "description": "会话是一种权限系统，类似代币授权，但有一些关键区别。代币授予特定地址从钱包中提取令牌的权限，而会话可以授予特定地址在与智能合约交互时代表你签署特定交易的权限。这些会话目前只有在使用<i>Abstract Global Wallet</i> 时才能在 Abstract 上使用，但将来可能会应用到其他链上。",
+      "description": "会话是一种权限系统，类似代币授权，但有一些关键区别。代币授权授予某个地址从您的钱包中转出代币的权限，而会话则可用于授予另一个地址在与智能合约交互时代表您签署特定交易的权限。这些会话目前只有在使用<i>Abstract Global Wallet</i>时才能在 Abstract 上使用，但将来可能会应用到其他链上。",
       "title": "什么是会话？"
     },
     "table": {
@@ -256,10 +172,10 @@
     },
     "tooltips": {
       "policy_type": {
-        "all": "此会话有权限调用{callPoliciesCount}个不同的函数，并将代币传输到{transferPoliciesCount}个不同的地址",
-        "calls": "此会话有权调用{callPoliciesCount}个不同的函数",
+        "all": "此会话有权调用 {callPoliciesCount} 个不同的函数，并将代币转移到 {transferPoliciesCount} 个不同的地址",
+        "calls": "此会话有权调用 {callPoliciesCount} 个不同的函数",
         "none": "此会话没有权限",
-        "transfers": "该会话有权将代币转移到{transferPoliciesCount}个不同的地址"
+        "transfers": "此会话有权将代币转移到 {transferPoliciesCount} 个不同的地址"
       }
     }
   },
@@ -288,24 +204,24 @@
     "label": "排序"
   },
   "time_machine": {
-    "apply": "Apply",
-    "description": "Travel back in time to see what your approvals looked like at a specific point in the past. Revoke actions are disabled while viewing historical data.",
-    "exit": "Back to Present",
+    "apply": "应用",
+    "description": "回到过去，查看您的授权在过去某个时间点的状态。查看历史数据时，撤销操作将被禁用。",
+    "exit": "返回现在",
     "label": "Time Machine",
-    "now": "Now",
-    "viewing_as_of": "Viewing approvals as of {date}, {time}"
+    "now": "现在",
+    "viewing_as_of": "正在查看截至 {date} {time} 的授权"
   },
   "tooltips": {
     "connect_wallet": "请连接钱包继续下一步",
     "connected_account": "您只能操作已连接的账户",
     "filter_by_spender": "按该被授权人筛选",
     "filter_by_token": "按此代币筛选",
-    "permit2_expiration": "这是 Permit2 授权，将于 {inTime} 到期。",
-    "risk_factors": "此代币授权为{riskLevel}，原因如下："
+    "permit2_expiration": "这是 Permit2 授权，将于 {inTime} 到期",
+    "risk_factors": "此地址为{riskLevel}，原因如下："
   },
-  "viewing_on": "Viewing address on",
+  "viewing_on": "在以下网络上查看地址",
   "wallet_health": {
-    "allowances": "Approvals",
-    "value_at_risk": "Value at Risk"
+    "allowances": "授权",
+    "value_at_risk": "存在风险金额"
   }
 }
