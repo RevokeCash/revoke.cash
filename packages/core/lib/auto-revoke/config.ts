@@ -18,8 +18,7 @@ const UNORDERED_AUTO_REVOKE_CHAINS = [
   // ChainId.SeiNetwork,
   // ChainId.SonicMainnet,
   ChainId.Unichain,
-  // Testnets
-  ChainId.EthereumSepolia,
+  // ChainId.EthereumSepolia, --- DEVELOPMENT ONLY, NOT PRODUCTION
 ] as const;
 
 export type AutoRevokeSupportedChainId = (typeof AUTO_REVOKE_SUPPORTED_CHAINS)[number];

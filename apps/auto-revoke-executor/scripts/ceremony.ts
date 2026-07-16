@@ -19,7 +19,7 @@
 // The executor runs one hot wallet per lane (normal and urgent), so the ceremony must be run once
 // per lane to provision both wallets.
 //
-// Run (from apps/auto-revoke-executor): `yarn ceremony` (defaults to the normal lane, Sepolia only), or
+// Run (from apps/auto-revoke-executor), lane defaults to normal and chains must be given explicitly:
 //   `yarn ceremony --lane=urgent`          provision the urgent lane's hot wallet
 //   `yarn ceremony --all`                  all auto-revoke chains
 //   `yarn ceremony --chains=1,8453`        specific chains
@@ -33,7 +33,6 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { type Delegation, getSmartAccountsEnvironment } from '@metamask/smart-accounts-kit';
-import { ChainId } from '@revoke.cash/chains';
 import { AUTO_REVOKE_SUPPORTED_CHAINS, isAutoRevokeSupportedChain } from '@revoke.cash/core/auto-revoke/config';
 import type {
   ColdDelegationRegistry,
@@ -165,7 +164,11 @@ const parseOptions = (args: string[]): CeremonyOptions => {
     ? [...AUTO_REVOKE_SUPPORTED_CHAINS]
     : flags.has('chains')
       ? flags.get('chains')!.split(',').map(Number)
-      : [ChainId.EthereumSepolia];
+      : [];
+
+  if (chainIds.length === 0) {
+    throw new Error('Specify chains with --chains=<id,id,...> or run against every supported chain with --all');
+  }
 
   const unsupported = chainIds.filter((chainId) => !isAutoRevokeSupportedChain(chainId));
   if (unsupported.length > 0) {

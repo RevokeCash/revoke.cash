@@ -4,8 +4,8 @@ services:
   - type: web
     name: indexer-manager
     runtime: docker
-    repo: https://github.com/RevokeCash/revoke-private
-    branch: auto-revoke-executor
+    repo: https://github.com/RevokeCash/revoke.cash
+    branch: master
     dockerfilePath: ./apps/indexer/Dockerfile
     dockerContext: .
     region: virginia
@@ -33,8 +33,8 @@ services:
   - type: pserv
     name: indexer-worker
     runtime: docker
-    repo: https://github.com/RevokeCash/revoke-private
-    branch: auto-revoke-executor
+    repo: https://github.com/RevokeCash/revoke.cash
+    branch: master
     dockerfilePath: ./apps/indexer/Dockerfile
     dockerContext: .
     region: virginia
@@ -57,8 +57,8 @@ services:
   - type: pserv
     name: auto-revoke-executor
     runtime: docker
-    repo: https://github.com/RevokeCash/revoke-private
-    branch: auto-revoke-executor
+    repo: https://github.com/RevokeCash/revoke.cash
+    branch: master
     dockerfilePath: ./apps/auto-revoke-executor/Dockerfile
     dockerContext: .
     region: virginia

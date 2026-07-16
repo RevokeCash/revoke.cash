@@ -25,7 +25,7 @@ export const PREMIUM_PAYMENT_CHAIN_IDS = [
   ChainId.Base,
   ChainId.OPMainnet,
   ChainId.ArbitrumOne,
-  ChainId.EthereumSepolia,
+  // ChainId.EthereumSepolia, --- DEVELOPMENT ONLY, NOT PRODUCTION
 ] as const;
 
 export type PremiumPaymentChainId = (typeof PREMIUM_PAYMENT_CHAIN_IDS)[number];
@@ -46,7 +46,7 @@ export const PAYMENT_CONFIG_BY_CHAIN_ID: Record<PremiumPaymentChainId, PaymentCo
   [ChainId.Base]: withUsdc('0x833589fCD6eDb6E08f4c7C32D4f71b54bDa02913'),
   [ChainId.OPMainnet]: withUsdc('0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85'),
   [ChainId.ArbitrumOne]: withUsdc('0xaf88d065e77c8cC2239327C5EDb3A432268e5831'),
-  [ChainId.EthereumSepolia]: withUsdc('0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238'),
+  // [ChainId.EthereumSepolia]: withUsdc('0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238'),
 };
 
 export const isSupportedPaymentChainId = (chainId: number): chainId is PremiumPaymentChainId => {
