@@ -74,6 +74,7 @@
       },
       "multichain_dashboard": {
         "description": "Consulta y gestiona todas tus aprobaciones de tokens en más de 100 redes desde un único panel de control unificado, incluido tu historial completo de aprobaciones. Se acabó tener que cambiar de cadena una por una.",
+        "link_label": "Míralo en acción",
         "title": "Panel de control multicadena"
       },
       "multichain_exploit_checker": {

@@ -9,6 +9,7 @@ import { TIER_MAX_ADDRESSES } from './pricing-data';
 import TierCard from './TierCard';
 
 const TRANSLATION_PREFIX = 'premium.pricing.feature_sections';
+const DEMO_ADDRESS_URL = '/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a';
 
 const PremiumPricingPageContent = () => {
   const t = useTranslations();
@@ -25,6 +26,10 @@ const PremiumPricingPageContent = () => {
           perWalletPerMonthPrice="$0.83"
           walletSlots={10}
           href="/account?plan=premium"
+          link={{
+            href: DEMO_ADDRESS_URL,
+            label: t('premium.pricing.feature_sections.multichain_dashboard.link_label'),
+          }}
           className="border-2 border-brand/70"
           badgeLabel={t('premium.pricing.most_popular_label')}
           badgeClassName="bg-brand text-zinc-900"
@@ -61,6 +66,10 @@ const PremiumPricingPageContent = () => {
             video="/assets/videos/premium/multichain-dashboard.mp4"
             imagePosition="left"
             translationPrefix={TRANSLATION_PREFIX}
+            link={{
+              href: DEMO_ADDRESS_URL,
+              label: t('premium.pricing.feature_sections.multichain_dashboard.link_label'),
+            }}
           />
           <Feature
             featureKey="multichain_exploit_checker"

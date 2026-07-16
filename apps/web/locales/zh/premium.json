@@ -74,6 +74,7 @@
       },
       "multichain_dashboard": {
         "description": "在一个统一的仪表盘中查看和管理您在 100+ 个网络上的全部代币授权，包括完整的授权历史。无需再逐个切换网络。",
+        "link_label": "查看实际效果",
         "title": "多链仪表盘"
       },
       "multichain_exploit_checker": {

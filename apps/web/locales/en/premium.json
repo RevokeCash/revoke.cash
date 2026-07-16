@@ -74,6 +74,7 @@
       },
       "multichain_dashboard": {
         "description": "View and manage all your token approvals across 100+ networks from a single unified dashboard, including your full approval history. No more switching chains one by one.",
+        "link_label": "See it in action",
         "title": "Multichain Dashboard"
       },
       "multichain_exploit_checker": {
