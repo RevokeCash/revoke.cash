@@ -13,13 +13,13 @@
     "allow-scripts": "cd ../.. && yarn allow-scripts"
   },
   "dependencies": {
-    "@remotion/cli": "^4.0.484",
-    "@remotion/fonts": "^4.0.484",
-    "@remotion/tailwind-v4": "^4.0.484",
-    "@remotion/transitions": "^4.0.484",
+    "@remotion/cli": "^4.0.486",
+    "@remotion/fonts": "^4.0.486",
+    "@remotion/tailwind-v4": "^4.0.486",
+    "@remotion/transitions": "^4.0.486",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "remotion": "^4.0.484",
+    "remotion": "^4.0.486",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "4.3.2"
   },

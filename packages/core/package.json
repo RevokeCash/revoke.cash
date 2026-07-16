@@ -28,28 +28,29 @@
     "@envio-dev/hypersync-client": "^1.4.0",
     "@metamask/smart-accounts-kit": "^1.6.0",
     "@neondatabase/serverless": "^1.1.0",
-    "@revoke.cash/chains": "^79.0.0",
+    "@revoke.cash/chains": "^79.1.0",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
     "dexie": "^4.4.4",
     "drizzle-orm": "^0.45.2",
     "ky": "^2.0.2",
     "md5": "^2.3.0",
-    "p-queue": "^9.3.0",
-    "viem": "^2.54.1",
+    "p-queue": "^9.3.1",
+    "viem": "^2.55.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@dotenvx/dotenvx": "^2.0.0",
+    "@dotenvx/dotenvx": "^2.3.1",
     "@types/md5": "^2.3.6",
     "drizzle-kit": "^0.31.10",
-    "tsx": "^4.22.5",
+    "tsx": "^4.23.0",
     "typescript": "^6.0.3"
   },
   "lavamoat": {
     "allowScripts": {
       "drizzle-kit>@esbuild-kit/esm-loader>@esbuild-kit/core-utils>esbuild#0.18.20": false,
       "drizzle-kit>esbuild#0.25.12": false,
+      "drizzle-kit>tsx>esbuild#0.28.1": false,
       "tsx>esbuild#0.28.1": true,
       "viem>ws>bufferutil#4.0.9": true,
       "viem>ws>utf-8-validate#5.0.10": true

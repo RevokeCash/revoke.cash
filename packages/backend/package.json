@@ -13,12 +13,12 @@
   },
   "dependencies": {
     "@nestjs/bullmq": "^11.0.4",
-    "@nestjs/common": "^11.1.27",
-    "@nestjs/core": "^11.1.27",
+    "@nestjs/common": "^11.1.28",
+    "@nestjs/core": "^11.1.28",
     "@nestjs/terminus": "^11.1.1",
     "@revoke.cash/core": "workspace:*",
     "bottleneck": "^2.19.5",
-    "bullmq": "^5.79.2",
+    "bullmq": "^5.79.3",
     "drizzle-orm": "^0.45.2",
     "ioredis": "5.10.1",
     "nestjs-pino": "^4.6.1",
@@ -26,10 +26,10 @@
     "pino-http": "^11.0.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
-    "viem": "^2.54.1"
+    "viem": "^2.55.0"
   },
   "devDependencies": {
-    "@types/node": "^22.20.0",
+    "@types/node": "^22.20.1",
     "pino-pretty": "^13.1.3",
     "typescript": "^6.0.3"
   },

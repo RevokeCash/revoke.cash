@@ -36,7 +36,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.PlumeMainnet,
   ChainId.WorldChain,
   ChainId.TempoMainnetPresto,
-  4663, // Robinhood Chain
+  ChainId.RobinhoodChain,
   ChainId.PulseChain,
   ChainId.Mode,
   ChainId.Blast,
@@ -1112,18 +1112,15 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://explorer.risechain.com/api',
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
-  4663: new Chain({
+  [ChainId.RobinhoodChain]: new Chain({
     type: SupportType.PROVIDER,
-    chainId: 4663,
+    chainId: ChainId.RobinhoodChain,
     name: 'Robinhood Chain',
     nativeToken: 'ETH',
     coingeckoNetworkId: 'robinhood',
     logoUrl: '/assets/images/vendor/chains/robinhood.png',
-    explorerUrl: 'https://robinhoodchain.blockscout.com',
-    infoUrl: 'https://robinhood.com/chain',
     rpc: {
       main: `https://robinhood-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      free: 'https://rpc.mainnet.chain.robinhood.com',
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),

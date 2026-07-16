@@ -149,7 +149,6 @@ CREATE TABLE "indexer_partitions"."events_55244" PARTITION OF "indexer"."events"
 CREATE TABLE "indexer_partitions"."events_685689" PARTITION OF "indexer"."events" FOR VALUES IN (685689); -- Gensyn
 CREATE TABLE "indexer_partitions"."events_9008" PARTITION OF "indexer"."events" FOR VALUES IN (9008); -- Shido
 CREATE TABLE "indexer_partitions"."events_698" PARTITION OF "indexer"."events" FOR VALUES IN (698); -- Matchain
-CREATE TABLE "indexer_partitions"."events_1380012617" PARTITION OF "indexer"."events" FOR VALUES IN (1380012617); -- RARI Chain
 CREATE TABLE "indexer_partitions"."events_32520" PARTITION OF "indexer"."events" FOR VALUES IN (32520); -- Bitgert
 CREATE TABLE "indexer_partitions"."events_202555" PARTITION OF "indexer"."events" FOR VALUES IN (202555); -- Kasplex zkEVM
 CREATE TABLE "indexer_partitions"."events_11155111" PARTITION OF "indexer"."events" FOR VALUES IN (11155111); -- Ethereum Sepolia
