@@ -126,7 +126,18 @@ export const isLogResponseSizeError = (error?: string | any): boolean => {
   // This is also a partial match for a network error, but the checks for these two error categories are mutually exclusive
   if (lowercaseMessage?.includes('queued request timed out')) return true;
   if (lowercaseMessage?.includes('query returned more than 1024 results')) return true; // ZERO network
+  if (lowercaseMessage?.includes('http response body exceeded the size limit')) return true;
   return false;
+};
+
+export const isTooMuchActivityError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isTooMuchActivityError(parseErrorMessage(error)) || isTooMuchActivityError(stringifyError(error));
+  }
+
+  return error?.toLowerCase()?.includes('address has too much activity');
 };
 
 export const isEventGetterTimeoutError = (error?: string | any): boolean => {

@@ -1,5 +1,6 @@
 import { getScriptLogsProvider } from '@revoke.cash/core/events/providers';
 import { addressSchema, hexStringSchema, supportedChainIdSchema } from '@revoke.cash/core/schemas';
+import { ApiError, isTooMuchActivityError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
@@ -32,6 +33,10 @@ export async function POST(req: NextRequest, props: Props) {
     const events = await getScriptLogsProvider(params.chainId).getLogs(filter);
     return NextResponse.json(events);
   } catch (error) {
+    if (isTooMuchActivityError(error)) {
+      console.error('Error fetching logs (too much activity)', parseErrorMessage(error));
+      return handleApiRouteError(new ApiError(500, 'Address has too much activity'));
+    }
     return handleApiRouteError(error, { errorMessage: 'Error fetching logs' });
   }
 }

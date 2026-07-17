@@ -31,6 +31,11 @@ const tags = {
       {children}
     </Href>
   ),
+  'premium-link': (children: ReactNode) => (
+    <Href href="/premium" className="font-medium" underline="hover" html router>
+      {children}
+    </Href>
+  ),
   'twitter-link': (children: ReactNode) => (
     <Href href={TWITTER_URL} className="font-medium" underline="hover" html external>
       {children}

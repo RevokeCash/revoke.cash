@@ -83,7 +83,9 @@
       "chain_could_not_connect": "Could not connect to {chainName}, please try again later.",
       "connect_wallet_to_supported_network": "Please connect your web3 wallet to a supported network",
       "eip5792_batch_call_failed": "An error occurred related to EIP5792 batch calls",
-      "page_load_failed": "Something went wrong while loading this page. Please try again later."
+      "page_load_failed": "Something went wrong while loading this page. Please try again later.",
+      "too_much_activity": "This address has too much activity on {chainName} for the free tier, please <premium-link>upgrade to Premium</premium-link> to view its approvals.",
+      "too_much_activity_premium": "This address has too much activity on {chainName}, so its approvals cannot be loaded."
     }
   },
   "footer": {

@@ -96,7 +96,7 @@ export const formatDonationTokenAmount = (tokenAmount: number | null, nativeToke
   return `~${formatted}`;
 };
 
-const addThousandsSeparators = (number: string) => {
+export const addThousandsSeparators = (number: string) => {
   const [integer, decimal] = number.split('.');
   const integerWithSeparators = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   return decimal ? `${integerWithSeparators}.${decimal}` : integerWithSeparators;

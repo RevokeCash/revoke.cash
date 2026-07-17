@@ -1,6 +1,6 @@
 import { isCovalentSupportedChain } from '@revoke.cash/core/chains';
 import type { Filter, Log } from '@revoke.cash/core/events';
-import { isLogRequestSizeError, isLogResponseSizeError } from '@revoke.cash/core/utils/errors';
+import { isLogRequestSizeError, isLogResponseSizeError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { LogsProvider } from './LogsProvider';
 
 export interface DivideAndConquerOptions {
@@ -34,8 +34,14 @@ export class DivideAndConquerLogsProvider implements LogsProvider {
     } catch (error) {
       if (!this.isSplittableError(error)) throw error;
 
-      // If the block range is already a single block, we re-throw the error since we can't split it further
-      if (filter.fromBlock === filter.toBlock) throw error;
+      // If the block range cannot be split further, and the response is still too large, we throw a deliberate error for this case
+      if (filter.fromBlock === filter.toBlock) {
+        if (isLogResponseSizeError(error)) {
+          throw new Error(`Address has too much activity: ${parseErrorMessage(error)}`);
+        }
+
+        throw error;
+      }
 
       return this.divideAndConquer(filter, 2);
     }

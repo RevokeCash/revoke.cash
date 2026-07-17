@@ -83,7 +83,9 @@
       "chain_could_not_connect": "无法连接到{chainName}，请稍后重试。",
       "connect_wallet_to_supported_network": "请将您的 web3 钱包连接到受支持的网络",
       "eip5792_batch_call_failed": "发生了与 EIP5792 批量调用相关的错误",
-      "page_load_failed": "加载此页面时出现问题，请稍后重试。"
+      "page_load_failed": "加载此页面时出现问题，请稍后重试。",
+      "too_much_activity": "该地址在{chainName}上的活动过多，超出免费版的限制，请<premium-link>升级至 Premium</premium-link>以查看其授权。",
+      "too_much_activity_premium": "该地址在{chainName}上的活动过多，因此无法加载其授权。"
     }
   },
   "footer": {

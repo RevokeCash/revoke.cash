@@ -15,6 +15,7 @@ import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
 import { isSpamError, isTransientError, stringifyError } from '@revoke.cash/core/utils/errors';
 import { mapAsync, withTimeout } from '@revoke.cash/core/utils/promises';
 import { type Address, getAbiItem, type PublicClient, toEventSelector } from 'viem';
+import { addThousandsSeparators } from '../utils/formatting';
 import { SECOND } from '../utils/time';
 
 // Note: ideally I would have included this in the 'Chain' class, but this causes circular dependency issues and issues with Edge runtime
@@ -31,6 +32,7 @@ export interface TokenEventsResult {
 
 export interface TokenEventsOptions {
   includeTransferFromEvents?: boolean;
+  maxLogs?: number;
 }
 
 export const getTokenEvents = async (
@@ -125,10 +127,13 @@ const getTokenEventsDefault = async (
     eventsCache.getLogs(logsProvider, filter, chainId, name),
   );
 
-  const events = logsResults
-    .flat()
-    .map((log) => parseLog(log, chainId, address))
-    .filter((event) => !isNullish(event));
+  const logs = logsResults.flat();
+
+  if (options.maxLogs && logs.length > options.maxLogs) {
+    throw new Error(`Address has too much activity: ${addThousandsSeparators(logs.length.toString())} event logs`);
+  }
+
+  const events = logs.map((log) => parseLog(log, chainId, address)).filter((event) => !isNullish(event));
 
   // We sort the events in reverse chronological order to ensure that the most recent events are processed first
   return { events: sortTokenEventsChronologically(events).reverse(), computedToBlock: toBlock };

@@ -10,6 +10,7 @@ import type { Address } from 'viem';
 import { useAddressData } from '../ethereum/useAddressData';
 
 interface AddressContext {
+  address: Address;
   selectedChainId: number;
   selectChain: (chainId: number) => void;
   addressData: ReturnType<typeof useAddressData>;
@@ -75,6 +76,7 @@ export const AddressPageContextProvider = ({
   return (
     <AddressPageContext
       value={{
+        address,
         selectedChainId,
         selectChain,
         addressData,

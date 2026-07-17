@@ -66,7 +66,7 @@ const Table = <T,>({
           )}
           {!loading && error && (
             <EmptyState icon={ExclamationTriangleIcon} iconClassName="text-red-500 dark:text-red-400">
-              <ErrorDisplay error={error} withIcon={false} />
+              <ErrorDisplay error={error} withIcon={false} className="whitespace-normal" />
             </EmptyState>
           )}
         </div>

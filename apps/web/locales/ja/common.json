@@ -83,7 +83,9 @@
       "chain_could_not_connect": "{chainName}に接続できませんでした。後でもう一度試してください。",
       "connect_wallet_to_supported_network": "Web3ウォレットをサポートされているネットワークに接続してください",
       "eip5792_batch_call_failed": "EIP5792バッチコールに関連するエラーが発生しました",
-      "page_load_failed": "このページの読み込み中に問題が発生しました。後でもう一度お試しください。"
+      "page_load_failed": "このページの読み込み中に問題が発生しました。後でもう一度お試しください。",
+      "too_much_activity": "このアドレスは{chainName}でのアクティビティが多すぎるため、無料プランでは表示できません。承認を表示するには、<premium-link>プレミアムにアップグレード</premium-link>してください。",
+      "too_much_activity_premium": "このアドレスは{chainName}でのアクティビティが多すぎるため、承認を読み込むことができません。"
     }
   },
   "footer": {

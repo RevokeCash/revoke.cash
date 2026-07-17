@@ -83,7 +83,9 @@
       "chain_could_not_connect": "No se ha podido conectar a {chainName}, por favor inténtalo de nuevo más tarde.",
       "connect_wallet_to_supported_network": "Por favor, conecta tu cartera web3 a una red compatible",
       "eip5792_batch_call_failed": "Se ha producido un error relacionado con las llamadas por lotes EIP5792",
-      "page_load_failed": "Algo salió mal al cargar esta página. Por favor, inténtalo de nuevo más tarde."
+      "page_load_failed": "Algo salió mal al cargar esta página. Por favor, inténtalo de nuevo más tarde.",
+      "too_much_activity": "Esta dirección tiene demasiada actividad en {chainName} para el plan gratuito, por favor <premium-link>actualiza a Premium</premium-link> para ver sus aprobaciones.",
+      "too_much_activity_premium": "Esta dirección tiene demasiada actividad en {chainName}, por lo que no se pueden cargar sus aprobaciones."
     }
   },
   "footer": {
