@@ -205,6 +205,7 @@
     "expires_in": "Caduca en {days, plural, =1 {1 día} other {# días}} ({date})",
     "expires_soon": "Caduca pronto",
     "granted_by": "Concedido por {address}",
+    "insufficient_balance": "Necesitas al menos {amount} {token} en {chainName} para completar este pago. Recarga tu cartera o elige otra red de pago.",
     "legal_notice": "Al suscribirte, aceptas nuestros <terms-link>Términos de Servicio</terms-link>.",
     "next_setup_auto_revoke": "Siguiente paso: configura la Revocación automática",
     "no_subscription": "No tienes una suscripción premium activa. Suscríbete para empezar. <premium-link>Más información sobre Premium</premium-link>.",

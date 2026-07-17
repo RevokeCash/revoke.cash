@@ -205,6 +205,7 @@
     "expires_in": "Истекает через {days, plural, one {# день} few {# дня} many {# дней} other {# дня}} ({date})",
     "expires_soon": "Скоро истекает",
     "granted_by": "Предоставлена {address}",
+    "insufficient_balance": "Для завершения этого платежа необходимо не менее {amount} {token} в сети {chainName}. Пополните кошелек или выберите другую сеть для оплаты.",
     "legal_notice": "Оформляя подписку, вы соглашаетесь с нашими <terms-link>Условиями использования</terms-link>.",
     "next_setup_auto_revoke": "Следующий шаг: настройте автоматический отзыв",
     "no_subscription": "У вас нет активной подписки Premium. Оформите подписку, чтобы начать. <premium-link>Узнать больше о Premium</premium-link>.",

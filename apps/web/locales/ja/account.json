@@ -205,6 +205,7 @@
     "expires_in": "有効期限まであと {days, plural, other {# 日}}（{date}）",
     "expires_soon": "まもなく期限切れ",
     "granted_by": "{address} により付与",
+    "insufficient_balance": "この支払いを完了するには、{chainName} 上で {amount} {token} 以上が必要です。ウォレットに残高を追加するか、別の支払いネットワークを選択してください。",
     "legal_notice": "サブスクリプションに登録することで、<terms-link>利用規約</terms-link>に同意したものとみなされます。",
     "next_setup_auto_revoke": "次のステップ：自動取り消しの設定",
     "no_subscription": "有効なプレミアムサブスクリプションはありません。購読して始めましょう。<premium-link>プレミアムについて詳しく見る</premium-link>。",

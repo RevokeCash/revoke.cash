@@ -52,7 +52,7 @@ const PremiumSubscriptionSection = ({ account, activeSubscription, expiredSubscr
 
   const { subscribe, isSubscribing, status, error, reset } = useSubscribe({
     ownerAddress: account,
-    selectedPlanId,
+    selectedPlan,
     selectedPaymentChainId,
   });
 

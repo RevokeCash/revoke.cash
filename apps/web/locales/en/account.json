@@ -205,6 +205,7 @@
     "expires_in": "Expires in {days, plural, =1 {1 day} other {# days}} ({date})",
     "expires_soon": "Expires soon",
     "granted_by": "Granted by {address}",
+    "insufficient_balance": "You need at least {amount} {token} on {chainName} to complete this payment. Top up your wallet or choose a different payment network.",
     "legal_notice": "By subscribing, you agree to our <terms-link>Terms of Service</terms-link>.",
     "next_setup_auto_revoke": "Next step: set up Auto-Revoking",
     "no_subscription": "You don't have an active premium subscription. Subscribe to get started. <premium-link>Learn more about Premium</premium-link>.",

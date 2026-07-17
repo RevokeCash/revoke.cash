@@ -205,6 +205,7 @@
     "expires_in": "将于 {days, plural, other {# 天}}后到期（{date}）",
     "expires_soon": "即将到期",
     "granted_by": "由 {address} 授予",
+    "insufficient_balance": "您需要在 {chainName} 上至少拥有 {amount} {token} 才能完成此付款。请为钱包充值或选择其他付款网络。",
     "legal_notice": "订阅即表示您同意我们的<terms-link>服务条款</terms-link>。",
     "next_setup_auto_revoke": "下一步：设置自动撤销",
     "no_subscription": "您目前没有生效中的 Premium 订阅。立即订阅即可开始使用。<premium-link>了解更多关于 Premium 的信息</premium-link>。",
