@@ -43,6 +43,7 @@ export class ViemLogsProvider implements LogsProvider {
       blockNumber: Number(log.blockNumber),
       logIndex: Number(log.logIndex),
       transactionIndex: Number(log.transactionIndex),
+      timestamp: isNullish(log.blockTimestamp) ? undefined : Number(log.blockTimestamp),
     };
   }
 }

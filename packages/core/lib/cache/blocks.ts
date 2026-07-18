@@ -13,24 +13,37 @@ class BlocksCache {
   async getBlockTimestamp(publicClient: PublicClient, blockNumber: number): Promise<number> {
     await this.cache.initialize();
 
+    const chainId = publicClient.chain!.id;
+
+    const storedBlock = await this.getStoredBlock(chainId, blockNumber);
+    if (storedBlock) return storedBlock.timestamp;
+
+    const block = await publicClient.getBlock({ blockNumber: BigInt(blockNumber) });
+    const timestamp = Number(block?.timestamp);
+
+    await this.storeBlock({ chainId, blockNumber, timestamp });
+
+    return timestamp;
+  }
+
+  // Cache failures should never break timestamp resolution, so we fall back to fetching the block directly
+  private async getStoredBlock(chainId: number, blockNumber: number): Promise<Block | undefined> {
     try {
-      const chainId = publicClient.chain!.id;
-      const storedBlock = await this.cache.get([chainId, blockNumber]);
-      if (storedBlock) return storedBlock.timestamp;
-
-      const block = await publicClient.getBlock({ blockNumber: BigInt(blockNumber) });
-      const timestamp = Number(block?.timestamp);
-
-      await this.cache.put([chainId, blockNumber], { chainId, blockNumber, timestamp });
-      return timestamp;
+      return await this.cache.get([chainId, blockNumber]);
     } catch (e) {
-      console.error(`[${getChainName(publicClient.chain!.id)}] ${e}`);
-      if (e instanceof CacheError) {
-        const block = await publicClient.getBlock({ blockNumber: BigInt(blockNumber) });
-        return Number(block?.timestamp);
-      }
-
+      console.error(`[${getChainName(chainId)}] ${e}`);
+      if (e instanceof CacheError) return undefined;
       throw e;
+    }
+  }
+
+  // Storing is best-effort: if the cache write fails, we still return the already-fetched timestamp
+  private async storeBlock(block: Block): Promise<void> {
+    try {
+      await this.cache.put([block.chainId, block.blockNumber], block);
+    } catch (e) {
+      console.error(`[${getChainName(block.chainId)}] ${e}`);
+      if (!(e instanceof CacheError)) throw e;
     }
   }
 
