@@ -8,6 +8,8 @@ import { twMerge } from 'tailwind-merge';
 import ControlsWrapper from '../ControlsWrapper';
 import Eip5792Notice from './Eip5792Notice';
 import FeeNotice from './FeeNotice';
+import { isZeroFeeDollarAmount } from './fee';
+import PremiumUpgradePrompt from './PremiumUpgradePrompt';
 
 interface Props {
   chainId: number;
@@ -62,6 +64,7 @@ const BatchRevokeControls = ({
         >
           <FeeNotice chainId={chainId} feeDollarAmount={feeDollarAmount} />
           <Eip5792Notice chainId={chainId} allowanceCount={allowanceCount} />
+          {!isZeroFeeDollarAmount(feeDollarAmount) && <PremiumUpgradePrompt />}
         </div>
         <ControlsWrapper address={address}>
           {(disabled) => (

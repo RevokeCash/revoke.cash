@@ -41,24 +41,21 @@ const FeeNotice = ({ chainId, feeDollarAmount }: Props) => {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center gap-2">
-      <div className="flex items-center justify-center gap-2 text-center text-sm text-zinc-600 dark:text-zinc-300 bg-brand/30 dark:bg-brand/20 py-2 px-4">
-        <span>
-          <RichText>
-            {(tags) =>
-              t.rich('address.batch_revoke.fee.notice', {
-                ...tags,
-                feeDollarAmount,
-              })
-            }
-          </RichText>
-        </span>
+    <div className="flex items-center justify-center gap-2 text-center text-sm text-zinc-600 dark:text-zinc-300 bg-brand/30 dark:bg-brand/20 py-2 px-4">
+      <span>
+        <RichText>
+          {(tags) =>
+            t.rich('address.batch_revoke.fee.notice', {
+              ...tags,
+              feeDollarAmount,
+            })
+          }
+        </RichText>
+      </span>
 
-        <WithHoverTooltip tooltip={tooltipContent}>
-          <InformationCircleIcon className="w-6 h-6 shrink-0" />
-        </WithHoverTooltip>
-      </div>
-      <PremiumUpgradePrompt />
+      <WithHoverTooltip tooltip={tooltipContent}>
+        <InformationCircleIcon className="w-6 h-6 shrink-0" />
+      </WithHoverTooltip>
     </div>
   );
 };
@@ -97,19 +94,6 @@ const SponsoredFeeNotice = ({ chainId }: SponsoredFeeNoticeProps) => {
           {(tags) => t.rich('address.batch_revoke.fee.sponsored_notice', { ...tags, ...sponsorTags })}
         </RichText>
       </span>
-    </div>
-  );
-};
-
-const PremiumUpgradePrompt = () => {
-  const t = useTranslations();
-
-  return (
-    <div className="text-center text-xs text-zinc-500 dark:text-zinc-400">
-      {t('address.batch_revoke.fee.upgrade_prompt')}{' '}
-      <Href href="/premium" className="font-medium text-zinc-700 dark:text-zinc-200" router>
-        {t('common.buttons.upgrade_to_premium')}
-      </Href>
     </div>
   );
 };
