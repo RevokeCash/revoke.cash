@@ -99,3 +99,10 @@ export const filterAndSortConnectors = (connectors: readonly Connector[]) => {
     .filter((c) => c.id !== 'safe')
     .sort(comparator);
 };
+
+export const isMobileDevice = (): boolean => {
+  if (typeof navigator === 'undefined') return false;
+  if (/android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent)) return true;
+  // iPads report a desktop (Macintosh) user agent, but are identifiable by their touch support
+  return navigator.userAgent.includes('Macintosh') && navigator.maxTouchPoints > 1;
+};

@@ -4,7 +4,6 @@ import Href from 'components/common/Href';
 import RichText from 'components/common/RichText';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useNativeTokenPrice } from 'lib/hooks/ethereum/useNativeTokenPrice';
-import { useWalletCapabilities } from 'lib/hooks/ethereum/useWalletCapabilities';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
@@ -59,13 +58,7 @@ const FeeNotice = ({ chainId, feeDollarAmount }: Props) => {
           <InformationCircleIcon className="w-6 h-6 shrink-0" />
         </WithHoverTooltip>
       </div>
-      <div className="text-center text-xs text-zinc-500 dark:text-zinc-400">
-        {t('address.batch_revoke.fee.upgrade_prompt')}{' '}
-        <Href href="/premium" className="font-medium text-zinc-700 dark:text-zinc-200" router>
-          {t('common.buttons.upgrade_to_premium')}
-        </Href>
-      </div>
-      <Eip5792Notice chainId={chainId} />
+      <PremiumUpgradePrompt />
     </div>
   );
 };
@@ -108,34 +101,15 @@ const SponsoredFeeNotice = ({ chainId }: SponsoredFeeNoticeProps) => {
   );
 };
 
-const Eip5792Notice = ({ chainId }: { chainId: number }) => {
+const PremiumUpgradePrompt = () => {
   const t = useTranslations();
-  const walletCapabilities = useWalletCapabilities(chainId);
-
-  const content = (() => {
-    if (walletCapabilities.isLoading) return null;
-    if (!walletCapabilities?.capabilities) {
-      return <RichText>{(tags) => t.rich('address.batch_revoke.fee.eip5792_notice', { ...tags })}</RichText>;
-    }
-
-    if (!walletCapabilities?.supportsEip5792) {
-      return (
-        <RichText>
-          {(tags) =>
-            t.rich('address.batch_revoke.fee.eip5792_notice_chain', { ...tags, chainName: getChainName(chainId) })
-          }
-        </RichText>
-      );
-    }
-
-    return null;
-  })();
-
-  if (!content) return null;
 
   return (
-    <div className="flex items-center justify-center gap-2 text-sm text-zinc-600 dark:text-zinc-300 bg-brand/30 dark:bg-brand/20 text-center py-2 px-4 max-w-xl">
-      {content}
+    <div className="text-center text-xs text-zinc-500 dark:text-zinc-400">
+      {t('address.batch_revoke.fee.upgrade_prompt')}{' '}
+      <Href href="/premium" className="font-medium text-zinc-700 dark:text-zinc-200" router>
+        {t('common.buttons.upgrade_to_premium')}
+      </Href>
     </div>
   );
 };

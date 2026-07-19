@@ -5,7 +5,7 @@ import Modal from 'components/common/Modal';
 import { useRevokeBatch } from 'lib/hooks/ethereum/useRevokeBatch';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import ControlsWrapper from '../ControlsWrapper';
 import BatchRevokeControls from './BatchRevokeControls';
 import BatchRevokeHeader from './BatchRevokeHeader';
@@ -13,11 +13,12 @@ import BatchRevokeTable from './BatchRevokeTable';
 
 interface Props {
   table: Table<TokenAllowanceData>;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
-const BatchRevokeModalWithButton = ({ table }: Props) => {
+const BatchRevokeModalWithButton = ({ table, open, setOpen }: Props) => {
   const t = useTranslations();
-  const [open, setOpen] = useState(false);
   const { address } = useAddress();
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: we only want to refresh the selected allowances when the modal is opened/closed
@@ -27,10 +28,8 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
 
   const selectedChainId = selectedAllowances[0]?.chainId ?? 1;
 
-  const { results, revoke, pause, isSubmitting, isRevoking, isAllConfirmed, feeDollarAmount } = useRevokeBatch(
-    selectedAllowances,
-    table.options.meta!.onUpdate,
-  );
+  const { results, revoke, pause, isSubmitting, isRevoking, isAllConfirmed, feeDollarAmount, progress } =
+    useRevokeBatch(selectedAllowances, table.options.meta!.onUpdate);
 
   useEffect(() => {
     if (!open) pause();
@@ -69,11 +68,13 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
           </div>
           <BatchRevokeControls
             chainId={selectedChainId}
+            allowanceCount={selectedAllowances.length}
             feeDollarAmount={feeDollarAmount}
             isRevoking={isSubmitting || isRevoking}
             isAllConfirmed={isAllConfirmed}
             setOpen={setOpen}
             revoke={revoke}
+            progress={progress}
           />
         </div>
       </Modal>

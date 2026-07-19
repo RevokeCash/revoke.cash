@@ -21,12 +21,14 @@ import { trackRevokeTransaction } from 'lib/allowances';
 import { recordBatchRevoke, trackBatchRevoke } from 'lib/allowances/batch-revoke';
 import { useTranslations } from 'next-intl';
 import type PQueue from 'p-queue';
+import { useCallback, useRef } from 'react';
 import type { Capabilities, EstimateContractGasParameters, Hash } from 'viem'; // viem has an issue with typing the capability. Until they fix it, we are manually importing it.
 import { usePublicClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddress } from '../page-context/AddressIdentityContext';
 import { useEnsureWalletClient } from './ensureWalletClient';
 import { useFeePayment } from './useFeePayment';
+import { createRevokeQueue } from './useRevokeBatchQueuedTransactions';
 import { useWalletCapabilities } from './useWalletCapabilities';
 
 export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
@@ -43,11 +45,17 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
   const { ensureWalletClient } = useEnsureWalletClient();
 
-  const revoke = async (
-    REVOKE_QUEUE: PQueue,
-    feeDollarAmount: string,
-    maxBatchSize: number = Number.POSITIVE_INFINITY,
-  ) => {
+  const revokeQueueRef = useRef<PQueue | null>(null);
+
+  const revoke = async (feeDollarAmount: string) => {
+    // One queue per revoke invocation; retries with a smaller batch size reuse the same queue
+    const revokeQueue = createRevokeQueue(false);
+    revokeQueueRef.current = revokeQueue;
+
+    return executeRevoke(revokeQueue, feeDollarAmount, Number.POSITIVE_INFINITY);
+  };
+
+  const executeRevoke = async (revokeQueue: PQueue, feeDollarAmount: string, maxBatchSize: number) => {
     const walletClient = await ensureWalletClient(chainId);
 
     // Do not revoke allowances that are already confirmed, or that are already pending
@@ -158,7 +166,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
                 trackTransaction,
               });
 
-              await REVOKE_QUEUE.add(executeSingleTransaction);
+              await revokeQueue.add(executeSingleTransaction);
             }),
           );
         }),
@@ -167,7 +175,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
       if (isBatchSizeError(error)) {
         const newMaxBatchSize = getNewMaxBatchSize(maxBatchSize, callsToSubmit.length);
         console.log((error as Error).message, 'reducing batch size to', newMaxBatchSize);
-        return revoke(REVOKE_QUEUE, feeDollarAmount, newMaxBatchSize);
+        return executeRevoke(revokeQueue, feeDollarAmount, newMaxBatchSize);
       }
 
       throw error;
@@ -182,7 +190,11 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
     }
   };
 
-  return revoke;
+  const pause = useCallback(() => {
+    revokeQueueRef.current?.clear();
+  }, []);
+
+  return { revoke, pause };
 };
 
 const getNewMaxBatchSize = (maxBatchSize: number, totalCalls: number) => {

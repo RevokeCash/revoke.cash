@@ -11,14 +11,14 @@
     "unlimited": "Unlimited"
   },
   "batch_revoke": {
+    "eip5792_notice": "Note: your wallet doesn't support batching, so it will ask you to confirm all {count} revokes one by one.",
+    "eip5792_notice_chain": "Note: your wallet doesn't support batching on {chainName}, so it will ask you to confirm all {count} revokes one by one.",
     "failed": "Failed",
     "fee": {
-      "eip5792_notice": "Note: your wallet does not support atomic batch revokes, so even when you use our paid batch revoke, you need to send multiple transactions.",
-      "eip5792_notice_chain": "Note: your wallet does not support atomic batch revokes for {chainName}, so even when you use our paid batch revoke, you need to send multiple transactions.",
-      "notice": "By batch revoking, you pay a small fee of <m>${feeDollarAmount}</m> that supports the continued development of Revoke.cash.",
+      "notice": "Batch revoking costs a flat <m>${feeDollarAmount}</m> fee for the whole batch, which supports the continued development of Revoke.cash.",
       "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link> is sponsoring the batch revoke fee on the <m>{chainName}</m> network! 🥳",
       "tooltip": "The flat fee of <m>${BASE_FEE}</m> per batch supports infrastructure costs and ongoing development. You can also revoke approvals one by one for free.",
-      "upgrade_prompt": "Want unlimited batch revokes?"
+      "upgrade_prompt": "Want to batch revoke without fees?"
     },
     "revoked": "Revoked",
     "title": "Batch Revoke",

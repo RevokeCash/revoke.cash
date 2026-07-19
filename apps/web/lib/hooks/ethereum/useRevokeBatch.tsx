@@ -10,7 +10,6 @@ import {
 } from '@revoke.cash/core/utils/errors';
 import { getFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
-import PQueue from 'p-queue';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
@@ -21,9 +20,6 @@ import { useRevokeBatchEip5792 } from './useRevokeBatchEip5792';
 import { useRevokeBatchQueuedTransactions } from './useRevokeBatchQueuedTransactions';
 import { useWalletCapabilities } from './useWalletCapabilities';
 
-// Limit to 50 concurrent revokes to avoid wallets crashing
-const REVOKE_QUEUE = new PQueue({ interval: 100, intervalCap: 1, concurrency: 50 });
-
 export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   // Get chainId from the first allowance (all selected allowances should be from the same chain)
   const chainId = allowances[0]?.chainId ?? 1;
@@ -31,8 +27,8 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
 
   const { results, getTransaction, updateTransaction } = useTransactionStore();
   const walletCapabilities = useWalletCapabilities(chainId);
-  const revokeEip5792 = useRevokeBatchEip5792(allowances, onUpdate);
-  const revokeQueuedTransactions = useRevokeBatchQueuedTransactions(allowances, onUpdate);
+  const batchAtomic = useRevokeBatchEip5792(allowances, onUpdate);
+  const batchQueued = useRevokeBatchQueuedTransactions(allowances, onUpdate);
   const { nativeTokenPrice } = useNativeTokenPrice(chainId);
 
   // If we cannot get the native token price, we set the fee to $0 (this will result in no fee payment downstream)
@@ -56,17 +52,18 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
 
       if (supportsEip5792 && hasMoreThanOneTransaction(allowances, feeDollarAmount)) {
         try {
-          await revokeEip5792(REVOKE_QUEUE, feeDollarAmount);
+          await batchAtomic.revoke(feeDollarAmount);
         } catch (error) {
           // Fall back to queued transactions if the user rejected the account upgrade
           if (isAccountUpgradeRejectionError(error)) {
-            await revokeQueuedTransactions(REVOKE_QUEUE, feeDollarAmount);
+            await batchQueued.revoke(feeDollarAmount);
+            return;
           }
 
           throw error;
         }
       } else {
-        await revokeQueuedTransactions(REVOKE_QUEUE, feeDollarAmount);
+        await batchQueued.revoke(feeDollarAmount);
       }
     } catch (error) {
       // Rejecting the chain switch prompt is intentional, and switch failures already get their own toast
@@ -78,8 +75,9 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
   });
 
   const pause = useCallback(() => {
-    REVOKE_QUEUE.clear();
-  }, []);
+    batchAtomic.pause();
+    batchQueued.pause();
+  }, [batchAtomic, batchQueued]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies(results): updated results mean the memo is stale
   const relevantResults = useMemo(() => {
@@ -108,6 +106,7 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
     isRevoking,
     isAllConfirmed,
     feeDollarAmount,
+    progress: batchQueued.progress,
   };
 };
 
