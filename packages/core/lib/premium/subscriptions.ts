@@ -305,20 +305,24 @@ export interface CreateSubscriptionParams {
   now: Date;
 }
 
-interface SubscriptionPlanState {
+export interface SubscriptionPlanState {
   planId: string;
   planVersion: number;
   priceUsdCents: number;
   endsAt: Date;
 }
 
-interface AppliedPayment {
+export interface AppliedPayment {
   planId: string;
   planVersion: number;
   priceUsdCents: number;
   durationDays: number;
   paidAt: Date;
 }
+
+// Derives the subscription's plan and end date by applying payments in confirmation order
+export const replayPayments = (payments: AppliedPayment[]): SubscriptionPlanState =>
+  payments.reduce(applyPaymentToSubscription, { planId: '', planVersion: 0, priceUsdCents: 0, endsAt: new Date(0) });
 
 export const findOrCreateSubscriptionForOwner = async (
   trx: DatabaseTransaction,
@@ -367,17 +371,15 @@ export const rebuildSubscriptionFromPayments = async (
     return;
   }
 
-  const rebuiltSubscription = confirmedPayments.reduce(
-    (state, payment) =>
-      applyPaymentToSubscription(state, {
-        planId: payment.planId,
-        planVersion: payment.planVersion,
-        priceUsdCents: payment.plan.priceUsdCents,
-        // Admin-granted payments carry their own duration instead of the plan's
-        durationDays: payment.grantedDurationDays ?? payment.plan.durationDays,
-        paidAt: payment.confirmedAt!,
-      }),
-    { planId: '', planVersion: 0, priceUsdCents: 0, endsAt: new Date(0) },
+  const rebuiltSubscription = replayPayments(
+    confirmedPayments.map((payment) => ({
+      planId: payment.planId,
+      planVersion: payment.planVersion,
+      priceUsdCents: payment.plan.priceUsdCents,
+      // Admin-granted payments carry their own duration instead of the plan's
+      durationDays: payment.grantedDurationDays ?? payment.plan.durationDays,
+      paidAt: payment.confirmedAt!,
+    })),
   );
 
   await trx

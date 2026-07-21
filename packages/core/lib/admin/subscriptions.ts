@@ -7,7 +7,7 @@ import { getDb } from '@revoke.cash/core/db/client';
 import { premiumPayments, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
 import type { PremiumPaymentStatus } from '@revoke.cash/core/premium/payments';
 import type { PremiumPlan, PremiumPlanTier } from '@revoke.cash/core/premium/plans';
-import { isSubscriptionActive } from '@revoke.cash/core/premium/subscriptions';
+import { isSubscriptionActive, replayPayments } from '@revoke.cash/core/premium/subscriptions';
 import { DAY } from '@revoke.cash/core/utils/time';
 import { and, count, eq, gt, inArray, isNull, lt, lte, or, type SQL, sql } from 'drizzle-orm';
 import type { Address, Hash } from 'viem';
@@ -253,6 +253,9 @@ export interface AnnualRunRate {
   byTier: Record<PremiumPlanTier, number>;
 }
 
+// Only paid coverage counts toward the run rate. Each active subscription's payments are replayed
+// without complimentary grants and testnet payments: a subscription that is only active because
+// of granted time contributes nothing, and a granted upgrade does not raise the paying tier.
 export const getAnnualRunRate = async (): Promise<AnnualRunRate> => {
   const db = getDb();
   const now = new Date();
@@ -260,13 +263,43 @@ export const getAnnualRunRate = async (): Promise<AnnualRunRate> => {
   const activeSubscriptions = await db.query.premiumSubscriptions.findMany({
     where: activeSubscriptionCondition(now),
     columns: {},
-    with: { plan: { columns: { priceUsdCents: true, durationDays: true, tier: true } } },
+    with: {
+      payments: {
+        where: (payments, { and, eq, isNotNull, isNull, notInArray }) =>
+          and(
+            eq(payments.status, 'confirmed'),
+            isNotNull(payments.confirmedAt),
+            isNull(payments.grantedBy),
+            notInArray(payments.chainId, REVENUE_EXCLUDED_CHAIN_IDS),
+          ),
+        orderBy: (payments, { asc }) => [asc(payments.confirmedAt), asc(payments.id)],
+        columns: { planId: true, planVersion: true, confirmedAt: true },
+        with: { plan: { columns: { priceUsdCents: true, durationDays: true, tier: true } } },
+      },
+    },
   });
 
   const byTier: Record<PremiumPlanTier, number> = { premium: 0, ultimate: 0 };
   for (const subscription of activeSubscriptions) {
-    const annualizedUsdCents = Math.round((subscription.plan.priceUsdCents * 365) / subscription.plan.durationDays);
-    byTier[subscription.plan.tier] += annualizedUsdCents;
+    const paidCoverage = replayPayments(
+      subscription.payments.map((payment) => ({
+        planId: payment.planId,
+        planVersion: payment.planVersion,
+        priceUsdCents: payment.plan.priceUsdCents,
+        durationDays: payment.plan.durationDays,
+        paidAt: payment.confirmedAt!,
+      })),
+    );
+
+    if (paidCoverage.endsAt.getTime() <= now.getTime()) continue;
+
+    const paidPlanPayment = subscription.payments.find(
+      (payment) => payment.planId === paidCoverage.planId && payment.planVersion === paidCoverage.planVersion,
+    );
+    if (!paidPlanPayment) continue;
+
+    const paidPlan = paidPlanPayment.plan;
+    byTier[paidPlan.tier] += Math.round((paidPlan.priceUsdCents * 365) / paidPlan.durationDays);
   }
 
   return { totalUsdCents: byTier.premium + byTier.ultimate, byTier };

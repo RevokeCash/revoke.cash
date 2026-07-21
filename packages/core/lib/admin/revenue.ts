@@ -4,8 +4,6 @@ import { ChainId } from '@revoke.cash/chains';
 // web app can run the same derivations client-side that the API routes run server-side; the
 // database queries feeding it live in ./revenue-queries.
 
-// Premium payments have no is_testnet column, so testnet chains are excluded explicitly.
-// ./revenue-queries's SQL conditions must mirror the eligibility rules expressed here.
 export const REVENUE_EXCLUDED_CHAIN_IDS: number[] = [ChainId.EthereumSepolia];
 
 // Revenue-eligible premium payment: confirmed, with a confirmation time, paid (complimentary
