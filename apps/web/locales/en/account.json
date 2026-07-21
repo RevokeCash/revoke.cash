@@ -110,10 +110,12 @@
     "columns": {
       "amount": "Amount",
       "date": "Date",
+      "days": "Days",
       "plan": "Plan",
       "status": "Status",
       "transaction": "Transaction"
     },
+    "complimentary": "Complimentary",
     "details": {
       "refund_available": "You can still cancel this payment and receive a full refund.",
       "refund_transaction": "Refund transaction",

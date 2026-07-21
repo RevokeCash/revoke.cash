@@ -3,6 +3,8 @@ import { formatUsdCents } from '@revoke.cash/core/utils/formatting';
 import { formatDateNormalised } from '@revoke.cash/core/utils/time';
 import { createColumnHelper } from '@tanstack/react-table';
 import TransactionHashCell from 'components/allowances/dashboard/cells/TransactionHashCell';
+import StatusLabel from 'components/common/StatusLabel';
+import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import HistoryChainCell from 'components/history/cells/HistoryChainCell';
 import PaymentStatusBadge from './PaymentStatusBadge';
 import ReconcilePaymentButton from './ReconcilePaymentButton';
@@ -32,16 +34,33 @@ export const columns = [
   columnHelper.accessor('amountUsdCents', {
     id: 'amount',
     header: 'Amount',
-    cell: (info) => (
-      <span>
-        {formatUsdCents(info.getValue())} <span className="text-zinc-500">({info.row.original.tokenSymbol})</span>
-      </span>
-    ),
+    cell: (info) => {
+      const payment = info.row.original;
+
+      if (payment.grantedBy) {
+        return (
+          <WithHoverTooltip
+            tooltip={`${payment.grantedDurationDays} days granted by ${payment.grantedBy}${payment.grantReason ? `: ${payment.grantReason}` : ''}`}
+          >
+            <StatusLabel status="brand" className="py-0.75 w-fit">
+              complimentary
+            </StatusLabel>
+          </WithHoverTooltip>
+        );
+      }
+
+      return (
+        <span>
+          {formatUsdCents(info.getValue())} <span className="text-zinc-500">({payment.tokenSymbol})</span>
+        </span>
+      );
+    },
   }),
   columnHelper.accessor('chainId', {
     id: 'chain',
     header: 'Chain',
-    cell: (info) => <HistoryChainCell chainId={info.getValue()} />,
+    // Complimentary grants have no payment chain, only the placeholder chain id 0
+    cell: (info) => (info.row.original.grantedBy ? <span>-</span> : <HistoryChainCell chainId={info.getValue()} />),
   }),
   columnHelper.accessor('txHash', {
     id: 'transaction',

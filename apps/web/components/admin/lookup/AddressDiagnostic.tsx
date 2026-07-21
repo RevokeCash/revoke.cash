@@ -40,7 +40,7 @@ const AddressDiagnostic = ({ address }: Props) => {
 
       {error && <p className="text-sm text-red-600 dark:text-red-400">{parseErrorMessage(error)}</p>}
 
-      <AddressSubscriptionsCard subscriptions={data?.subscriptions} isLoading={isLoading} />
+      <AddressSubscriptionsCard address={address} subscriptions={data?.subscriptions} isLoading={isLoading} />
       <PermissionsCard address={address} permissions={data?.permissions} isLoading={isLoading} />
       <RulesCard
         rules={data?.rulesConfig?.effectiveRules}

@@ -10,7 +10,7 @@ import { useAccountSubscriptions } from 'lib/hooks/premium/useAccountSubscriptio
 import { getPaymentRefundStatus } from 'lib/utils/cancellation';
 import { useTranslations } from 'next-intl';
 
-const TABLE_COLUMN_COUNT = 6;
+const TABLE_COLUMN_COUNT = 7;
 
 interface Props {
   payment: SubscriptionPayment;

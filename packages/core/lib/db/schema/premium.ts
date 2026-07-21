@@ -70,6 +70,9 @@ export const premiumPayments = premiumSchema.table(
     scanFromBlock: bigint('scan_from_block', { mode: 'bigint' }).notNull(),
     matchedTxHash: text('matched_tx_hash').$type<Hash>(),
     vatRegion: char('vat_region', { length: 2 }),
+    grantedBy: lowercaseAddress('granted_by'),
+    grantReason: text('grant_reason'),
+    grantedDurationDays: integer('granted_duration_days'),
     confirmedAt: timestamp('confirmed_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true })

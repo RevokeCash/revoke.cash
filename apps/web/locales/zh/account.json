@@ -110,10 +110,12 @@
     "columns": {
       "amount": "金额",
       "date": "日期",
+      "days": "天数",
       "plan": "方案",
       "status": "状态",
       "transaction": "交易"
     },
+    "complimentary": "赠送",
     "details": {
       "refund_available": "您仍可以取消此笔付款并获得全额退款。",
       "refund_transaction": "退款交易",

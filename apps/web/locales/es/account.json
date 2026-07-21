@@ -110,10 +110,12 @@
     "columns": {
       "amount": "Monto",
       "date": "Fecha",
+      "days": "Días",
       "plan": "Plan",
       "status": "Estado",
       "transaction": "Transacción"
     },
+    "complimentary": "Cortesía",
     "details": {
       "refund_available": "Todavía puedes cancelar este pago y recibir un reembolso completo.",
       "refund_transaction": "Transacción de reembolso",

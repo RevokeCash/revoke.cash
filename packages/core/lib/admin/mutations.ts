@@ -5,10 +5,14 @@ import { indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
 import { premiumPayments, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
 import { acquireAdvisoryLock } from '@revoke.cash/core/db/utils';
 import type { PaymentStatusResponse } from '@revoke.cash/core/premium/payments';
-import { rebuildSubscriptionFromPayments } from '@revoke.cash/core/premium/subscriptions';
+import { getPremiumPlanById } from '@revoke.cash/core/premium/plans';
+import {
+  findOrCreateSubscriptionForOwner,
+  rebuildSubscriptionFromPayments,
+} from '@revoke.cash/core/premium/subscriptions';
 import { reconcilePaymentByOwner } from '@revoke.cash/core/premium/verify-payment';
 import { and, eq, inArray } from 'drizzle-orm';
-import type { Address } from 'viem';
+import { type Address, zeroAddress } from 'viem';
 
 // Makes a parked action eligible on the executor's next poll. Submitted rows are executor-owned
 // (their nonce pipeline must not be disturbed) and settled rows are final, so neither is touched.
@@ -64,6 +68,77 @@ export const reconcilePaymentAsAdmin = async (
   if (!paymentStatus) return null;
 
   return { ...paymentStatus, ownerAddress: payment.ownerAddress };
+};
+
+export interface GrantSubscriptionParams {
+  ownerAddress: Address;
+  planId: string;
+  durationDays: number;
+  reason: string | null;
+  grantedBy: Address;
+}
+
+export interface GrantSubscriptionResult {
+  subscriptionId: string;
+  paymentId: string;
+  endsAt: string;
+}
+
+// Grants complimentary subscription time by inserting a payment row that is born 'confirmed'
+// with no on-chain transfer and a $0 amount, then replaying the subscription's payments. The
+// NULL matched_tx_hash keeps it out of the re-verification sweep, and the $0 amount keeps
+// revenue aggregates unaffected. The NOT NULL token and chain columns carry inert placeholder
+// values; they are only read when matching a payment on-chain, which never happens here.
+// Returns null when the plan does not exist.
+export const grantSubscriptionAsAdmin = async (
+  params: GrantSubscriptionParams,
+): Promise<GrantSubscriptionResult | null> => {
+  const plan = await getPremiumPlanById(params.planId);
+  if (!plan) return null;
+
+  return getTransactionalDb().transaction(async (trx) => {
+    const now = new Date();
+
+    // Takes the same owner advisory lock as the payment-confirmation path
+    const subscriptionId = await findOrCreateSubscriptionForOwner(trx, {
+      ownerAddress: params.ownerAddress,
+      planId: plan.id,
+      planVersion: plan.version,
+      plan,
+      now,
+    });
+
+    const [grantedPayment] = await trx
+      .insert(premiumPayments)
+      .values({
+        planId: plan.id,
+        planVersion: plan.version,
+        ownerAddress: params.ownerAddress,
+        subscriptionId,
+        chainId: 0,
+        tokenAddress: zeroAddress,
+        tokenSymbol: 'USDC',
+        tokenDecimals: 6,
+        amountUsdCents: 0,
+        status: 'confirmed',
+        expiresAt: now,
+        scanFromBlock: 0n,
+        confirmedAt: now,
+        grantedBy: params.grantedBy,
+        grantReason: params.reason,
+        grantedDurationDays: params.durationDays,
+      })
+      .returning({ id: premiumPayments.id });
+
+    await rebuildSubscriptionFromPayments(trx, subscriptionId);
+
+    const [subscription] = await trx
+      .select({ endsAt: premiumSubscriptions.endsAt })
+      .from(premiumSubscriptions)
+      .where(eq(premiumSubscriptions.id, subscriptionId));
+
+    return { subscriptionId, paymentId: grantedPayment.id, endsAt: subscription.endsAt.toISOString() };
+  });
 };
 
 // Recomputes the subscription's plan and end date by replaying its confirmed payments in order.

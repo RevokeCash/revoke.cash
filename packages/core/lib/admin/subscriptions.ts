@@ -9,7 +9,7 @@ import type { PremiumPaymentStatus } from '@revoke.cash/core/premium/payments';
 import type { PremiumPlan, PremiumPlanTier } from '@revoke.cash/core/premium/plans';
 import { isSubscriptionActive } from '@revoke.cash/core/premium/subscriptions';
 import { DAY } from '@revoke.cash/core/utils/time';
-import { and, count, eq, gt, inArray, lt, lte, type SQL } from 'drizzle-orm';
+import { and, count, eq, gt, inArray, isNull, lt, lte, or, type SQL, sql } from 'drizzle-orm';
 import type { Address, Hash } from 'viem';
 
 export type AdminSubscriptionFilter = 'all' | 'active' | 'expiring' | 'expired' | 'anomaly';
@@ -81,6 +81,12 @@ const findAnomalySubscriptionIds = async (now: Date): Promise<string[]> => {
         lte(premiumSubscriptions.endsAt, now),
         eq(premiumPayments.status, 'confirmed'),
         gt(premiumPayments.confirmedAt, new Date(now.getTime() - ANOMALY_PAYMENT_WINDOW_DAYS * DAY)),
+        // A granted payment only counts as anomalous while its granted period should still be
+        // running: a short grant that simply ran out is not an extension failure
+        or(
+          isNull(premiumPayments.grantedBy),
+          gt(sql`${premiumPayments.confirmedAt} + make_interval(days => ${premiumPayments.grantedDurationDays})`, now),
+        ),
       ),
     );
 
@@ -114,16 +120,20 @@ export const getAdminSubscriptions = async ({
       with: {
         plan: { columns: { name: true, tier: true, maxAddresses: true } },
         addresses: { columns: { id: true } },
-        payments: { columns: { amountUsdCents: true, status: true, chainId: true } },
+        payments: { columns: { amountUsdCents: true, status: true, chainId: true, grantedBy: true } },
       },
     }),
     db.select({ totalCount: count() }).from(premiumSubscriptions).where(conditions),
   ]);
 
   const items = subscriptions.map((subscription): AdminSubscriptionListItem => {
-    // Testnet payments are excluded so the list totals line up with the revenue aggregates
+    // Testnet payments and complimentary grants are excluded so the list totals line up with the
+    // revenue aggregates
     const confirmedPayments = subscription.payments.filter(
-      (payment) => payment.status === 'confirmed' && !REVENUE_EXCLUDED_CHAIN_IDS.includes(payment.chainId),
+      (payment) =>
+        payment.status === 'confirmed' &&
+        payment.grantedBy === null &&
+        !REVENUE_EXCLUDED_CHAIN_IDS.includes(payment.chainId),
     );
 
     return {
@@ -160,6 +170,9 @@ export interface AdminPayment {
   confirmedAt: string | null;
   planId: string;
   planName: string;
+  grantedBy: Address | null;
+  grantReason: string | null;
+  grantedDurationDays: number | null;
 }
 
 export interface AdminSubscriptionDetail {
@@ -226,6 +239,9 @@ export const getAdminSubscription = async (subscriptionId: string): Promise<Admi
         confirmedAt: payment.confirmedAt?.toISOString() ?? null,
         planId: payment.plan.id,
         planName: payment.plan.name,
+        grantedBy: payment.grantedBy,
+        grantReason: payment.grantReason,
+        grantedDurationDays: payment.grantedDurationDays,
       }),
     ),
   };

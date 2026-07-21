@@ -86,7 +86,14 @@ export const getRevenueData = async (months: number): Promise<RevenueData> => {
         premiumPlans,
         and(eq(premiumPayments.planId, premiumPlans.id), eq(premiumPayments.planVersion, premiumPlans.version)),
       )
-      .where(or(gte(premiumPayments.createdAt, from), gte(premiumPayments.confirmedAt, from))),
+      // Complimentary grants are not checkouts, so they are kept out of both the revenue
+      // aggregates and the conversion funnel
+      .where(
+        and(
+          isNull(premiumPayments.grantedBy),
+          or(gte(premiumPayments.createdAt, from), gte(premiumPayments.confirmedAt, from)),
+        ),
+      ),
     db
       .select({
         day: utcDayExpression,

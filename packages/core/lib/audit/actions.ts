@@ -20,6 +20,7 @@ export interface AuditActionDetails {
   admin_refund_processed: { refundRequestId: string; refundTxHash: string; outcome: ProcessRefundOutcome };
   admin_refund_dismissed: { refundRequestId: string };
   admin_payment_reconciled: { paymentId: string; status: string };
+  admin_subscription_granted: { paymentId: string; planId: string; durationDays: number; reason: string | null };
   admin_subscription_rebuilt: Record<string, never>;
   admin_indexing_reset: { resetChainCount: number };
   admin_auto_revoke_action_retried: { actionId: string };
@@ -43,6 +44,7 @@ export const AUDIT_ACTIONS = [
   'admin_refund_processed',
   'admin_refund_dismissed',
   'admin_payment_reconciled',
+  'admin_subscription_granted',
   'admin_subscription_rebuilt',
   'admin_indexing_reset',
   'admin_auto_revoke_action_retried',

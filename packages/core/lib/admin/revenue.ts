@@ -8,10 +8,12 @@ import { ChainId } from '@revoke.cash/chains';
 // ./revenue-queries's SQL conditions must mirror the eligibility rules expressed here.
 export const REVENUE_EXCLUDED_CHAIN_IDS: number[] = [ChainId.EthereumSepolia];
 
-// Revenue-eligible premium payment: confirmed, with a confirmation time, not on a testnet
+// Revenue-eligible premium payment: confirmed, with a confirmation time, paid (complimentary
+// grants are $0), not on a testnet
 const isRevenueEligiblePayment = (payment: RevenuePayment): payment is RevenuePayment & { confirmedAt: string } =>
   payment.status === 'confirmed' &&
   payment.confirmedAt !== null &&
+  payment.amountUsdCents > 0 &&
   !REVENUE_EXCLUDED_CHAIN_IDS.includes(payment.chainId);
 
 // Revenue-eligible batch revokes: not on a testnet and not sponsored (fees were waived)

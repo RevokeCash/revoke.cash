@@ -110,10 +110,12 @@
     "columns": {
       "amount": "金額",
       "date": "日付",
+      "days": "日数",
       "plan": "プラン",
       "status": "ステータス",
       "transaction": "トランザクション"
     },
+    "complimentary": "無償提供",
     "details": {
       "refund_available": "このお支払いはまだキャンセルでき、全額返金を受け取れます。",
       "refund_transaction": "返金トランザクション",

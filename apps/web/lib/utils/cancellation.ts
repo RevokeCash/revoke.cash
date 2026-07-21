@@ -3,6 +3,7 @@ import type { SubscriptionPayment } from '@revoke.cash/core/premium/types';
 import { DAY } from '@revoke.cash/core/utils/time';
 
 const isPaymentEligibleForCancellation = (payment: SubscriptionPayment): boolean => {
+  if (payment.isComplimentary) return false;
   if (!payment.paidAt) return false;
   return Date.now() < new Date(payment.paidAt).getTime() + REFUND_WINDOW_DAYS * DAY;
 };

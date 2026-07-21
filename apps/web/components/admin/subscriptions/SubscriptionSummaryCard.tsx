@@ -6,6 +6,7 @@ import AdminAddressLink from 'components/admin/common/AdminAddressLink';
 import Button from 'components/common/Button';
 import Card, { CardHeader } from 'components/common/Card';
 import { useRebuildSubscription } from 'lib/hooks/admin/useAdminSubscriptions';
+import GrantSubscriptionButton from './GrantSubscriptionButton';
 import SubscriptionPlanLabel from './SubscriptionPlanLabel';
 import SubscriptionStatusBadge from './SubscriptionStatusBadge';
 
@@ -33,9 +34,16 @@ const SubscriptionSummaryCard = ({ subscription }: Props) => {
               <h2 className="text-xl">Subscription</h2>
               <p className="text-sm text-zinc-500 dark:text-zinc-400 font-mono">{subscription.id}</p>
             </div>
-            <Button style="secondary" size="sm" onClick={handleRebuild} loading={rebuildMutation.isPending}>
-              Rebuild from payments
-            </Button>
+            <div className="flex items-center gap-2">
+              <GrantSubscriptionButton
+                ownerAddress={subscription.ownerAddress}
+                currentPlanId={subscription.plan.id}
+                currentEndsAt={subscription.endsAt}
+              />
+              <Button style="secondary" size="sm" onClick={handleRebuild} loading={rebuildMutation.isPending}>
+                Rebuild from payments
+              </Button>
+            </div>
           </div>
         </CardHeader>
       }

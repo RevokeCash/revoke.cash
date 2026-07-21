@@ -32,6 +32,8 @@ export interface SubscriptionPayment {
   paidAt: string | null;
   planId: string;
   planName: string;
+  daysCredited: number;
+  isComplimentary: boolean;
   refundRequest: SubscriptionPaymentRefundRequest | null;
 }
 
@@ -130,9 +132,11 @@ export const getOwnerSubscriptions = async (ownerAddress: Address): Promise<Prem
           tokenSymbol: true,
           matchedTxHash: true,
           confirmedAt: true,
+          grantedBy: true,
+          grantedDurationDays: true,
         },
         with: {
-          plan: { columns: { id: true, name: true } },
+          plan: { columns: { id: true, name: true, durationDays: true } },
           refundRequests: {
             columns: { refundAmountUsdCents: true, createdAt: true, processedAt: true, refundTxHash: true },
             where: (requests, { isNull }) => isNull(requests.dismissedAt),
@@ -161,6 +165,8 @@ export const getOwnerSubscriptions = async (ownerAddress: Address): Promise<Prem
         paidAt: payment.confirmedAt?.toISOString() ?? null,
         planId: payment.plan.id,
         planName: payment.plan.name,
+        daysCredited: payment.grantedDurationDays ?? payment.plan.durationDays,
+        isComplimentary: payment.grantedBy !== null,
         refundRequest: refundRequest
           ? {
               refundAmountUsdCents: refundRequest.refundAmountUsdCents,
@@ -309,7 +315,8 @@ interface SubscriptionPlanState {
 interface AppliedPayment {
   planId: string;
   planVersion: number;
-  plan: Pick<PremiumPlan, 'durationDays' | 'priceUsdCents'>;
+  priceUsdCents: number;
+  durationDays: number;
   paidAt: Date;
 }
 
@@ -365,7 +372,9 @@ export const rebuildSubscriptionFromPayments = async (
       applyPaymentToSubscription(state, {
         planId: payment.planId,
         planVersion: payment.planVersion,
-        plan: payment.plan,
+        priceUsdCents: payment.plan.priceUsdCents,
+        // Admin-granted payments carry their own duration instead of the plan's
+        durationDays: payment.grantedDurationDays ?? payment.plan.durationDays,
         paidAt: payment.confirmedAt!,
       }),
     { planId: '', planVersion: 0, priceUsdCents: 0, endsAt: new Date(0) },
@@ -426,18 +435,18 @@ const applyPaymentToSubscription = (current: SubscriptionPlanState, payment: App
     return {
       planId: payment.planId,
       planVersion: payment.planVersion,
-      priceUsdCents: payment.plan.priceUsdCents,
-      endsAt: new Date(payment.paidAt.getTime() + payment.plan.durationDays * DAY),
+      priceUsdCents: payment.priceUsdCents,
+      endsAt: new Date(payment.paidAt.getTime() + payment.durationDays * DAY),
     };
   }
 
-  const isUpgrade = payment.planId !== current.planId && payment.plan.priceUsdCents > current.priceUsdCents;
+  const isUpgrade = payment.planId !== current.planId && payment.priceUsdCents > current.priceUsdCents;
 
   return {
     planId: isUpgrade ? payment.planId : current.planId,
     planVersion: isUpgrade ? payment.planVersion : current.planVersion,
-    priceUsdCents: isUpgrade ? payment.plan.priceUsdCents : current.priceUsdCents,
-    endsAt: new Date(current.endsAt.getTime() + payment.plan.durationDays * DAY),
+    priceUsdCents: isUpgrade ? payment.priceUsdCents : current.priceUsdCents,
+    endsAt: new Date(current.endsAt.getTime() + payment.durationDays * DAY),
   };
 };
 

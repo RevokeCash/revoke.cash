@@ -53,6 +53,7 @@ export const createRefundRequest = async ({
         status: premiumPayments.status,
         confirmedAt: premiumPayments.confirmedAt,
         amountUsdCents: premiumPayments.amountUsdCents,
+        grantedBy: premiumPayments.grantedBy,
       })
       .from(premiumPayments)
       .where(and(eq(premiumPayments.id, paymentId), eq(premiumPayments.ownerAddress, ownerAddress)))
@@ -63,6 +64,10 @@ export const createRefundRequest = async ({
     }
 
     if (payment.status !== 'confirmed' || !payment.confirmedAt) {
+      throw new PremiumRefundError('Payment is not eligible for a refund');
+    }
+
+    if (payment.grantedBy) {
       throw new PremiumRefundError('Payment is not eligible for a refund');
     }
 

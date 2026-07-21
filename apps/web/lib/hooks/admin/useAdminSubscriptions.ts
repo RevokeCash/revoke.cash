@@ -1,5 +1,6 @@
 'use client';
 
+import type { GrantSubscriptionResult } from '@revoke.cash/core/admin/mutations';
 import type {
   AdminSubscriptionDetail,
   AdminSubscriptionFilter,
@@ -73,6 +74,31 @@ export const useRebuildSubscription = (subscriptionId: string) => {
     },
     onError: (error) => {
       toast.error(parseErrorMessage(error) || 'Failed to rebuild subscription');
+    },
+  });
+};
+
+export interface GrantSubscriptionInput {
+  ownerAddress: Address;
+  planId: string;
+  durationDays: number;
+  reason?: string;
+}
+
+export const useGrantSubscription = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: GrantSubscriptionInput) =>
+      ky.post('/api/admin/grants', { json: input }).json<GrantSubscriptionResult>(),
+    onSuccess: (result) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'subscriptions'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'lookup'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'audit'] });
+      toast.success(`Granted; the subscription now ends ${new Date(result.endsAt).toLocaleDateString()}`);
+    },
+    onError: (error) => {
+      toast.error(parseErrorMessage(error) || 'Failed to grant subscription time');
     },
   });
 };

@@ -4,11 +4,13 @@ import { createColumnHelper } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import TransactionHashCell from 'components/allowances/dashboard/cells/TransactionHashCell';
 import { twMerge } from 'tailwind-merge';
+import PaymentAmountCell from './PaymentAmountCell';
 import PaymentStatusCell from './PaymentStatusCell';
 
 export enum ColumnId {
   DATE = 'Date',
   PLAN = 'Plan',
+  DAYS = 'Days',
   AMOUNT = 'Amount',
   TRANSACTION = 'Transaction',
   STATUS = 'Status',
@@ -30,14 +32,15 @@ export const columns = [
     header: () => <HeaderCell i18nKey="account.billing.columns.plan" />,
     cell: (info) => <div className="py-3 whitespace-nowrap">{info.getValue()}</div>,
   }),
+  columnHelper.accessor('daysCredited', {
+    id: ColumnId.DAYS,
+    header: () => <HeaderCell i18nKey="account.billing.columns.days" />,
+    cell: (info) => <div className="py-3 whitespace-nowrap">{info.getValue()}</div>,
+  }),
   columnHelper.accessor('amountUsdCents', {
     id: ColumnId.AMOUNT,
     header: () => <HeaderCell i18nKey="account.billing.columns.amount" />,
-    cell: (info) => (
-      <div className="py-3 whitespace-nowrap">
-        {info.getValue() / 100} {info.row.original.tokenSymbol}
-      </div>
-    ),
+    cell: (info) => <PaymentAmountCell payment={info.row.original} />,
   }),
   columnHelper.accessor('txHash', {
     id: ColumnId.TRANSACTION,

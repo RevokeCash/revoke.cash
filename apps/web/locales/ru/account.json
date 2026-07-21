@@ -110,10 +110,12 @@
     "columns": {
       "amount": "Сумма",
       "date": "Дата",
+      "days": "Дни",
       "plan": "План",
       "status": "Статус",
       "transaction": "Транзакция"
     },
+    "complimentary": "Бесплатно",
     "details": {
       "refund_available": "Вы еще можете отменить этот платеж и получить полный возврат средств.",
       "refund_transaction": "Транзакция возврата",
