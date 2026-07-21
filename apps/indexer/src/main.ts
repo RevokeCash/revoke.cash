@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { logBootstrapError } from '@revoke.cash/backend/logger/bootstrap';
+import { logBootstrapError, registerProcessErrorHandlers } from '@revoke.cash/backend/logger/bootstrap';
 import { Logger } from 'nestjs-pino';
 import 'reflect-metadata';
 import { AppModule } from './app.module';
@@ -9,6 +9,7 @@ const bootstrap = async (): Promise<void> => {
   const app = await NestFactory.create(AppModule.register(), { bufferLogs: true });
   const logger = app.get(Logger);
   app.useLogger(logger);
+  registerProcessErrorHandlers(logger);
   app.enableShutdownHooks();
 
   const config = app.get(ConfigService);

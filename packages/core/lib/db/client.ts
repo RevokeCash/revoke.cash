@@ -25,6 +25,11 @@ const createHttpDb = () => {
 
 const createPoolDb = () => {
   const pool = new Pool({ connectionString: getDatabaseUrl(), max: 20 });
+
+  pool.on('error', (error: Error) => {
+    console.error('Database pool error on idle connection:', error);
+  });
+
   return drizzlePool(pool, { schema });
 };
 
