@@ -77,8 +77,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.TelosEVMMainnet,
   ChainId.ZetaChainMainnet,
   ChainId.AuroraMainnet,
-  ChainId.Moonbeam,
-  ChainId.Moonriver,
   ChainId.BobaNetwork,
   ChainId.GravityAlphaMainnet,
   ChainId.ChilizChainMainnet,
@@ -115,8 +113,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.OPSepoliaTestnet,
   ChainId.ArbitrumSepolia,
   ChainId.BaseSepoliaTestnet,
-  ChainId.AbstractSepoliaTestnet,
-  ChainId.AvalancheFujiTestnet,
 ] as const;
 
 export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS] as const;
@@ -136,20 +132,6 @@ export const CHAINS = {
     },
     deployedContracts: { multicall3: { address: '0xAa4De41dba0Ca5dCBb288b7cC6b708F3aaC759E7', blockCreated: 5288 } },
   }),
-  [ChainId.AbstractSepoliaTestnet]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.AbstractSepoliaTestnet,
-    name: 'Abstract Testnet',
-    nativeToken: 'ETH',
-    logoUrl: '/assets/images/vendor/chains/abstract.jpg',
-    explorerUrl: 'https://sepolia.abscan.org',
-    rpc: {
-      main: `https://abstract-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-    },
-    deployedContracts: { multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963', blockCreated: 358349 } },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.Abstract,
-  }),
   [ChainId.Amoy]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.Amoy,
@@ -159,6 +141,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/polygon.svg',
     rpc: {
       main: `https://polygon-amoy.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      free: 'https://polygon-amoy.drpc.org',
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 3127388 } },
     isTestnet: true,
@@ -246,7 +229,7 @@ export const CHAINS = {
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 62907816 } },
   }),
   [ChainId['AvalancheC-Chain']]: new Chain({
-    type: SupportType.HYPERSYNC,
+    type: SupportType.ETHERSCAN,
     chainId: ChainId['AvalancheC-Chain'],
     name: 'Avalanche',
     nativeTokenCoingeckoId: 'avalanche-2',
@@ -257,20 +240,6 @@ export const CHAINS = {
       main: `https://avax-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 11907934 } },
-  }),
-  [ChainId.AvalancheFujiTestnet]: new Chain({
-    type: SupportType.ETHERSCAN,
-    chainId: ChainId.AvalancheFujiTestnet,
-    name: 'Avalanche Fuji',
-    nativeTokenCoingeckoId: 'avalanche-2',
-    logoUrl: '/assets/images/vendor/chains/avalanche.svg',
-    explorerUrl: 'https://testnet.snowscan.xyz',
-    rpc: {
-      main: `https://avax-fuji.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-    },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 7096959 } },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId['AvalancheC-Chain'],
   }),
   [ChainId.Base]: new Chain({
     type: SupportType.PROVIDER,
@@ -341,7 +310,7 @@ export const CHAINS = {
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 2118034 } },
   }),
   [ChainId.Blast]: new Chain({
-    type: SupportType.HYPERSYNC,
+    type: SupportType.ETHERSCAN,
     chainId: ChainId.Blast,
     name: 'Blast',
     coingeckoNetworkId: 'blast',
@@ -927,33 +896,6 @@ export const CHAINS = {
       free: 'https://rpc.monad.xyz',
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 9248132 } },
-  }),
-  [ChainId.Moonbeam]: new Chain({
-    type: SupportType.ETHERSCAN,
-    chainId: ChainId.Moonbeam,
-    name: 'Moonbeam',
-    nativeTokenCoingeckoId: 'moonbeam',
-    coingeckoNetworkId: 'glmr',
-    logoUrl: '/assets/images/vendor/chains/moonbeam.svg',
-    rpc: {
-      main: `https://lb.drpc.live/moonbeam/${DRPC_API_KEY}`,
-    },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 609002 } },
-  }),
-  [ChainId.Moonriver]: new Chain({
-    type: SupportType.ETHERSCAN,
-    chainId: ChainId.Moonriver,
-    name: 'Moonriver',
-    nativeTokenCoingeckoId: 'moonriver',
-    coingeckoNetworkId: 'movr',
-    logoUrl: '/assets/images/vendor/chains/moonriver.svg',
-    infoUrl: 'https://moonbeam.network/networks/moonriver/',
-    rpc: {
-      main: `https://lb.drpc.live/moonriver/${DRPC_API_KEY}`,
-    },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 1597904 } },
-    isCanary: true,
-    correspondingMainnetChainId: ChainId.Moonbeam,
   }),
   [ChainId.Morph]: new Chain({
     type: SupportType.BLOCKSCOUT,

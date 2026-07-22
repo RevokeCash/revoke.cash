@@ -15,7 +15,7 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
 
     const ZKSYNC_CHAINS = [
       ChainId.Abstract,
-      ChainId.AbstractSepoliaTestnet,
+      // ChainId.AbstractSepoliaTestnet,
       ChainId.ZkSyncMainnet,
       ChainId.ZkSyncSepoliaTestnet,
       ChainId.Treasure,

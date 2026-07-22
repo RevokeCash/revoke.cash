@@ -13,9 +13,13 @@ export class HyperSyncEventGetter implements EventGetter {
     }
 
     const url = `https://${chainId}.hypersync.xyz`;
+
+    // The default of 12 retries with backoff outlasts ScriptLogsProvider's 30s timeout, which would
+    // relabel connection errors as generic timeouts (and those are treated as splittable scan errors).
     const client = new HypersyncClient({
       url,
       apiToken: process.env.HYPERSYNC_API_KEY,
+      maxNumRetries: 3,
     });
 
     return client;

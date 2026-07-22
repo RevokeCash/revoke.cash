@@ -206,6 +206,8 @@ export const isNetworkError = (error?: string | any): boolean => {
   if (lowercaseMessage?.includes('failed to fetch')) return true;
   if (lowercaseMessage?.includes('service temporarily unavailable')) return true;
   if (lowercaseMessage?.includes('rpc is unresponsive')) return true;
+  if (lowercaseMessage?.includes('error sending request')) return true; // HyperSync
+  if (lowercaseMessage?.includes('invalid peer certificate')) return true; // Also HyperSync
   return false;
 };
 

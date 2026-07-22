@@ -24,6 +24,7 @@ import {
 import { GroupLimiterService } from '@revoke.cash/backend/queue/group-limiter.service';
 import {
   indexEvents,
+  isSplittableScanError,
   recordEventsFailure,
   reduceEventsMaxBlockRangeAfterFailure,
 } from '@revoke.cash/core/indexer/events';
@@ -189,25 +190,29 @@ export class EventsWorker extends WorkerHost {
 
     const { eventsScanId, chainId, address } = job.data;
 
-    try {
-      const nextMaxBlockRange = await reduceEventsMaxBlockRangeAfterFailure(address, chainId);
-      this.logger.warn({
-        event: 'events_max_block_range_reduced',
-        outcome: 'reduced',
-        eventsScanId,
-        chainId,
-        address,
-        nextMaxBlockRange,
-      });
-    } catch (rangeError) {
-      this.logger.warn({
-        event: 'events_max_block_range_reduction_failed',
-        outcome: 'failed',
-        eventsScanId,
-        chainId,
-        address,
-        error: parseErrorMessage(rangeError),
-      });
+    // Only range/size-shaped errors should shrink the persisted max block range. Connectivity
+    // errors say nothing about the range and are handled through `recordEventsFailure` below.
+    if (isSplittableScanError(error)) {
+      try {
+        const nextMaxBlockRange = await reduceEventsMaxBlockRangeAfterFailure(address, chainId);
+        this.logger.warn({
+          event: 'events_max_block_range_reduced',
+          outcome: 'reduced',
+          eventsScanId,
+          chainId,
+          address,
+          nextMaxBlockRange,
+        });
+      } catch (rangeError) {
+        this.logger.warn({
+          event: 'events_max_block_range_reduction_failed',
+          outcome: 'failed',
+          eventsScanId,
+          chainId,
+          address,
+          error: parseErrorMessage(rangeError),
+        });
+      }
     }
 
     if (!exhausted) return;

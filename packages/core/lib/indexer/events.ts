@@ -165,7 +165,7 @@ const getScanLogsProvider = (chainId: number, isNarrow: boolean): LogsProvider =
   return new DivideAndConquerLogsProvider(viemLogsProvider, { splitOnRequestSize: true });
 };
 
-const isSplittableScanError = (error: unknown): boolean => {
+export const isSplittableScanError = (error: unknown): boolean => {
   return isLogResponseSizeError(error) || isLogRequestSizeError(error) || isEventGetterTimeoutError(error);
 };
 
