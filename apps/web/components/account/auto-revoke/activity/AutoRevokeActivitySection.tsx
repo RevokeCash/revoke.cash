@@ -13,16 +13,18 @@ import { ColumnId, columns } from './columns';
 
 interface Props {
   subscriptionId?: string;
+  addressCount?: number;
   isPreview?: boolean;
 }
 
 type ScopeType = ActivityScope['type'];
 
-const AutoRevokeActivitySection = ({ subscriptionId, isPreview = false }: Props) => {
+const AutoRevokeActivitySection = ({ subscriptionId, addressCount, isPreview = false }: Props) => {
   const t = useTranslations();
   const [scopeType, setScopeType] = useState<ScopeType>('address');
 
-  const isOwner = Boolean(subscriptionId);
+  // With a single wallet in the subscription, "all members" is the same as "your activity"
+  const showScopeToggle = Boolean(subscriptionId) && (addressCount ?? 0) > 1;
   const scope: ActivityScope =
     scopeType === 'subscription' && subscriptionId ? { type: 'subscription', subscriptionId } : { type: 'address' };
 
@@ -41,9 +43,9 @@ const AutoRevokeActivitySection = ({ subscriptionId, isPreview = false }: Props)
 
   return (
     <Card header={<CardTitle title={t('account.auto_revoke.activity.title')} />} className="p-0">
-      {(isOwner || budget) && (
+      {(showScopeToggle || budget) && (
         <div className="flex flex-col-reverse gap-3 p-4 sm:flex-row sm:items-center sm:justify-between border-b border-zinc-200 dark:border-zinc-700">
-          {isOwner && (
+          {showScopeToggle && (
             <SegmentedControl
               options={[
                 { value: 'address', label: t('account.auto_revoke.activity.scope.mine') },

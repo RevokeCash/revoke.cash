@@ -75,6 +75,10 @@
         "link_label": "Descubre cómo funciona la revocación automática",
         "title": "Revocación automática"
       },
+      "fee_free_batch_revokes": {
+        "description": "Revoca múltiples aprobaciones de tokens en una sola transacción. Los usuarios gratuitos pagan una tarifa por lote, pero los suscriptores Premium revocan por lotes sin coste adicional en todas las redes.",
+        "title": "Revocaciones por lotes sin tarifa"
+      },
       "multichain_dashboard": {
         "description": "Consulta y gestiona todas tus aprobaciones de tokens en más de 100 redes desde un único panel de control unificado, incluido tu historial completo de aprobaciones. Se acabó tener que cambiar de cadena una por una.",
         "link_label": "Míralo en acción",
@@ -88,11 +92,7 @@
         "description": "Viaja en el tiempo para ver cómo eran tus aprobaciones en cualquier momento del pasado. Usa la Time Machine para investigar cómo ha cambiado el estado de tus aprobaciones a lo largo del tiempo en todas las redes compatibles.",
         "title": "Time Machine"
       },
-      "title": "Lo que obtienes con Premium y Ultimate",
-      "unlimited_batch_revokes": {
-        "description": "Revoca múltiples aprobaciones de tokens en una sola transacción sin coste adicional. Los usuarios gratuitos pagan una tarifa por lote, pero los suscriptores Premium disfrutan de revocaciones por lotes ilimitadas en todas las redes.",
-        "title": "Revocaciones por lotes ilimitadas"
-      }
+      "title": "Lo que obtienes con Premium y Ultimate"
     },
     "features": {
       "address_slots": "Espacios de cartera",
@@ -108,22 +108,26 @@
       "gas_allowance_included": "Presupuesto de gas de {budget}/mes incluido",
       "multichain_dashboard": "Panel de control multicadena",
       "multichain_exploit_checker": "Comprobador de exploits multicadena",
+      "no_batch_revoke_fees": "Revocaciones por lotes sin tarifa",
+      "no_fee": "Sin tarifa",
       "one_chain": "Una cadena a la vez",
       "per_batch": "{price} por lote",
       "priority_support": "Soporte prioritario",
       "revoke_approvals": "Revoca aprobaciones en más de 100 redes",
-      "time_machine": "Time Machine",
-      "unlimited": "Ilimitada",
-      "unlimited_batch_revokes": "Revocaciones por lotes ilimitadas"
+      "time_machine": "Time Machine"
     },
     "includes_tier": "Todo lo de la versión {tierName}, y además:",
     "meta": {
-      "description": "Compara los planes Revoke Premium. Obtén el panel de control multicadena, revocaciones por lotes ilimitadas y mucho más.",
+      "description": "Compara los planes Revoke Premium. Obtén el panel de control multicadena, revocaciones por lotes sin tarifa y mucho más.",
       "title": "Precios Premium"
     },
     "most_popular_label": "Más popular",
     "payment_note": "Paga con USDC en Ethereum u otras redes populares. Un pago único por un año completo, sin renovación automática y sin necesidad de aprobaciones de tokens.",
     "per_year": "/año",
+    "subscriber_banner": {
+      "description": "Tu cartera conectada tiene una suscripción {tier} activa.",
+      "manage_button": "Gestionar Suscripción"
+    },
     "tiers": {
       "free": {
         "cta": "Empezar",

@@ -49,8 +49,8 @@
     "highlights": {
       "multichain_dashboard": "Panel de control multicadena",
       "multichain_exploit_checker": "Comprobador de exploits multicadena",
-      "time_machine": "Time Machine para aprobaciones históricas",
-      "unlimited_batch_revokes": "Revocaciones por lotes ilimitadas"
+      "no_batch_revoke_fees": "Revocaciones por lotes sin tarifa",
+      "time_machine": "Time Machine para aprobaciones históricas"
     },
     "most_popular": "Más popular",
     "premium_price": "{price}/año",

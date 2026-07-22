@@ -1,6 +1,5 @@
 'use client';
 
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { CRISP_WEBSITE_ID, DISCORD_URL } from '@revoke.cash/core/constants';
 import { PREMIUM_PAYMENT_CHAIN_IDS } from '@revoke.cash/core/premium/payment-config';
 import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
@@ -12,6 +11,7 @@ import Button from 'components/common/Button';
 import Card, { CardTitle } from 'components/common/Card';
 import CardSelect, { type CardSelectOption } from 'components/common/CardSelect';
 import Href from 'components/common/Href';
+import NoticeBanner from 'components/common/NoticeBanner';
 import StatusLabel from 'components/common/StatusLabel';
 import ChainSelect from 'components/common/select/ChainSelect';
 import { Crisp } from 'crisp-sdk-web';
@@ -125,10 +125,7 @@ const PremiumSubscriptionSection = ({ account, activeSubscription, expiredSubscr
 
         <div className="min-w-0 flex flex-col gap-4 border-t border-zinc-200 dark:border-zinc-800 pt-4 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-6">
           {isPlansError ? (
-            <div className="rounded-lg border border-yellow-500/50 bg-yellow-50 dark:bg-yellow-950/20 p-4 flex items-center gap-3">
-              <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-yellow-500" />
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.subscription.plans_unavailable')}</p>
-            </div>
+            <NoticeBanner style="warning">{t('account.subscription.plans_unavailable')}</NoticeBanner>
           ) : (
             <>
               <div className="flex flex-col gap-2">
@@ -174,7 +171,14 @@ const WalletInfo = ({ account, domainName }: { account: Address; domainName: str
     <div className="flex flex-col gap-1">
       <span className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.subscription.wallet')}</span>
       <span className="font-medium">{domainName ?? shortenAddress(account, 4)}</span>
-      <span className="text-sm font-mono break-all text-zinc-600 dark:text-zinc-400">{account}</span>
+      <Href
+        href={`/address/${account}`}
+        router
+        underline="hover"
+        className="w-fit text-sm font-mono break-all text-zinc-600 visited:text-zinc-600 dark:text-zinc-400 dark:visited:text-zinc-400"
+      >
+        {account}
+      </Href>
     </div>
   );
 };
@@ -363,12 +367,7 @@ const PaymentForm = ({
       </p>
 
       {isUltimatePlan(selectedPlan) && !supportsErc7715 && (
-        <div className="rounded-lg border border-yellow-500/50 bg-yellow-50 dark:bg-yellow-950/20 p-4 flex items-center gap-3">
-          <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-yellow-500" />
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            {t('account.subscription.ultimate_requires_metamask')}
-          </p>
-        </div>
+        <NoticeBanner style="warning">{t('account.subscription.ultimate_requires_metamask')}</NoticeBanner>
       )}
 
       <p className="text-xs text-zinc-500 dark:text-zinc-400">

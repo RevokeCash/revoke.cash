@@ -18,12 +18,12 @@ export const FEATURES: PricingFeature[] = [
   {
     labelKey: 'batch_revoke',
     free: 'per_batch',
-    premium: 'unlimited',
-    ultimate: 'unlimited',
+    premium: 'no_fee',
+    ultimate: 'no_fee',
     cardLabelKey: {
       free: 'batch_revoke_paid',
-      premium: 'unlimited_batch_revokes',
-      ultimate: 'unlimited_batch_revokes',
+      premium: 'no_batch_revoke_fees',
+      ultimate: 'no_batch_revoke_fees',
     },
     upgradedIn: ['premium'],
   },

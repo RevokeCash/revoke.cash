@@ -1,5 +1,6 @@
 'use client';
 
+import { Cog6ToothIcon } from '@heroicons/react/24/outline';
 import Button from 'components/common/Button';
 import { useMounted } from 'lib/hooks/useMounted';
 import { useTranslations } from 'next-intl';
@@ -34,6 +35,18 @@ const WalletIndicator = ({ size, style, className }: Props) => {
         </Button>
       )}
       <WalletIndicatorDropdown size={size} style={style} className={className} />
+      {account && (
+        <Button
+          size="md"
+          style="secondary"
+          href="/account"
+          router
+          className="w-9 px-0 justify-center"
+          aria-label={t('common.buttons.my_account')}
+        >
+          <Cog6ToothIcon className="w-5 h-5" />
+        </Button>
+      )}
     </div>
   );
 };

@@ -2,7 +2,7 @@
   "announcements": {
     "premium_launch": {
       "learn_more": "了解更多",
-      "text": "隆重推出 <b>Revoke Premium & Ultimate</b>：统一多链仪表盘与自动撤销",
+      "text": "隆重推出 <b>Revoke Premium & Ultimate</b>：多链仪表盘与自动撤销",
       "view_pricing": "查看定价"
     }
   },
@@ -30,6 +30,7 @@
     "get_premium": "获取 Premium",
     "get_started": "开始使用",
     "get_ultimate": "获取 Ultimate",
+    "learn_more": "了解更多",
     "loading": "加载中",
     "my_account": "账户设置",
     "my_allowances": "我的仪表盘",

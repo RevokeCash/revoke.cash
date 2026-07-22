@@ -43,7 +43,7 @@ const PremiumSection = () => {
           <ul className="flex flex-col gap-2">
             <Highlight i18nKey="landing.premium.highlights.multichain_dashboard" />
             <Highlight i18nKey="landing.premium.highlights.multichain_exploit_checker" />
-            <Highlight i18nKey="landing.premium.highlights.unlimited_batch_revokes" />
+            <Highlight i18nKey="landing.premium.highlights.no_batch_revoke_fees" />
             {/* Time machine is hidden until its standalone launch */}
             {/* <Highlight i18nKey="landing.premium.highlights.time_machine" /> */}
           </ul>

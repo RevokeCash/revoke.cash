@@ -1,10 +1,11 @@
 'use client';
 
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import type { AutoRevokeRules } from '@revoke.cash/core/auto-revoke/evaluation/rules';
 import type { AutoRevokePermission } from '@revoke.cash/core/auto-revoke/permissions';
 import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import Divider from 'components/common/Divider';
+import Href from 'components/common/Href';
+import NoticeBanner from 'components/common/NoticeBanner';
 import type { useAddressAutoRevokeRules } from 'lib/hooks/auto-revoke/useAutoRevokeRules';
 import { useErc7715Support } from 'lib/hooks/auto-revoke/useErc7715Support';
 import { useTranslations } from 'next-intl';
@@ -54,10 +55,16 @@ const AutoRevokeSectionContent = ({
       {!supportsErc7715 && !isPreview && <MetaMaskRequiredBanner />}
 
       {connectedWalletNeedsSetup && !isPreview && (
-        <div className="rounded-lg border border-brand/50 bg-brand/5 p-4 flex items-center gap-3">
-          <InformationCircleIcon className="h-6 w-6 shrink-0 text-brand" />
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.auto_revoke.setup.get_started')}</p>
-        </div>
+        <NoticeBanner
+          style="info"
+          action={
+            <Href href="/premium/automated-revoking" router underline="always" className="text-sm">
+              {t('common.buttons.learn_more')}
+            </Href>
+          }
+        >
+          {t('account.auto_revoke.setup.get_started')}
+        </NoticeBanner>
       )}
 
       <div className="grid gap-6 lg:grid-cols-2">

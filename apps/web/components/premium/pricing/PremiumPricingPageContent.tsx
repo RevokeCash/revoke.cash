@@ -4,6 +4,7 @@ import Href from 'components/common/Href';
 import { Feature } from 'components/landing/FeaturesShowcase';
 import LandingPageFaqItem from 'components/landing/LandingPageFaqItem';
 import { useTranslations } from 'next-intl';
+import ActiveSubscriptionBanner from './ActiveSubscriptionBanner';
 import ComparisonTable from './ComparisonTable';
 import { TIER_MAX_ADDRESSES } from './pricing-data';
 import TierCard from './TierCard';
@@ -17,6 +18,7 @@ const PremiumPricingPageContent = () => {
   return (
     <div className="max-w-5xl mx-auto flex flex-col gap-12">
       <ContentPageHero title={t('premium.pricing.title')} subtitle={t('premium.pricing.description')} />
+      <ActiveSubscriptionBanner />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <TierCard tierKey="free" price="$0" href="/token-approval-checker/ethereum" />
@@ -79,7 +81,7 @@ const PremiumPricingPageContent = () => {
             translationPrefix={TRANSLATION_PREFIX}
           />
           <Feature
-            featureKey="unlimited_batch_revokes"
+            featureKey="fee_free_batch_revokes"
             image="/assets/images/premium/batch-revoke.jpg"
             video="/assets/videos/premium/batch-revoke.mp4"
             imagePosition="left"

@@ -75,6 +75,10 @@
         "link_label": "See how Auto-Revoking works",
         "title": "Automated Revoking"
       },
+      "fee_free_batch_revokes": {
+        "description": "Revoke multiple token approvals in a single transaction. Free users pay a per-batch fee, but Premium subscribers batch revoke at no extra cost across all networks.",
+        "title": "Fee-Free Batch Revokes"
+      },
       "multichain_dashboard": {
         "description": "View and manage all your token approvals across 100+ networks from a single unified dashboard, including your full approval history. No more switching chains one by one.",
         "link_label": "See it in action",
@@ -88,11 +92,7 @@
         "description": "Travel back in time to see what your approvals looked like at any point in the past. Use the Time Machine to investigate how your approval state has changed over time across all supported networks.",
         "title": "Time Machine"
       },
-      "title": "What you get with Premium & Ultimate",
-      "unlimited_batch_revokes": {
-        "description": "Revoke multiple token approvals in a single transaction at no extra cost. Free users pay a per-batch fee, but Premium subscribers enjoy unlimited batch revokes across all networks.",
-        "title": "Unlimited Batch Revokes"
-      }
+      "title": "What you get with Premium & Ultimate"
     },
     "features": {
       "address_slots": "Wallet slots",
@@ -108,22 +108,26 @@
       "gas_allowance_included": "{budget}/month gas budget included",
       "multichain_dashboard": "Multichain dashboard",
       "multichain_exploit_checker": "Multichain exploit checker",
+      "no_batch_revoke_fees": "No batch revoke fees",
+      "no_fee": "No fee",
       "one_chain": "One chain at a time",
       "per_batch": "{price} per batch",
       "priority_support": "Priority support",
       "revoke_approvals": "Revoke approvals on 100+ networks",
-      "time_machine": "Time machine",
-      "unlimited": "Unlimited",
-      "unlimited_batch_revokes": "Unlimited batch revokes"
+      "time_machine": "Time machine"
     },
     "includes_tier": "Everything in {tierName}, plus:",
     "meta": {
-      "description": "Compare Revoke Premium plans. Get the multichain dashboard, unlimited batch revokes, and more.",
+      "description": "Compare Revoke Premium plans. Get the multichain dashboard, fee-free batch revokes, and more.",
       "title": "Premium Pricing"
     },
     "most_popular_label": "Most Popular",
     "payment_note": "Pay with USDC on Ethereum or other popular networks. One-time payment for a full year, no auto-renew, and no token approvals needed.",
     "per_year": "/year",
+    "subscriber_banner": {
+      "description": "Your connected wallet has an active {tier} subscription.",
+      "manage_button": "Manage Subscription"
+    },
     "tiers": {
       "free": {
         "cta": "Get started",

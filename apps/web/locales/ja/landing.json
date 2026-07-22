@@ -49,8 +49,8 @@
     "highlights": {
       "multichain_dashboard": "マルチチェーンダッシュボード",
       "multichain_exploit_checker": "マルチチェーンエクスプロイトチェッカー",
-      "time_machine": "過去の承認履歴を確認するタイムマシン",
-      "unlimited_batch_revokes": "無制限の一括取り消し"
+      "no_batch_revoke_fees": "一括取り消しの手数料無料",
+      "time_machine": "過去の承認履歴を確認するタイムマシン"
     },
     "most_popular": "最も人気",
     "premium_price": "{price}/年",

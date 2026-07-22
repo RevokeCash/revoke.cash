@@ -2,7 +2,7 @@
   "announcements": {
     "premium_launch": {
       "learn_more": "Подробнее",
-      "text": "Представляем <b>Revoke Premium & Ultimate</b>: единая мультичейн-панель и автоматический отзыв",
+      "text": "Представляем <b>Revoke Premium & Ultimate</b>: мультичейн-панель и автоматический отзыв",
       "view_pricing": "Посмотреть тарифы"
     }
   },
@@ -30,6 +30,7 @@
     "get_premium": "Получить Premium",
     "get_started": "Начать",
     "get_ultimate": "Получить Ultimate",
+    "learn_more": "Узнать больше",
     "loading": "Загрузка",
     "my_account": "Настройки аккаунта",
     "my_allowances": "Моя панель",

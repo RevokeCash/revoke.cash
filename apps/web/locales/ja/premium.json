@@ -75,6 +75,10 @@
         "link_label": "自動取り消しの仕組みを見る",
         "title": "自動取り消し"
       },
+      "fee_free_batch_revokes": {
+        "description": "1回のトランザクションで複数のトークン承認を取り消すことができます。無料ユーザーはバッチごとの手数料を支払う必要がありますが、プレミアム会員はすべてのネットワークで追加費用なしで一括取り消しを利用できます。",
+        "title": "手数料無料の一括取り消し"
+      },
       "multichain_dashboard": {
         "description": "100以上のネットワークにわたるすべてのトークン承認を、完全な承認履歴も含めて、1つの統合ダッシュボードから表示・管理できます。チェーンを1つずつ切り替える必要はもうありません。",
         "link_label": "実際の動作を見る",
@@ -88,11 +92,7 @@
         "description": "タイムマシンを使って過去へ遡り、過去の任意の時点での承認状況を確認しましょう。タイムマシンを使用して、サポートされているすべてのネットワークにおいて、承認状態が時間とともにどのように変化したかを調査できます。",
         "title": "タイムマシン"
       },
-      "title": "プレミアムとUltimateで利用できる機能",
-      "unlimited_batch_revokes": {
-        "description": "追加費用なしで、1回のトランザクションで複数のトークン承認を取り消すことができます。無料ユーザーはバッチごとの手数料を支払う必要がありますが、プレミアム会員はすべてのネットワークにおいて無制限の一括取り消しを利用できます。",
-        "title": "無制限の一括取り消し"
-      }
+      "title": "プレミアムとUltimateで利用できる機能"
     },
     "features": {
       "address_slots": "ウォレットスロット",
@@ -108,22 +108,26 @@
       "gas_allowance_included": "{budget}/月のガス予算付き",
       "multichain_dashboard": "マルチチェーンダッシュボード",
       "multichain_exploit_checker": "マルチチェーンエクスプロイトチェッカー",
+      "no_batch_revoke_fees": "一括取り消しの手数料無料",
+      "no_fee": "手数料無料",
       "one_chain": "チェーンは一度に1つずつ",
       "per_batch": "1バッチあたり {price}",
       "priority_support": "優先サポート",
       "revoke_approvals": "100以上のネットワークで承認を取り消す",
-      "time_machine": "タイムマシン",
-      "unlimited": "無制限",
-      "unlimited_batch_revokes": "無制限の一括取り消し"
+      "time_machine": "タイムマシン"
     },
     "includes_tier": "{tierName}のすべての機能に加えて：",
     "meta": {
-      "description": "Revoke Premiumのプランを比較しましょう。マルチチェーンダッシュボードや無制限の一括取り消しなどをご利用いただけます。",
+      "description": "Revoke Premiumのプランを比較しましょう。マルチチェーンダッシュボードや手数料無料の一括取り消しなどをご利用いただけます。",
       "title": "プレミアムの料金プラン"
     },
     "most_popular_label": "最も人気",
     "payment_note": "Ethereumやその他の主要ネットワーク上のUSDCでお支払いいただけます。1年分の一括払いで、自動更新はなく、トークン承認も不要です。",
     "per_year": "/年",
+    "subscriber_banner": {
+      "description": "接続中のウォレットには有効な{tier}サブスクリプションがあります。",
+      "manage_button": "サブスクリプションを管理"
+    },
     "tiers": {
       "free": {
         "cta": "開始する",

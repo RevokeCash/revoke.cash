@@ -2,7 +2,7 @@
   "announcements": {
     "premium_launch": {
       "learn_more": "Learn More",
-      "text": "Introducing <b>Revoke Premium & Ultimate</b>: Unified Multichain Dashboard & Automated Revoking",
+      "text": "Introducing <b>Revoke Premium & Ultimate</b>: Multichain Dashboard & Automated Revoking",
       "view_pricing": "View Pricing"
     }
   },
@@ -30,6 +30,7 @@
     "get_premium": "Get Premium",
     "get_started": "Get Started",
     "get_ultimate": "Get Ultimate",
+    "learn_more": "Learn More",
     "loading": "Loading",
     "my_account": "Account Settings",
     "my_allowances": "My Dashboard",

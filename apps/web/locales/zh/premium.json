@@ -75,6 +75,10 @@
         "link_label": "了解自动撤销的工作原理",
         "title": "自动撤销"
       },
+      "fee_free_batch_revokes": {
+        "description": "在一笔交易中撤销多个代币授权。免费用户需按批次付费，而 Premium 订阅用户可在所有网络上批量撤销，无需额外费用。",
+        "title": "批量撤销无额外费用"
+      },
       "multichain_dashboard": {
         "description": "在一个统一的仪表盘中查看和管理您在 100+ 个网络上的全部代币授权，包括完整的授权历史。无需再逐个切换网络。",
         "link_label": "查看实际效果",
@@ -88,11 +92,7 @@
         "description": "回到过去，查看您的授权在过去任意时间点的状态。使用 Time Machine 调查您的授权状态在所有受支持网络上随时间发生的变化。",
         "title": "Time Machine"
       },
-      "title": "Premium 和 Ultimate 为您提供的功能",
-      "unlimited_batch_revokes": {
-        "description": "在一笔交易中撤销多个代币授权，无需额外费用。免费用户需按批次付费，而 Premium 订阅用户可在所有网络上享受无限次批量撤销。",
-        "title": "无限次批量撤销"
-      }
+      "title": "Premium 和 Ultimate 为您提供的功能"
     },
     "features": {
       "address_slots": "钱包名额",
@@ -108,22 +108,26 @@
       "gas_allowance_included": "包含每月 {budget} 的 Gas 预算",
       "multichain_dashboard": "多链仪表盘",
       "multichain_exploit_checker": "多链漏洞检查器",
+      "no_batch_revoke_fees": "批量撤销无额外费用",
+      "no_fee": "无额外费用",
       "one_chain": "一次一条链",
       "per_batch": "每批次 {price}",
       "priority_support": "优先支持",
       "revoke_approvals": "在 100+ 个网络上撤销授权",
-      "time_machine": "Time Machine",
-      "unlimited": "无限次",
-      "unlimited_batch_revokes": "无限次批量撤销"
+      "time_machine": "Time Machine"
     },
     "includes_tier": "包含 {tierName} 的全部功能，此外还有：",
     "meta": {
-      "description": "比较 Revoke Premium 各方案。获取多链仪表盘、无限次批量撤销等更多功能。",
+      "description": "比较 Revoke Premium 各方案。获取多链仪表盘、无额外费用的批量撤销等更多功能。",
       "title": "Premium 定价"
     },
     "most_popular_label": "最受欢迎",
     "payment_note": "使用 Ethereum 或其他主流网络上的 USDC 支付。一次性支付全年费用，不自动续订，也无需任何代币授权。",
     "per_year": "/年",
+    "subscriber_banner": {
+      "description": "您连接的钱包已有生效中的 {tier} 订阅。",
+      "manage_button": "管理订阅"
+    },
     "tiers": {
       "free": {
         "cta": "开始使用",

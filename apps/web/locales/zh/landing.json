@@ -49,8 +49,8 @@
     "highlights": {
       "multichain_dashboard": "多链仪表盘",
       "multichain_exploit_checker": "多链漏洞检查器",
-      "time_machine": "Time Machine 历史授权回溯",
-      "unlimited_batch_revokes": "无限次批量撤销"
+      "no_batch_revoke_fees": "批量撤销无额外费用",
+      "time_machine": "Time Machine 历史授权回溯"
     },
     "most_popular": "最受欢迎",
     "premium_price": "{price}/年",

@@ -49,8 +49,8 @@
     "highlights": {
       "multichain_dashboard": "Multichain dashboard",
       "multichain_exploit_checker": "Multichain exploit checker",
-      "time_machine": "Time machine for historical approvals",
-      "unlimited_batch_revokes": "Unlimited batch revokes"
+      "no_batch_revoke_fees": "No batch revoke fees",
+      "time_machine": "Time machine for historical approvals"
     },
     "most_popular": "Most Popular",
     "premium_price": "{price}/year",

@@ -2,7 +2,7 @@
   "announcements": {
     "premium_launch": {
       "learn_more": "Más información",
-      "text": "Te presentamos <b>Revoke Premium & Ultimate</b>: Panel de Control Multicadena Unificado y Revocación Automática",
+      "text": "Te presentamos <b>Revoke Premium & Ultimate</b>: Panel de Control Multicadena y Revocación Automática",
       "view_pricing": "Ver precios"
     }
   },
@@ -30,6 +30,7 @@
     "get_premium": "Obtén Premium",
     "get_started": "Empezar",
     "get_ultimate": "Obtén Ultimate",
+    "learn_more": "Más información",
     "loading": "Cargando",
     "my_account": "Configuración de la Cuenta",
     "my_allowances": "Mi Panel",

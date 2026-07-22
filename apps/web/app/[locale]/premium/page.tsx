@@ -1,7 +1,8 @@
 import SharedLayout from 'app/layouts/SharedLayout';
 import PremiumPricingPageContent from 'components/premium/pricing/PremiumPricingPageContent';
+import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import type { Metadata, NextPage } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface Props {
   params: Promise<Params>;
@@ -25,9 +26,13 @@ const PremiumPricingPage: NextPage<Props> = async ({ params }) => {
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const messages = await getMessages({ locale });
+
   return (
     <SharedLayout padding>
-      <PremiumPricingPageContent />
+      <NextIntlClientProvider messages={{ common: messages.common, premium: messages.premium }}>
+        <PremiumPricingPageContent />
+      </NextIntlClientProvider>
     </SharedLayout>
   );
 };

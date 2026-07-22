@@ -49,8 +49,8 @@
     "highlights": {
       "multichain_dashboard": "Мультичейн-панель",
       "multichain_exploit_checker": "Мультичейн-проверка эксплойтов",
-      "time_machine": "Time Machine для истории одобрений",
-      "unlimited_batch_revokes": "Неограниченные пакетные отзывы"
+      "no_batch_revoke_fees": "Пакетные отзывы без комиссии",
+      "time_machine": "Time Machine для истории одобрений"
     },
     "most_popular": "Самый популярный",
     "premium_price": "{price}/год",

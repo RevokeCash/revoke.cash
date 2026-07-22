@@ -28,7 +28,11 @@ const AutoRevokeTab = () => {
       {isPreview && <AutoRevokeUpsellBanner />}
       <div inert={isPreview} className={twMerge('flex flex-col gap-4', isPreview && 'opacity-60')}>
         <AutoRevokeSection activeSubscription={activeUltimateSubscription} account={account!} isPreview={isPreview} />
-        <AutoRevokeActivitySection subscriptionId={activeUltimateSubscription?.id} isPreview={isPreview} />
+        <AutoRevokeActivitySection
+          subscriptionId={activeUltimateSubscription?.id}
+          addressCount={activeUltimateSubscription?.addresses.length}
+          isPreview={isPreview}
+        />
       </div>
     </div>
   );

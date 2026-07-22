@@ -2,7 +2,7 @@
   "announcements": {
     "premium_launch": {
       "learn_more": "詳しく見る",
-      "text": "<b>Revoke Premium & Ultimate</b>が登場：統合マルチチェーンダッシュボードと自動取り消し",
+      "text": "<b>Revoke Premium & Ultimate</b>が登場：マルチチェーンダッシュボードと自動取り消し",
       "view_pricing": "料金プランを見る"
     }
   },
@@ -30,6 +30,7 @@
     "get_premium": "プレミアムを入手",
     "get_started": "開始する",
     "get_ultimate": "Ultimateを入手",
+    "learn_more": "詳しく見る",
     "loading": "読み込み中",
     "my_account": "アカウント設定",
     "my_allowances": "マイダッシュボード",

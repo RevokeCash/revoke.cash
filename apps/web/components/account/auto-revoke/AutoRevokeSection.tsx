@@ -1,8 +1,8 @@
 'use client';
 
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import type { PremiumSubscription } from '@revoke.cash/core/premium/subscriptions';
 import Card, { CardTitle } from 'components/common/Card';
+import NoticeBanner from 'components/common/NoticeBanner';
 import {
   useAddressAutoRevokePermissions,
   useSubscriptionAutoRevokePermissions,
@@ -43,10 +43,7 @@ const AutoRevokeSection = ({ activeSubscription, account, isPreview = false }: P
       className={isLoading ? 'h-48' : undefined}
     >
       {hasError ? (
-        <div className="rounded-lg border border-yellow-500/50 bg-yellow-50 dark:bg-yellow-950/20 p-4 flex items-center gap-3">
-          <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-yellow-500" />
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.auto_revoke.load_failed')}</p>
-        </div>
+        <NoticeBanner style="warning">{t('account.auto_revoke.load_failed')}</NoticeBanner>
       ) : (
         <AutoRevokeSectionContent
           account={account}
