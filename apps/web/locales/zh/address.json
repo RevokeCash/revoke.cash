@@ -17,7 +17,7 @@
     "fee": {
       "notice": "批量撤销需支付整批 <m>${feeDollarAmount}</m> 的固定费用，用于支持 Revoke.cash 的持续发展。",
       "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link>正在赞助<m>{chainName}</m>网络上的批量撤销费用！🥳",
-      "tooltip": "每次批量操作收取<m>${BASE_FEE}</m>的固定费用用于支持基础设施成本及持续开发。您也可免费逐笔撤销授权。",
+      "tooltip": "每次批量操作收取<m>${BATCH_REVOKE_FEE}</m>的固定费用用于支持基础设施成本及持续开发。您也可免费逐笔撤销授权。",
       "upgrade_prompt": "想要免费进行批量撤销吗？"
     },
     "revoked": "已撤销",

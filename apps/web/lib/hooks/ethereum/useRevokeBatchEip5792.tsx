@@ -6,6 +6,7 @@ import {
   prepareRevokeAllowance,
   type TokenAllowanceData,
 } from '@revoke.cash/core/allowances';
+import { PREMIUM_BATCH_REVOKE_SPONSOR } from '@revoke.cash/core/constants';
 import {
   type Eip5792Call,
   mapContractTransactionRequestToEip5792Call,
@@ -182,7 +183,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
     }
 
     // TODO: This still tracks if all revokes/the full batch gets rejected
-    const sponsor = (isPremium ? 'Revoke Premium' : FEE_SPONSORS[chainId]?.name) ?? null;
+    const sponsor = (isPremium ? PREMIUM_BATCH_REVOKE_SPONSOR : FEE_SPONSORS[chainId]?.name) ?? null;
     trackBatchRevoke(chainId, address, allowancesToSubmit, feeDollarAmount, 'eip5792', sponsor);
     // If the fee payment is zero, we record the batch revoke without a transaction hash, if there is a fee, it gets recorded when the fee payment is submitted
     if (isZeroFeeDollarAmount(feeDollarAmount) && allowancesToSubmit.length > 1) {

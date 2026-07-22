@@ -17,7 +17,7 @@
     "fee": {
       "notice": "一括取り消しには、全体で<m>${feeDollarAmount}</m>の定額手数料がかかり、Revoke.cashの継続的な開発をサポートします。",
       "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link>は<m>{chainName}</m>ネットワークで一括取り消し手数料を負担しています！🥳",
-      "tooltip": "バッチごとの<m>${BASE_FEE}</m>の定額手数料は、インフラコストと継続的な開発をサポートします。また、承認を1つずつ無料で取り消すこともできます。",
+      "tooltip": "バッチごとの<m>${BATCH_REVOKE_FEE}</m>の定額手数料は、インフラコストと継続的な開発をサポートします。また、承認を1つずつ無料で取り消すこともできます。",
       "upgrade_prompt": "手数料なしで一括取り消しをしたいですか？"
     },
     "revoked": "取り消し済み",

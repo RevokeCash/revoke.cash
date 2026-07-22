@@ -7,7 +7,7 @@ import { useNativeTokenPrice } from 'lib/hooks/ethereum/useNativeTokenPrice';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
-import { BASE_FEE, FEE_SPONSORS, PER_ALLOWANCE_FEE } from './fee';
+import { BATCH_REVOKE_FEE, FEE_SPONSORS } from './fee';
 
 interface Props {
   chainId: number;
@@ -33,8 +33,7 @@ const FeeNotice = ({ chainId, feeDollarAmount }: Props) => {
       {(tags) =>
         t.rich('address.batch_revoke.fee.tooltip', {
           ...tags,
-          BASE_FEE: BASE_FEE.toFixed(2),
-          PER_ALLOWANCE_FEE: PER_ALLOWANCE_FEE.toFixed(2),
+          BATCH_REVOKE_FEE: BATCH_REVOKE_FEE.toFixed(2),
         })
       }
     </RichText>

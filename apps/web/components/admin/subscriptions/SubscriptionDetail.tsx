@@ -15,6 +15,7 @@ import {
 import CoveredAddressesCard from './CoveredAddressesCard';
 import SubscriptionPaymentsCard from './payments/SubscriptionPaymentsCard';
 import SubscriptionBudgetCard from './SubscriptionBudgetCard';
+import SubscriptionProfitabilityCard from './SubscriptionProfitabilityCard';
 import SubscriptionSummaryCard from './SubscriptionSummaryCard';
 
 interface Props {
@@ -41,6 +42,7 @@ const SubscriptionDetail = ({ subscriptionId }: Props) => {
   return (
     <div className="flex flex-col gap-6">
       <SubscriptionSummaryCard subscription={subscription} />
+      <SubscriptionProfitabilityCard subscription={subscription} />
       <CoveredAddressesCard addresses={subscription.addresses} />
       <SubscriptionPaymentsCard payments={subscription.payments} />
       <SubscriptionBudgetCard subscriptionId={subscriptionId} />

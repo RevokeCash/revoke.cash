@@ -1,4 +1,5 @@
-import { boolean, char, index, integer, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { boolean, char, index, integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { lowercaseAddress } from '../types/lowercase-address';
 
 export const batchRevokes = pgTable(
   'batch_revokes',
@@ -12,7 +13,7 @@ export const batchRevokes = pgTable(
     sponsor: text('sponsor'),
     notes: text('notes'),
     timestamp: timestamp('timestamp', { withTimezone: true }).notNull().defaultNow(),
-    userAddress: varchar('user_address', { length: 42 }),
+    userAddress: lowercaseAddress('user_address'),
   },
   (table) => [index('idx_batch_revokes_timestamp').on(table.timestamp)],
 );

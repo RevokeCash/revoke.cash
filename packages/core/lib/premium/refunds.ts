@@ -11,7 +11,7 @@ import {
 import { isUniqueViolationError } from '@revoke.cash/core/db/utils';
 import { ExportableError } from '@revoke.cash/core/utils/errors';
 import { DAY } from '@revoke.cash/core/utils/time';
-import { and, count, eq, gte, inArray, isNull, sql, sum } from 'drizzle-orm';
+import { and, count, eq, gte, inArray, isNull, sum } from 'drizzle-orm';
 import { type Address, decodeEventLog, type Hash, isAddressEqual, TransactionReceiptNotFoundError } from 'viem';
 import { REFUND_DEADLINE_DAYS, REFUND_WINDOW_DAYS, usdCentsToTokenUnits } from './payment-config';
 import type { PremiumPaymentStatus } from './payments';
@@ -221,7 +221,7 @@ const getPaymentConsumption = async (
     .from(premiumSubscriptionAddresses)
     .where(eq(premiumSubscriptionAddresses.subscriptionId, subscriptionId));
 
-  const addresses = subscriptionAddresses.map((entry) => entry.address.toLowerCase());
+  const addresses = subscriptionAddresses.map((entry) => entry.address);
 
   const [waivedBatchRevokes] =
     addresses.length > 0
@@ -230,7 +230,7 @@ const getPaymentConsumption = async (
           .from(batchRevokes)
           .where(
             and(
-              inArray(sql`lower(${batchRevokes.userAddress})`, addresses),
+              inArray(batchRevokes.userAddress, addresses),
               gte(batchRevokes.timestamp, confirmedAt),
               eq(batchRevokes.feeUsdCents, 0),
             ),

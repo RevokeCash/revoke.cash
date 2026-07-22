@@ -1,6 +1,6 @@
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, getChainSlug } from '@revoke.cash/core/chains';
 import LearnLayout from 'app/layouts/LearnLayout';
-import { BASE_FEE, PER_ALLOWANCE_FEE } from 'components/allowances/controls/batch-revoke/fee';
+import { BATCH_REVOKE_FEE } from 'components/allowances/controls/batch-revoke/fee';
 import ChainLogo from 'components/common/ChainLogo';
 import Href from 'components/common/Href';
 import RichText from 'components/common/RichText';
@@ -68,8 +68,7 @@ const FaqPage: NextPage<Props> = async ({ params }) => {
             {(tags) =>
               t.rich('faq.questions.costs.answer', {
                 ...tags,
-                BASE_FEE: BASE_FEE.toFixed(2),
-                PER_ALLOWANCE_FEE: PER_ALLOWANCE_FEE.toFixed(2),
+                BATCH_REVOKE_FEE: BATCH_REVOKE_FEE.toFixed(2),
               })
             }
           </RichText>

@@ -1,11 +1,13 @@
 'use client';
 
 import { deriveSponsorSplit } from '@revoke.cash/core/admin/revenue';
+import { BATCH_REVOKE_FEE_USD_CENTS } from '@revoke.cash/core/constants';
 import { deduplicateArray } from '@revoke.cash/core/utils';
 import { formatUsdCents } from '@revoke.cash/core/utils/formatting';
 import { createColumnHelper } from '@tanstack/react-table';
 import Card, { CardTitle } from 'components/common/Card';
 import Table from 'components/common/table/Table';
+import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAdminRevenueData } from 'lib/hooks/admin/useAdminRevenue';
 import { useTable } from 'lib/hooks/useTable';
 import { useMemo } from 'react';
@@ -53,12 +55,27 @@ const BatchRevokeSplitSection = () => {
           header: () => <div className="text-right">{bucketName}</div>,
           cell: (info) => {
             const point = pointsByMonthAndBucket.get(`${info.row.original}|${bucketName}`);
+
+            if (!point) {
+              return (
+                <div className="py-1.5 pr-4 text-right text-sm">
+                  <span className="text-zinc-500">-</span>
+                </div>
+              );
+            }
+
+            const cellText = `${point.batchCount} (${formatUsdCents(point.feeUsdCents)})`;
+
             return (
               <div className="py-1.5 pr-4 text-right text-sm">
-                {point ? (
-                  `${point.batchCount} (${formatUsdCents(point.feeUsdCents)})`
+                {point.sponsor === null ? (
+                  cellText
                 ) : (
-                  <span className="text-zinc-500">-</span>
+                  <WithHoverTooltip
+                    tooltip={`Value if paid: ${formatUsdCents(point.batchCount * BATCH_REVOKE_FEE_USD_CENTS)}`}
+                  >
+                    <span>{cellText}</span>
+                  </WithHoverTooltip>
                 )}
               </div>
             );

@@ -9,6 +9,9 @@ export const GITHUB_URL = 'https://github.com/RevokeCash/revoke.cash';
 export const TWITTER_URL = 'https://twitter.com/RevokeCash';
 export const TELEGRAM_URL = 'https://t.me/RevokeHQ';
 
+export const BATCH_REVOKE_FEE_USD_CENTS = 150;
+export const PREMIUM_BATCH_REVOKE_SPONSOR = 'Revoke Premium';
+
 export const ADDRESS_ZERO_PADDED = '0x0000000000000000000000000000000000000000000000000000000000000000' as const;
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000' as const;
 export const DUMMY_ADDRESS_PADDED = '0x0000000000000000000000000000000000000000000000000000000000000001' as const;

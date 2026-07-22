@@ -5,7 +5,7 @@
   },
   "questions": {
     "costs": {
-      "answer": "Las herramientas principales de Revoke.cash son gratuitas: inspeccionar autorizaciones y revocarlas una por una solo cuesta la tarifa de gas de la red. Al usar la función de <i>revocación por lotes</i>, se cobra una pequeña tarifa de <b>${BASE_FEE}</b> a los usuarios gratuitos, mientras que <b>Revoke Premium</b> incluye revocaciones por lotes ilimitadas. Premium añade comodidad multicadena y protección proactiva, y ayuda a financiar las herramientas públicas gratuitas. En determinadas redes, la tarifa por lotes corre a cargo de un patrocinador.",
+      "answer": "Las herramientas principales de Revoke.cash son gratuitas: inspeccionar autorizaciones y revocarlas una por una solo cuesta la tarifa de gas de la red. Al usar la función de <i>revocación por lotes</i>, se cobra una pequeña tarifa de <b>${BATCH_REVOKE_FEE}</b> a los usuarios gratuitos, mientras que <b>Revoke Premium</b> incluye revocaciones por lotes ilimitadas. Premium añade comodidad multicadena y protección proactiva, y ayuda a financiar las herramientas públicas gratuitas. En determinadas redes, la tarifa por lotes corre a cargo de un patrocinador.",
       "question": "¿Cuánto cuesta usar Revoke.cash?"
     },
     "deposited_tokens": {

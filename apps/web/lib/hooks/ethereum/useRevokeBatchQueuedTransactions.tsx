@@ -1,6 +1,7 @@
 'use client';
 
 import { getAllowanceKey, type OnUpdate, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { PREMIUM_BATCH_REVOKE_SPONSOR } from '@revoke.cash/core/constants';
 import { TransactionType } from '@revoke.cash/core/types';
 import { isUserRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { FEE_SPONSORS, isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
@@ -121,7 +122,7 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
     }
 
     // TODO: This still tracks if all revokes/the full batch gets rejected
-    const sponsor = (isPremium ? 'Revoke Premium' : FEE_SPONSORS[chainId]?.name) ?? null;
+    const sponsor = (isPremium ? PREMIUM_BATCH_REVOKE_SPONSOR : FEE_SPONSORS[chainId]?.name) ?? null;
     trackBatchRevoke(chainId, address, allowances, feeDollarAmount, 'queued', sponsor);
     // If the fee payment is zero, we record the batch revoke without a transaction hash, if there is a fee, it gets recorded when the fee payment is submitted
     if (isZeroFeeDollarAmount(feeDollarAmount) && allowances.length > 1) {

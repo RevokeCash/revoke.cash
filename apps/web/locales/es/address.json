@@ -17,7 +17,7 @@
     "fee": {
       "notice": "La revocación por lotes cuesta una tarifa fija de <m>${feeDollarAmount}</m> por todo el lote, que contribuye al desarrollo continuo de Revoke.cash.",
       "sponsored_notice": "¡<sponsor-link>{sponsor}</sponsor-link> está patrocinando la tarifa de revocación por lotes en la red <m>{chainName}</m>! 🥳",
-      "tooltip": "La tarifa fija de <m>${BASE_FEE}</m> por lote cubre los costes de infraestructura y el desarrollo continuo. También puedes revocar las aprobaciones una por una de forma gratuita.",
+      "tooltip": "La tarifa fija de <m>${BATCH_REVOKE_FEE}</m> por lote cubre los costes de infraestructura y el desarrollo continuo. También puedes revocar las aprobaciones una por una de forma gratuita.",
       "upgrade_prompt": "¿Quieres revocar por lotes sin tarifas?"
     },
     "revoked": "Revocado",

@@ -91,20 +91,22 @@ const BalanceCell = ({ balance, spend }: BalanceCellProps) => {
   const runwayDays = balance.balanceUsd !== null && spendPerDayUsd > 0 ? balance.balanceUsd / spendPerDayUsd : null;
 
   return (
-    <WithHoverTooltip
-      tooltip={`30-day spend: ${formatFiatAmount(spend?.spendUsd ?? 0)} (${spend?.actionCount ?? 0} actions), runway at 30d spend rate: ${formatRunwayDisplay(runwayDays)}`}
-    >
-      <div className="flex w-fit flex-col items-start gap-0.5">
-        {balance.balanceUsd !== null ? (
-          <StatusLabel status={runwayStatus(runwayDays)}>{formatFiatAmount(balance.balanceUsd)}</StatusLabel>
-        ) : (
-          <StatusLabel status="neutral">no price</StatusLabel>
-        )}
-        <span className="text-xs text-zinc-500">
-          {balanceDisplay} - {formatRunwayDisplay(runwayDays)}
+    <div className="flex w-fit items-center gap-2">
+      <WithHoverTooltip tooltip={balanceDisplay}>
+        <span>
+          {balance.balanceUsd !== null ? (
+            <StatusLabel status={runwayStatus(runwayDays)}>{formatFiatAmount(balance.balanceUsd)}</StatusLabel>
+          ) : (
+            <StatusLabel status="neutral">no price</StatusLabel>
+          )}
         </span>
-      </div>
-    </WithHoverTooltip>
+      </WithHoverTooltip>
+      <WithHoverTooltip
+        tooltip={`30-day spend: ${formatFiatAmount(spend?.spendUsd ?? 0)} (${spend?.actionCount ?? 0} actions)`}
+      >
+        <span className="text-xs text-zinc-500">{formatRunwayDisplay(runwayDays)}</span>
+      </WithHoverTooltip>
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 import { ChainId } from '@revoke.cash/chains';
+import { BATCH_REVOKE_FEE_USD_CENTS } from '@revoke.cash/core/constants';
 
-export const BASE_FEE = 1.5;
-export const PER_ALLOWANCE_FEE = 0.0;
+export const BATCH_REVOKE_FEE = BATCH_REVOKE_FEE_USD_CENTS / 100;
 
 export interface FeeSponsor {
   name: string;
@@ -29,7 +29,7 @@ export const getFeeDollarAmount = (chainId: number, allowancesCount: number, isP
   // We don't charge a fee for a batch smaller than 2 allowances, since then it is essentially one-by-one revoking
   if (allowancesCount < 2) return 0;
 
-  return BASE_FEE + allowancesCount * PER_ALLOWANCE_FEE;
+  return BATCH_REVOKE_FEE;
 };
 
 export const isZeroFeeDollarAmount = (feeDollarAmount: string) => {

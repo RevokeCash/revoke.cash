@@ -5,7 +5,7 @@
   },
   "questions": {
     "costs": {
-      "answer": "Revoke.cash 的核心工具是免费的：查看授权并逐个撤销只需支付网络的汽油费。使用<i>批量撤销</i>功能时，免费用户需支付 <b>${BASE_FEE}</b> 的少量费用，而 <b>Revoke Premium</b> 则包含无限次批量撤销。Premium 增加了多链便利和主动防护，同时帮助支持免费公共工具的运营。在某些网络上，批量撤销费用由赞助商承担。",
+      "answer": "Revoke.cash 的核心工具是免费的：查看授权并逐个撤销只需支付网络的汽油费。使用<i>批量撤销</i>功能时，免费用户需支付 <b>${BATCH_REVOKE_FEE}</b> 的少量费用，而 <b>Revoke Premium</b> 则包含无限次批量撤销。Premium 增加了多链便利和主动防护，同时帮助支持免费公共工具的运营。在某些网络上，批量撤销费用由赞助商承担。",
       "question": "使用 Revoke.cash 需要多少钱？"
     },
     "deposited_tokens": {

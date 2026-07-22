@@ -3,13 +3,20 @@ import {
   type SubscriptionAddressChangeCounts,
 } from '@revoke.cash/core/admin/audit';
 import { REVENUE_EXCLUDED_CHAIN_IDS } from '@revoke.cash/core/admin/revenue';
+import { BATCH_REVOKE_FEE_USD_CENTS, PREMIUM_BATCH_REVOKE_SPONSOR } from '@revoke.cash/core/constants';
 import { getDb } from '@revoke.cash/core/db/client';
-import { premiumPayments, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
+import { autoRevokeActions } from '@revoke.cash/core/db/schema/auto-revoke';
+import { batchRevokes } from '@revoke.cash/core/db/schema/batch-revokes';
+import {
+  premiumPayments,
+  premiumSubscriptionAddresses,
+  premiumSubscriptions,
+} from '@revoke.cash/core/db/schema/premium';
 import type { PremiumPaymentStatus } from '@revoke.cash/core/premium/payments';
 import type { PremiumPlan, PremiumPlanTier } from '@revoke.cash/core/premium/plans';
 import { isSubscriptionActive, replayPayments } from '@revoke.cash/core/premium/subscriptions';
 import { DAY } from '@revoke.cash/core/utils/time';
-import { and, count, eq, gt, inArray, isNull, lt, lte, or, type SQL, sql } from 'drizzle-orm';
+import { and, count, eq, gt, gte, inArray, isNull, lt, lte, notInArray, or, type SQL, sql } from 'drizzle-orm';
 import type { Address, Hash } from 'viem';
 
 export type AdminSubscriptionFilter = 'all' | 'active' | 'expiring' | 'expired' | 'anomaly';
@@ -175,6 +182,67 @@ export interface AdminPayment {
   grantedDurationDays: number | null;
 }
 
+export interface SubscriptionProfitability {
+  revenueUsdCents: number;
+  gasSpendUsd: number;
+  missedBatchRevokeCount: number;
+  missedBatchRevokeFeeUsdCents: number;
+}
+
+// Lifetime money flows for a subscription: confirmed payment revenue, billed auto-revoke gas,
+// and the batch revoke fees that were waived because the covered wallets have premium
+const getSubscriptionProfitability = async (subscriptionId: string): Promise<SubscriptionProfitability> => {
+  const db = getDb();
+
+  const [[revenueRow], [gasRow], [missedBatchesRow]] = await Promise.all([
+    db
+      .select({ totalUsdCents: sql<string>`coalesce(sum(${premiumPayments.amountUsdCents}), 0)` })
+      .from(premiumPayments)
+      .where(
+        and(
+          eq(premiumPayments.subscriptionId, subscriptionId),
+          eq(premiumPayments.status, 'confirmed'),
+          notInArray(premiumPayments.chainId, REVENUE_EXCLUDED_CHAIN_IDS),
+        ),
+      ),
+    db
+      .select({ totalUsd: sql<string>`coalesce(sum(${autoRevokeActions.costUsd}), 0)` })
+      .from(autoRevokeActions)
+      .where(
+        and(
+          eq(autoRevokeActions.billedSubscriptionId, subscriptionId),
+          inArray(autoRevokeActions.status, ['submitted', 'succeeded', 'failed']),
+        ),
+      ),
+    db
+      .select({ batchCount: sql<string>`count(*)` })
+      .from(batchRevokes)
+      .innerJoin(
+        premiumSubscriptionAddresses,
+        eq(premiumSubscriptionAddresses.address, sql`lower(${batchRevokes.userAddress})`),
+      )
+      .innerJoin(premiumSubscriptions, eq(premiumSubscriptions.id, premiumSubscriptionAddresses.subscriptionId))
+      .where(
+        and(
+          eq(premiumSubscriptionAddresses.subscriptionId, subscriptionId),
+          eq(batchRevokes.sponsor, PREMIUM_BATCH_REVOKE_SPONSOR),
+          eq(batchRevokes.isTestnet, false),
+          gte(batchRevokes.timestamp, premiumSubscriptions.startsAt),
+          lte(batchRevokes.timestamp, premiumSubscriptions.endsAt),
+        ),
+      ),
+  ]);
+
+  const missedBatchRevokeCount = Number(missedBatchesRow.batchCount);
+
+  return {
+    revenueUsdCents: Number(revenueRow.totalUsdCents),
+    gasSpendUsd: Number(gasRow.totalUsd),
+    missedBatchRevokeCount,
+    missedBatchRevokeFeeUsdCents: missedBatchRevokeCount * BATCH_REVOKE_FEE_USD_CENTS,
+  };
+};
+
 export interface AdminSubscriptionDetail {
   id: string;
   ownerAddress: Address;
@@ -186,12 +254,13 @@ export interface AdminSubscriptionDetail {
   addresses: Array<{ address: Address; addedBy: Address; createdAt: string }>;
   addressChangesLast30Days: SubscriptionAddressChangeCounts;
   payments: AdminPayment[];
+  profitability: SubscriptionProfitability;
 }
 
 export const getAdminSubscription = async (subscriptionId: string): Promise<AdminSubscriptionDetail | null> => {
   const db = getDb();
 
-  const [subscription, addressChangesLast30Days] = await Promise.all([
+  const [subscription, addressChangesLast30Days, profitability] = await Promise.all([
     db.query.premiumSubscriptions.findFirst({
       where: eq(premiumSubscriptions.id, subscriptionId),
       with: {
@@ -206,6 +275,7 @@ export const getAdminSubscription = async (subscriptionId: string): Promise<Admi
       },
     }),
     getSubscriptionAddressChangeCounts(subscriptionId, new Date(Date.now() - 30 * DAY)),
+    getSubscriptionProfitability(subscriptionId),
   ]);
 
   if (!subscription) return null;
@@ -224,6 +294,7 @@ export const getAdminSubscription = async (subscriptionId: string): Promise<Admi
       createdAt: entry.createdAt.toISOString(),
     })),
     addressChangesLast30Days,
+    profitability,
     payments: subscription.payments.map(
       (payment): AdminPayment => ({
         id: payment.id,
