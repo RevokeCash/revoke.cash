@@ -13,6 +13,7 @@ const schemas = {
 };
 
 export const runtime = 'edge';
+export const preferredRegion = ['iad1'];
 
 export async function POST(req: NextRequest) {
   try {

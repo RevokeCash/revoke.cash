@@ -17,6 +17,7 @@ const schemas = {
 };
 
 export const runtime = 'edge';
+export const preferredRegion = ['iad1'];
 
 export async function DELETE(req: NextRequest, props: Props) {
   try {

@@ -13,6 +13,7 @@ const updateSchemas = {
 };
 
 export const runtime = 'edge';
+export const preferredRegion = ['iad1'];
 
 export async function PUT(req: NextRequest) {
   try {
