@@ -897,6 +897,22 @@ export const CHAINS = {
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 9248132 } },
   }),
+  [ChainId.Moonbeam]: new Chain({
+    type: SupportType.UNSUPPORTED,
+    chainId: ChainId.Moonbeam,
+    name: 'Moonbeam',
+    nativeTokenCoingeckoId: 'moonbeam',
+    coingeckoNetworkId: 'glmr',
+    logoUrl: '/assets/images/vendor/chains/moonbeam.svg',
+  }),
+  [ChainId.Moonriver]: new Chain({
+    type: SupportType.UNSUPPORTED,
+    chainId: ChainId.Moonriver,
+    name: 'Moonriver',
+    nativeTokenCoingeckoId: 'moonriver',
+    coingeckoNetworkId: 'movr',
+    logoUrl: '/assets/images/vendor/chains/moonriver.svg',
+  }),
   [ChainId.Morph]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Morph,

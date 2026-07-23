@@ -25,8 +25,10 @@ export const generateStaticParams = () => {
 
 export async function GET(_req: Request, { params }: Props) {
   const { locale, slug } = await params;
-  const { meta } = readAndParseContentFile(slug, locale, 'learn')!;
+  const contentFile = readAndParseContentFile(slug, locale, 'learn');
+  if (!contentFile) return new Response('Not Found', { status: 404 });
 
+  const { meta } = contentFile;
   const title = meta.sidebarTitle ?? meta.title;
 
   const background = 'https://revoke.cash/assets/images/cover-template.jpg';

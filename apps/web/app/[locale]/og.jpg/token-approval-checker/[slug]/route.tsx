@@ -25,9 +25,11 @@ export const generateStaticParams = () => {
 
 export async function GET(_req: Request, { params }: Props) {
   const { locale, slug } = await params;
-  const t = await getTranslations({ locale });
+  const chainId = getChainIdFromSlug(slug);
+  if (!chainId) return new Response('Not Found', { status: 404 });
 
-  const chainName = getChainName(getChainIdFromSlug(slug));
+  const t = await getTranslations({ locale });
+  const chainName = getChainName(chainId);
   const title = t('token_approval_checker.meta.title', { chainName });
   const background = 'https://revoke.cash/assets/images/cover-template.jpg';
 

@@ -25,8 +25,9 @@ export const generateStaticParams = () => {
 
 export async function GET(_req: Request, { params }: Props) {
   const { locale, category } = await params;
-  const t = await getTranslations({ locale });
+  if (!getAllLearnCategories().includes(category)) return new Response('Not Found', { status: 404 });
 
+  const t = await getTranslations({ locale });
   const title = t(`learn.sections.${category}.title`);
   const background = 'https://revoke.cash/assets/images/cover-template.jpg';
 

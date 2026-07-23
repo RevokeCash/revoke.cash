@@ -1,4 +1,4 @@
-import { Composition, Folder } from 'remotion';
+import { Composition, Folder, Still } from 'remotion';
 import { ApprovalDashboardShowcase } from './landing-showcase/ApprovalDashboardShowcase';
 import { HeroShowcase } from './landing-showcase/HeroShowcase';
 import { SingleExploitCheckerShowcase } from './landing-showcase/SingleExploitCheckerShowcase';
@@ -15,6 +15,7 @@ import { BatchRevokeShowcase } from './premium-showcase/BatchRevokeShowcase';
 import { ExploitCheckerShowcase } from './premium-showcase/ExploitCheckerShowcase';
 import { MultichainDashboardShowcase } from './premium-showcase/MultichainDashboardShowcase';
 import { TimeMachineShowcase } from './premium-showcase/TimeMachineShowcase';
+import { NoApprovalRiskGraphic } from './tweet-graphics/NoApprovalRiskGraphic';
 import './fonts';
 import './style.css';
 
@@ -116,6 +117,15 @@ export const Root = () => {
           fps={FPS}
           width={1200}
           height={900}
+        />
+      </Folder>
+      <Folder name="tweet-graphics">
+        <Still
+          id="NoApprovalRisk"
+          component={NoApprovalRiskGraphic}
+          width={1200}
+          height={675}
+          defaultProps={{ date: '23 July 2026' }}
         />
       </Folder>
     </>

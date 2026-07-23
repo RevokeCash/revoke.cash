@@ -95,6 +95,7 @@ export const trackRevokeTransaction = (allowance: TokenAllowanceData, batchType?
       isTestnet: isTestnetChain(allowance.chainId),
       batchType,
     });
+    return;
   }
 
   const isRevoke = !newAmount || newAmount === '0';

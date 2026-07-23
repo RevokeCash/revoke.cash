@@ -1,6 +1,7 @@
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ky from 'lib/ky';
+import analytics from 'lib/utils/analytics';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 import type { Address } from 'viem';
@@ -14,7 +15,8 @@ export const useRequestRefund = (ownerAddress: Address) => {
     mutationFn: async ({ paymentId, reason }: { paymentId: string; reason?: string }) => {
       return ky.post(`/api/premium/payments/${paymentId}/refund`, { json: { reason } }).json<{ id: string }>();
     },
-    onSuccess: () => {
+    onSuccess: (_refundRequest, { paymentId }) => {
+      analytics.track('Subscription Cancelled', { account: ownerAddress, paymentId });
       queryClient.invalidateQueries({ queryKey: getSubscriptionsQueryKey(ownerAddress) });
       toast.success(t('account.subscription.cancellation.success'));
     },
