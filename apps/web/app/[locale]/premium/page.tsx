@@ -1,6 +1,7 @@
 import SharedLayout from 'app/layouts/SharedLayout';
 import PremiumPricingPageContent from 'components/premium/pricing/PremiumPricingPageContent';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
+import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 
@@ -19,6 +20,9 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
   return {
     title: t('premium.pricing.meta.title'),
     description: t('premium.pricing.meta.description'),
+    openGraph: {
+      images: getOpenGraphImageUrl('/premium', locale),
+    },
   };
 };
 
