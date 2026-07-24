@@ -23,6 +23,7 @@
     "close": "Close",
     "collapse_all": "Collapse All",
     "connect": "Connect Wallet",
+    "connect_short": "Connect",
     "connecting": "Connecting",
     "disconnect": "Disconnect",
     "download": "Download",
@@ -89,7 +90,8 @@
       "page_load_failed": "Something went wrong while loading this page. Please try again later.",
       "too_much_activity": "This address has too much activity on {chainName} for the free tier, please <premium-link>upgrade to Premium</premium-link> to view its approvals.",
       "too_much_activity_premium": "This address has too much activity on {chainName}, so its approvals cannot be loaded."
-    }
+    },
+    "unknown_wallet_error": "Your wallet returned an unknown error"
   },
   "footer": {
     "about": "About Us",
@@ -113,6 +115,7 @@
     "what_to_do_when_scammed": "What to Do When Scammed?"
   },
   "labels": {
+    "or": "or",
     "premium": "Premium",
     "ultimate": "Ultimate"
   },

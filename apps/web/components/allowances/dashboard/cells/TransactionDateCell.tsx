@@ -21,7 +21,7 @@ const TransactionDateCell = ({ chainId, timeLog }: Props) => {
   const explorerUrl = getChainExplorerUrl(chainId);
 
   return (
-    <div className="flex justify-start items-center font-monosans gap-2 w-41">
+    <div className="flex justify-start items-center font-monosans gap-2 w-40">
       <WithHoverTooltip tooltip={<TimeAgo datetime={date} locale={locale} />}>
         {timeLog.transactionHash ? (
           <Href underline="hover" href={`${explorerUrl}/tx/${timeLog.transactionHash}`} external className="tx-link">

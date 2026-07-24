@@ -23,6 +23,7 @@
     "close": "Cerrar",
     "collapse_all": "Contraer todo",
     "connect": "Conectar Cartera",
+    "connect_short": "Conectar",
     "connecting": "Conectando",
     "disconnect": "Desconectar",
     "download": "Descargar",
@@ -89,7 +90,8 @@
       "page_load_failed": "Algo salió mal al cargar esta página. Por favor, inténtalo de nuevo más tarde.",
       "too_much_activity": "Esta dirección tiene demasiada actividad en {chainName} para el plan gratuito, por favor <premium-link>actualiza a Premium</premium-link> para ver sus aprobaciones.",
       "too_much_activity_premium": "Esta dirección tiene demasiada actividad en {chainName}, por lo que no se pueden cargar sus aprobaciones."
-    }
+    },
+    "unknown_wallet_error": "Tu cartera devolvió un error desconocido"
   },
   "footer": {
     "about": "Sobre nosotros",
@@ -113,6 +115,7 @@
     "what_to_do_when_scammed": "¿Qué hacer si te estafan?"
   },
   "labels": {
+    "or": "o",
     "premium": "Premium",
     "ultimate": "Ultimate"
   },

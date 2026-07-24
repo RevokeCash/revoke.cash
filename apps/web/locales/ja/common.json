@@ -23,6 +23,7 @@
     "close": "閉じる",
     "collapse_all": "すべて折りたたむ",
     "connect": "ウォレットを接続する",
+    "connect_short": "接続する",
     "connecting": "接続中",
     "disconnect": "接続解除",
     "download": "ダウンロードする",
@@ -89,7 +90,8 @@
       "page_load_failed": "このページの読み込み中に問題が発生しました。後でもう一度お試しください。",
       "too_much_activity": "このアドレスは{chainName}でのアクティビティが多すぎるため、無料プランでは表示できません。承認を表示するには、<premium-link>プレミアムにアップグレード</premium-link>してください。",
       "too_much_activity_premium": "このアドレスは{chainName}でのアクティビティが多すぎるため、承認を読み込むことができません。"
-    }
+    },
+    "unknown_wallet_error": "ウォレットから不明なエラーが返されました"
   },
   "footer": {
     "about": "私たちについて",
@@ -113,6 +115,7 @@
     "what_to_do_when_scammed": "詐欺に遭った場合の対処方法"
   },
   "labels": {
+    "or": "または",
     "premium": "プレミアム",
     "ultimate": "Ultimate"
   },

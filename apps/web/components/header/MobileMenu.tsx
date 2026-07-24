@@ -67,9 +67,9 @@ const MobileMenu = () => {
               className="fixed inset-x-0 bottom-0 z-10 overflow-y-auto bg-white dark:bg-black"
               style={{ top: headerBottom }}
             >
-              <div className="flex flex-col items-center gap-6 p-12">
+              <div className="flex flex-col items-center gap-6 py-12 px-6">
                 <FocusTrap ref={focusRef} />
-                <WalletIndicator size="none" style="tertiary" className="text-lg" />
+                <WalletIndicator />
                 <NavLink to={CHROME_EXTENSION_URL} text={t('common.nav.extension')} external />
                 <NavLink to="/exploits" text={t('common.nav.exploits')} />
                 <NavLink to="/learn" text={t('common.nav.learn')} />

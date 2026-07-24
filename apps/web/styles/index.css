@@ -115,50 +115,6 @@
     linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
 }
 
-.nav-tabs-scope {
-  timeline-scope: --nav-tabs-scroll;
-}
-
-.nav-tabs-scroll {
-  scroll-timeline: --nav-tabs-scroll x;
-}
-
-.nav-tabs-fade {
-  opacity: 0;
-  animation-duration: auto;
-  animation-timing-function: linear;
-  animation-fill-mode: both;
-  animation-timeline: --nav-tabs-scroll;
-}
-
-.nav-tabs-fade-left {
-  animation-name: nav-tabs-fade-in;
-  animation-range: 0% 2rem;
-}
-
-.nav-tabs-fade-right {
-  animation-name: nav-tabs-fade-out;
-  animation-range: calc(100% - 2rem) 100%;
-}
-
-@keyframes nav-tabs-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes nav-tabs-fade-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   /* The toast progress bar is excluded because react-toastify implements its autoClose timer
      as that bar's animation (inline animation-duration + onAnimationEnd), so shortening it
@@ -183,11 +139,5 @@
   .animate-spin-fast {
     animation-duration: 1.5s !important;
     animation-iteration-count: infinite !important;
-  }
-
-  /* These scroll-driven fades indicate scroll position rather than playing motion,
-     and freezing them at their initial state would hide the nav tab overflow fades */
-  .nav-tabs-fade {
-    animation-duration: auto !important;
   }
 }

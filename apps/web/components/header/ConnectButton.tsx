@@ -7,17 +7,18 @@ import Modal from 'components/common/Modal';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { filterAndSortConnectors, getConnectorName, getWalletIcon } from 'lib/utils/wallet';
 import { useTranslations } from 'next-intl';
-import { useMemo, useState } from 'react';
+import { type ReactNode, useMemo, useState } from 'react';
+import type { Address } from 'viem';
 import { type Connector, useConnect, useConnection, useConnectors } from 'wagmi';
 
 interface Props {
-  text?: string;
+  text?: ReactNode;
   size?: 'sm' | 'md' | 'lg' | 'none';
   style?: 'primary' | 'secondary' | 'tertiary' | 'none';
   className?: string;
   redirect?: boolean;
   onClick?: () => void;
-  onConnect?: () => void;
+  onConnect?: (account: Address) => void;
 }
 
 const ConnectButton = ({ size, style, className, text, redirect, onClick, onConnect }: Props) => {
@@ -52,7 +53,7 @@ const ConnectButton = ({ size, style, className, text, redirect, onClick, onConn
         router.push(`/address/${account}`, { retainSearchParams: ['chainId'] });
       }
       if (account) {
-        onConnect?.();
+        onConnect?.(account);
       }
     } catch {
       // ignored

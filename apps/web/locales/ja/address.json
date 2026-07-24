@@ -84,7 +84,7 @@
     "spender": "承認済み支出者",
     "status": "ステータス",
     "transaction": "トランザクション",
-    "value_at_risk": "リスクがある価値"
+    "value_at_risk": "リスク額"
   },
   "history": {
     "approved": "承認済み",
@@ -185,7 +185,7 @@
       "approved_spender": "承認済み支出者",
       "asset_name": "資産名",
       "last_updated": "最終更新日",
-      "value_at_risk": "リスクがある価値"
+      "value_at_risk": "リスク額"
     },
     "fns": {
       "date": {

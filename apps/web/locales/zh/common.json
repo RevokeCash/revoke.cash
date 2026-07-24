@@ -23,6 +23,7 @@
     "close": "关闭",
     "collapse_all": "全部收起",
     "connect": "连接钱包",
+    "connect_short": "连接",
     "connecting": "正在连接",
     "disconnect": "断开连接",
     "download": "下载",
@@ -89,7 +90,8 @@
       "page_load_failed": "加载此页面时出现问题，请稍后重试。",
       "too_much_activity": "该地址在{chainName}上的活动过多，超出免费版的限制，请<premium-link>升级至 Premium</premium-link>以查看其授权。",
       "too_much_activity_premium": "该地址在{chainName}上的活动过多，因此无法加载其授权。"
-    }
+    },
+    "unknown_wallet_error": "您的钱包返回了未知错误"
   },
   "footer": {
     "about": "关于我们",
@@ -113,6 +115,7 @@
     "what_to_do_when_scammed": "被骗了怎么办？"
   },
   "labels": {
+    "or": "或",
     "premium": "Premium",
     "ultimate": "Ultimate"
   },

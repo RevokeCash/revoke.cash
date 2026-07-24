@@ -21,7 +21,7 @@ const WalletIndicator = ({ size, style, className }: Props) => {
   if (!isMounted) return null;
 
   return (
-    <div className="flex flex-row-reverse lg:flex-row gap-2 items-center">
+    <div className="flex flex-row-reverse lg:flex-row flex-wrap lg:flex-nowrap justify-center gap-2 items-center">
       {account && (
         <Button
           className="font-normal"

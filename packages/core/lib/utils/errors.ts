@@ -66,6 +66,20 @@ export const isAccountUpgradeRejectionError = (error?: string | any): boolean =>
   return false;
 };
 
+export const isMalformedWalletError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isMalformedWalletError(parseErrorMessage(error)) || isMalformedWalletError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
+  if (lowercaseMessage?.includes("cannot use 'in' operator")) return true; // Chrome
+  if (lowercaseMessage?.includes('is not an object. (evaluating')) return true; // Safari
+  if (lowercaseMessage?.includes("invalid 'in' operand")) return true; // Firefox
+  return false;
+};
+
 export const isBatchSizeError = (error?: string | any): boolean => {
   if (!error) return false;
 

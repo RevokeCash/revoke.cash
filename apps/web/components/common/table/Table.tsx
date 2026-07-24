@@ -1,10 +1,14 @@
+'use client';
+
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import type { Nullable } from '@revoke.cash/core/types';
 import { isNullish } from '@revoke.cash/core/utils';
 import type { Table as ReactTable, Row } from '@tanstack/react-table';
 import EmptyState from 'components/common/EmptyState';
 import ErrorDisplay from 'components/common/ErrorDisplay';
+import ScrollFade from 'components/common/ScrollFade';
 import TablePagination from 'components/history/TablePagination';
+import { useScrollFades } from 'lib/hooks/useScrollFades';
 import { twMerge } from 'tailwind-merge';
 import TableBody from './TableBody';
 import TableFooter from './TableFooter';
@@ -35,9 +39,11 @@ const Table = <T,>({
   expandOnRowClick,
   className,
 }: Props<T>) => {
+  const { scrollContainerRef, canScrollLeft, canScrollRight } = useScrollFades<HTMLDivElement>();
+
   const classes = {
-    container:
-      'border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-x-scroll whitespace-nowrap scrollbar-hide',
+    container: 'relative border border-zinc-200 dark:border-zinc-800 rounded-xl',
+    scrollContainer: 'overflow-x-scroll whitespace-nowrap scrollbar-hide',
     table: 'w-full border-collapse allowances-table',
     label: 'flex flex-col justify-center items-center w-full empty:hidden',
   };
@@ -46,20 +52,24 @@ const Table = <T,>({
     <>
       <TablePagination table={table} className="border-b border-zinc-200 dark:border-zinc-700" />
       <div className={twMerge(classes.container, className)}>
-        <table className={classes.table}>
-          <TableHeader table={table} />
-          <TableFooter table={table} />
-          {!error && (
-            <TableBody
-              table={table}
-              isLoading={loading}
-              loaderRows={loaderRows}
-              partialLoadingRows={partialLoadingRows}
-              renderSubComponent={renderSubComponent}
-              expandOnRowClick={expandOnRowClick}
-            />
-          )}
-        </table>
+        <div ref={scrollContainerRef} className={classes.scrollContainer}>
+          <table className={classes.table}>
+            <TableHeader table={table} />
+            <TableFooter table={table} />
+            {!error && (
+              <TableBody
+                table={table}
+                isLoading={loading}
+                loaderRows={loaderRows}
+                partialLoadingRows={partialLoadingRows}
+                renderSubComponent={renderSubComponent}
+                expandOnRowClick={expandOnRowClick}
+              />
+            )}
+          </table>
+        </div>
+        <ScrollFade side="left" visible={canScrollLeft} className="rounded-l-xl" />
+        <ScrollFade side="right" visible={canScrollRight} className="rounded-r-xl" />
         <div className={classes.label}>
           {!loading && !error && table?.getRowModel()?.rows?.length === 0 && !isNullish(emptyChildren) && (
             <EmptyState>{emptyChildren}</EmptyState>

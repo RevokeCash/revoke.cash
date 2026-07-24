@@ -84,7 +84,7 @@
     "spender": "Gastador Autorizado",
     "status": "Estado",
     "transaction": "Transacción",
-    "value_at_risk": "Valor en Riesgo"
+    "value_at_risk": "En Riesgo"
   },
   "history": {
     "approved": "Aprobado",
@@ -185,7 +185,7 @@
       "approved_spender": "Gastador Autorizado",
       "asset_name": "Nombre del Activo",
       "last_updated": "Última Actualización",
-      "value_at_risk": "Valor en Riesgo"
+      "value_at_risk": "En Riesgo"
     },
     "fns": {
       "date": {

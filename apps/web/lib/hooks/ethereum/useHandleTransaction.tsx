@@ -1,6 +1,7 @@
 import { type TransactionSubmitted, TransactionType } from '@revoke.cash/core/types';
 import {
   isLedgerNanoSError,
+  isMalformedWalletError,
   isNoFeeRequiredError,
   isRevertedError,
   isSwitchChainNotSupportedError,
@@ -16,17 +17,19 @@ export const useHandleTransaction = (chainId: number) => {
   const t = useTranslations();
 
   const checkError = (e: any, type: TransactionType): void => {
-    const message = parseErrorMessage(e);
-    console.debug(`Ran into transaction issue, message: \n${message}`);
+    const parsedMessage = parseErrorMessage(e);
+    console.debug(`Ran into transaction issue, message: \n${parsedMessage}`);
 
     // Don't show error toasts for user denied transactions
-    if (isUserRejectionError(message)) return;
-    if (isNoFeeRequiredError(message)) return;
+    if (isUserRejectionError(parsedMessage)) return;
+    if (isNoFeeRequiredError(parsedMessage)) return;
 
     // Chain switch failures already get their own toast in useSwitchChain
     if (isSwitchChainNotSupportedError(e)) return;
 
     console.debug(stringify(e, null, 2));
+
+    const message = isMalformedWalletError(parsedMessage) ? t('common.errors.unknown_wallet_error') : parsedMessage;
 
     // Not all ERC20 contracts allow for simple changes in approval to be made
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729

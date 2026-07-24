@@ -25,7 +25,9 @@ const HeroSection = () => {
             <div className="flex flex-col gap-4">
               <h1 className="text-5xl font-semibold leading-tight tracking-tight sm:text-6xl">
                 {t.rich('landing.hero_section.title', {
-                  highlight: (chunks) => <span className="bg-brand px-2 text-black whitespace-nowrap">{chunks}</span>,
+                  highlight: (chunks) => (
+                    <span className="bg-brand px-2 text-black box-decoration-clone sm:whitespace-nowrap">{chunks}</span>
+                  ),
                 })}
               </h1>
               <p className="text-lg text-zinc-600 dark:text-zinc-400">{t('landing.hero_section.subtitle')}</p>

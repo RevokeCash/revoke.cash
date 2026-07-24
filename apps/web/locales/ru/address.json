@@ -84,7 +84,7 @@
     "spender": "Распорядитель",
     "status": "Статус",
     "transaction": "Транзакция",
-    "value_at_risk": "Сумма под риском"
+    "value_at_risk": "Под риском"
   },
   "history": {
     "approved": "Одобрено",
@@ -185,7 +185,7 @@
       "approved_spender": "Распорядитель",
       "asset_name": "Название актива",
       "last_updated": "Последнее обновление",
-      "value_at_risk": "Сумма под риском"
+      "value_at_risk": "Под риском"
     },
     "fns": {
       "date": {
