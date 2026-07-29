@@ -85,6 +85,9 @@ const FaqPage: NextPage<Props> = async ({ params }) => {
         <FaqItem question={t('faq.questions.which_allowances.question')} slug="which_allowances">
           <RichText>{(tags) => t.rich('faq.questions.which_allowances.answer', tags)}</RichText>
         </FaqItem>
+        <FaqItem question={t('faq.questions.missing_nft_approvals.question')} slug="missing_nft_approvals">
+          <RichText>{(tags) => t.rich('faq.questions.missing_nft_approvals.answer', tags)}</RichText>
+        </FaqItem>
         <FaqItem question={t('faq.questions.testnet_allowances.question')} slug="testnet_allowances">
           <RichText>{(tags) => t.rich('faq.questions.testnet_allowances.answer', tags)}</RichText>
         </FaqItem>

@@ -44,6 +44,10 @@
       "answer": "Elegir qué autorizaciones revocar siempre implica un equilibrio entre seguridad y comodidad. Para ciertos protocolos bien conocidos (como Uniswap) lo más probable es que esté bien dejar las autorizaciones activas, pero para contratos inteligentes más nuevos y menos conocidos, es más prudente revocar autorizaciones. También considera que algunos casos de uso requieren que mantengas las autorizaciones activas. Por ejemplo, si tienes listados activos en OpenSea tendrás que dejar las autorizaciones activas para que los listados sigan activos.",
       "question": "¿Qué autorizaciones necesito revocar?"
     },
+    "missing_nft_approvals": {
+      "question": "¿Por qué no se muestran algunas aprobaciones de NFT?",
+      "answer": "Revoke.cash detecta las aprobaciones de NFT a partir de los eventos estándar de aprobación ERC721 y ERC1155 emitidos en la cadena. Algunas colecciones antiguas, como CryptoKitties, se crearon antes de que se finalizara el estándar ERC721 y no emiten los eventos de aprobación indexados que usan los indexadores estándar. Estas aprobaciones no estándar pueden no aparecer en el comprobador de aprobaciones, por lo que quizá tengas que revisarlas mediante una interfaz dedicada de la colección o un explorador de bloques."
+    },
     "which_chains": {
       "answer": "La <extension-link>extensión de navegador</extension-link> de Revoke.cash es compatible con todas las redes EVM. El sitio web de Revoke.cash es compatible con un gran número de redes EVM; la lista completa se incluye a continuación. Si hay alguna otra red que te gustaría que fuera compatible, por favor escríbenos en <twitter-link>Twitter</twitter-link> o <discord-link>Discord</discord-link>.",
       "question": "¿Qué redes admite Revoke.cash?"

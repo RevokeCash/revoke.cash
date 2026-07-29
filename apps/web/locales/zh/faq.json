@@ -44,6 +44,10 @@
       "answer": "选择撤销哪些授权始终是在安全性和便利性之间进行权衡。对于某些知名协议（如 Uniswap），保留活跃的授权很可能没有问题；但对于较新的和未知的智能合约，撤销授权更为稳妥。另外请记住，某些使用场景要求您保持授权活跃。例如，如果您在 OpenSea 上有正在进行的挂单，就需要保留相应的授权，挂单才能保持有效。",
       "question": "我需要撤销哪些授权？"
     },
+    "missing_nft_approvals": {
+      "question": "为什么有些 NFT 授权不会显示？",
+      "answer": "Revoke.cash 通过链上发出的标准 ERC721 和 ERC1155 授权事件来检测 NFT 授权。一些较早的合集（例如 CryptoKitties）是在 ERC721 标准最终确定之前创建的，并不会发出标准索引器依赖的已索引授权事件。这类非标准授权可能不会出现在授权检查器中，因此你可能需要通过该合集的专用界面或区块浏览器进行检查。"
+    },
     "which_chains": {
       "answer": "Revoke.cash 的<extension-link>浏览器扩展</extension-link>支持所有 EVM 网络。Revoke.cash 网站支持大量 EVM 网络，完整列表见下方。如果您希望我们支持其他网络，请通过 <twitter-link>Twitter</twitter-link> 或 <discord-link>Discord</discord-link> 联系我们。",
       "question": "Revoke.cash 支持哪些网络？"
