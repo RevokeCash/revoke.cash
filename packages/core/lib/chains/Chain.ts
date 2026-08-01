@@ -250,7 +250,11 @@ export class Chain {
     return addEthereumChainParameter;
   }
 
-  createViemPublicClient(overrideUrl?: string, blockNumber?: bigint): PublicClient {
+  createViemPublicClient(
+    overrideUrl?: string,
+    blockNumber?: bigint,
+    httpOptions?: { timeout?: number; retryCount?: number },
+  ): PublicClient {
     // We noticed that certain chains run out of gas when using the default multicall settings
     const multicallOverrides: Record<number, boolean | { batchSize: number }> = {
       [ChainId.Mantle]: { batchSize: 256 },
@@ -271,12 +275,15 @@ export class Chain {
     };
 
     const multicallConfig = shouldUseDeployless() ? { deployless: true } : true;
-    const transportConfig = { batch: { wait: 10, batchSize: 10 } };
+    const transportOptions = {
+      ...(transportOverrides[this.chainId] ?? { batch: { wait: 10, batchSize: 10 } }),
+      ...httpOptions,
+    };
 
     return createPublicClient({
       pollingInterval: 4 * SECOND,
       chain: this.getViemChainConfig(),
-      transport: http(overrideUrl ?? this.getRpcUrl(), transportOverrides[this.chainId] ?? transportConfig),
+      transport: http(overrideUrl ?? this.getRpcUrl(), transportOptions),
       batch: { multicall: multicallOverrides[this.chainId] ?? multicallConfig },
     });
   }

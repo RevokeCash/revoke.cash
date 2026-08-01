@@ -234,8 +234,6 @@ export class EventsWorker extends WorkerHost {
 
     const { eventsScanId, chainId, address } = job.data;
 
-    // Only range/size-shaped errors should shrink the persisted max block range. Connectivity
-    // errors say nothing about the range and are handled through `recordEventsFailure` below.
     if (isSplittableScanError(error)) {
       try {
         const nextMaxBlockRange = await reduceEventsMaxBlockRangeAfterFailure(address, chainId);

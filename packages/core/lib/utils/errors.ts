@@ -165,6 +165,16 @@ export const isEventGetterTimeoutError = (error?: string | any): boolean => {
   return false;
 };
 
+export const isViemRequestTimeoutError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isViemRequestTimeoutError(parseErrorMessage(error)) || isViemRequestTimeoutError(stringifyError(error));
+  }
+
+  return error?.toLowerCase()?.includes('request took too long to respond');
+};
+
 export const isLogRequestSizeError = (error?: string | any): boolean => {
   if (!error) return false;
 

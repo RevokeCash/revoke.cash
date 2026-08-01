@@ -11,9 +11,10 @@ export class ViemLogsProvider implements LogsProvider {
   constructor(
     public chainId: number,
     url?: string,
+    httpOptions?: { timeout?: number; retryCount?: number },
   ) {
     this.url = url ?? getChainLogsRpcUrl(chainId);
-    this.client = createViemPublicClientForChain(chainId, this.url);
+    this.client = createViemPublicClientForChain(chainId, this.url, undefined, httpOptions);
   }
 
   async getLatestBlock(): Promise<number> {

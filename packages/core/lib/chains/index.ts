@@ -1588,8 +1588,9 @@ export const createViemPublicClientForChain = (
   chainId: DocumentedChainId,
   url?: string,
   blockNumber?: bigint,
+  httpOptions?: { timeout?: number; retryCount?: number },
 ): PublicClient => {
-  return getChainConfig(chainId).createViemPublicClient(url, blockNumber);
+  return getChainConfig(chainId).createViemPublicClient(url, blockNumber, httpOptions);
 };
 
 export const getChainAddEthereumChainParameter = (chainId: DocumentedChainId): AddEthereumChainParameter => {

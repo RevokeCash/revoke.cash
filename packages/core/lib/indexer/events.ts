@@ -27,6 +27,7 @@ import {
   isEventGetterTimeoutError,
   isLogRequestSizeError,
   isLogResponseSizeError,
+  isViemRequestTimeoutError,
   parseErrorMessage,
 } from '../utils/errors';
 import { mapAsync, mapAsyncSequential, withTimeout } from '../utils/promises';
@@ -161,7 +162,8 @@ export const indexEvents = async (address: Address, chainId: DocumentedChainId):
 };
 
 const getScanLogsProvider = (chainId: number, isNarrow: boolean): LogsProvider => {
-  const viemLogsProvider = new ViemLogsProvider(chainId, getChainLogsRpcUrl(chainId));
+  const scanOptions = { timeout: 30 * SECOND, retryCount: 0 };
+  const viemLogsProvider = new ViemLogsProvider(chainId, getChainLogsRpcUrl(chainId), scanOptions);
 
   if (!isNarrow) {
     if (isBackendSupportedChain(chainId)) return new ScriptLogsProvider(chainId);
@@ -172,7 +174,12 @@ const getScanLogsProvider = (chainId: number, isNarrow: boolean): LogsProvider =
 };
 
 export const isSplittableScanError = (error: unknown): boolean => {
-  return isLogResponseSizeError(error) || isLogRequestSizeError(error) || isEventGetterTimeoutError(error);
+  return (
+    isLogResponseSizeError(error) ||
+    isLogRequestSizeError(error) ||
+    isEventGetterTimeoutError(error) ||
+    isViemRequestTimeoutError(error)
+  );
 };
 
 const runWithRangeReduction = async <T>(
