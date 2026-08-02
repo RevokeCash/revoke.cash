@@ -97,7 +97,6 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.WorldChain]: '0x6A9Cf2489cA50c5dAe3b31cddace1D8c9096630b',
   [ChainId.XDCNetwork]: '0x87dB6eA45E2F960A4DDFCfcef86264CdA78fF5E5',
   [ChainId.ZetaChainMainnet]: '0xc9636B935FB6b3Ce48654a0009755D58F473c064',
-  [ChainId.ZERONetwork]: '0x37D2098459efC343e157cb43a79f8AEDfa6B1a3c',
   [ChainId.ZircuitMainnet]: '0x0E276aB356FC73093Ba530dFFa3445786cD859f8',
   [ChainId.ZkSyncMainnet]: '0x82FdF36736f3f8eE6f04Ab96eA32213c8d826FaA',
   // Testnets

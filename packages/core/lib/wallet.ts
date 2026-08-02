@@ -26,7 +26,6 @@ export const isExcessiveGas = (chainId: number, estimatedGas: bigint): boolean =
     [ChainId.Mantle]: 2_000n,
     [ChainId.MantleTestnet]: 2_000n,
     5031: 10n, // Somnia
-    [ChainId.ZERONetwork]: 20n,
     [ChainId.EtherlinkMainnet]: 10n,
   };
 

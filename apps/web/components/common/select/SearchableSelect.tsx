@@ -76,9 +76,7 @@ const SearchableSelect = <O extends SelectOption, I extends boolean = false>(pro
   const optionGroups = toOptionGroups(props.options);
 
   const matchesQuery = (option: O) => {
-    // The 'ZERϴ' replacement makes the ZERϴ chain also findable by searching for "zero"
-    const searchableText = option.value.replace('ZERϴ', 'ZERO | ZERϴ');
-    return normaliseSearchText(searchableText).includes(normaliseSearchText(query));
+    return normaliseSearchText(option.value).includes(normaliseSearchText(query));
   };
 
   const visibleGroups = optionGroups

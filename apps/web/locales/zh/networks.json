@@ -96,7 +96,6 @@
     "viction": "Viction 是以权益证明（PoS）作为共识机制的第 1 层（Layer 1）区块链，其设计基于各自独立的“应用链”组成的网络，这些应用链将通过 Viction 基础链上的共同结算进行锚定。",
     "world-chain": "World Chain 是围绕 World Coin 生态系统构建的第 2 层（Layer 2）区块链，对所有经 World Coin 平台验证的真人用户免除汽油费。World Chain 基于 Optimism 的 OP Stack 构建，因此与 Optimism 一样，也使用了 Optimistic Rollup 技术。",
     "xdc": "XDC 是第 1 层（Layer 1）区块链，其共识机制基于委托权益证明（DPoS）。XDC 致力于为现实世界资产代币化和企业用例提供快速、低成本的交易。",
-    "zero": "ZERϴ 是以太坊的第 2 层（Layer 2）扩展解决方案，旨在完全消除用户汽油费。ZERϴ 是使用 zkSync 的 ZK Stack 构建的，具有原生账户抽象功能，因此能够免除所有交易的汽油费。",
     "zetachain": "ZetaChain 是第 1 层（Layer 1）区块链，其共识机制基于权益证明（PoS），目前正在开发中。它旨在为开发人员提供基础设施，以打造可链接到其他 EVM 链和非 EVM 链的跨链应用程序。",
     "zircuit": "Zircuit 是以太坊的第 2 层（Layer 2）扩展解决方案，基于 zk rollup 技术搭建。为了提高安全性，Zircuit 利用 AI 监控网络内存池中的恶意交易，并在上链之前将其阻止。",
     "zksync-era": "zkSync Era 是第 2 层（Layer 2）扩展解决方案，也是最早使用 zkEVM 创新技术的项目之一。这项技术利用零知识证明，在费用极低的同时保持强大的安全保障。zkSync 之前创建了 zkSync Lite，这是 zkRollup 技术的早期版本，不兼容 EVM。zkSync Era 是迭代版，全面兼容 EVM。"

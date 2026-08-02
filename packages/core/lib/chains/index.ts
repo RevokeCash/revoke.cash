@@ -92,7 +92,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Vana,
   ChainId.KCCMainnet,
   ChainId.FuseMainnet,
-  ChainId.ZERONetwork,
   ChainId.NeonEVMMainnet,
   ChainId.ShimmerEVM,
   ChainId.EthereumClassic,
@@ -1362,17 +1361,6 @@ export const CHAINS = {
       main: 'https://rpc.ankr.com/xdc',
       free: 'https://rpc.ankr.com/xdc',
     },
-  }),
-  [ChainId.ZERONetwork]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.ZERONetwork,
-    name: 'ZERϴ',
-    coingeckoNetworkId: 'zero-network',
-    logoUrl: '/assets/images/vendor/chains/zero.svg',
-    rpc: {
-      main: `https://lb.drpc.live/zero/${DRPC_API_KEY}`,
-    },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.ZetaChainMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
