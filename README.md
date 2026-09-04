@@ -42,7 +42,7 @@ Then there are a few less essential variables:
 
 ### Adding a new network
 
-Adding a new network is relatively straightforward as you only need to change three files: `lib/utils/chains.ts`, `cypress/e2e/chains.cy.ts` and `locales/en/networks.json`.
+Adding a new network is relatively straightforward as you only need to change a few files: `packages/core/lib/chains/ids.ts`, `packages/core/lib/chains/index.ts`, `apps/web/cypress/support/chain-fixtures.ts` and `apps/web/locales/en/networks.json`.
 
 #### Prerequisites
 
@@ -53,31 +53,33 @@ To add a new network, **one** of the following needs to be available:
 - Or: A block explorer with an exposed API that is compatible with Etherscan's API (such as Blockscout).
 - Or: A [HyperSync](https://docs.envio.dev/docs/HyperSync/overview) instance with at least a Bronze tier.
 
-Also make sure that your network is listed in [ethereum-lists/chains](https://github.com/ethereum-lists/chains) (and that it has subsequently been included in [@revoke.cash/chains](https://github.com/RevokeCash/chains)). Besides the earlier requirements, we also require a publicly available RPC endpoint with rate limits that are not too restrictive. It is also helpful if your network is listed (with TVL and volume stats) on DeFiLlama, but this is not required.
+Besides the earlier requirements, we also require a publicly available RPC endpoint with rate limits that are not too restrictive. It is also helpful if your network is listed (with TVL and volume stats) on DeFiLlama, but this is not required.
 
 #### Adding the network
 
-In `lib/utils/chains.ts`:
+All network data is maintained by hand in this repository. Run `yarn check-chain-data --chain <chainId>` from `packages/core` to print a draft configuration with the data listed in `ethereum-lists/chains`, then:
 
-- Add a network configuration for the network to the `CHAINS` mapping. A network configuration can include the following properties, and need to be filled out accordingly. `name`, `infoUrl`, `nativeToken`, `explorerUrl` and `rpc` only need to be added if the data in `ethereum-lists/chains` is different than what should be used by Revoke.cash
+- Add the chain ID to `ChainId` in `packages/core/lib/chains/ids.ts`, keyed by the PascalCase display name of the network (`BNBChain`, `PolygonAmoy`).
+- Add a network configuration for the network to the `CHAINS` mapping in `packages/core/lib/chains/index.ts`. Every property below is required unless marked optional.
   - `type`: The type of support, can be `SupportType.PROVIDER` for networks with a public RPC endpoint, `SupportType.COVALENT` for networks supported by CovalentHQ, or `SupportType.ETHERSCAN` (or `SupportType.BLOCKSCOUT`, `SupportType.ROUTESCAN`) for networks with a block explorer API.
   - `chainId`: The chain ID of the network.
   - `name`: The name of the network.
   - `logoUrl`: The URL of the network's logo. Add a logo file (preferably svg) to `public/assets/images/vendor/chains` and add the path here.
-  - `infoUrl` (Optional): The URL of the network's website.
-  - `nativeToken` (Optional): The symbol of the network's native token.
+  - `infoUrl`: The URL of the network's website.
+  - `nativeCurrency`: The name, symbol and decimals of the network's native token (use the shared `ETH` constant for networks that use Ether).
   - `nativeTokenCoingeckoId` (Optional): The Coingecko ID of the network's native token.
-  - `explorerUrl` (Optional): The URL of the network's block explorer.
+  - `explorerUrl`: The URL of the network's block explorer, without a trailing slash.
   - `etherscanCompatibleApiUrl` (Only for `SupportType.ETHERSCAN` or `SupportType.BLOCKSCOUT`): The URL of the network's block explorer API.
-  - `rpc.main` (Optional): The URL of the network's RPC endpoint.
+  - `rpc.main`: The URL of the network's RPC endpoint.
   - `rpc.logs` (Optional): The URL of the network's RPC endpoint for fetching logs (if different from `main`).
-  - `rpc.free` (Optional): The URL of the network's free RPC endpoint (will be used when adding the network to a wallet).
+  - `rpc.free` (Optional): A public RPC URL without API keys for the add-network page and wallets, only needed when `rpc.main` uses an API key.
   - `deployedContracts` (Optional): If multicall3 is deployed to the network, set this to `{ ...MULTICALL }` (check on https://www.multicall3.com/).
   - `priceStrategy` (Optional): If a price source (Uniswap v2 or Uniswap v3 fork), add a corresponding `PriceStrategy` to enable token pricing.
   - `backendPriceStrategy` (Optional): If Reservoir has an API endpoint for the network, add a corresponding `ReservoirPriceStrategy` to enable NFT pricing.
   - `isTestnet` (Optional): Whether the network is a testnet.
   - `isCanary` (Optional): Whether the network is a canary network.
   - `correspondingMainnetChainId` (Optional): The chain ID of the corresponding mainnet network (only for testnets or canary networks).
+- Run `yarn check-chain-data --update` from `packages/core` to record the network's upstream data in `scripts/chain-data-upstream.json`. Running the script without `--update` later reports upstream changes for all networks and checks that every explorer and info URL still responds.
 - Add the network to `CHAIN_SELECT_MAINNETS` or `CHAIN_SELECT_TESTNETS` depending on whether it is a mainnet or testnet. You can subsequently run `yarn tsx scripts/get-chain-order.ts` to determine its rough position in the network selection dropdown.
 
 In `cypress/support/chain-fixtures.ts`:

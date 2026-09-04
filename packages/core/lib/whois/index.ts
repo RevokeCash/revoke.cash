@@ -1,6 +1,6 @@
-import { ChainId } from '@revoke.cash/chains';
 import { AVVY_DOMAINS_ABI, UNSTOPPABLE_DOMAINS_ABI, WEI_DOMAINS_ABI } from '@revoke.cash/core/abis';
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import {
   ADDRESS_ZERO,
   ALCHEMY_API_KEY,
@@ -34,14 +34,14 @@ export interface SpenderRiskData {
 
 const GlobalClients = {
   ETHEREUM: createViemPublicClientForChain(
-    ChainId.EthereumMainnet,
+    ChainId.Ethereum,
     `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
   )!,
   POLYGON: createViemPublicClientForChain(
-    ChainId.PolygonMainnet,
+    ChainId.Polygon,
     `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
   )!,
-  AVALANCHE: createViemPublicClientForChain(ChainId['AvalancheC-Chain'], 'https://api.avax.network/ext/bc/C/rpc')!,
+  AVALANCHE: createViemPublicClientForChain(ChainId.Avalanche, 'https://api.avax.network/ext/bc/C/rpc')!,
 } as const;
 
 export const getSpenderData = async (

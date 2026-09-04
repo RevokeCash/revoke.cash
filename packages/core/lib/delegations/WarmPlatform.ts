@@ -1,5 +1,5 @@
-import { ChainId } from '@revoke.cash/chains';
 import { WARM_XYZ_ABI } from '@revoke.cash/core/abis';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import { ADDRESS_ZERO } from '@revoke.cash/core/constants';
 import type { Address, PublicClient } from 'viem';
 import { AbstractDelegatePlatform } from './AbstractDelegatePlatform';

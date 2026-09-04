@@ -1,6 +1,6 @@
 'use client';
 
-import { ChainId } from '@revoke.cash/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import SessionsDashboard from './SessionsDashboard';
 

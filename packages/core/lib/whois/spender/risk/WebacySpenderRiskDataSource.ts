@@ -1,4 +1,4 @@
-import { ChainId } from '@revoke.cash/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import { RequestQueue } from '@revoke.cash/core/request-queue';
 import type { RiskFactor } from '@revoke.cash/core/risk';
 import type { SpenderRiskData } from '@revoke.cash/core/whois';
@@ -18,12 +18,13 @@ export class WebacySpenderRiskDataSource implements SpenderDataSource {
     if (!this.apiKey) throw new Error('Webacy API key is not set');
 
     const chainIdentifiers: Record<number, string> = {
-      [ChainId.EthereumMainnet]: 'eth',
+      [ChainId.Ethereum]: 'eth',
+      [ChainId.Polygon]: 'pol',
+      [ChainId.Optimism]: 'opt',
+      [ChainId.Arbitrum]: 'arb',
       [ChainId.Base]: 'base',
-      [ChainId.BNBSmartChainMainnet]: 'bsc',
-      [ChainId.PolygonMainnet]: 'pol',
-      [ChainId.OPMainnet]: 'opt',
-      [ChainId.ArbitrumOne]: 'arb',
+      [ChainId.BNBChain]: 'bsc',
+      [ChainId.Sei]: 'sei',
     };
 
     const chainIdentifier = chainIdentifiers[chainId];

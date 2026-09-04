@@ -31,7 +31,6 @@
     "@heroicons/react": "^2.2.0",
     "@metamask/smart-accounts-kit": "^2.0.0",
     "@privy-io/cross-app-connect": "^0.6.2",
-    "@revoke.cash/chains": "^80.0.0",
     "@revoke.cash/core": "workspace:*",
     "@safe-global/safe-apps-provider": "^0.18.6",
     "@safe-global/safe-apps-sdk": "^9.1.0",

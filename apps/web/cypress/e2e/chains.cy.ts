@@ -2,8 +2,8 @@
 // entered in the input field. These addresses are either my own address or random addresses that I've found to have
 // allowances on these chains. Because these addresses were chosen randomly it is possible that some allowances may
 
-import { ChainId } from '@revoke.cash/chains';
 import { getChainConfig, getChainName, ORDERED_CHAINS } from '@revoke.cash/core/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import { TEST_ADDRESSES } from 'cypress/support/chain-fixtures';
 import { Selectors, TEST_URL } from 'cypress/support/utils';
 

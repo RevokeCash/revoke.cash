@@ -1,0 +1,1155 @@
+{
+  "1": {
+    "name": "Ethereum Mainnet",
+    "explorerUrl": "https://etherscan.io",
+    "rpcUrl": "https://api.mycryptoapi.com/eth",
+    "infoUrl": "https://ethereum.org",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "10": {
+    "name": "OP Mainnet",
+    "explorerUrl": "https://optimistic.etherscan.io",
+    "rpcUrl": "https://mainnet.optimism.io",
+    "infoUrl": "https://optimism.io",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "14": {
+    "name": "Flare Mainnet",
+    "explorerUrl": "https://flare-explorer.flare.network",
+    "rpcUrl": "https://flare-api.flare.network/ext/C/rpc",
+    "infoUrl": "https://flare.network",
+    "nativeCurrency": {
+      "name": "Flare",
+      "symbol": "FLR",
+      "decimals": 18
+    }
+  },
+  "19": {
+    "name": "Songbird Canary-Network",
+    "explorerUrl": "https://songbird-explorer.flare.network",
+    "rpcUrl": "https://songbird-api.flare.network/ext/C/rpc",
+    "infoUrl": "https://flare.network",
+    "nativeCurrency": {
+      "name": "Songbird",
+      "symbol": "SGB",
+      "decimals": 18
+    }
+  },
+  "25": {
+    "name": "Cronos Mainnet",
+    "explorerUrl": "https://explorer.cronos.org",
+    "rpcUrl": "https://evm.cronos.org",
+    "infoUrl": "https://cronos.org/",
+    "nativeCurrency": {
+      "name": "Cronos",
+      "symbol": "CRO",
+      "decimals": 18
+    }
+  },
+  "30": {
+    "name": "Rootstock Mainnet",
+    "explorerUrl": "https://explorer.rsk.co",
+    "rpcUrl": "https://public-node.rsk.co",
+    "infoUrl": "https://rootstock.io",
+    "nativeCurrency": {
+      "name": "Smart Bitcoin",
+      "symbol": "RBTC",
+      "decimals": 18
+    }
+  },
+  "40": {
+    "name": "Telos EVM Mainnet",
+    "explorerUrl": "https://teloscan.io",
+    "rpcUrl": "https://rpc.telos.net",
+    "infoUrl": "https://telos.net",
+    "nativeCurrency": {
+      "name": "Telos",
+      "symbol": "TLOS",
+      "decimals": 18
+    }
+  },
+  "50": {
+    "name": "XDC Network",
+    "explorerUrl": "https://xdcscan.com",
+    "rpcUrl": "https://erpc.xinfin.network",
+    "infoUrl": "https://xinfin.org",
+    "nativeCurrency": {
+      "name": "XinFin",
+      "symbol": "XDC",
+      "decimals": 18
+    }
+  },
+  "56": {
+    "name": "BNB Smart Chain Mainnet",
+    "explorerUrl": "https://bscscan.com",
+    "rpcUrl": "https://bsc-dataseed1.bnbchain.org",
+    "infoUrl": "https://www.bnbchain.org/en",
+    "nativeCurrency": {
+      "name": "BNB Chain Native Token",
+      "symbol": "BNB",
+      "decimals": 18
+    }
+  },
+  "61": {
+    "name": "Ethereum Classic",
+    "status": "active",
+    "explorerUrl": "https://etc.blockscout.com",
+    "rpcUrl": "https://etc.rivet.link",
+    "infoUrl": "https://ethereumclassic.org",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETC",
+      "decimals": 18
+    }
+  },
+  "88": {
+    "name": "Viction",
+    "rpcUrl": "https://rpc.viction.xyz",
+    "infoUrl": "https://viction.xyz",
+    "nativeCurrency": {
+      "name": "Viction",
+      "symbol": "VIC",
+      "decimals": 18
+    }
+  },
+  "97": {
+    "name": "BNB Smart Chain Testnet",
+    "explorerUrl": "https://testnet.bscscan.com",
+    "rpcUrl": "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+    "infoUrl": "https://www.bnbchain.org/en",
+    "nativeCurrency": {
+      "name": "BNB Chain Native Token",
+      "symbol": "tBNB",
+      "decimals": 18
+    }
+  },
+  "100": {
+    "name": "Gnosis",
+    "explorerUrl": "https://gnosisscan.io",
+    "rpcUrl": "https://rpc.gnosischain.com",
+    "infoUrl": "https://docs.gnosischain.com",
+    "nativeCurrency": {
+      "name": "xDAI",
+      "symbol": "XDAI",
+      "decimals": 18
+    }
+  },
+  "122": {
+    "name": "Fuse Mainnet",
+    "explorerUrl": "https://explorer.fuse.io",
+    "rpcUrl": "https://rpc.fuse.io",
+    "infoUrl": "https://fuse.io/",
+    "nativeCurrency": {
+      "name": "Fuse",
+      "symbol": "FUSE",
+      "decimals": 18
+    }
+  },
+  "128": {
+    "name": "Huobi ECO Chain Mainnet",
+    "explorerUrl": "https://hecoinfo.com",
+    "rpcUrl": "https://http-mainnet.hecochain.com",
+    "infoUrl": "https://www.hecochain.com",
+    "nativeCurrency": {
+      "name": "Huobi ECO Chain Native Token",
+      "symbol": "HT",
+      "decimals": 18
+    }
+  },
+  "130": {
+    "name": "Unichain",
+    "explorerUrl": "https://uniscan.xyz",
+    "rpcUrl": "https://mainnet.unichain.org",
+    "infoUrl": "https://unichain.org",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "137": {
+    "name": "Polygon Mainnet",
+    "explorerUrl": "https://polygonscan.com",
+    "rpcUrl": "https://polygon.drpc.org",
+    "infoUrl": "https://polygon.technology/",
+    "nativeCurrency": {
+      "name": "POL",
+      "symbol": "POL",
+      "decimals": 18
+    }
+  },
+  "143": {
+    "name": "Monad",
+    "explorerUrl": "https://monadvision.com",
+    "rpcUrl": "https://rpc.monad.xyz",
+    "infoUrl": "https://monad.xyz",
+    "nativeCurrency": {
+      "name": "Monad",
+      "symbol": "MON",
+      "decimals": 18
+    }
+  },
+  "146": {
+    "name": "Sonic Mainnet",
+    "explorerUrl": "https://sonicscan.org",
+    "rpcUrl": "https://rpc.soniclabs.com",
+    "infoUrl": "https://soniclabs.com",
+    "nativeCurrency": {
+      "name": "Sonic",
+      "symbol": "S",
+      "decimals": 18
+    }
+  },
+  "169": {
+    "name": "Manta Pacific Mainnet",
+    "explorerUrl": "https://pacific-explorer.manta.network",
+    "rpcUrl": "https://pacific-rpc.manta.network/http",
+    "infoUrl": "https://pacific-info.manta.network",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "204": {
+    "name": "opBNB Mainnet",
+    "explorerUrl": "https://mainnet.opbnbscan.com",
+    "rpcUrl": "https://opbnb-mainnet-rpc.bnbchain.org",
+    "infoUrl": "https://opbnb.bnbchain.org/en",
+    "nativeCurrency": {
+      "name": "BNB Chain Native Token",
+      "symbol": "BNB",
+      "decimals": 18
+    }
+  },
+  "232": {
+    "name": "Lens",
+    "explorerUrl": "https://explorer.lens.xyz",
+    "rpcUrl": "https://rpc.lens.xyz",
+    "infoUrl": "https://lens.xyz",
+    "nativeCurrency": {
+      "name": "GHO",
+      "symbol": "GHO",
+      "decimals": 18
+    }
+  },
+  "239": {
+    "name": "TAC Mainnet",
+    "explorerUrl": "https://explorer.tac.build",
+    "rpcUrl": "https://rpc.tac.build",
+    "infoUrl": "https://tac.build/",
+    "nativeCurrency": {
+      "name": "TAC",
+      "symbol": "TAC",
+      "decimals": 18
+    }
+  },
+  "248": {
+    "name": "Oasys Mainnet",
+    "explorerUrl": "https://explorer.oasys.games",
+    "rpcUrl": "https://rpc.mainnet.oasys.games",
+    "infoUrl": "https://oasys.games",
+    "nativeCurrency": {
+      "name": "OAS",
+      "symbol": "OAS",
+      "decimals": 18
+    }
+  },
+  "250": {
+    "name": "Fantom Opera",
+    "explorerUrl": "https://ftmscan.com",
+    "rpcUrl": "https://rpc.ftm.tools",
+    "infoUrl": "https://fantom.foundation",
+    "nativeCurrency": {
+      "name": "Fantom",
+      "symbol": "FTM",
+      "decimals": 18
+    }
+  },
+  "252": {
+    "name": "Fraxtal",
+    "status": "active",
+    "explorerUrl": "https://fraxscan.com",
+    "rpcUrl": "https://rpc.frax.com",
+    "infoUrl": "https://mainnet.frax.com",
+    "nativeCurrency": {
+      "name": "Frax",
+      "symbol": "FRAX",
+      "decimals": 18
+    }
+  },
+  "288": {
+    "name": "Boba Network",
+    "explorerUrl": "https://bobascan.com",
+    "rpcUrl": "https://mainnet.boba.network",
+    "infoUrl": "https://boba.network",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "314": {
+    "name": "Filecoin - Mainnet",
+    "explorerUrl": "https://filfox.info/en",
+    "rpcUrl": "https://api.node.glif.io/",
+    "infoUrl": "https://filecoin.io",
+    "nativeCurrency": {
+      "name": "filecoin",
+      "symbol": "FIL",
+      "decimals": 18
+    }
+  },
+  "321": {
+    "name": "KCC Mainnet",
+    "explorerUrl": "https://explorer.kcc.io/en",
+    "rpcUrl": "https://rpc-mainnet.kcc.network",
+    "infoUrl": "https://kcc.io",
+    "nativeCurrency": {
+      "name": "KuCoin Token",
+      "symbol": "KCS",
+      "decimals": 18
+    }
+  },
+  "324": {
+    "name": "zkSync Mainnet",
+    "explorerUrl": "https://explorer.zksync.io",
+    "rpcUrl": "https://mainnet.era.zksync.io",
+    "infoUrl": "https://zksync.io/",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "360": {
+    "name": "Shape",
+    "status": "active",
+    "explorerUrl": "https://shapescan.xyz",
+    "rpcUrl": "https://mainnet.shape.network",
+    "infoUrl": "https://shape.network",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "369": {
+    "name": "PulseChain",
+    "status": "active",
+    "explorerUrl": "https://ipfs.scan.pulsechain.com",
+    "rpcUrl": "https://rpc.pulsechain.com",
+    "infoUrl": "https://pulsechain.com/",
+    "nativeCurrency": {
+      "name": "Pulse",
+      "symbol": "PLS",
+      "decimals": 18
+    }
+  },
+  "480": {
+    "name": "World Chain",
+    "explorerUrl": "https://worldscan.org",
+    "rpcUrl": "https://worldchain-mainnet.g.alchemy.com/public",
+    "infoUrl": "https://world.org/world-chain",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "570": {
+    "name": "Rollux Mainnet",
+    "explorerUrl": "https://explorer.rollux.com",
+    "rpcUrl": "https://rpc.rollux.com",
+    "infoUrl": "https://rollux.com",
+    "nativeCurrency": {
+      "name": "Syscoin",
+      "symbol": "SYS",
+      "decimals": 18
+    }
+  },
+  "592": {
+    "name": "Astar",
+    "explorerUrl": "https://astar.subscan.io",
+    "rpcUrl": "https://rpc.astar.network:8545",
+    "infoUrl": "https://astar.network/",
+    "nativeCurrency": {
+      "name": "Astar",
+      "symbol": "ASTR",
+      "decimals": 18
+    }
+  },
+  "698": {
+    "name": "Matchain",
+    "explorerUrl": "https://matchscan.io",
+    "rpcUrl": "https://rpc.matchain.io",
+    "infoUrl": "https://www.matchain.io",
+    "nativeCurrency": {
+      "name": "BNB",
+      "symbol": "BNB",
+      "decimals": 18
+    }
+  },
+  "747": {
+    "name": "Flow EVM Mainnet",
+    "explorerUrl": "https://evm.flowscan.io",
+    "rpcUrl": "https://mainnet.evm.nodes.onflow.org",
+    "infoUrl": "https://developers.flow.com/evm/about",
+    "nativeCurrency": {
+      "name": "FLOW",
+      "symbol": "FLOW",
+      "decimals": 18
+    }
+  },
+  "988": {
+    "name": "Stable Mainnet",
+    "explorerUrl": "https://stablescan.xyz",
+    "rpcUrl": "https://rpc.stable.xyz",
+    "infoUrl": "https://stable.xyz",
+    "nativeCurrency": {
+      "name": "USDT0",
+      "symbol": "USDT0",
+      "decimals": 18
+    }
+  },
+  "999": {
+    "name": "Wanchain Testnet",
+    "explorerUrl": "https://testnet.wanscan.org",
+    "rpcUrl": "https://gwan-ssl.wandevs.org:46891/",
+    "infoUrl": "https://testnet.wanscan.org",
+    "nativeCurrency": {
+      "name": "Wancoin",
+      "symbol": "WAN",
+      "decimals": 18
+    }
+  },
+  "1088": {
+    "name": "Metis Andromeda Mainnet",
+    "explorerUrl": "https://andromeda-explorer.metis.io",
+    "rpcUrl": "https://andromeda.metis.io/?owner=1088",
+    "infoUrl": "https://www.metis.io",
+    "nativeCurrency": {
+      "name": "Metis",
+      "symbol": "METIS",
+      "decimals": 18
+    }
+  },
+  "1101": {
+    "name": "Polygon zkEVM",
+    "explorerUrl": "https://zkevm.polygonscan.com",
+    "rpcUrl": "https://zkevm-rpc.com",
+    "infoUrl": "https://polygon.technology/polygon-zkevm",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "1116": {
+    "name": "Core Blockchain Mainnet",
+    "explorerUrl": "https://scan.coredao.org",
+    "rpcUrl": "https://rpc.coredao.org/",
+    "infoUrl": "https://www.coredao.org",
+    "nativeCurrency": {
+      "name": "Core Blockchain Native Token",
+      "symbol": "CORE",
+      "decimals": 18
+    }
+  },
+  "1135": {
+    "name": "Lisk",
+    "explorerUrl": "https://blockscout.lisk.com",
+    "rpcUrl": "https://rpc.api.lisk.com",
+    "infoUrl": "https://lisk.com",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "1284": {
+    "name": "Moonbeam",
+    "explorerUrl": "https://moonbeam.moonscan.io",
+    "rpcUrl": "https://rpc.api.moonbeam.network",
+    "infoUrl": "https://moonbeam.network/networks/moonbeam/",
+    "nativeCurrency": {
+      "name": "Glimmer",
+      "symbol": "GLMR",
+      "decimals": 18
+    }
+  },
+  "1285": {
+    "name": "Moonriver",
+    "explorerUrl": "https://moonriver.moonscan.io",
+    "rpcUrl": "https://rpc.api.moonriver.moonbeam.network",
+    "infoUrl": "https://moonbeam.network/networks/moonriver/",
+    "nativeCurrency": {
+      "name": "Moonriver",
+      "symbol": "MOVR",
+      "decimals": 18
+    }
+  },
+  "1329": {
+    "name": "Sei Network",
+    "explorerUrl": "https://seiscan.io",
+    "rpcUrl": "https://evm-rpc.sei-apis.com",
+    "infoUrl": "https://www.sei.io",
+    "nativeCurrency": {
+      "name": "Sei",
+      "symbol": "SEI",
+      "decimals": 18
+    }
+  },
+  "1480": {
+    "name": "Vana",
+    "explorerUrl": "https://vanascan.io",
+    "rpcUrl": "https://rpc.vana.org/",
+    "infoUrl": "https://vana.org",
+    "nativeCurrency": {
+      "name": "Vana",
+      "symbol": "VANA",
+      "decimals": 18
+    }
+  },
+  "1514": {
+    "name": "Data Network",
+    "explorerUrl": "https://datanetscan.io",
+    "rpcUrl": "https://mainnet.datarpc.io",
+    "infoUrl": "https://datafdn.org/",
+    "nativeCurrency": {
+      "name": "DATA",
+      "symbol": "DATA",
+      "decimals": 18
+    }
+  },
+  "1625": {
+    "name": "Gravity Alpha Mainnet",
+    "explorerUrl": "https://explorer.gravity.xyz",
+    "rpcUrl": "https://rpc.gravity.xyz",
+    "infoUrl": "https://gravity.xyz",
+    "nativeCurrency": {
+      "name": "Gravity",
+      "symbol": "G",
+      "decimals": 18
+    }
+  },
+  "1729": {
+    "name": "Reya Network",
+    "explorerUrl": "https://explorer.reya.network",
+    "rpcUrl": "https://rpc.reya.network",
+    "infoUrl": "https://reya.network",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "1776": {
+    "name": "Injective",
+    "explorerUrl": "https://blockscout.injective.network",
+    "rpcUrl": "https://sentry.evm-rpc.injective.network",
+    "infoUrl": "https://injective.com",
+    "nativeCurrency": {
+      "name": "Injective",
+      "symbol": "INJ",
+      "decimals": 18
+    }
+  },
+  "1868": {
+    "name": "Soneium",
+    "status": "active",
+    "explorerUrl": "https://soneium.blockscout.com",
+    "rpcUrl": "https://rpc.soneium.org",
+    "infoUrl": "https://soneium.org",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "1890": {
+    "name": "Lightlink Phoenix Mainnet",
+    "explorerUrl": "https://phoenix.lightlink.io",
+    "rpcUrl": "https://replicator.phoenix.lightlink.io/rpc/v1",
+    "infoUrl": "https://lightlink.io",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "2020": {
+    "name": "Ronin Mainnet",
+    "explorerUrl": "https://app.roninchain.com",
+    "rpcUrl": "https://api.roninchain.com/rpc",
+    "infoUrl": "https://roninchain.com",
+    "nativeCurrency": {
+      "name": "RON",
+      "symbol": "RON",
+      "decimals": 18
+    }
+  },
+  "2741": {
+    "name": "Abstract",
+    "explorerUrl": "https://abscan.org",
+    "rpcUrl": "https://api.mainnet.abs.xyz",
+    "infoUrl": "https://abs.xyz",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "2818": {
+    "name": "Morph",
+    "explorerUrl": "https://explorer.morphl2.io",
+    "rpcUrl": "https://rpc.morphl2.io",
+    "infoUrl": "https://morphl2.io",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "4114": {
+    "name": "Citrea Mainnet",
+    "explorerUrl": "https://explorer.mainnet.citrea.xyz",
+    "rpcUrl": "https://rpc.mainnet.citrea.xyz",
+    "infoUrl": "https://citrea.xyz",
+    "nativeCurrency": {
+      "name": "Citrea BTC",
+      "symbol": "cBTC",
+      "decimals": 18
+    }
+  },
+  "4153": {
+    "name": "RISE",
+    "explorerUrl": "https://explorer.risechain.com",
+    "rpcUrl": "https://rpc.risechain.com/",
+    "infoUrl": "https://risechain.com",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "4217": {
+    "name": "Tempo Mainnet Presto",
+    "explorerUrl": "https://explore.tempo.xyz",
+    "rpcUrl": "https://rpc.mainnet.tempo.xyz",
+    "infoUrl": "https://tempo.xyz",
+    "nativeCurrency": {
+      "name": "No native currency",
+      "symbol": "USD",
+      "decimals": 18
+    }
+  },
+  "4326": {
+    "name": "MegaETH Mainnet",
+    "status": "active",
+    "explorerUrl": "https://mega.etherscan.io",
+    "rpcUrl": "https://mainnet.megaeth.com/rpc",
+    "infoUrl": "https://megaeth.com",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "4337": {
+    "name": "Beam",
+    "explorerUrl": "https://subnets.avax.network/beam",
+    "rpcUrl": "https://build.onbeam.com/rpc",
+    "infoUrl": "https://www.onbeam.com",
+    "nativeCurrency": {
+      "name": "Beam",
+      "symbol": "BEAM",
+      "decimals": 18
+    }
+  },
+  "4663": {
+    "name": "Robinhood Chain",
+    "status": "active",
+    "explorerUrl": "https://robinscan.io",
+    "rpcUrl": "https://rpc.mainnet.chain.robinhood.com",
+    "infoUrl": "https://docs.robinhood.com/chain",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "4689": {
+    "name": "IoTeX Network Mainnet",
+    "explorerUrl": "https://iotexscan.io",
+    "rpcUrl": "https://babel-api.mainnet.iotex.io",
+    "infoUrl": "https://iotex.io",
+    "nativeCurrency": {
+      "name": "IoTeX",
+      "symbol": "IOTX",
+      "decimals": 18
+    }
+  },
+  "5000": {
+    "name": "Mantle",
+    "explorerUrl": "https://mantlescan.xyz",
+    "rpcUrl": "https://rpc.mantle.xyz",
+    "infoUrl": "https://mantle.xyz",
+    "nativeCurrency": {
+      "name": "Mantle",
+      "symbol": "MNT",
+      "decimals": 18
+    }
+  },
+  "5031": {
+    "name": "Somnia Mainnet",
+    "explorerUrl": "https://mainnet.somnia.w3us.site",
+    "rpcUrl": "https://api.infra.mainnet.somnia.network",
+    "infoUrl": "https://somnia.network",
+    "nativeCurrency": {
+      "name": "Somnia Mainnet",
+      "symbol": "SOMI",
+      "decimals": 18
+    }
+  },
+  "7000": {
+    "name": "ZetaChain Mainnet",
+    "status": "active",
+    "explorerUrl": "https://zetascan.com",
+    "rpcUrl": "https://zetachain-evm.blockpi.network/v1/rpc/public",
+    "infoUrl": "https://zetachain.com/docs",
+    "nativeCurrency": {
+      "name": "Zeta",
+      "symbol": "ZETA",
+      "decimals": 18
+    }
+  },
+  "8217": {
+    "name": "Kaia Mainnet",
+    "explorerUrl": "https://kaiascope.com",
+    "rpcUrl": "https://public-en.node.kaia.io",
+    "infoUrl": "https://kaia.io",
+    "nativeCurrency": {
+      "name": "KAIA",
+      "symbol": "KAIA",
+      "decimals": 18
+    }
+  },
+  "8453": {
+    "name": "Base",
+    "status": "active",
+    "explorerUrl": "https://basescan.org",
+    "rpcUrl": "https://mainnet.base.org/",
+    "infoUrl": "https://base.org",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "8822": {
+    "name": "IOTA EVM",
+    "explorerUrl": "https://explorer.evm.iota.org",
+    "rpcUrl": "https://json-rpc.evm.iotaledger.net",
+    "infoUrl": "https://www.iota.org",
+    "nativeCurrency": {
+      "name": "IOTA",
+      "symbol": "IOTA",
+      "decimals": 18
+    }
+  },
+  "9008": {
+    "name": "Shido Network",
+    "explorerUrl": "https://shidoscan.com",
+    "rpcUrl": "https://shido-mainnet-archive-lb-nw5es9.zeeve.net/USjg7xqUmCZ4wCsqEOOE/rpc",
+    "infoUrl": "https://shido.io",
+    "nativeCurrency": {
+      "name": "Shido",
+      "symbol": "SHIDO",
+      "decimals": 18
+    }
+  },
+  "9745": {
+    "name": "Plasma Mainnet",
+    "explorerUrl": "https://plasmascan.to",
+    "rpcUrl": "https://rpc.plasma.to",
+    "infoUrl": "https://plasma.to",
+    "nativeCurrency": {
+      "name": "Plasma",
+      "symbol": "XPL",
+      "decimals": 18
+    }
+  },
+  "13371": {
+    "name": "Immutable zkEVM",
+    "explorerUrl": "https://explorer.immutable.com",
+    "rpcUrl": "https://rpc.immutable.com",
+    "infoUrl": "https://www.immutable.com",
+    "nativeCurrency": {
+      "name": "IMX",
+      "symbol": "IMX",
+      "decimals": 18
+    }
+  },
+  "33139": {
+    "name": "ApeChain",
+    "explorerUrl": "https://apescan.io",
+    "rpcUrl": "https://rpc.apechain.com",
+    "infoUrl": "https://apechain.com",
+    "nativeCurrency": {
+      "name": "ApeCoin",
+      "symbol": "APE",
+      "decimals": 18
+    }
+  },
+  "34443": {
+    "name": "Mode",
+    "explorerUrl": "https://explorer.mode.network",
+    "rpcUrl": "https://mainnet.mode.network",
+    "infoUrl": "https://docs.mode.network/",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "38833": {
+    "name": "Igra Network",
+    "explorerUrl": "https://explorer.igralabs.com",
+    "rpcUrl": "https://rpc.igralabs.com:8545",
+    "infoUrl": "https://igralabs.com",
+    "nativeCurrency": {
+      "name": "iKAS",
+      "symbol": "iKAS",
+      "decimals": 18
+    }
+  },
+  "42018": null,
+  "42161": {
+    "name": "Arbitrum One",
+    "explorerUrl": "https://arbiscan.io",
+    "rpcUrl": "https://arb1.arbitrum.io/rpc",
+    "infoUrl": "https://arbitrum.io",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "42170": {
+    "name": "Arbitrum Nova",
+    "explorerUrl": "https://nova-explorer.arbitrum.io",
+    "rpcUrl": "https://nova.arbitrum.io/rpc",
+    "infoUrl": "https://arbitrum.io",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "42220": {
+    "name": "Celo Mainnet",
+    "explorerUrl": "https://celoscan.io",
+    "rpcUrl": "https://forno.celo.org",
+    "infoUrl": "https://docs.celo.org/",
+    "nativeCurrency": {
+      "name": "CELO",
+      "symbol": "CELO",
+      "decimals": 18
+    }
+  },
+  "42793": {
+    "name": "Etherlink Mainnet",
+    "explorerUrl": "https://explorer.etherlink.com",
+    "rpcUrl": "https://node.mainnet.etherlink.com",
+    "infoUrl": "https://etherlink.com",
+    "nativeCurrency": {
+      "name": "tez",
+      "symbol": "XTZ",
+      "decimals": 18
+    }
+  },
+  "43111": {
+    "name": "Hemi",
+    "status": "active",
+    "explorerUrl": "https://explorer.hemi.xyz",
+    "rpcUrl": "https://rpc.hemi.network/rpc",
+    "infoUrl": "https://hemi.xyz",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "43114": {
+    "name": "Avalanche C-Chain",
+    "explorerUrl": "https://snowscan.xyz",
+    "rpcUrl": "https://api.avax.network/ext/bc/C/rpc",
+    "infoUrl": "https://www.avax.network/",
+    "nativeCurrency": {
+      "name": "Avalanche",
+      "symbol": "AVAX",
+      "decimals": 18
+    }
+  },
+  "48900": {
+    "name": "Zircuit Mainnet",
+    "explorerUrl": "https://explorer.zircuit.com",
+    "rpcUrl": "https://mainnet.zircuit.com",
+    "infoUrl": "https://www.zircuit.com/",
+    "nativeCurrency": {
+      "name": "ETH",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "57073": {
+    "name": "Ink",
+    "status": "active",
+    "explorerUrl": "https://explorer.inkonchain.com",
+    "rpcUrl": "https://rpc-gel.inkonchain.com",
+    "infoUrl": "https://inkonchain.com",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "59144": {
+    "name": "Linea",
+    "status": "active",
+    "explorerUrl": "https://lineascan.build",
+    "rpcUrl": "https://rpc.linea.build",
+    "infoUrl": "https://linea.build",
+    "nativeCurrency": {
+      "name": "Linea Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "60808": {
+    "name": "BOB",
+    "status": "active",
+    "explorerUrl": "https://explorer.gobob.xyz",
+    "rpcUrl": "https://rpc.gobob.xyz",
+    "infoUrl": "https://gobob.xyz",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "69000": {
+    "name": "Animechain Mainnet",
+    "explorerUrl": "https://explorer.anime.xyz",
+    "rpcUrl": "https://public-rpc.anime.xyz",
+    "infoUrl": "https://www.anime.xyz",
+    "nativeCurrency": {
+      "name": "Animecoin",
+      "symbol": "ANIME",
+      "decimals": 18
+    }
+  },
+  "80002": {
+    "name": "Amoy",
+    "explorerUrl": "https://amoy.polygonscan.com",
+    "rpcUrl": "https://rpc-amoy.polygon.technology",
+    "infoUrl": "https://polygon.technology/",
+    "nativeCurrency": {
+      "name": "POL",
+      "symbol": "POL",
+      "decimals": 18
+    }
+  },
+  "80094": {
+    "name": "Berachain",
+    "explorerUrl": "https://berascan.com",
+    "rpcUrl": "https://rpc.berachain.com",
+    "infoUrl": "https://www.berachain.com",
+    "nativeCurrency": {
+      "name": "BERA Token",
+      "symbol": "BERA",
+      "decimals": 18
+    }
+  },
+  "81457": {
+    "name": "Blast",
+    "status": "active",
+    "explorerUrl": "https://blastscan.io",
+    "rpcUrl": "https://rpc.blast.io",
+    "infoUrl": "https://blast.io/",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "84532": {
+    "name": "Base Sepolia Testnet",
+    "explorerUrl": "https://sepolia.basescan.org",
+    "rpcUrl": "https://sepolia.base.org",
+    "infoUrl": "https://base.org",
+    "nativeCurrency": {
+      "name": "Sepolia Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "88888": {
+    "name": "Chiliz Chain Mainnet",
+    "explorerUrl": "https://chiliscan.com",
+    "rpcUrl": "https://rpc.chiliz.com",
+    "infoUrl": "https://chiliz.com",
+    "nativeCurrency": {
+      "name": "Chiliz",
+      "symbol": "CHZ",
+      "decimals": 18
+    }
+  },
+  "97477": {
+    "name": "Doma",
+    "status": "active",
+    "explorerUrl": "https://explorer.doma.xyz",
+    "rpcUrl": "https://rpc.doma.xyz",
+    "infoUrl": "https://doma.xyz",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "98866": {
+    "name": "Plume Mainnet",
+    "status": "active",
+    "explorerUrl": "https://explorer.plume.org",
+    "rpcUrl": "https://rpc.plume.org",
+    "infoUrl": "https://plume.org",
+    "nativeCurrency": {
+      "name": "Plume",
+      "symbol": "PLUME",
+      "decimals": 18
+    }
+  },
+  "167000": {
+    "name": "Taiko",
+    "status": "active",
+    "explorerUrl": "https://taikoscan.io",
+    "rpcUrl": "https://rpc.mainnet.taiko.xyz",
+    "infoUrl": "https://taiko.xyz",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "202555": null,
+  "421614": {
+    "name": "Arbitrum Sepolia",
+    "explorerUrl": "https://sepolia.arbiscan.io",
+    "rpcUrl": "https://sepolia-rollup.arbitrum.io/rpc",
+    "infoUrl": "https://arbitrum.io",
+    "nativeCurrency": {
+      "name": "Sepolia Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "534352": {
+    "name": "Scroll",
+    "status": "active",
+    "explorerUrl": "https://scrollscan.com",
+    "rpcUrl": "https://rpc.scroll.io",
+    "infoUrl": "https://scroll.io",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "685689": {
+    "name": "Gensyn Mainnet",
+    "status": "active",
+    "explorerUrl": "https://gensyn-mainnet.explorer.alchemy.com",
+    "rpcUrl": "https://gensyn-mainnet.g.alchemy.com/public",
+    "infoUrl": "https://gensyn.network/",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "747474": {
+    "name": "katana",
+    "explorerUrl": "https://katanascan.com",
+    "rpcUrl": "https://rpc.katana.network",
+    "infoUrl": "https://katana.network",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "11155111": {
+    "name": "Ethereum Sepolia",
+    "explorerUrl": "https://sepolia.etherscan.io",
+    "rpcUrl": "https://rpc.sepolia.org",
+    "infoUrl": "https://sepolia.otterscan.io",
+    "nativeCurrency": {
+      "name": "Sepolia Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "11155420": {
+    "name": "OP Sepolia Testnet",
+    "explorerUrl": "https://sepolia-optimism.etherscan.io",
+    "rpcUrl": "https://sepolia.optimism.io",
+    "infoUrl": "https://optimism.io",
+    "nativeCurrency": {
+      "name": "Sepolia Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "245022934": {
+    "name": "Neon EVM Mainnet",
+    "explorerUrl": "https://neonscan.org",
+    "rpcUrl": "https://neon-proxy-mainnet.solana.p2p.org",
+    "infoUrl": "https://neonevm.org",
+    "nativeCurrency": {
+      "name": "Neon",
+      "symbol": "NEON",
+      "decimals": 18
+    }
+  },
+  "1313161554": {
+    "name": "Aurora Mainnet",
+    "explorerUrl": "https://explorer.aurora.dev",
+    "rpcUrl": "https://mainnet.aurora.dev",
+    "infoUrl": "https://aurora.dev",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "1666600000": {
+    "name": "Harmony Mainnet Shard 0",
+    "explorerUrl": "https://explorer.harmony.one",
+    "rpcUrl": "https://api.harmony.one",
+    "infoUrl": "https://www.harmony.one/",
+    "nativeCurrency": {
+      "name": "ONE",
+      "symbol": "ONE",
+      "decimals": 18
+    }
+  }
+}

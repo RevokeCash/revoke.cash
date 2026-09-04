@@ -1,4 +1,4 @@
-import { ChainId } from '@revoke.cash/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import type { TransactionSubmitted } from '@revoke.cash/core/types';
 import { isNullish } from '@revoke.cash/core/utils';
 import {
@@ -25,8 +25,8 @@ export const isExcessiveGas = (chainId: number, estimatedGas: bigint): boolean =
     [ChainId.FrameTestnet]: 20n,
     [ChainId.Mantle]: 2_000n,
     [ChainId.MantleTestnet]: 2_000n,
-    5031: 10n, // Somnia
-    [ChainId.EtherlinkMainnet]: 10n,
+    [ChainId.Somnia]: 10n,
+    [ChainId.Etherlink]: 10n,
   };
 
   const EXCESSIVE_GAS = 600_000n * (gasFactors[chainId] ?? 1n);

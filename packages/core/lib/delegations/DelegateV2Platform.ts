@@ -1,5 +1,5 @@
-import { ChainId } from '@revoke.cash/chains';
 import { DELEGATE_V2_ABI } from '@revoke.cash/core/abis';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import type { Address, PublicClient } from 'viem';
 import { AbstractDelegatePlatform } from './AbstractDelegatePlatform';
 import type { Delegation, DelegationV2, TransactionData } from './DelegatePlatform';
@@ -16,7 +16,7 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
     const ZKSYNC_CHAINS = [
       ChainId.Abstract,
       // ChainId.AbstractSepoliaTestnet,
-      ChainId.ZkSyncMainnet,
+      ChainId.ZkSyncEra,
       ChainId.ZkSyncSepoliaTestnet,
       ChainId.Treasure,
     ];

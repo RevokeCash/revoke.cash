@@ -1,6 +1,6 @@
 'use client';
 
-import { ChainId } from '@revoke.cash/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import AddressForm from 'components/exploits/AddressForm';
 import { AddressIdentityContextProvider } from 'lib/hooks/page-context/AddressIdentityContext';
 import { AddressPageContextProvider } from 'lib/hooks/page-context/AddressPageContext';
@@ -17,7 +17,7 @@ const PudgyCheckerWrapper = () => {
   return (
     <Suspense>
       <AddressIdentityContextProvider address={address!}>
-        <AddressPageContextProvider address={address!} initialChainId={ChainId.EthereumMainnet}>
+        <AddressPageContextProvider address={address!} initialChainId={ChainId.Ethereum}>
           <AddressForm onSubmit={setAddress} placeholder={t('pudgy.search.placeholder')} />
           <PudgyChecker />
         </AddressPageContextProvider>

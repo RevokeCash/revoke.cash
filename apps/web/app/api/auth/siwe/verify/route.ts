@@ -1,6 +1,6 @@
-import { ChainId } from '@revoke.cash/chains';
 import { recordAuditEvent } from '@revoke.cash/core/audit/events';
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import { addressSchema, hexStringSchema } from '@revoke.cash/core/schemas';
 import {
   destroySiweNonceCookie,
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false }, { status: 400 });
     }
 
-    const publicClient = createViemPublicClientForChain(ChainId.EthereumMainnet);
+    const publicClient = createViemPublicClientForChain(ChainId.Ethereum);
     const isValid = await publicClient.verifySiweMessage({ message, signature, address, nonce, domain });
 
     if (!isValid) {

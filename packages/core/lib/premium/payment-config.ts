@@ -1,4 +1,4 @@
-import { ChainId } from '@revoke.cash/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import { type Address, getAddress, isAddressEqual } from 'viem';
 
 export type PaymentTokenSymbol = 'USDC' | 'USDT';
@@ -17,12 +17,12 @@ export const REFUND_WINDOW_DAYS = 17;
 export const REFUND_DEADLINE_DAYS = 14;
 
 export const PREMIUM_PAYMENT_CHAIN_IDS = [
-  ChainId.EthereumMainnet,
-  ChainId.BNBSmartChainMainnet,
-  ChainId.PolygonMainnet,
+  ChainId.Ethereum,
+  ChainId.BNBChain,
+  ChainId.Polygon,
   ChainId.Base,
-  ChainId.OPMainnet,
-  ChainId.ArbitrumOne,
+  ChainId.Optimism,
+  ChainId.Arbitrum,
   // ChainId.EthereumSepolia, --- DEVELOPMENT ONLY, NOT PRODUCTION
 ] as const;
 
@@ -35,15 +35,15 @@ const definePaymentToken = (symbol: PaymentTokenSymbol, tokenAddress: Address, d
 });
 
 export const PAYMENT_TOKENS_BY_CHAIN_ID: Record<PremiumPaymentChainId, PaymentToken[]> = {
-  [ChainId.EthereumMainnet]: [
+  [ChainId.Ethereum]: [
     definePaymentToken('USDC', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'),
     definePaymentToken('USDT', '0xdAC17F958D2ee523a2206206994597C13D831ec7'),
   ],
-  [ChainId.BNBSmartChainMainnet]: [
+  [ChainId.BNBChain]: [
     definePaymentToken('USDC', '0x8AC76a51cc950d9822D68b83Fe1Ad97B32Cd580d', 18),
     definePaymentToken('USDT', '0x55d398326f99059fF775485246999027B3197955', 18),
   ],
-  [ChainId.PolygonMainnet]: [
+  [ChainId.Polygon]: [
     definePaymentToken('USDC', '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'),
     definePaymentToken('USDT', '0xc2132D05D31c914a87C6611C10748AEb04B58e8F'),
   ],
@@ -51,11 +51,11 @@ export const PAYMENT_TOKENS_BY_CHAIN_ID: Record<PremiumPaymentChainId, PaymentTo
     definePaymentToken('USDC', '0x833589fCD6eDb6E08f4c7C32D4f71b54bDa02913'),
     definePaymentToken('USDT', '0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2'),
   ],
-  [ChainId.OPMainnet]: [
+  [ChainId.Optimism]: [
     definePaymentToken('USDC', '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85'),
     definePaymentToken('USDT', '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58'),
   ],
-  [ChainId.ArbitrumOne]: [
+  [ChainId.Arbitrum]: [
     definePaymentToken('USDC', '0xaf88d065e77c8cC2239327C5EDb3A432268e5831'),
     definePaymentToken('USDT', '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9'),
   ],

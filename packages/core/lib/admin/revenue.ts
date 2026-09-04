@@ -1,4 +1,4 @@
-import { ChainId } from '@revoke.cash/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 
 // The revenue policy and every pure derivation over money data. This module is db-free so the
 // web app can run the same derivations client-side that the API routes run server-side; the

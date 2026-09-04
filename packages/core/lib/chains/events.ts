@@ -1,8 +1,8 @@
-import { ChainId } from '@revoke.cash/chains';
 import { AGW_SESSIONS_ABI } from '@revoke.cash/core/abis';
 import blocksCache from '@revoke.cash/core/cache/blocks';
 import eventsCache from '@revoke.cash/core/cache/events';
 import { createViemPublicClientForChain, type DocumentedChainId, getChainName } from '@revoke.cash/core/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import { type EnrichedTokenEvent, isApprovalTokenEvent, parseLog, type TokenEvent } from '@revoke.cash/core/events';
 import { EventDataSourceOutOfSyncError } from '@revoke.cash/core/events/errors';
 import { buildTokenEventFilters } from '@revoke.cash/core/events/filters';

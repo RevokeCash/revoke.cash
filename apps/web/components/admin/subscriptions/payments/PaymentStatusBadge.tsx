@@ -1,4 +1,4 @@
-import { ChainId } from '@revoke.cash/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import type { PremiumPaymentStatus } from '@revoke.cash/core/premium/payments';
 import StatusLabel, { type Status } from 'components/common/StatusLabel';
 

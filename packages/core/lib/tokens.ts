@@ -1,5 +1,5 @@
-import { ChainId } from '@revoke.cash/chains';
 import { ERC20_ABI, ERC721_ABI } from '@revoke.cash/core/abis';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from '@revoke.cash/core/constants';
 import { type TokenEvent, TokenEventType } from '@revoke.cash/core/events';
 import ky from '@revoke.cash/core/ky';
@@ -117,7 +117,7 @@ export const getTokenMetadata = async (
       publicClient.readContract({ address: token.address, abi: ERC20_ABI, functionName: 'decimals' }),
     // TODO: I'm temporarily disabling this check because of false positives on Sei network
     // Make sure to add this back when we have a solution for Sei
-    metadataFromMapping || chainId === ChainId.SeiNetwork ? undefined : throwIfNotErc20(token.address, publicClient), // Don't check if we have metadata from the mapping
+    metadataFromMapping || chainId === ChainId.Sei ? undefined : throwIfNotErc20(token.address, publicClient), // Don't check if we have metadata from the mapping
   ]);
 
   if (!metadataFromMapping && isSpamTokenSymbol(symbol)) throw new SpamError('symbol');

@@ -1,4 +1,4 @@
-import { ChainId } from '@revoke.cash/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import { isNullish } from '@revoke.cash/core/utils';
 import Card, { CardTitle } from 'components/common/Card';
 import ChainDisplay from 'components/common/ChainDisplay';

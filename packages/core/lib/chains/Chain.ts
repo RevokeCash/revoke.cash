@@ -1,5 +1,5 @@
-import { ChainId, getChain } from '@revoke.cash/chains';
-import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, RPC_OVERRIDES } from '@revoke.cash/core/constants';
+import { ChainId } from '@revoke.cash/core/chains/ids';
+import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, RPC_OVERRIDES, SITE_URL } from '@revoke.cash/core/constants';
 import type { EtherscanPlatform, RateLimit } from '@revoke.cash/core/types';
 import { isNullish } from '@revoke.cash/core/utils';
 import { SECOND } from '@revoke.cash/core/utils/time';
@@ -17,17 +17,16 @@ import { chainConfig as opStackChainConfig } from 'viem/op-stack';
 export interface ChainOptions {
   type: SupportType;
   chainId: number;
-  name?: string;
-  // slug?: string;
-  logoUrl?: string;
-  infoUrl?: string;
-  nativeToken?: string;
+  name: string;
+  logoUrl: string;
+  infoUrl: string;
+  nativeCurrency: NativeCurrency;
   nativeTokenCoingeckoId?: string;
   coingeckoNetworkId?: string;
-  explorerUrl?: string;
+  explorerUrl: string;
   etherscanCompatibleApiUrl?: string;
-  rpc?: {
-    main?: string | string[];
+  rpc: {
+    main: string;
     logs?: string;
     traces?: string;
     free?: string;
@@ -37,6 +36,12 @@ export interface ChainOptions {
   isCanary?: boolean;
   isOpStack?: boolean;
   correspondingMainnetChainId?: number;
+}
+
+export interface NativeCurrency {
+  name: string;
+  symbol: string;
+  decimals: number;
 }
 
 export type DeployedContracts = Record<string, ChainContract>;
@@ -67,13 +72,11 @@ export class Chain {
   }
 
   getName(): string {
-    const name = this.options.name ?? getChain(this.chainId)?.name ?? `Chain ID ${this.chainId}`;
-
     if (!this.isSupported()) {
-      return `${name} (Unsupported)`;
+      return `${this.options.name} (Unsupported)`;
     }
 
-    return name;
+    return this.options.name;
   }
 
   getSlug(): string {
@@ -98,49 +101,36 @@ export class Chain {
     return this.options.isOpStack ?? false;
   }
 
-  getLogoUrl(): string | undefined {
-    return this.options.logoUrl ?? getChain(this.chainId)?.iconURL;
+  getLogoUrl(): string {
+    return this.options.logoUrl;
   }
 
   getExplorerUrl(): string {
-    const [explorer] = getChain(this.chainId)?.explorers ?? [];
-    return this.options.explorerUrl ?? explorer?.url;
-  }
-
-  getFreeRpcUrl(): string {
-    const [rpcUrl] = getChain(this.chainId)?.rpc ?? [];
-    return this.options.rpc?.free ?? rpcUrl ?? this.getRpcUrl();
-  }
-
-  getRpcUrls(): string[] {
-    const baseRpcUrls = getChain(this.chainId)?.rpc ?? [];
-    const specifiedRpcUrls = [this.options.rpc?.main].flat().filter((url) => !isNullish(url));
-    const rpcOverrides = RPC_OVERRIDES[this.chainId] ? [RPC_OVERRIDES[this.chainId]] : [];
-    return [...rpcOverrides, ...specifiedRpcUrls, ...baseRpcUrls];
+    return this.options.explorerUrl;
   }
 
   getRpcUrl(): string {
-    return this.getRpcUrls()[0];
+    return RPC_OVERRIDES[this.chainId] ?? this.options.rpc.main;
   }
 
   getLogsRpcUrl(): string {
-    return this.options.rpc?.logs ?? this.getRpcUrl();
+    return this.options.rpc.logs ?? this.getRpcUrl();
   }
 
   getTracesRpcUrl(): string {
-    return this.options.rpc?.traces ?? this.getRpcUrl();
+    return this.options.rpc.traces ?? this.getRpcUrl();
   }
 
-  getInfoUrl(): string | undefined {
-    // TODO: Ideally we would call getInfoUrl() for the mainnet chain here in case it has overridden infoUrl, but then
-    // we run into circular dependency issues 😅
-    const mainnetChainId = this.getCorrespondingMainnetChainId() ?? -1;
-    return this.options.infoUrl ?? getChain(mainnetChainId)?.infoURL ?? getChain(this.chainId)?.infoURL;
+  getFreeRpcUrl(): string {
+    return this.options.rpc.free ?? this.getRpcUrl();
   }
 
-  // Note: we run tests to make sure that this is configured correctly for all chains (which is why we override the type)
+  getInfoUrl(): string {
+    return this.options.infoUrl;
+  }
+
   getNativeToken(): string {
-    return (this.options.nativeToken ?? getChain(this.chainId)?.nativeCurrency?.symbol) as string;
+    return this.options.nativeCurrency.symbol;
   }
 
   getNativeTokenCoingeckoId(): string | undefined {
@@ -213,10 +203,7 @@ export class Chain {
   }
 
   getViemChainConfig(): ViemChain {
-    const chainInfo = getChain(this.chainId);
     const chainName = this.getName();
-    const fallbackNativeCurrency = { name: chainName, symbol: this.getNativeToken(), decimals: 18 };
-
     const stackSpecificChainConfig = this.isOpStack() ? opStackChainConfig : undefined;
 
     return defineChain({
@@ -224,7 +211,7 @@ export class Chain {
       id: this.chainId,
       name: chainName,
       network: this.getSlug(),
-      nativeCurrency: chainInfo?.nativeCurrency ?? fallbackNativeCurrency,
+      nativeCurrency: this.options.nativeCurrency,
       rpcUrls: {
         default: { http: [this.getRpcUrl()] },
         public: { http: [this.getRpcUrl()] },
@@ -241,18 +228,14 @@ export class Chain {
   }
 
   getAddEthereumChainParameter(): AddEthereumChainParameter {
-    const fallbackNativeCurrency = { name: this.getName(), symbol: this.getNativeToken(), decimals: 18 };
-    const iconUrl = getChain(this.chainId)?.iconURL;
-    const addEthereumChainParameter = {
+    return {
       chainId: String(this.chainId),
       chainName: this.getName(),
-      nativeCurrency: getChain(this.chainId)?.nativeCurrency ?? fallbackNativeCurrency,
+      nativeCurrency: this.options.nativeCurrency,
       rpcUrls: [this.getFreeRpcUrl()],
       blockExplorerUrls: [this.getExplorerUrl()],
-      iconUrls: iconUrl ? [iconUrl] : [],
+      iconUrls: [`${SITE_URL}${this.getLogoUrl()}`],
     };
-
-    return addEthereumChainParameter;
   }
 
   createViemPublicClient(
@@ -263,12 +246,12 @@ export class Chain {
     // We noticed that certain chains run out of gas when using the default multicall settings
     const multicallOverrides: Record<number, boolean | { batchSize: number }> = {
       [ChainId.Mantle]: { batchSize: 256 },
-      [ChainId.OasysMainnet]: false,
+      [ChainId.Oasys]: false,
     };
 
     const transportOverrides: Record<number, any> = {
       // Kasplex's RPC does not handle batch requests properly
-      202555: { batch: false },
+      [ChainId.KasplexZkEVM]: { batch: false },
     };
 
     const shouldUseDeployless = () => {

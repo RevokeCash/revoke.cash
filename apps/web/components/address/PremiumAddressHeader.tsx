@@ -1,6 +1,6 @@
 'use client';
 
-import { ChainId } from '@revoke.cash/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import WalletHealthSection from 'components/allowances/dashboard/wallet-health/WalletHealthSection';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import AddressDisplay from './AddressDisplay';
@@ -33,7 +33,7 @@ const PremiumAddressHeader = () => {
               {isUltimate ? <UltimateBadge /> : <PremiumBadge />}
             </div>
           </div>
-          <AddressExternalLinks address={address} chainId={ChainId.EthereumMainnet} />
+          <AddressExternalLinks address={address} chainId={ChainId.Ethereum} />
         </div>
         <WalletHealthSection isPremium />
       </div>

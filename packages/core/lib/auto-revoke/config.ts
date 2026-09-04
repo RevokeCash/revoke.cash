@@ -1,22 +1,22 @@
-import { ChainId } from '@revoke.cash/chains';
 import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 
 // Source: https://docs.metamask.io/smart-accounts-kit/get-started/supported-networks/#advanced-permissions-erc-7715
 const UNORDERED_AUTO_REVOKE_CHAINS = [
-  ChainId.EthereumMainnet,
+  ChainId.Ethereum,
   // ChainId.ArbitrumNova,
-  ChainId.ArbitrumOne,
+  ChainId.Arbitrum,
   ChainId.Base,
   // ChainId.Berachain,
-  ChainId.BNBSmartChainMainnet,
-  // ChainId.CitreaMainnet,
-  ChainId.Gnosis,
+  ChainId.BNBChain,
+  // ChainId.Citrea,
+  ChainId.GnosisChain,
   ChainId.Linea,
   ChainId.Monad,
-  ChainId.OPMainnet,
-  ChainId.PolygonMainnet,
-  // ChainId.SeiNetwork,
-  // ChainId.SonicMainnet,
+  ChainId.Optimism,
+  ChainId.Polygon,
+  // ChainId.Sei,
+  // ChainId.Sonic,
   ChainId.Unichain,
   // ChainId.EthereumSepolia, --- DEVELOPMENT ONLY, NOT PRODUCTION
 ] as const;

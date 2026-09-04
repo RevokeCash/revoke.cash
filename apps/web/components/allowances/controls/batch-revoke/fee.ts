@@ -1,4 +1,4 @@
-import { ChainId } from '@revoke.cash/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import { BATCH_REVOKE_FEE_USD_CENTS } from '@revoke.cash/core/constants';
 
 export const BATCH_REVOKE_FEE = BATCH_REVOKE_FEE_USD_CENTS / 100;
@@ -9,7 +9,7 @@ export interface FeeSponsor {
 }
 
 export const FEE_SPONSORS: Record<number, FeeSponsor> = {
-  [ChainId.OPMainnet]: {
+  [ChainId.Optimism]: {
     name: 'Optimism Foundation',
     url: 'https://www.optimism.io/',
   },

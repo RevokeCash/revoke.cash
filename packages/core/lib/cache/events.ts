@@ -1,5 +1,5 @@
-import { ChainId } from '@revoke.cash/chains';
 import { getChainName } from '@revoke.cash/core/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import type { Filter, Log } from '@revoke.cash/core/events';
 import type { LogsProvider } from '@revoke.cash/core/events/providers';
 import { isBrowser } from '@revoke.cash/core/utils';

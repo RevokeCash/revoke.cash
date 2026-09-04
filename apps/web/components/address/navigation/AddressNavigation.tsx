@@ -1,6 +1,6 @@
 'use client';
 
-import { ChainId } from '@revoke.cash/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import { isNullish } from '@revoke.cash/core/utils';
 import { getAccountType } from '@revoke.cash/core/wallet';
 import { useQuery } from '@tanstack/react-query';

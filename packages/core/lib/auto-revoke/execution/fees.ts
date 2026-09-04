@@ -1,5 +1,5 @@
-import { ChainId } from '@revoke.cash/chains';
 import { createViemPublicClientForChain, isOpStackChain } from '@revoke.cash/core/chains';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import { isNullish } from '@revoke.cash/core/utils';
 import { bigintMax } from '@revoke.cash/core/utils/math';
 import {
@@ -38,8 +38,8 @@ type GasFees = Omit<TransactionFees, 'l1DataFeeWei'>;
 
 // Certain chains have a validator/protocol minimum tip, so we make sure to use the minimum floor
 const PRIORITY_FEE_FLOORS: Record<number, bigint> = {
-  [ChainId.PolygonMainnet]: parseGwei('30'),
-  [ChainId.BNBSmartChainMainnet]: parseGwei('0.06'),
+  [ChainId.Polygon]: parseGwei('30'),
+  [ChainId.BNBChain]: parseGwei('0.06'),
   [ChainId.Monad]: parseGwei('2'),
   [ChainId.Berachain]: parseGwei('0.03'),
 };

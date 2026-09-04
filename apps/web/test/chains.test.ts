@@ -1,4 +1,3 @@
-import { ChainId } from '@revoke.cash/chains';
 import { ERC20_ABI } from '@revoke.cash/core/abis';
 import {
   createViemPublicClientForChain,
@@ -22,6 +21,7 @@ import {
   SUPPORTED_CHAINS,
 } from '@revoke.cash/core/chains';
 import { SupportType } from '@revoke.cash/core/chains/Chain';
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import { ALCHEMY_API_KEY, DRPC_API_KEY } from '@revoke.cash/core/constants';
 import { getScriptLogsProvider } from '@revoke.cash/core/events/providers';
 import { addressToTopic } from '@revoke.cash/core/events/utils';
@@ -68,6 +68,7 @@ describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
         expect(getChainLogo(chainId), `${chainName} logo`).to.exist;
         expect(getChainInfoUrl(chainId), `${chainName} info url`).to.exist;
         expect(getChainExplorerUrl(chainId), `${chainName} explorer url`).to.exist;
+        expect(getChainExplorerUrl(chainId), `${chainName} explorer url trailing slash`).not.to.match(/\/$/);
         expect(getChainRpcUrl(chainId), `${chainName} rpc url`).to.exist;
         expect(getChainLogsRpcUrl(chainId), `${chainName} logs rpc url`).to.exist;
         expect(getChainFreeRpcUrl(chainId), `${chainName} free rpc url`).to.exist;
@@ -78,13 +79,13 @@ describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
         expect(getChainNativeTokenCoingeckoId(chainId), `${chainName} native token coingecko id`).to.exist;
 
         const NO_TOKEN_PRICING: number[] = [
-          ChainId.AnimechainMainnet,
-          ChainId.HarmonyMainnetShard0,
-          42018, // Mythos
-          ChainId.ReyaNetwork,
+          ChainId.Animechain,
+          ChainId.Harmony,
+          ChainId.Mythos,
+          ChainId.Reya,
           ChainId.RISE,
-          ChainId['SongbirdCanary-Network'],
-          ChainId.StableMainnet,
+          ChainId.Songbird,
+          ChainId.Stable,
         ];
 
         const coingeckoNetworkId = getChainCoingeckoNetworkId(chainId);
