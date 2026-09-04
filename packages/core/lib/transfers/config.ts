@@ -16,7 +16,6 @@ export const APPROVED_TRANSFERS_UNSUPPORTED_CHAINS: number[] = [
   ChainId.Shido,
   ChainId.FilecoinEVM, // no debug_traceTransaction (only parity-style trace methods)
   ChainId.PulseChain, // no debug_traceTransaction (only parity-style trace methods)
-  ChainId.Neon, // debug_traceTransaction availability flaps between requests
   ChainId.Taiko, // traces fail on recent transactions (only sufficiently old ones succeed)
   // ZKsync-stack nodes ignore withLog, so their traces never contain the frame logs extraction requires
   ChainId.ZkSyncEra,

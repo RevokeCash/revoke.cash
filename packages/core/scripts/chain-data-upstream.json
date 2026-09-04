@@ -43,17 +43,6 @@
       "decimals": 18
     }
   },
-  "25": {
-    "name": "Cronos Mainnet",
-    "explorerUrl": "https://explorer.cronos.org",
-    "rpcUrl": "https://evm.cronos.org",
-    "infoUrl": "https://cronos.org/",
-    "nativeCurrency": {
-      "name": "Cronos",
-      "symbol": "CRO",
-      "decimals": 18
-    }
-  },
   "30": {
     "name": "Rootstock Mainnet",
     "explorerUrl": "https://explorer.rsk.co",
@@ -1116,17 +1105,6 @@
     "nativeCurrency": {
       "name": "Sepolia Ether",
       "symbol": "ETH",
-      "decimals": 18
-    }
-  },
-  "245022934": {
-    "name": "Neon EVM Mainnet",
-    "explorerUrl": "https://neonscan.org",
-    "rpcUrl": "https://neon-proxy-mainnet.solana.p2p.org",
-    "infoUrl": "https://neonevm.org",
-    "nativeCurrency": {
-      "name": "Neon",
-      "symbol": "NEON",
       "decimals": 18
     }
   },

@@ -4,7 +4,6 @@ export enum ChainId {
   Optimism = 10,
   Flare = 14,
   Songbird = 19,
-  Cronos = 25,
   Rootstock = 30,
   TelosEVM = 40,
   XDC = 50,
@@ -106,7 +105,6 @@ export enum ChainId {
   EthereumSepolia = 11155111,
   OptimismSepolia = 11155420,
   FrameTestnet = 68840142,
-  Neon = 245022934,
   Aurora = 1313161554,
   Harmony = 1666600000,
 }
