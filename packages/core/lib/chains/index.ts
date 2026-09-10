@@ -366,7 +366,7 @@ export const CHAINS = {
     infoUrl: 'https://www.bnbchain.org/en',
     rpc: {
       main: `https://bnb-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      free: 'https://public.1rpc.io/bnb',
+      free: 'https://bsc-testnet-rpc.publicnode.com',
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 17422483 } },
     isTestnet: true,

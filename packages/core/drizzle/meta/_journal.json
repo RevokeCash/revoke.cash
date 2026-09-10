@@ -113,6 +113,13 @@
       "when": 1786827661375,
       "tag": "0015_auto_revoke_error_detail_account_upgraded",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1788642428655,
+      "tag": "0016_indexer_spam_reason_balance",
+      "breakpoints": true
     }
   ]
 }

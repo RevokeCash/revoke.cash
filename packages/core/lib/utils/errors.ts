@@ -332,7 +332,7 @@ export const stringifyError = (error: any, indent?: number): string => {
   }
 };
 
-export type SpamReason = 'whois' | 'symbol' | 'bytecode';
+export type SpamReason = 'whois' | 'symbol' | 'bytecode' | 'balance';
 
 export class SpamError extends Error {
   readonly reason: SpamReason;

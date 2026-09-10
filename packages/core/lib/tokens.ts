@@ -1,12 +1,12 @@
 import { ERC20_ABI, ERC721_ABI } from '@revoke.cash/core/abis';
 import { ChainId } from '@revoke.cash/core/chains/ids';
-import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from '@revoke.cash/core/constants';
+import { WHOIS_BASE_URL } from '@revoke.cash/core/constants';
 import { type TokenEvent, TokenEventType } from '@revoke.cash/core/events';
 import ky from '@revoke.cash/core/ky';
 import type { Nullable } from '@revoke.cash/core/types';
 import { formatFixedPointBigInt } from '@revoke.cash/core/utils/formatting';
 import { withFallback } from '@revoke.cash/core/utils/promises';
-import { type Address, getAddress, type PublicClient } from 'viem';
+import { type Address, bytesToHex, getAddress, type PublicClient } from 'viem';
 import { SpamError } from './utils/errors';
 
 export interface TokenReference {
@@ -100,6 +100,7 @@ export const getTokenMetadata = async (
           token.address,
         ),
       throwIfNotErc721(token.address, publicClient),
+      // metadataFromMapping ? undefined : throwIfPhantomBalance(token.address, publicClient),
     ]);
 
     if (!metadataFromMapping && isSpamTokenSymbol(symbol)) throw new SpamError('symbol');
@@ -118,6 +119,7 @@ export const getTokenMetadata = async (
     // TODO: I'm temporarily disabling this check because of false positives on Sei network
     // Make sure to add this back when we have a solution for Sei
     metadataFromMapping || chainId === ChainId.Sei ? undefined : throwIfNotErc20(token.address, publicClient), // Don't check if we have metadata from the mapping
+    metadataFromMapping ? undefined : throwIfPhantomBalance(token.address, publicClient),
   ]);
 
   if (!metadataFromMapping && isSpamTokenSymbol(symbol)) throw new SpamError('symbol');
@@ -142,16 +144,18 @@ export const getTokenMetadataUnknown = async (
   );
 };
 
+const createRandomAddress = (): Address => getAddress(bytesToHex(crypto.getRandomValues(new Uint8Array(20))));
+
 export const throwIfNotErc20 = async (address: Address, publicClient: PublicClient) => {
   // If the function allowance does not exist it will throw (and is not ERC20)
   const allowance = await publicClient.readContract({
     address,
     abi: ERC20_ABI,
     functionName: 'allowance',
-    args: [DUMMY_ADDRESS, DUMMY_ADDRESS_2],
+    args: [createRandomAddress(), createRandomAddress()],
   });
 
-  // The only acceptable value for checking the allowance from 0x00...01 to 0x00...02 is 0
+  // The only acceptable value for the allowance between two fresh addresses is 0
   // This could happen when the contract is not ERC20 but does have a fallback function
   if (allowance !== 0n) {
     throw new Error('Response to allowance was not 0, indicating that this is not an ERC20 contract');
@@ -164,10 +168,10 @@ export const throwIfNotErc721 = async (address: Address, publicClient: PublicCli
     address,
     abi: ERC721_ABI,
     functionName: 'isApprovedForAll',
-    args: [DUMMY_ADDRESS, DUMMY_ADDRESS_2],
+    args: [createRandomAddress(), createRandomAddress()],
   });
 
-  // The only acceptable value for checking whether 0x00...01 has an allowance set to 0x00...02 is false
+  // The only acceptable value for the operator approval between two fresh addresses is false
   // This could happen when the contract is not ERC721 but does have a fallback function
   if (isApprovedForAll !== false) {
     throw new Error('Response to isApprovedForAll was not false, indicating that this is not an ERC721 contract');
@@ -194,6 +198,18 @@ export const throwIfSpamBytecode = async (address: Address, publicClient: Public
 
     throw new SpamError('bytecode');
   }
+};
+
+// Scam tokens often report a made-up balance for every address, so wallets display e.g. "87,665 USDT" next to a fake
+// approval. A real token never has a balance for a freshly generated address, so a non-zero balance there means the
+// token fabricates balances. Reverts (e.g. ERC1155 has no balanceOf(address)) are treated as a zero balance.
+export const throwIfPhantomBalance = async (address: Address, publicClient: PublicClient): Promise<void> => {
+  const balance = await withFallback(
+    publicClient.readContract({ address, abi: ERC20_ABI, functionName: 'balanceOf', args: [createRandomAddress()] }),
+    0n,
+  );
+
+  if (balance !== 0n) throw new SpamError('balance');
 };
 
 export const hasZeroBalance = (balance: TokenBalance, decimals?: number) => {
