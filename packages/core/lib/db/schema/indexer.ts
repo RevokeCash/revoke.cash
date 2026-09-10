@@ -156,7 +156,13 @@ export const indexerAllowanceState = indexerSchema.table(
 );
 
 export const indexerTokenStandardEnum = indexerSchema.enum('token_standard', ['erc20', 'erc721']);
-export const indexerSpamReasonEnum = indexerSchema.enum('spam_reason', ['whois', 'symbol', 'bytecode', 'airdrop']);
+export const indexerSpamReasonEnum = indexerSchema.enum('spam_reason', [
+  'whois',
+  'symbol',
+  'bytecode',
+  'airdrop',
+  'balance',
+]);
 
 export const indexerTokenMetadata = indexerSchema.table(
   'token_metadata',

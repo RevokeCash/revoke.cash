@@ -14,6 +14,7 @@ import type { AddressOnChain } from '@revoke.cash/core/types';
 import { isNullish } from '@revoke.cash/core/utils';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
+import { DAY } from '@revoke.cash/core/utils/time';
 import type { SpenderRiskData } from '@revoke.cash/core/whois';
 import {
   AggregateSpenderDataSource,
@@ -36,6 +37,13 @@ const SPENDER_DATA_SOURCE = new AggregateSpenderDataSource({
     new WebacySpenderRiskDataSource(WEBACY_API_KEY),
   ],
 });
+
+export const SPENDER_METADATA_STALE_AFTER_MS = 1 * DAY;
+
+export const isSpenderMetadataFresh = (metadata?: SpenderMetadataRow): boolean => {
+  if (isNullish(metadata?.enrichedAt)) return false;
+  return metadata.enrichedAt.getTime() >= Date.now() - SPENDER_METADATA_STALE_AFTER_MS;
+};
 
 export type SpenderMetadataRow = typeof indexerSpenderMetadata.$inferSelect;
 export type SpenderMetadataByAddress = Map<Address, SpenderMetadataRow>;

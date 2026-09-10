@@ -7,13 +7,13 @@ import {
   type SpenderMetadataJobData,
 } from '@revoke.cash/backend/indexer/queues/spender-metadata';
 import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
+import { SPENDER_METADATA_STALE_AFTER_MS } from '@revoke.cash/core/indexer/spender-metadata';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { mapAsyncSequential } from '@revoke.cash/core/utils/promises';
-import { DAY, HOUR } from '@revoke.cash/core/utils/time';
+import { HOUR } from '@revoke.cash/core/utils/time';
 import type { Queue } from 'bullmq';
 
 const TICK_INTERVAL_MS = 1 * HOUR;
-const STALE_AFTER_MS = 1 * DAY;
 
 @Injectable()
 export class SpenderMetadataSchedulerService {
@@ -23,7 +23,7 @@ export class SpenderMetadataSchedulerService {
 
   @Interval(TICK_INTERVAL_MS)
   async tick(): Promise<void> {
-    const staleBefore = new Date(Date.now() - STALE_AFTER_MS);
+    const staleBefore = new Date(Date.now() - SPENDER_METADATA_STALE_AFTER_MS);
 
     const results = await mapAsyncSequential(ORDERED_CHAINS, async (chainId) => {
       try {

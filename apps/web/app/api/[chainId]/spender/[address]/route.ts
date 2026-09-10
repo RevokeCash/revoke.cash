@@ -1,6 +1,7 @@
 import {
   enrichSpender,
   getCachedSpenderMetadata,
+  isSpenderMetadataFresh,
   serializeSpenderMetadata,
 } from '@revoke.cash/core/indexer/spender-metadata';
 import { addressSchema, supportedChainIdSchema } from '@revoke.cash/core/schemas';
@@ -43,7 +44,7 @@ const getSpenderData = async (chainId: number, address: `0x${string}`) => {
   const cachedMetadata = await getCachedSpenderMetadata(chainId, [address]);
   const metadata = cachedMetadata.get(address);
 
-  if (metadata) return serializeSpenderMetadata(metadata) ?? null;
+  if (isSpenderMetadataFresh(metadata)) return serializeSpenderMetadata(metadata) ?? null;
 
   await enrichSpender(chainId, address);
   const refreshedMetadata = await getCachedSpenderMetadata(chainId, [address]);
