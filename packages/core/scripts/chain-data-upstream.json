@@ -43,6 +43,17 @@
       "decimals": 18
     }
   },
+  "25": {
+    "name": "Cronos Mainnet",
+    "explorerUrl": "https://explorer.cronos.org",
+    "rpcUrl": "https://evm.cronos.org",
+    "infoUrl": "https://cronos.org/",
+    "nativeCurrency": {
+      "name": "Cronos",
+      "symbol": "CRO",
+      "decimals": 18
+    }
+  },
   "30": {
     "name": "Rootstock Mainnet",
     "explorerUrl": "https://explorer.rsk.co",
@@ -450,17 +461,6 @@
     "nativeCurrency": {
       "name": "Core Blockchain Native Token",
       "symbol": "CORE",
-      "decimals": 18
-    }
-  },
-  "1135": {
-    "name": "Lisk",
-    "explorerUrl": "https://blockscout.lisk.com",
-    "rpcUrl": "https://rpc.api.lisk.com",
-    "infoUrl": "https://lisk.com",
-    "nativeCurrency": {
-      "name": "Ether",
-      "symbol": "ETH",
       "decimals": 18
     }
   },
@@ -886,17 +886,6 @@
     "nativeCurrency": {
       "name": "Avalanche",
       "symbol": "AVAX",
-      "decimals": 18
-    }
-  },
-  "48900": {
-    "name": "Zircuit Mainnet",
-    "explorerUrl": "https://explorer.zircuit.com",
-    "rpcUrl": "https://mainnet.zircuit.com",
-    "infoUrl": "https://www.zircuit.com/",
-    "nativeCurrency": {
-      "name": "ETH",
-      "symbol": "ETH",
       "decimals": 18
     }
   },

@@ -36,8 +36,6 @@
     "fuse": "Fuse 是第 1 层（Layer 1）区块链，采用了基于委托权益证明（DPoS）共识机制，致力于为去中心化应用打造经济实惠的高性能基础设施，服务现实业务。Fuse 将终端用户和企业用户进行了区分，终端用户不会直接使用区块链，而企业用户则是区块链的主要用户，将代表终端用户使用区块链。",
     "gensyn": "Gensyn 是第 1 层（Layer 1）区块链，为机器学习算力的去中心化网络提供支持。它将来自游戏电脑和数据中心等来源的闲置算力聚合成一个任何人都可以访问的全球无许可集群，为中心化云服务商提供了开放的替代方案。参与者贡献算力执行机器学习任务即可获得奖励。",
     "gnosis-chain": "Gnosis 链创建于 2018 年，是首批以太坊侧链之一。作为侧链，它在去中心化方面有所妥协，以便让交易成本更低，速度更快。Gnosis 链的原生代币是 xDAI，这是 DAI 稳定币的桥接版本，允许用户使用稳定资产支付汽油费。Gnosis 链上最受欢迎的应用之一是出勤证明协议（POAP）。",
-    "gravity-alpha": "Gravity Alpha 是建立在以太坊之上的第 2 层（Layer 2）区块链，计划在 2025 年转移到自己的第 1 层区块链。Gravity Alpha 采用 Arbitrum 的 Nitro 框架构建，运用了 Optimistic Rollup 技术。它由 Galxe 背后的团队创建，旨在为 Galxe 生态系统带来更多功能。",
-    "harmony": "Harmony 是基于权益证明（PoS）共识构建的第 1 层（Layer 1）区块链，旨在通过状态分片技术提供快速、低成本的交易，这种技术本质上是将整个网络的状态和验证分成多个子区块链。",
     "hemi": "Hemi 是第 2 层（Layer 2）区块链，旨在将比特币和以太坊这两大生态系统合并为“超级网络”。其核心是 Hemi 虚拟机（hVM），在 EVM 环境中集成了比特币全节点。",
     "hyperevm": "HyperEVM 是 Hyperliquid 第 1 层（Layer 1）区块链的 EVM 环境，该区块链使用一种名为 HyperBFT 的定制共识机制。HyperEVM 直接连接到 HyperCore，即支持 Hyperliquid DEX 的组件，使智能合约能够与 Hyperliquid 的原生金融基础设施（例如其订单簿）进行交互。",
     "igra-network": "Igra Network 是构建在 Kaspa BlockDAG 之上、兼容 EVM 的可编程层。它将 Kaspa 的高吞吐量 DAG 共识与完整的 EVM 兼容性相结合，支持智能合约和 DeFi 应用。Igra 的原生代币是 iKAS，由 Kaspa 的 KAS 按 1:1 封装而成。",
@@ -51,7 +49,6 @@
     "lens": "Lens 是第 2 层（Layer 2）区块链，使用 zkSync 的 ZK Stack 构建，适用于 SocialFi 用例。Lens 区块链为 Lens Protocol 提供支持，Lens Protocol 是一个社交媒体协议，允许用户创建和管理自己的社交资料、与其他用户联系以及与内容进行交互。",
     "lightlink": "Lightlink 是以太坊的第 2 层（Layer 2）扩展解决方案，专为元宇宙（Metaverse）、NFT 和游戏应用程序而打造。Lightlink 采用 Optimistic Rollup 技术，具备高吞吐量和低交易费两大特点。为了更符合企业需求，Lightlink 还提供了企业套餐，允许企业按月支付费用来免除原生汽油费。",
     "linea": "Linea 是以太坊的第 2 层（Layer 2）扩展解决方案，由 MetaMask 和 Infura 背后的公司 Consensys 开发。Linea 基于 zkEVM 创新技术，使其在费用极低的同时还能保证强大的安全性。Linea 是最早使用这项技术的项目之一，背靠该领域最大的公司之一，规模很可能会继续增长。",
-    "lisk": "Lisk 是以太坊的第 2 层（Layer 2）扩展解决方案，基于 Optimism 的开源 OP Stack 构建，因此与 Optimism 一样，也使用 Optimistic Rollup 技术。Lisk 最初是作为独立的第 1 层（Layer 1）区块链创建的，但后来转移到 OP Stack，成为以太坊的第 2 层解决方案。",
     "manta-pacific": "Manta Pacific 是以太坊的第 2 层（Layer 2）扩展解决方案。采用 Optimism 的开源 OP Stack 构建，与 Optimism 一样，使用了 Optimistic Rollup 技术。Manta Pacific 通过 Celestia 的数据可用性解决方案扩展了该技术，可提供比基础的 Optimistic Rollup 解决方案更低的汽油费。",
     "mantle": "Mantle 是以太坊的第 2 层（Layer 2）扩展解决方案，提供比第 1 层（L1）更便宜、更快捷的交易。Mantle 使用模块化架构，采用了 Optimistic Rollup 技术，并结合了改进后的数据可用性解决方案。虽然 Mantle 是兼容 EVM 的第 2 层（Layer 2）链，但可以使用自己的原生代币来支付第 2 层的汽油费。",
     "matchain": "Matchain 是在 BNB 链上进行结算的第 2 层（Layer 2）区块链，使用 BNB 作为其原生 Gas 代币。它专注于构建去中心化身份和 AI 驱动的数据基础设施，目标是让用户保有对自己数据的主权，并为应用开发者提供模块化的数据原语。",
@@ -92,7 +89,6 @@
     "world-chain": "World Chain 是围绕 World Coin 生态系统构建的第 2 层（Layer 2）区块链，对所有经 World Coin 平台验证的真人用户免除汽油费。World Chain 基于 Optimism 的 OP Stack 构建，因此与 Optimism 一样，也使用了 Optimistic Rollup 技术。",
     "xdc": "XDC 是第 1 层（Layer 1）区块链，其共识机制基于委托权益证明（DPoS）。XDC 致力于为现实世界资产代币化和企业用例提供快速、低成本的交易。",
     "zetachain": "ZetaChain 是第 1 层（Layer 1）区块链，其共识机制基于权益证明（PoS），目前正在开发中。它旨在为开发人员提供基础设施，以打造可链接到其他 EVM 链和非 EVM 链的跨链应用程序。",
-    "zircuit": "Zircuit 是以太坊的第 2 层（Layer 2）扩展解决方案，基于 zk rollup 技术搭建。为了提高安全性，Zircuit 利用 AI 监控网络内存池中的恶意交易，并在上链之前将其阻止。",
     "zksync-era": "zkSync Era 是第 2 层（Layer 2）扩展解决方案，也是最早使用 zkEVM 创新技术的项目之一。这项技术利用零知识证明，在费用极低的同时保持强大的安全保障。zkSync 之前创建了 zkSync Lite，这是 zkRollup 技术的早期版本，不兼容 EVM。zkSync Era 是迭代版，全面兼容 EVM。"
   },
   "title": "什么是{chainName}？"

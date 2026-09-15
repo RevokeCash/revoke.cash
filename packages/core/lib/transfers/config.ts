@@ -23,7 +23,6 @@ export const APPROVED_TRANSFERS_UNSUPPORTED_CHAINS: number[] = [
   ChainId.Lens,
   // These chains' tracers accept withLog but return no frame logs (probed 2026-08-02)
   ChainId.Aurora,
-  ChainId.Harmony,
   ChainId.KCC,
   ChainId.Metis,
   ChainId.Scroll,

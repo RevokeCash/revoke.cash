@@ -39,8 +39,6 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.Fuse]: '0x291AeAB2C6E8b87A65BE9dF26E174F41864191A3',
   [ChainId.Gensyn]: '0x181CA45090DCf76D8851F601E740cFc7a44d02f2',
   [ChainId.GnosisChain]: '0x286f3b5E5A25768229f31A5a36cA110Ed8c6471d',
-  [ChainId.GravityAlpha]: '0x7b8af2b20763E971Aa09549DF2d3D73E8C1dF74B',
-  [ChainId.Harmony]: '0xe33eb8AbaFC78b00987ff1570640e0419634cd78',
   [ChainId.Hemi]: '0x473eD6129788A9e6cF2da3D326869E277404fBdd',
   [ChainId.HyperEVM]: '0xdbfc2F881d0A2864b3d247e08C5d93BaF564050e',
   [ChainId.IgraNetwork]: '0x4bb027128f2592d7207b765834988e10acbfb9f9',
@@ -54,7 +52,6 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.Lens]: '0x27Af72b4E0Ec65687a00E26e309571B5439e349f',
   [ChainId.Lightlink]: '0xcF1eD7Cb5023347Ac517BBBBCCfa253408946606',
   [ChainId.Linea]: '0xe8Df96a342628B40a0036DB0F182b917403A6D1B',
-  [ChainId.Lisk]: '0x6905E142375cb39587127c3f55E78E26390108b7',
   [ChainId.MantaPacific]: '0xCd733fEA07B1b68a63B6FFa84ce0d12a94f0Bc22',
   [ChainId.Mantle]: '0xEF12EAA20882A33487Ab069C2E27855aF49D9B16',
   [ChainId.Matchain]: '0x87DB8A39091EFc93ff13C8b98B184700CE6bf3EB',
@@ -98,6 +95,5 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.WorldChain]: '0x6A9Cf2489cA50c5dAe3b31cddace1D8c9096630b',
   [ChainId.XDC]: '0x87dB6eA45E2F960A4DDFCfcef86264CdA78fF5E5',
   [ChainId.ZetaChain]: '0xc9636B935FB6b3Ce48654a0009755D58F473c064',
-  [ChainId.Zircuit]: '0x0E276aB356FC73093Ba530dFFa3445786cD859f8',
   [ChainId.ZkSyncEra]: '0x82FdF36736f3f8eE6f04Ab96eA32213c8d826FaA',
 } as const;

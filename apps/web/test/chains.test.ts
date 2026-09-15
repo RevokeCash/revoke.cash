@@ -80,7 +80,6 @@ describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
 
         const NO_TOKEN_PRICING: number[] = [
           ChainId.Animechain,
-          ChainId.Harmony,
           ChainId.Mythos,
           ChainId.Reya,
           ChainId.RISE,
