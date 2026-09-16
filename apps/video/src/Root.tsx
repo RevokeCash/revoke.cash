@@ -16,7 +16,9 @@ import { BatchRevokeShowcase } from './premium-showcase/BatchRevokeShowcase';
 import { ExploitCheckerShowcase } from './premium-showcase/ExploitCheckerShowcase';
 import { MultichainDashboardShowcase } from './premium-showcase/MultichainDashboardShowcase';
 import { TimeMachineShowcase } from './premium-showcase/TimeMachineShowcase';
+import { ArcSupportGraphic } from './tweet-graphics/ArcSupportGraphic';
 import { ColdcardExploitGraphic } from './tweet-graphics/ColdcardExploitGraphic';
+import { NetworkSupportGraphic } from './tweet-graphics/NetworkSupportGraphic';
 import { NoApprovalRiskGraphic } from './tweet-graphics/NoApprovalRiskGraphic';
 import './fonts';
 import './style.css';
@@ -136,6 +138,26 @@ export const Root = () => {
           width={1200}
           height={675}
           defaultProps={{ date: '31 July 2026' }}
+        />
+        <Still
+          id="ArcSupport"
+          component={ArcSupportGraphic}
+          width={1200}
+          height={675}
+          defaultProps={{ date: '16 September 2026', supportedNetworkCount: 87 }}
+        />
+        {/* The Figma "Revoke Network Support" template; pass --props for other networks. */}
+        <Still
+          id="NetworkSupport"
+          component={NetworkSupportGraphic}
+          width={1600}
+          height={900}
+          defaultProps={{
+            networkLogo: 'images/network-support/arc-wordmark.svg',
+            networkLogoWidth: 370,
+            screenshot: 'images/network-support/arc-screenshot.png',
+            screenshotCropTop: 120,
+          }}
         />
       </Folder>
     </>
