@@ -35,6 +35,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Sonic,
   ChainId.WorldChain,
   ChainId.Tempo,
+  ChainId.Arc,
   ChainId.PulseChain,
   ChainId.Blast,
   ChainId.ZkSyncEra,
@@ -202,6 +203,24 @@ export const CHAINS = {
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 81930 } },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Arbitrum,
+  }),
+  [ChainId.Arc]: new Chain({
+    // explorer.arc.io's own API sits behind a Cloudflare challenge, so logs come from the hosted api.blockscout.com gateway
+    type: SupportType.BLOCKSCOUT,
+    chainId: ChainId.Arc,
+    name: 'Arc',
+    // Native USDC has 18 decimals; the ERC-20 interface at 0x3600000000000000000000000000000000000000 has 6
+    nativeCurrency: { name: 'USDC', symbol: 'USDC', decimals: 18 },
+    nativeTokenCoingeckoId: 'usd-coin',
+    coingeckoNetworkId: 'arc',
+    logoUrl: '/assets/images/vendor/chains/arc.svg',
+    infoUrl: 'https://www.arc.io',
+    explorerUrl: 'https://explorer.arc.io',
+    rpc: {
+      main: `https://arc-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      free: 'https://rpc.mainnet.arc.io',
+    },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.Astar]: new Chain({
     type: SupportType.BLOCKSCOUT,

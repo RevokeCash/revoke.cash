@@ -10,6 +10,7 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.Arbitrum]: '0xB278126845e513438F0Ce9d9f845e9336730d750',
   [ChainId.ArbitrumNova]: '0x67F36d34c5c740EdaC7d33d71B0a90b7853293eE',
   [ChainId.ArbitrumSepolia]: '0xDd3287043493E0a08d2B348397554096728B459c',
+  [ChainId.Arc]: '0x01343b895f1907Ddf9f1C1Ac68ABc2eCb7532523',
   [ChainId.Astar]: '0xAE545C0d8d4b4645fBA8c895e370529D22F8a71c',
   [ChainId.Aurora]: '0x1D50A8c3295798fCebdDD0C720BeC4FBEdc3D178',
   [ChainId.Avalanche]: '0x3D51c4CCF0BC46a9C10f320A290560c4f8AB76fa',

@@ -66,6 +66,7 @@ export enum ChainId {
   Mantle = 5000,
   MantleTestnet = 5001,
   Somnia = 5031,
+  Arc = 5042,
   ZetaChain = 7000,
   Kaia = 8217,
   Base = 8453,

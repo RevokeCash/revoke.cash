@@ -709,6 +709,15 @@
       "decimals": 18
     }
   },
+  "5042": {
+    "name": "Arc",
+    "infoUrl": "https://arc.network",
+    "nativeCurrency": {
+      "name": "USDC",
+      "symbol": "USDC",
+      "decimals": 18
+    }
+  },
   "7000": {
     "name": "ZetaChain Mainnet",
     "status": "active",

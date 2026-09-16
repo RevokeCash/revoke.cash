@@ -846,6 +846,7 @@
       "attributes": { "name": "Mantra EVM", "coingecko_asset_platform_id": "mantra-evm" }
     },
     { "id": "tempo", "type": "network", "attributes": { "name": "Tempo", "coingecko_asset_platform_id": "tempo" } },
+    { "id": "arc", "type": "network", "attributes": { "name": "Arc", "coingecko_asset_platform_id": "arc" } },
     {
       "id": "galachain",
       "type": "network",
