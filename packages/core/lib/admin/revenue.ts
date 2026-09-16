@@ -14,7 +14,8 @@ const isRevenueEligiblePayment = (payment: RevenuePayment): payment is RevenuePa
   payment.amountUsdCents > 0 &&
   !REVENUE_EXCLUDED_CHAIN_IDS.includes(payment.chainId);
 
-// Revenue-eligible batch revokes: not on a testnet and not sponsored (fees were waived)
+// Revenue-eligible batch revokes: not on a testnet and not sponsored (fees were waived). The queries in
+// ./revenue-queries additionally require a paid fee to be verified on chain before the row is loaded.
 const isRevenueEligibleBatchGroup = (group: BatchRevokeDayGroup): boolean => !group.isTestnet && group.sponsor === null;
 
 interface RevenuePayment {

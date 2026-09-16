@@ -22,6 +22,7 @@ const nextConfig = {
     qualities: [25, 50, 75, 100],
     unoptimized: process.env.NODE_ENV === 'development',
   },
+  allowedDevOrigins: ['10.0.2.2'], // Android Chrome localhost
   headers: async () => {
     // Add extra security headers to the admin pages and API endpoints
     const adminSecurityHeaders = [

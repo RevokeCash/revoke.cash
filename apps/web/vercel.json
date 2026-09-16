@@ -5,6 +5,10 @@
     {
       "path": "/api/cron/premium/payments/reconcile",
       "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/batch-revokes/verify-fee-payments",
+      "schedule": "*/5 * * * *"
     }
   ]
 }

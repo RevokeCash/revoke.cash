@@ -13,7 +13,12 @@ import { and, asc, eq, gt, gte, isNotNull, isNull, lt, notInArray, or, type SQL,
 // below are the query-side expression of the eligibility rules defined there.
 
 const batchRevokeRevenueConditions = (): SQL | undefined =>
-  and(eq(batchRevokes.isTestnet, false), isNull(batchRevokes.sponsor), gt(batchRevokes.feeUsdCents, 0));
+  and(
+    eq(batchRevokes.isTestnet, false),
+    isNull(batchRevokes.sponsor),
+    gt(batchRevokes.feeUsdCents, 0),
+    isNotNull(batchRevokes.feeVerifiedAt),
+  );
 
 const premiumRevenueConditions = (): SQL | undefined =>
   and(
@@ -104,7 +109,13 @@ export const getRevenueData = async (months: number): Promise<RevenueData> => {
         feeUsdCents: sql<number>`coalesce(sum(${batchRevokes.feeUsdCents}), 0)::int`,
       })
       .from(batchRevokes)
-      .where(gte(batchRevokes.timestamp, from))
+      // A paid batch enters the dashboard only once its fee transaction is verified on chain
+      .where(
+        and(
+          gte(batchRevokes.timestamp, from),
+          or(eq(batchRevokes.feeUsdCents, 0), isNotNull(batchRevokes.feeVerifiedAt)),
+        ),
+      )
       .groupBy(utcDayExpression, batchRevokes.chainId, batchRevokes.sponsor, batchRevokes.isTestnet),
   ]);
 

@@ -120,6 +120,13 @@
       "when": 1788642428655,
       "tag": "0016_indexer_spam_reason_balance",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1789471211685,
+      "tag": "0017_batch_revokes_fee_verification",
+      "breakpoints": true
     }
   ]
 }

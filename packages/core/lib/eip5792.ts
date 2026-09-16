@@ -42,7 +42,8 @@ export const mapContractTransactionRequestToEip5792Call = (
 export const mapTransactionRequestToEip5792Call = (transactionRequest: SendTransactionParameters): Eip5792Call => {
   return {
     to: transactionRequest.to!,
-    data: transactionRequest.data,
+    // TokenPocket (and potentially other wallets) bug out if the data field is left out
+    data: transactionRequest.data ?? '0x',
     value: transactionRequest.value,
   };
 };
@@ -54,7 +55,8 @@ export const mapWalletCallReceiptToTransactionSubmitted = (
   onUpdate?: OnUpdate,
 ): TransactionSubmitted => {
   const awaitConfirmationAndUpdate = async () => {
-    const receipt = await publicClient.getTransactionReceipt({ hash: walletCallReceipt.transactionHash });
+    // The wallet's node can be a block ahead of ours, so the receipt is polled for rather than fetched once
+    const receipt = await publicClient.waitForTransactionReceipt({ hash: walletCallReceipt.transactionHash });
     if (allowance && onUpdate) onUpdate(allowance, undefined);
     return receipt;
   };

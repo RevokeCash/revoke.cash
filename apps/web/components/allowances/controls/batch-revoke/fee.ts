@@ -1,23 +1,7 @@
-import { ChainId } from '@revoke.cash/core/chains/ids';
+import { FEE_SPONSORS } from '@revoke.cash/core/batch-revokes/sponsors';
 import { BATCH_REVOKE_FEE_USD_CENTS } from '@revoke.cash/core/constants';
 
 export const BATCH_REVOKE_FEE = BATCH_REVOKE_FEE_USD_CENTS / 100;
-
-export interface FeeSponsor {
-  name: string;
-  url?: string;
-}
-
-export const FEE_SPONSORS: Record<number, FeeSponsor> = {
-  [ChainId.Optimism]: {
-    name: 'Optimism Foundation',
-    url: 'https://www.optimism.io/',
-  },
-  [ChainId.Monad]: {
-    name: 'Monad Foundation',
-    url: 'https://www.monad.foundation/',
-  },
-};
 
 export const getFeeDollarAmount = (chainId: number, allowancesCount: number, isPremium?: boolean) => {
   // Premium users get unlimited batch revokes for free

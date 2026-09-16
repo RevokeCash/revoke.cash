@@ -35,8 +35,8 @@ export const IRON_OPTIONS: SessionOptions = {
   password: process.env.IRON_SESSION_PASSWORD!,
   ttl: 60 * 60 * 24,
   cookieOptions: {
-    secure: true, // Change this to false when locally testing on Safari
-    sameSite: 'none',
+    secure: true, // Change this to false when locally testing on Safari / Android Chrome
+    sameSite: 'none', // Change this to 'lax' when locally testing on Safari / Android Chrome
   },
 };
 
@@ -87,8 +87,8 @@ export const RateLimiters = {
     duration: 1,
   }),
   BATCH_REVOKE: new RateLimiterMemory({
-    points: 5,
-    duration: 1,
+    points: 10,
+    duration: 1 * 60,
   }),
   PREMIUM_READ: new RateLimiterMemory({
     points: 200,

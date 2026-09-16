@@ -85,7 +85,11 @@ export const wrapTransaction = ({
           });
         })
         .catch((reason) => {
-          updateTransaction(transactionKey, { status: 'reverted', error: reason?.message });
+          updateTransaction(transactionKey, {
+            status: 'reverted',
+            error: reason?.message,
+            transactionHash: transactionSubmitted.hash,
+          });
         });
 
       return transactionSubmitted;

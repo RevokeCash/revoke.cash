@@ -6,7 +6,7 @@ import {
   prepareRevokeAllowance,
   type TokenAllowanceData,
 } from '@revoke.cash/core/allowances';
-import { PREMIUM_BATCH_REVOKE_SPONSOR } from '@revoke.cash/core/constants';
+import { getBatchRevokeSponsor } from '@revoke.cash/core/batch-revokes/sponsors';
 import {
   type Eip5792Call,
   mapContractTransactionRequestToEip5792Call,
@@ -17,7 +17,7 @@ import { TransactionType } from '@revoke.cash/core/types';
 import { chunkArray } from '@revoke.cash/core/utils';
 import { isBatchSizeError, isNoFeeRequiredError } from '@revoke.cash/core/utils/errors';
 import { throwIfExcessiveGas } from '@revoke.cash/core/wallet';
-import { FEE_SPONSORS, isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
+import { isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { trackRevokeTransaction } from 'lib/allowances';
 import { recordBatchRevoke, trackBatchRevoke } from 'lib/allowances/batch-revoke';
 import { useTranslations } from 'next-intl';
@@ -134,8 +134,8 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
             allowancesChunk.map(async (allowance, index) => {
               const transactionKey = allowance ? getAllowanceKey(allowance) : `fee-payment-${chainId}-${address}`;
 
-              // Skip if already confirmed or pending
-              if (['confirmed', 'pending'].includes(getTransaction(transactionKey).status)) return;
+              // Skip if already confirmed or pending; the fee call is added anew to every batch, so its task always runs
+              if (allowance && ['confirmed', 'pending'].includes(getTransaction(transactionKey).status)) return;
 
               const transactionType = allowance ? TransactionType.REVOKE : TransactionType.FEE;
 
@@ -147,16 +147,15 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
                 const id = await chunkPromise;
                 const { receipts } = await walletClient.waitForCallsStatus({ id: id.id, pollingInterval: 1000 });
 
-                if (receipts?.length === 1) {
-                  return mapWalletCallReceiptToTransactionSubmitted(receipts[0], publicClient, allowance, onUpdate);
-                }
+                // A wallet that executed the whole batch in one transaction reports a single receipt for every call
+                const receipt = receipts?.length === 1 ? receipts[0] : receipts?.[index];
 
-                if (!receipts?.[index]) {
+                if (!receipt) {
                   console.log('receipts', receipts);
                   throw new Error(t('common.errors.messages.eip5792_batch_call_failed'));
                 }
 
-                return mapWalletCallReceiptToTransactionSubmitted(receipts[index], publicClient, allowance, onUpdate);
+                return mapWalletCallReceiptToTransactionSubmitted(receipt, publicClient, allowance, onUpdate);
               };
 
               const executeSingleTransaction = wrapTransaction({
@@ -183,11 +182,11 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
     }
 
     // TODO: This still tracks if all revokes/the full batch gets rejected
-    const sponsor = (isPremium ? PREMIUM_BATCH_REVOKE_SPONSOR : FEE_SPONSORS[chainId]?.name) ?? null;
+    const sponsor = getBatchRevokeSponsor(chainId, isPremium);
     trackBatchRevoke(chainId, address, allowancesToSubmit, feeDollarAmount, 'eip5792', sponsor);
     // If the fee payment is zero, we record the batch revoke without a transaction hash, if there is a fee, it gets recorded when the fee payment is submitted
     if (isZeroFeeDollarAmount(feeDollarAmount) && allowancesToSubmit.length > 1) {
-      recordBatchRevoke(chainId, null, address, feeDollarAmount, sponsor);
+      recordBatchRevoke(chainId, null, address, feeDollarAmount);
     }
   };
 

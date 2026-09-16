@@ -1,4 +1,5 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import { FEE_SPONSORS } from '@revoke.cash/core/batch-revokes/sponsors';
 import { getChainName } from '@revoke.cash/core/chains';
 import Href from 'components/common/Href';
 import RichText from 'components/common/RichText';
@@ -7,7 +8,7 @@ import { useNativeTokenPrice } from 'lib/hooks/ethereum/useNativeTokenPrice';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
-import { BATCH_REVOKE_FEE, FEE_SPONSORS } from './fee';
+import { BATCH_REVOKE_FEE } from './fee';
 
 interface Props {
   chainId: number;
