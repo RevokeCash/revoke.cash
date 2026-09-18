@@ -42,7 +42,9 @@ export const mapContractTransactionRequestToEip5792Call = (
 export const mapTransactionRequestToEip5792Call = (transactionRequest: SendTransactionParameters): Eip5792Call => {
   return {
     to: transactionRequest.to!,
-    data: transactionRequest.data,
+    // TokenPocket on Android bugs out when there is no data key present. At the same time, MetaMask does not allow '0x' as the data value.
+    // So we send a zero byte as the data value, this works with both wallets.
+    data: transactionRequest.data ?? '0x00',
     value: transactionRequest.value,
   };
 };
