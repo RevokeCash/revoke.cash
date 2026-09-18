@@ -42,8 +42,7 @@ export const mapContractTransactionRequestToEip5792Call = (
 export const mapTransactionRequestToEip5792Call = (transactionRequest: SendTransactionParameters): Eip5792Call => {
   return {
     to: transactionRequest.to!,
-    // TokenPocket (and potentially other wallets) bug out if the data field is left out
-    data: transactionRequest.data ?? '0x',
+    data: transactionRequest.data,
     value: transactionRequest.value,
   };
 };
