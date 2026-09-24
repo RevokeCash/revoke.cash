@@ -11,6 +11,7 @@ import Href from 'components/common/Href';
 import { useAdminLookup } from 'lib/hooks/admin/useAdminLookup';
 import type { Address } from 'viem';
 import AddressSubscriptionsCard from './AddressSubscriptionsCard';
+import ImpersonateButton from './ImpersonateButton';
 import IndexingHealthCard from './IndexingHealthCard';
 
 interface Props {
@@ -36,6 +37,7 @@ const AddressDiagnostic = ({ address }: Props) => {
           debank.com
           <ArrowUpRightIcon className="w-3 h-3" />
         </Href>
+        <ImpersonateButton address={address} className="ml-auto" />
       </div>
 
       {error && <p className="text-sm text-red-600 dark:text-red-400">{parseErrorMessage(error)}</p>}

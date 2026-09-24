@@ -1,6 +1,7 @@
 import SiweSessionRestorer from 'app/SiweSessionRestorer';
 import ThemeScript from 'app/ThemeScript';
 import AdminShell from 'components/admin/AdminShell';
+import ImpersonationBanner from 'components/admin/ImpersonationBanner';
 import ToastifyConfig from 'components/common/ToastifyConfig';
 import TopLoader from 'components/common/TopLoader';
 import { getServerAuthSession } from 'lib/api/auth';
@@ -51,6 +52,7 @@ const AdminLayout = async ({ children }: Props) => {
               <EthereumProvider>
                 <ColorThemeProvider>
                   <SiweSessionRestorer />
+                  <ImpersonationBanner />
                   <main className="w-full max-w-7xl mx-auto min-h-screen px-4 lg:px-8">
                     <AdminShell>{children}</AdminShell>
                   </main>

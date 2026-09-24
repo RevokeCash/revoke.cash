@@ -7,6 +7,8 @@ import type { Address } from 'viem';
 export interface AuthSession {
   hasApiSession: boolean;
   siweAddress: Address | null;
+  // True while the admin views the site as siweAddress; the connected wallet is then still the admin's
+  isImpersonating: boolean;
 }
 
 export const AUTH_SESSION_QUERY_KEY = ['auth', 'session'] as const;
@@ -15,6 +17,7 @@ export const ENSURE_API_SESSION_QUERY_KEY = ['auth', 'ensure-session'] as const;
 export const UNAUTHENTICATED_AUTH_SESSION: AuthSession = {
   hasApiSession: false,
   siweAddress: null,
+  isImpersonating: false,
 };
 
 // Establishes an anonymous API session before any own-site API request goes out

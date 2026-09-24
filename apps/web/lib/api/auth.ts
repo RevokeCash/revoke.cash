@@ -28,6 +28,8 @@ interface SiweWalletEntry {
 export interface RevokeSession {
   ip?: string;
   siwe?: SiweSessionData;
+  // Set while the admin views the site as another user; read routes then resolve to this address
+  impersonatedAddress?: Address;
 }
 
 export const IRON_OPTIONS: SessionOptions = {
@@ -120,6 +122,22 @@ export const storeSession = async (req: NextRequest, res: NextResponse, sessionU
   // Update the session with the provided sessionUpdate if provided
   session.siwe = sessionUpdate?.siwe;
 
+  // Any sign-in, session restore or anonymous login replaces the session identity, which ends impersonation
+  delete session.impersonatedAddress;
+
+  await session.save();
+};
+
+// Starts (address) or stops (null) viewing the site as another user; callers must verify the admin session first
+export const storeImpersonation = async (req: NextRequest, res: NextResponse, address: Address | null) => {
+  const session = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
+
+  if (address) {
+    session.impersonatedAddress = getAddress(address);
+  } else {
+    delete session.impersonatedAddress;
+  }
+
   await session.save();
 };
 
@@ -211,9 +229,12 @@ export const getAuthSessionByHeaders = async (headers: Headers, sealedSession?: 
     const requestIp = getClientIpFromHeaders(headers);
     if (!requestIp || requestIp !== session.ip) return UNAUTHENTICATED_AUTH_SESSION;
 
+    const impersonatedAddress = getImpersonatedAddress(session);
+
     return {
       hasApiSession: true,
-      siweAddress: session.siwe?.address ?? null,
+      siweAddress: impersonatedAddress ?? session.siwe?.address ?? null,
+      isImpersonating: Boolean(impersonatedAddress),
     };
   } catch {
     return UNAUTHENTICATED_AUTH_SESSION;
@@ -256,7 +277,11 @@ export async function authorizeRequest(
     requireSameOrigin(req);
   }
 
-  const siweAddress = await getAuthorizedSiweAddress(req, options.auth);
+  // Admin routes always act as the admin, so impersonation never applies to them
+  const siweAddress = options.requireAdmin
+    ? await requireAdminSession(req)
+    : await getAuthorizedSiweAddress(req, options.auth);
+
   if (options.rateLimiter) {
     await requireRateLimit(req, options.rateLimiter);
   }
@@ -267,10 +292,6 @@ export async function authorizeRequest(
     }
 
     await requireUltimateEntitlement(siweAddress);
-  }
-
-  if (options.requireAdmin) {
-    await requireAdminSession(req);
   }
 
   return { siweAddress };
@@ -313,17 +334,33 @@ const isAdminAddress = (address: Address): boolean => {
   }
 };
 
-const getAuthenticatedSiweSession = async (req: NextRequest): Promise<SiweSessionData | null> => {
+const isFreshAdminSiweSession = (siwe: SiweSessionData | undefined): boolean => {
+  if (!siwe || !isAdminAddress(siwe.address)) return false;
+  return Boolean(siwe.verifiedAt) && Date.now() - siwe.verifiedAt <= MAX_ADMIN_SESSION_AGE_MS;
+};
+
+// The impersonated address only counts while the underlying session is still a fresh admin session
+const getImpersonatedAddress = (session: RevokeSession): Address | null => {
+  if (!session.impersonatedAddress || !isFreshAdminSiweSession(session.siwe)) return null;
+  return session.impersonatedAddress;
+};
+
+const getAuthenticatedSession = async (req: NextRequest): Promise<RevokeSession | null> => {
   const sealedSession = req.cookies.get(IRON_OPTIONS.cookieName)?.value;
   if (!sealedSession) return null;
 
   try {
     const session = await unsealSession(sealedSession);
     if (!session.ip || session.ip !== getClientIpFromHeaders(req.headers)) return null;
-    return session.siwe ?? null;
+    return session;
   } catch {
     return null;
   }
+};
+
+const getAuthenticatedSiweSession = async (req: NextRequest): Promise<SiweSessionData | null> => {
+  const session = await getAuthenticatedSession(req);
+  return session?.siwe ?? null;
 };
 
 // Session cookies are sameSite 'none', so state-changing endpoints must reject cross-origin requests
@@ -347,12 +384,23 @@ export const requireApiSession = async (req: NextRequest) => {
 };
 
 export const requireSiweSession = async (req: NextRequest): Promise<Address> => {
-  const siwe = await getAuthenticatedSiweSession(req);
-  if (!siwe) {
+  const session = await getAuthenticatedSession(req);
+  if (!session?.siwe) {
     throw new ApiError(403, 'No SIWE session is active');
   }
 
-  return siwe.address;
+  // While impersonating, reads resolve to the impersonated user and writes are rejected outright, so the
+  // admin sees the account exactly as the user does without being able to change anything on their behalf
+  const impersonatedAddress = getImpersonatedAddress(session);
+  if (impersonatedAddress) {
+    if (MUTATING_HTTP_METHODS.includes(req.method)) {
+      throw new ApiError(403, 'Write actions are disabled while impersonating a user');
+    }
+
+    return impersonatedAddress;
+  }
+
+  return session.siwe.address;
 };
 
 export const requireRateLimit = async (

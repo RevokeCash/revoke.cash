@@ -10,7 +10,7 @@ import { useConnection } from 'wagmi';
 // switching between wallets does not prompt for a new signature every time
 const SiweSessionRestorer = () => {
   const { address: account } = useConnection();
-  const { siweAddress, isLoading } = useAuthSession();
+  const { siweAddress, isImpersonating, isLoading } = useAuthSession();
   const attemptedAccount = useRef<Address | null>(null);
 
   useEffect(() => {
@@ -20,11 +20,12 @@ const SiweSessionRestorer = () => {
       return;
     }
 
-    if (isLoading || siweAddress === account || attemptedAccount.current === account) return;
+    // Restoring the admin's own wallet session would end impersonation
+    if (isLoading || isImpersonating || siweAddress === account || attemptedAccount.current === account) return;
 
     attemptedAccount.current = account;
     restoreSiweSession(account);
-  }, [account, siweAddress, isLoading]);
+  }, [account, siweAddress, isImpersonating, isLoading]);
 
   return null;
 };

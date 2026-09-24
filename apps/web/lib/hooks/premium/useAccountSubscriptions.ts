@@ -8,8 +8,11 @@ import { useConnection } from 'wagmi';
 // data, and the derived selections the tabs need. The underlying query is deduplicated by TanStack
 // Query, so every tab can call this hook without refetching.
 export const useAccountSubscriptions = () => {
-  const { address: account } = useConnection();
-  const { siweAddress } = useAuthSession();
+  const { address: connectedAddress } = useConnection();
+  const { siweAddress, isImpersonating } = useAuthSession();
+
+  // While the admin impersonates a user, the account is that user rather than the admin's connected wallet
+  const account = isImpersonating ? (siweAddress ?? undefined) : connectedAddress;
   const isAuthenticated = Boolean(account && siweAddress && siweAddress === account);
 
   const { subscriptions, entitlements, isLoading, isError } = usePremiumSubscriptions(account!, isAuthenticated);

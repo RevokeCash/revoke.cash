@@ -25,6 +25,7 @@ export interface AuditActionDetails {
   admin_indexing_reset: { resetChainCount: number };
   admin_chain_indexing_reset: { resetAddressCount: number };
   admin_auto_revoke_action_retried: { actionId: string };
+  admin_impersonation_started: Record<string, never>;
 }
 
 export type AuditAction = keyof AuditActionDetails;
@@ -50,6 +51,7 @@ export const AUDIT_ACTIONS = [
   'admin_indexing_reset',
   'admin_chain_indexing_reset',
   'admin_auto_revoke_action_retried',
+  'admin_impersonation_started',
 ] as const satisfies readonly AuditAction[];
 
 // Compile-time check: errors if any AuditActionDetails key is missing from AUDIT_ACTIONS.

@@ -10,15 +10,17 @@ export const useAuthSession = () => {
   const { data, ...query } = useQuery({
     queryKey: AUTH_SESSION_QUERY_KEY,
     queryFn: () => ky.get('/api/auth/session').json<AuthSession>(),
-    ...(initialSession ? { initialData: initialSession } : {}),
     staleTime: 5 * MINUTE,
   });
-  const session = data ?? UNAUTHENTICATED_AUTH_SESSION;
+
+  const isServer = typeof window === 'undefined';
+  const session = (isServer ? initialSession : (data ?? initialSession)) ?? UNAUTHENTICATED_AUTH_SESSION;
 
   return {
     ...query,
     session,
     hasApiSession: session.hasApiSession,
     siweAddress: session.siweAddress,
+    isImpersonating: session.isImpersonating,
   };
 };

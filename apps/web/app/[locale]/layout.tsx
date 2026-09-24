@@ -3,6 +3,7 @@ import Analytics from 'app/Analytics';
 import CrispChat from 'app/CrispChat';
 import SiweSessionRestorer from 'app/SiweSessionRestorer';
 import ThemeScript from 'app/ThemeScript';
+import ImpersonationBanner from 'components/admin/ImpersonationBanner';
 import ToastifyConfig from 'components/common/ToastifyConfig';
 import TopLoader from 'components/common/TopLoader';
 import Footer from 'components/footer/Footer';
@@ -86,6 +87,7 @@ const MainLayout = async ({ children, params }: Props) => {
                   <CrispChat />
                   <div className="flex flex-col mx-auto min-h-screen">
                     <AnnouncementsContainer />
+                    <ImpersonationBanner />
                     <Header />
                     <main className="w-full grow">{children}</main>
                     <div className="flex flex-col justify-end">
