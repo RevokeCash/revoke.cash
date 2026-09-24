@@ -64,8 +64,8 @@
     "metamask_not_connected": "未连接 MetaMask",
     "metamask_required": "自动撤销需要 MetaMask。请连接 MetaMask 以使用此功能。",
     "permissions": {
-      "account_not_upgraded": "此钱包需在您的钱包中升级为智能账户，自动撤销才能执行。",
-      "account_not_upgraded_banner": "自动撤销在部分网络上暂时无法执行，因为需要先升级为智能账户。请查看下方的警告标识。",
+      "account_not_upgraded": "此钱包在该网络上不是 MetaMask 智能账户，因此自动撤销无法在此执行。请在 MetaMask 中升级它。如果其他钱包已将其升级，请先在该钱包中将其恢复为普通账户。",
+      "account_not_upgraded_banner": "自动撤销在部分网络上暂时无法执行，因为此钱包在这些网络上不是 MetaMask 智能账户。请查看下方的警告标识。",
       "connect_to_manage": "连接此钱包以管理其权限。",
       "decode_failed": "解码权限失败",
       "grant_description": "每个地址都必须通过 MetaMask 单独授予自动撤销权限。",

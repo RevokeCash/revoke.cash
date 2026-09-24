@@ -19,9 +19,17 @@ import { scheduleEventsReindex } from '@revoke.cash/core/indexer/register';
 import { deduplicateArray } from '@revoke.cash/core/utils';
 import { filterAsync } from '@revoke.cash/core/utils/promises';
 import { SECOND } from '@revoke.cash/core/utils/time';
-import { getAccountType } from '@revoke.cash/core/wallet';
 import { and, eq, getTableColumns, gt, inArray, isNull, notInArray, sql } from 'drizzle-orm';
-import { type Address, type Hex, isAddressEqual, recoverTypedDataAddress } from 'viem';
+import {
+  type Address,
+  ContractFunctionExecutionError,
+  ContractFunctionRevertedError,
+  ContractFunctionZeroDataError,
+  type Hex,
+  isAddressEqual,
+  parseAbi,
+  recoverTypedDataAddress,
+} from 'viem';
 import { ApiError } from '../utils/errors';
 import { type AutoRevokeSupportedChainId, PERMISSION_EXPIRY_SECONDS } from './config';
 
@@ -180,11 +188,34 @@ export const revokePermission = async (address: Address, chainId: number): Promi
   return { revokedCount: revokedRows.length };
 };
 
-// Note that existence of code does not prove the MetaMask implementation: a wallet delegated to another provider still fails at execution
+const DELEGATOR_ACCOUNT_ABI = parseAbi(['function delegationManager() view returns (address)']);
+
+// Existence of code does not prove the MetaMask implementation: a wallet delegated to another provider (e.g. Uniswap's
+// Calibur) has code but cannot execute redemptions from our DelegationManager. So the account is asked which
+// DelegationManager it accepts; an EOA returns nothing and a foreign implementation reverts.
 export const checkDelegatorAccountUpgraded = async (chainId: number, address: Address): Promise<boolean> => {
   const publicClient = createViemPublicClientForChain(chainId);
-  const accountType = await getAccountType(address, publicClient);
-  return accountType !== 'eoa';
+  const expectedDelegationManager = getSmartAccountsEnvironment(chainId).DelegationManager;
+
+  try {
+    const accountDelegationManager = await publicClient.readContract({
+      address,
+      abi: DELEGATOR_ACCOUNT_ABI,
+      functionName: 'delegationManager',
+    });
+    return isAddressEqual(accountDelegationManager, expectedDelegationManager);
+  } catch (error) {
+    if (isNotDelegatorError(error)) return false;
+    throw error;
+  }
+};
+
+// A revert or an empty return comes from the account itself; anything else is an RPC failure the caller handles.
+const isNotDelegatorError = (error: unknown): boolean => {
+  return (
+    error instanceof ContractFunctionExecutionError &&
+    (error.cause instanceof ContractFunctionRevertedError || error.cause instanceof ContractFunctionZeroDataError)
+  );
 };
 
 export const markPermissionAccountUpgraded = async (permissionId: string, accountUpgraded: boolean): Promise<void> => {

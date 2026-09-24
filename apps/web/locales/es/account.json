@@ -64,8 +64,8 @@
     "metamask_not_connected": "MetaMask no está conectado",
     "metamask_required": "La Revocación automática requiere MetaMask. Por favor, conéctate con MetaMask para usar esta función.",
     "permissions": {
-      "account_not_upgraded": "Esta cartera debe actualizarse a una smart account dentro de tu cartera para que la revocación automática pueda ejecutarse.",
-      "account_not_upgraded_banner": "La revocación automática aún no puede ejecutarse en algunas redes porque primero debe actualizarse a una smart account. Consulta los indicadores de advertencia más abajo.",
+      "account_not_upgraded": "Esta cartera no es una smart account de MetaMask en esta red, por lo que la revocación automática no puede ejecutarse aquí. Actualízala dentro de MetaMask. Si otra cartera ya la actualizó, primero vuelve a convertirla en una cuenta normal en esa cartera.",
+      "account_not_upgraded_banner": "La revocación automática aún no puede ejecutarse en algunas redes porque esta cartera no es una smart account de MetaMask en ellas. Consulta los indicadores de advertencia más abajo.",
       "connect_to_manage": "Conecta esta cartera para gestionar sus permisos.",
       "decode_failed": "No se pudo decodificar el permiso",
       "grant_description": "Cada dirección debe conceder individualmente el permiso de revocación automática a través de MetaMask.",

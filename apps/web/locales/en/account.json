@@ -64,8 +64,8 @@
     "metamask_not_connected": "MetaMask not connected",
     "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",
     "permissions": {
-      "account_not_upgraded": "This wallet needs to be upgraded to a smart account inside your wallet before Auto-Revoking can execute.",
-      "account_not_upgraded_banner": "Auto-Revoking cannot execute yet on some networks because it needs to be upgraded to a smart account first. See the warning indicators below.",
+      "account_not_upgraded": "This wallet is not a MetaMask smart account on this network, so Auto-Revoking cannot execute here. Upgrade it inside MetaMask. If another wallet already upgraded it, switch it back to a regular account in that wallet first.",
+      "account_not_upgraded_banner": "Auto-Revoking cannot execute yet on some networks because this wallet is not a MetaMask smart account there. See the warning indicators below.",
       "connect_to_manage": "Connect this wallet to manage its permissions.",
       "decode_failed": "Failed to decode permission",
       "grant_description": "Each address must individually grant auto-revoke permission via MetaMask.",

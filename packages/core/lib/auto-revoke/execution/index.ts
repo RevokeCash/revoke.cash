@@ -5,7 +5,7 @@ import { createViemPublicClientForChain, getViemChainConfig } from '@revoke.cash
 import { ADDRESS_ZERO } from '@revoke.cash/core/constants';
 import type { AutoRevokeActionTransaction } from '@revoke.cash/core/db/types/auto-revoke-transaction';
 import { getNativeTokenPriceUsd } from '@revoke.cash/core/prices';
-import { isRevertedError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { isRevertedError, parseErrorMessage, parseRevertDetail } from '@revoke.cash/core/utils/errors';
 import { DAY, MINUTE, SECOND } from '@revoke.cash/core/utils/time';
 import { isExcessiveGas } from '@revoke.cash/core/wallet';
 import {
@@ -174,7 +174,12 @@ const submitAction = async (action: Action, signers: ExecutorSigners): Promise<E
       detail: broadcastResult.detail,
     };
   } catch (error) {
-    const detail = parseErrorMessage(error);
+    const detail = parseRevertDetail(error);
+
+    if (isNoApprovalToRevokeError(detail)) {
+      await markActionFailure(action.id, { status: 'skipped', errorCode: 'allowance_not_found', errorDetail: detail });
+      return { submitted: false, reason: 'allowance_not_found', detail };
+    }
 
     if (isRevertedError(error)) {
       const { chainId, address } = action.observation;
@@ -610,6 +615,11 @@ const isTransactionReadyForReplacement = (transaction: SubmittedTransaction, isU
 
 const addGasLimitBuffer = (gas: bigint): bigint => {
   return (gas * 120n) / 100n;
+};
+
+// The ApprovalRevocationEnforcer reverts with this reason when the approval no longer exists at execution time
+const isNoApprovalToRevokeError = (errorDetail: string): boolean => {
+  return errorDetail.toLowerCase().includes('no-approval-to-revoke');
 };
 
 const convertNativeWeiToUsd = (

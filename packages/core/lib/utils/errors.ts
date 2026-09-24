@@ -1,4 +1,4 @@
-import { stringify } from 'viem';
+import { BaseError, decodeErrorResult, type Hex, isHex, stringify } from 'viem';
 
 // Base class for errors thrown by core that map to a specific HTTP response shape. Subclasses
 // own their HTTP status and response body; route handlers can catch the base class and serialize
@@ -323,6 +323,36 @@ export const parseErrorMessage = (error: any): string => {
   }
 
   return String(errorMessage);
+};
+
+// Some nodes (e.g. Ethereum mainnet) leave the revert reason out of the error message, so it is taken from the
+// revert data that viem keeps on the wrapped RPC error instead.
+export const parseRevertDetail = (error: unknown): string => {
+  const message = parseErrorMessage(error);
+  const revertData = getRevertData(error);
+  if (!revertData) return message;
+
+  const reason = decodeRevertReason(revertData);
+  return message.includes(reason) ? message : `${message}: ${reason}`;
+};
+
+const getRevertData = (error: unknown): Hex | null => {
+  if (!(error instanceof BaseError)) return null;
+  const errorWithData = error.walk(hasRevertData) as { data: Hex } | null;
+  return errorWithData && errorWithData.data !== '0x' ? errorWithData.data : null;
+};
+
+const hasRevertData = (candidate: unknown): boolean => isHex((candidate as { data?: unknown })?.data);
+
+// Error(string) and Panic(uint256) decode without an ABI; custom errors are kept as raw data
+const decodeRevertReason = (revertData: Hex): string => {
+  try {
+    const decoded = decodeErrorResult({ abi: [], data: revertData });
+    if (decoded.errorName === 'Error') return String(decoded.args?.[0]);
+    return `${decoded.errorName}(${decoded.args?.join(', ') ?? ''})`;
+  } catch {
+    return revertData;
+  }
 };
 
 export const stringifyError = (error: any, indent?: number): string => {
