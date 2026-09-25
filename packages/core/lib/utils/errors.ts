@@ -1,3 +1,4 @@
+import { REVERT_ERRORS_ABI } from '@revoke.cash/core/abis';
 import { BaseError, decodeErrorResult, type Hex, isHex, stringify } from 'viem';
 
 // Base class for errors thrown by core that map to a specific HTTP response shape. Subclasses
@@ -344,10 +345,10 @@ const getRevertData = (error: unknown): Hex | null => {
 
 const hasRevertData = (candidate: unknown): boolean => isHex((candidate as { data?: unknown })?.data);
 
-// Error(string) and Panic(uint256) decode without an ABI; custom errors are kept as raw data
+// Errors outside REVERT_ERRORS_ABI are kept as raw data
 const decodeRevertReason = (revertData: Hex): string => {
   try {
-    const decoded = decodeErrorResult({ abi: [], data: revertData });
+    const decoded = decodeErrorResult({ abi: REVERT_ERRORS_ABI, data: revertData });
     if (decoded.errorName === 'Error') return String(decoded.args?.[0]);
     return `${decoded.errorName}(${decoded.args?.join(', ') ?? ''})`;
   } catch {

@@ -32,6 +32,7 @@
         "per_action_cap": "预估费用超过单次撤销上限，正在等待。",
         "queued": "等待执行中。",
         "subscription_inactive": "正在等待生效的订阅来覆盖此钱包。",
+        "token_rejects_revoke": "代币合约拒绝撤销，因此任何人都无法撤销此授权。",
         "transaction_reverted": "撤销交易已在链上回滚。",
         "transient_error": "发生临时错误，稍后将重试。"
       },
@@ -70,8 +71,9 @@
       "decode_failed": "解码权限失败",
       "grant_description": "每个地址都必须通过 MetaMask 单独授予自动撤销权限。",
       "grant_failed": "授予自动撤销权限失败。",
+      "granted_from_other_account": "MetaMask 从 {grantedAddress} 授予了此权限，但当前连接的账户是 {connectedAddress}。请从当前连接的账户授予权限。",
       "networks_enabled": "已启用 {enabled}/{total} 个网络",
-      "no_active_permission_returned": "未返回有效权限",
+      "no_active_permission_returned": "MetaMask 未返回有效的自动撤销权限。请重试，如果问题仍然存在，请更新 MetaMask。",
       "revoke_failed": "撤销自动撤销权限失败。",
       "revoke_transaction_reverted": "停用该权限的交易在链上执行失败。请从钱包同步后重试。",
       "sync": "从钱包同步",

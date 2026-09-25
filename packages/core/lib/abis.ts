@@ -171,3 +171,59 @@ export const WARM_XYZ_ABI = parseAbi([
   'function setHotWallet(address hotWalletAddress, uint256 expirationTimestamp, bool lockHotWalletAddress) external',
   'event HotWalletChanged(address coldWallet, address from, address to, uint256 expirationTimestamp)',
 ]);
+
+// Errors a revoke can hit, so revert data decodes to a name instead of raw bytes
+export const REVERT_ERRORS_ABI = parseAbi([
+  // Solidity built-ins behind require(condition, "reason") and arithmetic or assert failures
+  'error Error(string reason)',
+  'error Panic(uint256 code)',
+  // MetaMask delegation framework (DelegationManager and EIP7702StatelessDeleGator)
+  'error CannotUseADisabledDelegation()',
+  'error InvalidDelegate()',
+  'error InvalidDelegator()',
+  'error InvalidAuthority()',
+  'error InvalidEOASignature()',
+  'error InvalidERC1271Signature()',
+  'error EmptySignature()',
+  'error BatchDataLengthMismatch()',
+  'error EnforcedPause()',
+  'error ExecutionFailed()',
+  'error NotDelegationManager()',
+  'error NotEntryPoint()',
+  'error NotEntryPointOrSelf()',
+  'error NotSelf()',
+  'error UnauthorizedCallContext()',
+  'error UnsupportedCallType(bytes1 callType)',
+  'error UnsupportedExecType(bytes1 execType)',
+  'error ECDSAInvalidSignature()',
+  'error ECDSAInvalidSignatureLength(uint256 length)',
+  'error ECDSAInvalidSignatureS(bytes32 s)',
+  // OpenSea operator filter registry
+  'error AddressFiltered(address filtered)',
+  'error CodeHashFiltered(address account, bytes32 codeHash)',
+  'error OperatorNotAllowed(address operator)',
+  // OpenZeppelin 5 token and access errors
+  'error ERC20InvalidApprover(address approver)',
+  'error ERC20InvalidSpender(address spender)',
+  'error ERC721InvalidApprover(address approver)',
+  'error ERC721InvalidOperator(address operator)',
+  'error ERC721NonexistentToken(uint256 tokenId)',
+  'error ERC721InvalidOwner(address owner)',
+  'error ERC721IncorrectOwner(address sender, uint256 tokenId, address owner)',
+  'error ERC1155InvalidApprover(address approver)',
+  'error ERC1155InvalidOperator(address operator)',
+  'error OwnableUnauthorizedAccount(address account)',
+  'error AccessControlUnauthorizedAccount(address account, bytes32 neededRole)',
+  'error ReentrancyGuardReentrantCall()',
+  // ERC721A
+  'error ApprovalCallerNotOwnerNorApproved()',
+  'error ApprovalQueryForNonexistentToken()',
+  'error OwnerQueryForNonexistentToken()',
+  'error ApproveToCaller()',
+  // Solady ERC721 and ERC20
+  'error NotOwnerNorApproved()',
+  'error TokenDoesNotExist()',
+  'error Permit2AllowanceIsFixedAtInfinity()',
+  // Uniswap Calibur (EIP-7702 account implementation) fallback
+  'error FnSelectorNotRecognized()',
+]);

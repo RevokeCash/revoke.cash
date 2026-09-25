@@ -49,6 +49,7 @@ export type ActionErrorCode =
   | 'transient_error'
   | 'nonce_consumed'
   | 'execution_failed'
+  | 'token_rejects_revoke'
   | 'transaction_reverted';
 
 export interface ActionFailure {

@@ -32,6 +32,7 @@
         "per_action_cap": "Waiting because the estimated cost exceeds the per-revoke limit.",
         "queued": "Waiting to be executed.",
         "subscription_inactive": "Waiting for an active subscription to cover this wallet.",
+        "token_rejects_revoke": "The token contract rejects the revoke, so nobody can revoke this approval.",
         "transaction_reverted": "The revoke transaction reverted on-chain.",
         "transient_error": "A temporary error occurred; this will be retried."
       },
@@ -70,8 +71,9 @@
       "decode_failed": "Failed to decode permission",
       "grant_description": "Each address must individually grant auto-revoke permission via MetaMask.",
       "grant_failed": "Failed to grant auto-revoke permission.",
+      "granted_from_other_account": "MetaMask granted this permission from {grantedAddress}, but {connectedAddress} is connected. Grant the permission from the connected account.",
       "networks_enabled": "{enabled}/{total} networks enabled",
-      "no_active_permission_returned": "No active permission returned",
+      "no_active_permission_returned": "MetaMask did not return a valid auto-revoke permission. Try again, and update MetaMask if the problem persists.",
       "revoke_failed": "Failed to revoke auto-revoke permission.",
       "revoke_transaction_reverted": "The transaction to disable the permission failed onchain. Sync from wallet and try again.",
       "sync": "Sync from wallet",

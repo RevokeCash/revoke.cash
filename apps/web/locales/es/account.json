@@ -32,6 +32,7 @@
         "per_action_cap": "A la espera porque el coste estimado supera el límite por revocación.",
         "queued": "A la espera de que se ejecute.",
         "subscription_inactive": "A la espera de una suscripción activa que cubra esta cartera.",
+        "token_rejects_revoke": "El contrato del token rechaza la revocación, por lo que nadie puede revocar esta aprobación.",
         "transaction_reverted": "La transacción de revocación se ha revertido en la cadena de bloques.",
         "transient_error": "Se ha producido un error temporal; se volverá a intentar."
       },
@@ -70,8 +71,9 @@
       "decode_failed": "No se pudo decodificar el permiso",
       "grant_description": "Cada dirección debe conceder individualmente el permiso de revocación automática a través de MetaMask.",
       "grant_failed": "No se ha podido conceder el permiso de revocación automática.",
+      "granted_from_other_account": "MetaMask ha concedido este permiso desde {grantedAddress}, pero la cuenta conectada es {connectedAddress}. Concede el permiso desde la cuenta conectada.",
       "networks_enabled": "{enabled}/{total} redes habilitadas",
-      "no_active_permission_returned": "No se ha devuelto ningún permiso activo",
+      "no_active_permission_returned": "MetaMask no ha devuelto un permiso de revocación automática válido. Inténtalo de nuevo y actualiza MetaMask si el problema persiste.",
       "revoke_failed": "No se ha podido revocar el permiso de revocación automática.",
       "revoke_transaction_reverted": "La transacción para desactivar el permiso se ha revertido en la cadena de bloques. Sincroniza desde la cartera y vuelve a intentarlo.",
       "sync": "Sincronizar desde la cartera",

@@ -269,11 +269,12 @@ export const markPermissionRevoked = async (permissionId: string): Promise<void>
     .where(and(eq(autoRevokePermissions.id, permissionId), isNull(autoRevokePermissions.revokedAt)));
 };
 
-export const buildPermissionRequest = (chainId: number): PermissionRequestParameter => {
+export const buildPermissionRequest = (chainId: number, from: Address): PermissionRequestParameter => {
   const expiry = Math.floor(Date.now() / 1000) + PERMISSION_EXPIRY_SECONDS;
 
   return {
     chainId,
+    from,
     expiry,
     to: AUTO_REVOKE_DELEGATION_ADDRESS,
     permission: {
@@ -315,17 +316,24 @@ export const filterActivePermissions = async (
 };
 
 export const isValidAutoRevokePermission = (permission: WalletPermissionResult, delegator: Address): boolean => {
+  if (!isAutoRevokePermission(permission)) return false;
+
+  const permissionDelegator = getPermissionDelegator(permission);
+  return !!permissionDelegator && isAddressEqual(permissionDelegator, delegator);
+};
+
+export const isAutoRevokePermission = (permission: WalletPermissionResult): boolean => {
   if (permission.permission?.type !== AUTO_REVOKE_PERMISSION_TYPE) return false;
   if (permission.permission.data.erc20Approve !== true) return false;
   if (permission.permission.data.erc721Approve !== true) return false;
   if (permission.permission.data.erc721SetApprovalForAll !== true) return false;
   if (permission.permission.data.permit2Approve !== true) return false;
   if (!permission.to || !isAddressEqual(permission.to, AUTO_REVOKE_DELEGATION_ADDRESS)) return false;
+  return true;
+};
 
-  const decoded = decodeDelegations(permission.context)?.[0];
-  if (!decoded) return false;
-
-  return isAddressEqual(decoded.delegator, delegator);
+export const getPermissionDelegator = (permission: WalletPermissionResult): Address | null => {
+  return decodeDelegations(permission.context)?.[0]?.delegator ?? null;
 };
 
 export const isPermissionEnabledOnChain = async (

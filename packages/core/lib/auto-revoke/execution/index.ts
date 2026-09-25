@@ -194,6 +194,16 @@ const submitAction = async (action: Action, signers: ExecutorSigners): Promise<E
         return { submitted: false, reason: 'account_not_upgraded', detail };
       }
 
+      const tokenRejection = await getTokenRevokeRejection(action);
+      if (tokenRejection) {
+        await markActionFailure(action.id, {
+          status: 'failed',
+          errorCode: 'token_rejects_revoke',
+          errorDetail: tokenRejection,
+        });
+        return { submitted: false, reason: 'token_rejects_revoke', detail: tokenRejection };
+      }
+
       await markActionFailure(action.id, { status: 'failed', errorCode: 'execution_failed', errorDetail: detail });
       return { submitted: false, reason: 'execution_failed', detail };
     }
@@ -438,14 +448,13 @@ const getRevokeCall = (action: Action): ExecutionStruct => {
       };
     case AllowanceType.PERMIT2:
       if (observation.permit2Address === null) throw new Error('Permit2 approval is missing Permit2 address');
-      if (observation.expiration === null) throw new Error('Permit2 approval is missing expiration');
       return {
         value: 0n,
         target: observation.permit2Address,
         callData: encodeFunctionData({
           abi: PERMIT2_ABI,
           functionName: 'approve',
-          args: [observation.tokenAddress, observation.spenderAddress, 0n, observation.expiration],
+          args: [observation.tokenAddress, observation.spenderAddress, 0n, 0],
         }),
       };
   }
@@ -620,6 +629,20 @@ const addGasLimitBuffer = (gas: bigint): bigint => {
 // The ApprovalRevocationEnforcer reverts with this reason when the approval no longer exists at execution time
 const isNoApprovalToRevokeError = (errorDetail: string): boolean => {
   return errorDetail.toLowerCase().includes('no-approval-to-revoke');
+};
+
+// Simulates the revoke call from the owner's own address. A revert there means the token contract rejects the
+// revoke for everyone (e.g. soulbound tokens or operator filters), so the failure is not ours to retry or fix.
+const getTokenRevokeRejection = async (action: Action): Promise<string | null> => {
+  const publicClient = createViemPublicClientForChain(action.observation.chainId);
+  const revokeCall = getRevokeCall(action);
+
+  try {
+    await publicClient.call({ account: action.observation.address, to: revokeCall.target, data: revokeCall.callData });
+    return null;
+  } catch (error) {
+    return isRevertedError(error) ? parseRevertDetail(error) : null;
+  }
 };
 
 const convertNativeWeiToUsd = (
