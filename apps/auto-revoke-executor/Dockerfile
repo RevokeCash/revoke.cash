@@ -2,6 +2,10 @@
 
 FROM node:22-slim
 
+# The slim image has no OS certificate store (Node ships its own), but native binaries such as the HyperSync client
+# read the OS store. The executor does not call HyperSync today, but it is in the image, so keep this in line with the indexer.
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*
+
 RUN corepack enable
 WORKDIR /app
 
