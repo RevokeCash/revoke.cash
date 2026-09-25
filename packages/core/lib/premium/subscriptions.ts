@@ -34,6 +34,7 @@ export interface SubscriptionPayment {
   planName: string;
   daysCredited: number;
   isComplimentary: boolean;
+  grantReason: string | null;
   refundRequest: SubscriptionPaymentRefundRequest | null;
 }
 
@@ -134,6 +135,7 @@ export const getOwnerSubscriptions = async (ownerAddress: Address): Promise<Prem
           confirmedAt: true,
           grantedBy: true,
           grantedDurationDays: true,
+          grantReason: true,
         },
         with: {
           plan: { columns: { id: true, name: true, durationDays: true } },
@@ -167,6 +169,7 @@ export const getOwnerSubscriptions = async (ownerAddress: Address): Promise<Prem
         planName: payment.plan.name,
         daysCredited: payment.grantedDurationDays ?? payment.plan.durationDays,
         isComplimentary: payment.grantedBy !== null,
+        grantReason: payment.grantReason,
         refundRequest: refundRequest
           ? {
               refundAmountUsdCents: refundRequest.refundAmountUsdCents,
