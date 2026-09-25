@@ -11,6 +11,12 @@ const veeFriendsConnector = toPrivyWalletConnector({
   iconUrl: '/assets/images/vendor/wallets/veefriends.svg',
 });
 
+const glyphConnector = toPrivyWalletConnector({
+  id: 'cly38x0w10ac945q9yg9sm71i',
+  name: 'Glyph',
+  iconUrl: '/assets/images/vendor/wallets/glyph.png',
+});
+
 export const connectors = [
   safe({ debug: false }),
   injected(),
@@ -32,6 +38,7 @@ export const connectors = [
   coinbaseWallet({ appName: 'Revoke.cash' }),
   abstractWalletConnector(),
   veeFriendsConnector,
+  glyphConnector,
 ];
 
 export const wagmiConfig = createConfig({
