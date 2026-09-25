@@ -54,7 +54,8 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
         try {
           await batchAtomic.revoke(feeDollarAmount);
         } catch (error) {
-          // Fall back to queued transactions if the user rejected the account upgrade
+          // Fall back to queued transactions if the account upgrade was rejected, by the user or by the wallet
+          // (e.g. MetaMask refuses to upgrade hardware wallet accounts, but still reports EIP5792 support for them)
           if (isAccountUpgradeRejectionError(error)) {
             await batchQueued.revoke(feeDollarAmount);
             return;

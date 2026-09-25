@@ -1,5 +1,6 @@
 'use client';
 
+import { supportsAtomicBatch } from '@revoke.cash/core/eip5792';
 import { isNullish } from '@revoke.cash/core/utils';
 import { useAccountCapabilities } from 'lib/hooks/ethereum/useAccountCapabilities';
 import type { Capabilities } from 'viem';
@@ -25,10 +26,7 @@ export const useAutoRevokeSupport = () => {
 
 // The "atomic" capability is the one MetaMask withholds for accounts that cannot upgrade (e.g. hardware walletaccounts)
 const supportsAtomicBatchOnAnyChain = (capabilities: Capabilities): boolean => {
-  return Object.values(capabilities).some((chainCapabilities) => {
-    const atomicStatus = chainCapabilities?.atomic?.status;
-    return atomicStatus === 'supported' || atomicStatus === 'ready';
-  });
+  return Object.values(capabilities).some((chainCapabilities) => supportsAtomicBatch(chainCapabilities));
 };
 
 const getSupportStatus = (supportsErc7715: boolean, supportsSmartAccount: boolean): AutoRevokeSupportStatus => {

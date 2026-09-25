@@ -17,7 +17,7 @@ export const walletSupportsEip5792 = async (walletClient: WalletClient, chainId:
     const capabilities = (await walletClient.getCapabilities()) as Capabilities;
     console.log('Wallet supports EIP5792:', capabilities);
 
-    if (capabilities[chainId]) return true;
+    if (supportsAtomicBatch(capabilities[chainId])) return true;
 
     console.log(`Wallet does not support EIP5792 on chain ${chainId}`);
     return false;
@@ -25,6 +25,11 @@ export const walletSupportsEip5792 = async (walletClient: WalletClient, chainId:
     console.log('Wallet does not support EIP5792');
     return false;
   }
+};
+
+export const supportsAtomicBatch = (chainCapabilities?: Capabilities): boolean => {
+  const atomicStatus = chainCapabilities?.atomic?.status;
+  return atomicStatus === 'supported' || atomicStatus === 'ready';
 };
 
 export const mapContractTransactionRequestToEip5792Call = (

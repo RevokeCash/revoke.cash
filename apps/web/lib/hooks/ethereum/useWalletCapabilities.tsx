@@ -1,4 +1,4 @@
-import { isNullish } from '@revoke.cash/core/utils';
+import { supportsAtomicBatch } from '@revoke.cash/core/eip5792';
 import { useMemo } from 'react';
 import { useAccountCapabilities } from './useAccountCapabilities';
 
@@ -7,7 +7,7 @@ export const useWalletCapabilities = (chainId: number) => {
 
   const supportsEip5792 = useMemo(() => {
     if (isLoading) return null;
-    return !isNullish(capabilities?.[chainId]);
+    return supportsAtomicBatch(capabilities?.[chainId]);
   }, [isLoading, capabilities, chainId]);
 
   return { isLoading, capabilities, supportsEip5792 };

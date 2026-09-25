@@ -64,6 +64,9 @@ export const isAccountUpgradeRejectionError = (error?: string | any): boolean =>
 
   const lowercaseMessage = error?.toLowerCase();
   if (lowercaseMessage?.includes('user rejected account upgrade')) return true;
+  if (lowercaseMessage?.includes('rejected the upgrade')) return true; // viem message for EIP-5792 error code 5750
+  if (lowercaseMessage?.includes('upgrade not supported on account')) return true; // MetaMask hardware wallet accounts
+  if (lowercaseMessage?.includes('upgrade disabled by the user')) return true; // MetaMask with smart accounts turned off
   return false;
 };
 

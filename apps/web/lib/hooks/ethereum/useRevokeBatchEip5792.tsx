@@ -12,6 +12,7 @@ import {
   mapContractTransactionRequestToEip5792Call,
   mapTransactionRequestToEip5792Call,
   mapWalletCallReceiptToTransactionSubmitted,
+  supportsAtomicBatch,
 } from '@revoke.cash/core/eip5792';
 import { TransactionType } from '@revoke.cash/core/types';
 import { chunkArray } from '@revoke.cash/core/utils';
@@ -213,11 +214,9 @@ const SPONSORSHIP_POLICIES = JSON.parse(process.env.NEXT_PUBLIC_CANDIDE_SPONSORS
 const CANDIDE_API_KEY = process.env.NEXT_PUBLIC_CANDIDE_API_KEY;
 
 const getPaymasterDetails = (capabilities: Capabilities, chainId: number) => {
-  const atomicStatus = capabilities[chainId]?.atomic?.status;
-  const supportsAtomic = atomicStatus === 'supported' || atomicStatus === 'ready';
   const supportsPaymaster = capabilities[chainId]?.paymasterService?.supported === true;
 
-  const includePaymaster = supportsAtomic && supportsPaymaster && Boolean(CANDIDE_API_KEY);
+  const includePaymaster = supportsAtomicBatch(capabilities[chainId]) && supportsPaymaster && Boolean(CANDIDE_API_KEY);
   if (!includePaymaster) return null;
 
   const sponsorshipPolicyId = SPONSORSHIP_POLICIES[chainId];
