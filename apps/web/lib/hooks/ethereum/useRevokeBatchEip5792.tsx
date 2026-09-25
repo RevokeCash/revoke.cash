@@ -23,8 +23,7 @@ import { trackRevokeTransaction } from 'lib/allowances';
 import { recordBatchRevoke, trackBatchRevoke } from 'lib/allowances/batch-revoke';
 import { useTranslations } from 'next-intl';
 import PQueue from 'p-queue';
-import { useCallback, useRef } from 'react';
-import type { Capabilities, EstimateContractGasParameters, Hash } from 'viem'; // viem has an issue with typing the capability. Until they fix it, we are manually importing it.
+import type { Capabilities, EstimateContractGasParameters, Hash, TransactionReceipt } from 'viem'; // viem has an issue with typing the capability. Until they fix it, we are manually importing it.
 import { usePublicClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddress } from '../page-context/AddressIdentityContext';
@@ -46,18 +45,16 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
   const { ensureWalletClient } = useEnsureWalletClient();
 
-  const revokeQueueRef = useRef<PQueue | null>(null);
-
   const revoke = async (feeDollarAmount: string) => {
     // One queue per revoke invocation; retries with a smaller batch size reuse the same queue
-    // The queued tasks only track the status of already-submitted batches, so they can run concurrently
-    const revokeQueue = new PQueue({ concurrency: 50, interval: 100, intervalCap: 1 });
-    revokeQueueRef.current = revokeQueue;
+    // A wallet that executes the calls as separate transactions gives every call its own receipt to wait for, so
+    // the queue spaces out those receipt requests. A single-transaction batch has one receipt request, sent at once.
+    const transactionReceiptQueue = new PQueue({ concurrency: 50, interval: 100, intervalCap: 1 });
 
-    return executeRevoke(revokeQueue, feeDollarAmount, Number.POSITIVE_INFINITY);
+    return executeRevoke(transactionReceiptQueue, feeDollarAmount, Number.POSITIVE_INFINITY);
   };
 
-  const executeRevoke = async (revokeQueue: PQueue, feeDollarAmount: string, maxBatchSize: number) => {
+  const executeRevoke = async (transactionReceiptQueue: PQueue, feeDollarAmount: string, maxBatchSize: number) => {
     const walletClient = await ensureWalletClient(chainId);
 
     // Do not revoke allowances that are already confirmed, or that are already pending
@@ -129,6 +126,22 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
             ...getPaymasterDetails(walletCapabilities, chainId),
           });
 
+          const callsStatusPromise = chunkPromise.then(({ id }) =>
+            walletClient.waitForCallsStatus({ id, pollingInterval: 1000 }),
+          );
+
+          const transactionReceiptPromises = new Map<Hash, Promise<TransactionReceipt>>();
+          const waitForTransactionReceipt = (transactionHash: Hash) => {
+            if (!transactionReceiptPromises.has(transactionHash)) {
+              const transactionReceiptPromise = transactionReceiptQueue.add(() =>
+                publicClient.waitForTransactionReceipt({ hash: transactionHash }),
+              );
+              transactionReceiptPromises.set(transactionHash, transactionReceiptPromise);
+            }
+
+            return transactionReceiptPromises.get(transactionHash)!;
+          };
+
           const allowancesChunk = allowanceChunks[chunkIndex];
 
           await Promise.all(
@@ -145,8 +158,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
                 : (transactionHash: Hash) => trackFeePaid(chainId, address, feeDollarAmount, transactionHash);
 
               const executeTransaction = async () => {
-                const id = await chunkPromise;
-                const { receipts } = await walletClient.waitForCallsStatus({ id: id.id, pollingInterval: 1000 });
+                const { receipts } = await callsStatusPromise;
 
                 // A wallet that executed the whole batch in one transaction reports a single receipt for every call
                 const receipt = receipts?.length === 1 ? receipts[0] : receipts?.[index];
@@ -156,7 +168,12 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
                   throw new Error(t('common.errors.messages.eip5792_batch_call_failed'));
                 }
 
-                return mapWalletCallReceiptToTransactionSubmitted(receipt, publicClient, allowance, onUpdate);
+                return mapWalletCallReceiptToTransactionSubmitted(
+                  receipt,
+                  waitForTransactionReceipt,
+                  allowance,
+                  onUpdate,
+                );
               };
 
               const executeSingleTransaction = wrapTransaction({
@@ -167,7 +184,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
                 trackTransaction,
               });
 
-              await revokeQueue.add(executeSingleTransaction);
+              await executeSingleTransaction();
             }),
           );
         }),
@@ -176,7 +193,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
       if (isBatchSizeError(error)) {
         const newMaxBatchSize = getNewMaxBatchSize(maxBatchSize, callsToSubmit.length);
         console.log((error as Error).message, 'reducing batch size to', newMaxBatchSize);
-        return executeRevoke(revokeQueue, feeDollarAmount, newMaxBatchSize);
+        return executeRevoke(transactionReceiptQueue, feeDollarAmount, newMaxBatchSize);
       }
 
       throw error;
@@ -191,11 +208,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
     }
   };
 
-  const pause = useCallback(() => {
-    revokeQueueRef.current?.clear();
-  }, []);
-
-  return { revoke, pause };
+  return { revoke };
 };
 
 const getNewMaxBatchSize = (maxBatchSize: number, totalCalls: number) => {

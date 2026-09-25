@@ -2,8 +2,9 @@ import type { TransactionSubmitted } from '@revoke.cash/core/types';
 import type {
   Call,
   Capabilities,
-  PublicClient,
+  Hash,
   SendTransactionParameters,
+  TransactionReceipt,
   WalletCallReceipt,
   WalletClient,
   WriteContractParameters,
@@ -56,13 +57,13 @@ export const mapTransactionRequestToEip5792Call = (transactionRequest: SendTrans
 
 export const mapWalletCallReceiptToTransactionSubmitted = (
   walletCallReceipt: WalletCallReceipt<bigint, 'success' | 'reverted'>,
-  publicClient: PublicClient,
+  waitForTransactionReceipt: (transactionHash: Hash) => Promise<TransactionReceipt>,
   allowance?: TokenAllowanceData,
   onUpdate?: OnUpdate,
 ): TransactionSubmitted => {
   const awaitConfirmationAndUpdate = async () => {
     // The wallet's node can be a block ahead of ours, so the receipt is polled for rather than fetched once
-    const receipt = await publicClient.waitForTransactionReceipt({ hash: walletCallReceipt.transactionHash });
+    const receipt = await waitForTransactionReceipt(walletCallReceipt.transactionHash);
     if (allowance && onUpdate) onUpdate(allowance, undefined);
     return receipt;
   };

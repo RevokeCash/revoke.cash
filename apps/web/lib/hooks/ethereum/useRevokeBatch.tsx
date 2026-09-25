@@ -10,7 +10,7 @@ import {
 } from '@revoke.cash/core/utils/errors';
 import { getFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
 import { isTransactionStatusLoadingState, useTransactionStore } from '../../stores/transaction-store';
@@ -75,10 +75,9 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
     }
   });
 
-  const pause = useCallback(() => {
-    batchAtomic.pause();
-    batchQueued.pause();
-  }, [batchAtomic, batchQueued]);
+  // Only the queued path pauses: the EIP-5792 path only tracks a bundle that the wallet already has, so it keeps
+  // tracking after the modal closes and the revoked allowances still disappear from the list
+  const pause = batchQueued.pause;
 
   // biome-ignore lint/correctness/useExhaustiveDependencies(results): updated results mean the memo is stale
   const relevantResults = useMemo(() => {
