@@ -36,9 +36,9 @@
       "description": "Tu cartera tiene aprobaciones de tokens existentes, lo que sugiere que no es una Cold Wallet. Una Cold Wallet se trata como una caja fuerte y solo debe utilizarse para enviar o recibir tokens, o para iniciar sesión en aplicaciones cuando sea necesario.<br></br><br></br>Para poder optar a este token Soulbound, revoca tus aprobaciones de tokens o traslada tus objetos de valor a una Cold Wallet nueva.",
       "title": "❌ Aprobaciones activas detectadas"
     },
-    "no_tokens": {
-      "description": "Para poder optar al Cold Storage SBT, debes tener un Pudgy Penguin o un Lil Pudgy. Introduce una cartera diferente o mantente atento, ya que tenemos previsto abrir esta iniciativa a más comunidades NFT.",
-      "title": "❌ No posees ningún NFT de Pudgy Penguins"
+    "inactive_wallet": {
+      "description": "Para poder optar al Cold Storage SBT, tu cartera debe haber enviado al menos una transacción en Ethereum o tener saldo de ETH. Introduce una cartera diferente para comprobar si cumple los requisitos.",
+      "title": "❌ Cartera no apta"
     },
     "quiz_success": {
       "description": "¡Puntuación perfecta! 🧊 Para reclamar tu Cold Storage SBT, por favor confirma que comprendes la importancia de utilizar una cartera de hardware y los riesgos de utilizar una hot wallet.",

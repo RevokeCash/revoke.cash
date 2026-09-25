@@ -49,7 +49,7 @@ const getPudgyCheckerStatus = async (
   }
 
   if (!(await canMint(address))) {
-    return 'no_tokens';
+    return 'inactive_wallet';
   }
 
   const simulatedAllowances = await Promise.all(

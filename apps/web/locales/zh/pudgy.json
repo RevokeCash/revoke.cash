@@ -36,9 +36,9 @@
       "description": "您的钱包存在现有的代币授权，这表明它并不是冷钱包。冷钱包应像保险库一样对待，只应用于发送或接收代币，或在必要时登录应用。<br></br><br></br>要获得此灵魂绑定代币的资格，请撤销您的代币授权，或将贵重资产转移到全新的冷钱包中。",
       "title": "❌ 检测到有效的代币授权"
     },
-    "no_tokens": {
-      "description": "要符合冷存储 SBT 的领取资格，您需要持有一枚 Pudgy Penguin 或 Lil Pudgy。请输入其他钱包地址，或持续关注，我们计划向更多 NFT 社区开放此活动。",
-      "title": "❌ 未持有 Pudgy Penguins NFT"
+    "inactive_wallet": {
+      "description": "要符合冷存储 SBT 的领取资格，您的钱包需要在 Ethereum 上至少发送过一笔交易，或持有 ETH 余额。请输入其他钱包地址以检查其资格。",
+      "title": "❌ 钱包不符合资格"
     },
     "quiz_success": {
       "description": "满分！🧊 要领取您的冷存储 SBT，请确认您了解使用硬件钱包的重要性以及使用热钱包的风险。",

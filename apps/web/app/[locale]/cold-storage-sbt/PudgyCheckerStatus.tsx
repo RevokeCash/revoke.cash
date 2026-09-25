@@ -20,7 +20,7 @@ interface Props {
 export type PudgyCheckerStatusString =
   | 'eligible'
   | 'has_allowances'
-  | 'no_tokens'
+  | 'inactive_wallet'
   | 'already_claimed'
   | 'quiz_success'
   | 'confirmed';
@@ -36,7 +36,7 @@ const PudgyCheckerStatus = ({ address, status }: Props) => {
   const images = {
     eligible: '/assets/images/cold-storage-sbt/chest-bump-pudgy.gif',
     has_allowances: '/assets/images/cold-storage-sbt/study-pudgy.gif',
-    no_tokens: '/assets/images/cold-storage-sbt/study-pudgy.gif',
+    inactive_wallet: '/assets/images/cold-storage-sbt/study-pudgy.gif',
     already_claimed: '/assets/images/cold-storage-sbt/chest-bump-pudgy.gif',
     quiz_success: '/assets/images/cold-storage-sbt/accomplished-pudgy.png',
     confirmed: '/assets/images/cold-storage-sbt/happy-pudgy.gif',

@@ -58,11 +58,11 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Check if the user owns any of the tokens that enable them to mint
+    // Check if the user has sent any transactions or holds an ETH balance, so we know it is a real wallet
     if (!(await canMint(address))) {
-      throw new ApiError(400, 'User does not own any Pudgy-related tokens', {
-        status: 'no_tokens',
-        message: 'User does not own any Pudgy-related tokens',
+      throw new ApiError(400, 'User has no transactions and no ETH balance on Ethereum', {
+        status: 'inactive_wallet',
+        message: 'User has no transactions and no ETH balance on Ethereum',
       });
     }
 

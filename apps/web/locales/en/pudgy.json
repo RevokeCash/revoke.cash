@@ -36,9 +36,9 @@
       "description": "Your wallet has existing token approvals, which suggests it is not a Cold Wallet. A Cold Wallet is treated like a vault and should only be used to send or receive tokens, or to log into apps when necessary.<br></br><br></br>To qualify for this Soulbound Token, revoke your token approvals or move your valuables to a fresh Cold Wallet.",
       "title": "❌ Active approvals detected"
     },
-    "no_tokens": {
-      "description": "To be eligible for the Cold Storage SBT, you need to hold a Pudgy Penguin or a Lil Pudgy. Enter a different wallet, or keep an eye out as we plan to open this initiative to more NFT communities.",
-      "title": "❌ No Pudgy Penguins NFTs owned"
+    "inactive_wallet": {
+      "description": "To be eligible for the Cold Storage SBT, your wallet needs to have sent at least one transaction on Ethereum, or hold an ETH balance. Enter a different wallet to check its eligibility.",
+      "title": "❌ Wallet not eligible"
     },
     "quiz_success": {
       "description": "Perfect score! 🧊 To claim your Cold Storage SBT, please confirm you understand the importance of using a hardware wallet and the risks of using a hot wallet.",

@@ -1,30 +1,17 @@
-import { ERC721_ABI, ERC1155_ABI } from '@revoke.cash/core/abis';
+import { ERC1155_ABI } from '@revoke.cash/core/abis';
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import { ChainId } from '@revoke.cash/core/chains/ids';
-import type { Address } from 'viem';
+import { type Address, parseEther } from 'viem';
 
+// Anyone can mint, as long as the address is a real wallet. So it has sent at least one transaction on Ethereum,
+// or it holds more than 0.001 ETH (for receive-only wallets)
 export const canMint = async (address: Address) => {
   const client = createViemPublicClientForChain(ChainId.Ethereum);
-  const PUDGY_PENGUINS_ADDRESS = '0xBd3531dA5CF5857e7CfAA92426877b022e612cf8';
-  const LIL_PUDGYS_ADDRESS = '0x524cAB2ec69124574082676e6F654a18df49A048';
+  const MINIMUM_BALANCE = parseEther('0.001');
 
-  const pudgyBalancePromise = client.readContract({
-    abi: ERC721_ABI,
-    address: PUDGY_PENGUINS_ADDRESS,
-    functionName: 'balanceOf',
-    args: [address],
-  });
+  const [nonce, balance] = await Promise.all([client.getTransactionCount({ address }), client.getBalance({ address })]);
 
-  const lilPudgyBalancePromise = client.readContract({
-    abi: ERC721_ABI,
-    address: LIL_PUDGYS_ADDRESS,
-    functionName: 'balanceOf',
-    args: [address],
-  });
-
-  const [pudgyBalance, lilPudgyBalance] = await Promise.all([pudgyBalancePromise, lilPudgyBalancePromise]);
-
-  return pudgyBalance > 0n || lilPudgyBalance > 0n;
+  return nonce > 0 || balance > MINIMUM_BALANCE;
 };
 
 export const alreadyOwnsSoulboundToken = async (address: Address) => {

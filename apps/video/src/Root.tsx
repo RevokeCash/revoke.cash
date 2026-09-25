@@ -23,6 +23,7 @@ import {
 } from './stale-approval-explainer/StaleApprovalExplainer';
 import { ArcSupportGraphic } from './tweet-graphics/ArcSupportGraphic';
 import { ColdcardExploitGraphic } from './tweet-graphics/ColdcardExploitGraphic';
+import { MagicEdenSavedFundsGraphic } from './tweet-graphics/MagicEdenSavedFundsGraphic';
 import { NetworkSupportGraphic } from './tweet-graphics/NetworkSupportGraphic';
 import { NoApprovalRiskGraphic } from './tweet-graphics/NoApprovalRiskGraphic';
 import './fonts';
@@ -171,6 +172,13 @@ export const Root = () => {
           width={1200}
           height={675}
           defaultProps={{ date: '16 September 2026', supportedNetworkCount: 87 }}
+        />
+        <Still
+          id="MagicEdenSavedFunds"
+          component={MagicEdenSavedFundsGraphic}
+          width={1200}
+          height={675}
+          defaultProps={{ date: '26 September 2026' }}
         />
         {/* The Figma "Revoke Network Support" template; pass --props for other networks. */}
         <Still
