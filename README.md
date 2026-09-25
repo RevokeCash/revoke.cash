@@ -89,7 +89,6 @@ In `cypress/support/chain-fixtures.ts`:
 In `locales/en/networks.json`:
 
 - Add a one-paragraph description for the network in the `"networks"` object under the correct slug.
-- An admin will then need to run `yarn translations:update` to make sure this description gets forwarded to translators.
 
 ## Credits
 

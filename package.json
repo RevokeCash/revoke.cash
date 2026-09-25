@@ -22,8 +22,6 @@
     "test": "yarn workspace web test",
     "test:mocha": "yarn workspace web test:mocha",
     "test:cypress": "yarn workspace web test:cypress",
-    "translations:update": "yarn workspace web translations:update && yarn lint:fix",
-    "translations:update:md": "yarn workspace web translations:update:md",
     "exploits:update": "yarn workspace web exploits:update",
     "tsx": "yarn workspace web tsx",
     "db:generate": "yarn workspace @revoke.cash/core db:generate",
