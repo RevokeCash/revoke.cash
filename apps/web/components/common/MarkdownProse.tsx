@@ -21,9 +21,10 @@ interface Props {
   content: string;
   meta?: ContentMeta;
   className?: string;
+  directives?: boolean;
 }
 
-const MarkdownProse = ({ content, meta, className }: Props) => {
+const MarkdownProse = ({ content, meta, className, directives = true }: Props) => {
   const components: Components & Record<string, any> = {
     h1: ({ children }) => {
       return (
@@ -110,7 +111,7 @@ const MarkdownProse = ({ content, meta, className }: Props) => {
     <Prose className={className}>
       <ReactMarkdown
         components={components}
-        remarkPlugins={[remarkGfm, remarkDirective, remarkDirectiveRehype]}
+        remarkPlugins={directives ? [remarkGfm, remarkDirective, remarkDirectiveRehype] : [remarkGfm]}
         skipHtml
       >
         {content}
