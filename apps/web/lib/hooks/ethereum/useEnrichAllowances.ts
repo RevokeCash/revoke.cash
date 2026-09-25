@@ -3,6 +3,7 @@ import { isErc721 } from '@revoke.cash/core/tokens';
 import { deduplicateArray } from '@revoke.cash/core/utils';
 import { useMemo } from 'react';
 import type { Address } from 'viem';
+import { useConnection } from 'wagmi';
 import { useAllowanceSpenderData } from './useAllowanceSpenderData';
 import { type ChainTokenQuery, getBalanceKey, useBalanceData } from './useBalanceData';
 import { getPriceKey, usePriceData } from './usePriceData';
@@ -45,16 +46,15 @@ export const useEnrichAllowances = ({
     return chainAllowances.flatMap(({ allowances }) => allowances);
   }, [chainAllowances]);
 
+  // Revoke controls are only enabled for the connected owner, so we only simulate revokes for them
+  const { address: connectedAddress } = useConnection();
+  const shouldPrepareRevokes = !isHistorical && connectedAddress === owner;
+
   const priceData = usePriceData(tokenDataQueries);
   const balanceData = useBalanceData(tokenDataQueries);
   const spenderData = useAllowanceSpenderData(allAllowances);
   const revokePreparationData = useRevokePreparationData(
-    isHistorical
-      ? []
-      : chainAllowances.map(({ chainId, allowances }) => ({
-          chainId,
-          allowances,
-        })),
+    shouldPrepareRevokes ? chainAllowances.map(({ chainId, allowances }) => ({ chainId, allowances })) : [],
   );
 
   return useMemo(() => {

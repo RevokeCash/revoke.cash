@@ -100,6 +100,7 @@ export const getTokenMetadata = async (
           token.address,
         ),
       throwIfNotErc721(token.address, publicClient),
+      metadataFromMapping ? undefined : throwIfSpamBytecode(token.address, publicClient),
       // metadataFromMapping ? undefined : throwIfPhantomBalance(token.address, publicClient),
     ]);
 
@@ -120,6 +121,7 @@ export const getTokenMetadata = async (
     // Make sure to add this back when we have a solution for Sei
     metadataFromMapping || chainId === ChainId.Sei ? undefined : throwIfNotErc20(token.address, publicClient), // Don't check if we have metadata from the mapping
     metadataFromMapping ? undefined : throwIfPhantomBalance(token.address, publicClient),
+    metadataFromMapping ? undefined : throwIfSpamBytecode(token.address, publicClient),
   ]);
 
   if (!metadataFromMapping && isSpamTokenSymbol(symbol)) throw new SpamError('symbol');

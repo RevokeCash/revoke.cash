@@ -14,7 +14,6 @@ import {
   type TokenMetadata,
   type TokenReference,
   type TokenStandard,
-  throwIfSpamBytecode,
 } from '@revoke.cash/core/tokens';
 import { isSpamError, isTransientError, parseErrorMessage, type SpamReason } from '@revoke.cash/core/utils/errors';
 import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
@@ -42,10 +41,7 @@ export const enrichToken = async (
   const token: TokenReference = { address: tokenAddress, standard };
 
   try {
-    const [metadata] = await Promise.all([
-      getTokenMetadata(token, publicClient, chainId),
-      throwIfSpamBytecode(tokenAddress, publicClient),
-    ]);
+    const metadata = await getTokenMetadata(token, publicClient, chainId);
 
     await upsertTokenMetadata(getDb(), chainId, tokenAddress, {
       tokenStandard: standard,

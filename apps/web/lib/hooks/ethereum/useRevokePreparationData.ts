@@ -1,10 +1,16 @@
-import { getAllowanceKey, simulateRevokeAllowance, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import {
+  getAllowanceKey,
+  isErc20Allowance,
+  simulateRevokeAllowance,
+  type TokenAllowanceData,
+} from '@revoke.cash/core/allowances';
 import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
 import { MINUTE } from '@revoke.cash/core/utils/time';
 import { useQueries } from '@tanstack/react-query';
 import type { PublicClient } from 'viem';
 import { useConfig } from 'wagmi';
 import { getPublicClient } from 'wagmi/actions';
+import { queryClient } from '../QueryProvider';
 
 interface ChainAllowanceRevokePreparationQuery {
   chainId: number;
@@ -51,17 +57,30 @@ const fetchRevokePreparationData = async (
   allowances: TokenAllowanceData[],
   publicClient: PublicClient,
 ): Promise<RevokePreparationByAllowance> => {
-  const preparedAllowances = await mapAsyncBounded(allowances, 25, (allowance) =>
-    simulateRevokeAllowance(allowance, publicClient),
+  // Every revoke removes an allowance from the list (and so changes the query key above), so we cache each allowance's
+  // preparation separately to avoid simulating all remaining allowances again after every revoke
+  const preparations = await mapAsyncBounded(allowances, 25, (allowance) =>
+    queryClient.query({
+      queryKey: getAllowanceRevokePreparationQueryKey(allowance),
+      queryFn: () => fetchAllowanceRevokePreparation(allowance, publicClient),
+      // Failed simulations can be caused by transient RPC errors, so those are simulated again on the next fetch
+      staleTime: (query) => (query.state.data?.revokeError ? 0 : Number.POSITIVE_INFINITY),
+    }),
   );
 
-  return Object.fromEntries(
-    preparedAllowances.map((allowance) => [
-      getAllowanceKey(allowance),
-      {
-        preparedRevoke: allowance.payload.preparedRevoke,
-        revokeError: allowance.payload.revokeError,
-      },
-    ]),
-  );
+  return Object.fromEntries(allowances.map((allowance, index) => [getAllowanceKey(allowance), preparations[index]]));
+};
+
+const fetchAllowanceRevokePreparation = async (
+  allowance: TokenAllowanceData,
+  publicClient: PublicClient,
+): Promise<RevokePreparation> => {
+  const { payload } = await simulateRevokeAllowance(allowance, publicClient);
+  return { preparedRevoke: payload.preparedRevoke, revokeError: payload.revokeError };
+};
+
+const getAllowanceRevokePreparationQueryKey = (allowance: TokenAllowanceData) => {
+  // Some tokens can only be revoked with decreaseAllowance(spender, amount), so the preparation depends on the amount
+  const amount = isErc20Allowance(allowance.payload) ? allowance.payload.amount.toString() : null;
+  return ['allowanceRevokePreparation', getAllowanceKey(allowance), amount];
 };

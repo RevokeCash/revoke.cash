@@ -10,7 +10,7 @@ import { processErc721ApprovalEvents, removeLoneRevokeEvents } from '@revoke.cas
 import type { LogsProvider } from '@revoke.cash/core/events/providers';
 import { addressToTopic, sortTokenEventsChronologically } from '@revoke.cash/core/events/utils';
 import { parseSessionCreatedLog, type SessionCreatedEvent } from '@revoke.cash/core/sessions';
-import { getEventTokenReference, getTokenMetadata, throwIfSpamBytecode } from '@revoke.cash/core/tokens';
+import { getEventTokenReference, getTokenMetadata } from '@revoke.cash/core/tokens';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
 import { isSpamError, isTransientError, stringifyError } from '@revoke.cash/core/utils/errors';
 import { mapAsync, withTimeout } from '@revoke.cash/core/utils/promises';
@@ -163,10 +163,7 @@ const enrichTokenEvents = async (
     uniqueTokenEvents.map(async (event) => {
       try {
         const token = getEventTokenReference(event)!;
-        const [metadata] = await Promise.all([
-          getTokenMetadata(token, publicClient, chainId),
-          throwIfSpamBytecode(event.token, publicClient),
-        ]);
+        const metadata = await getTokenMetadata(token, publicClient, chainId);
         metadataMap.set(event.token, metadata);
       } catch (e) {
         if (isSpamError(e)) return;
