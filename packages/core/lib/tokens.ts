@@ -74,7 +74,7 @@ const getTokenMetadataFromMapping = async (
 
     return {
       symbol: metadata.symbol,
-      decimals: metadata.decimals,
+      decimals: metadata.decimals === undefined ? undefined : Number(metadata.decimals),
       icon: metadata.logoURI,
       isSpam: metadata.isSpam,
     };
