@@ -16,6 +16,11 @@ import { BatchRevokeShowcase } from './premium-showcase/BatchRevokeShowcase';
 import { ExploitCheckerShowcase } from './premium-showcase/ExploitCheckerShowcase';
 import { MultichainDashboardShowcase } from './premium-showcase/MultichainDashboardShowcase';
 import { TimeMachineShowcase } from './premium-showcase/TimeMachineShowcase';
+import {
+  STALE_APPROVAL_EXPLAINER_DURATION_IN_FRAMES,
+  STALE_APPROVAL_EXPLAINER_SCENES,
+  StaleApprovalExplainer,
+} from './stale-approval-explainer/StaleApprovalExplainer';
 import { ArcSupportGraphic } from './tweet-graphics/ArcSupportGraphic';
 import { ColdcardExploitGraphic } from './tweet-graphics/ColdcardExploitGraphic';
 import { NetworkSupportGraphic } from './tweet-graphics/NetworkSupportGraphic';
@@ -77,6 +82,27 @@ export const Root = () => {
           defaultProps={{ soundtrack: 'audio/soundtrack-alternative.m4a', soundtrackTrimBefore: 0 }}
         />
         {ANNOUNCEMENT_SCENES.map((scene) => (
+          <Composition
+            key={scene.id}
+            id={scene.id}
+            component={scene.component}
+            durationInFrames={scene.durationInFrames}
+            fps={FPS}
+            width={1920}
+            height={1080}
+          />
+        ))}
+      </Folder>
+      <Folder name="stale-approval-explainer">
+        <Composition
+          id="StaleApprovalExplainer"
+          component={StaleApprovalExplainer}
+          durationInFrames={STALE_APPROVAL_EXPLAINER_DURATION_IN_FRAMES}
+          fps={FPS}
+          width={1920}
+          height={1080}
+        />
+        {STALE_APPROVAL_EXPLAINER_SCENES.map((scene) => (
           <Composition
             key={scene.id}
             id={scene.id}
