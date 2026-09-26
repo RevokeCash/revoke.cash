@@ -5,6 +5,7 @@ import { deduplicateArray } from '@revoke.cash/core/utils';
 import ChainMultiSelect from 'components/common/select/ChainMultiSelect';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import { matchesChainTerm } from './columns';
 
 interface Props {
   chainTerms: string[];
@@ -14,14 +15,8 @@ interface Props {
 // The chain select shows all mainnets and testnets when it gets no chain list
 const SELECTABLE_CHAIN_IDS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS];
 
-const normalise = (value: string) => value.trim().toLowerCase();
-
-// A chain term is the text after "chain:" in the search box: a chain name or a chain id
 const getChainIdForTerm = (chainTerm: string): number | undefined => {
-  const term = normalise(chainTerm);
-  return SELECTABLE_CHAIN_IDS.find((chainId) => {
-    return normalise(getChainName(chainId)) === term || chainId.toString() === term;
-  });
+  return SELECTABLE_CHAIN_IDS.find((chainId) => matchesChainTerm(chainId, chainTerm));
 };
 
 // Connects the chain terms of the search box to the chain multi-select, which works with chain ids

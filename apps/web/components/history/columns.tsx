@@ -47,6 +47,12 @@ export const getHistoryEventCategory = (event: EnrichedTokenEvent): HistoryEvent
   return 'approval';
 };
 
+// A chain term is the text after "chain:" in the search box: a full chain name or an exact chain id
+export const matchesChainTerm = (chainId: number, chainTerm: string): boolean => {
+  const term = chainTerm.trim().toLowerCase();
+  return getChainName(chainId).toLowerCase() === term || chainId.toString() === term;
+};
+
 const accessors = {
   token: (event: EnrichedTokenEvent) => {
     if (isNullish(event.metadata?.symbol)) return event.token;
@@ -60,10 +66,6 @@ const accessors = {
   timestamp: (event: EnrichedTokenEvent) => {
     return event.time.timestamp;
   },
-  chain: (event: EnrichedTokenEvent) => {
-    const chainName = getChainName(event.chainId);
-    return `${chainName} ${event.chainId}`;
-  },
 };
 
 // Custom filter functions for history table
@@ -74,6 +76,9 @@ export const customFilterFns = {
     });
 
     return results.some((result) => result);
+  },
+  matchesOneOfChainTerms: (row: HistoryRow, _columnId: string, filterValues: string[]) => {
+    return filterValues.some((chainTerm) => matchesChainTerm(row.original.chainId, chainTerm));
   },
   tokenOrSpender: (row: HistoryRow, _columnId: string, filterValues: string[]) => {
     const spenderMatches = customFilterFns.includesOneOfStrings(row, ColumnId.SPENDER, filterValues);
@@ -90,13 +95,13 @@ export const columns = columnHelper.columns([
     enableColumnFilter: true,
     filterFn: customFilterFns.tokenOrSpender,
   }),
-  columnHelper.accessor(accessors.chain, {
+  columnHelper.accessor('chainId', {
     id: ColumnId.CHAIN,
     header: () => <HeaderCell i18nKey="address.headers.chain" />,
     cell: ({ row }) => <HistoryChainCell chainId={row.original.chainId} />,
     enableSorting: false,
     enableColumnFilter: true,
-    filterFn: customFilterFns.includesOneOfStrings,
+    filterFn: customFilterFns.matchesOneOfChainTerms,
   }),
   columnHelper.accessor(accessors.token, {
     id: ColumnId.ASSET,
