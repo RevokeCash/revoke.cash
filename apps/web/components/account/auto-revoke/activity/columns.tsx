@@ -1,13 +1,13 @@
 import type { AutoRevokeActivityItem } from '@revoke.cash/core/auto-revoke/activity';
 import { SECOND } from '@revoke.cash/core/utils/time';
-import { createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper, type Row } from '@tanstack/react-table';
 import AddressCell from 'components/allowances/dashboard/cells/AddressCell';
 import AssetDisplay from 'components/allowances/dashboard/cells/AssetDisplay';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import TransactionDateCell from 'components/allowances/dashboard/cells/TransactionDateCell';
 import HistoryChainCell from 'components/history/cells/HistoryChainCell';
 import type { AppTableFeatures } from 'lib/utils/table';
-import AutoRevokeActivityStatusBadge from './AutoRevokeActivityStatusBadge';
+import AutoRevokeActivityStatusBadge, { ACTIVITY_STATUS_KEYS } from './AutoRevokeActivityStatusBadge';
 import AutoRevokeActivityTriggerBadge from './AutoRevokeActivityTriggerBadge';
 
 export enum ColumnId {
@@ -21,6 +21,15 @@ export enum ColumnId {
   DATE = 'Date',
 }
 
+type ActivityRow = Row<AppTableFeatures, AutoRevokeActivityItem>;
+
+// Keeps rows whose column value is one of the selected values (e.g. chain ids or user-facing statuses)
+const oneOf = (row: ActivityRow, columnId: string, filterValues: unknown[]) =>
+  filterValues.includes(row.getValue(columnId));
+
+// An empty selection removes the filter from the table state instead of hiding every row
+oneOf.autoRemove = (filterValues: unknown[] | undefined) => !filterValues || filterValues.length === 0;
+
 const columnHelper = createColumnHelper<AppTableFeatures, AutoRevokeActivityItem>();
 export const columns = columnHelper.columns([
   columnHelper.accessor('address', {
@@ -32,6 +41,8 @@ export const columns = columnHelper.columns([
     id: ColumnId.CHAIN,
     header: () => <HeaderCell i18nKey="account.auto_revoke.activity.columns.chain" />,
     cell: (info) => <HistoryChainCell chainId={info.getValue()} />,
+    enableColumnFilter: true,
+    filterFn: oneOf,
   }),
   columnHelper.accessor('tokenAddress', {
     id: ColumnId.ASSET,
@@ -62,18 +73,21 @@ export const columns = columnHelper.columns([
     header: () => <HeaderCell i18nKey="account.auto_revoke.activity.columns.trigger" />,
     cell: (info) => <AutoRevokeActivityTriggerBadge triggerType={info.getValue()} />,
   }),
-  columnHelper.accessor('status', {
+  // The column value is the user-facing status, so the status filter matches what the badge shows
+  columnHelper.accessor((item) => ACTIVITY_STATUS_KEYS[item.status], {
     id: ColumnId.STATUS,
     header: () => <HeaderCell i18nKey="account.auto_revoke.activity.columns.status" />,
     cell: (info) => (
       <AutoRevokeActivityStatusBadge
-        status={info.getValue()}
+        status={info.row.original.status}
         errorCode={info.row.original.errorCode}
         errorDetail={info.row.original.errorDetail}
         nextRetryAt={info.row.original.nextRetryAt}
         triggerType={info.row.original.triggerType}
       />
     ),
+    enableColumnFilter: true,
+    filterFn: oneOf,
   }),
   columnHelper.accessor('costUsd', {
     id: ColumnId.COST,

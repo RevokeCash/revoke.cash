@@ -20,6 +20,7 @@
         "wallet": "Cartera"
       },
       "empty": "Todavía no hay ninguna actividad de revocación automática. Las aprobaciones que cumplan tus reglas aparecerán aquí a medida que se vayan revocando.",
+      "empty_filtered": "Ninguna actividad coincide con los filtros seleccionados.",
       "empty_preview": "La actividad de revocación automática aparecerá aquí cuando actualices a Ultimate y configures la Revocación automática.",
       "reasons": {
         "awaiting_cheap_gas": "A la espera de que bajen los precios del gas para estirar tu presupuesto mensual.",

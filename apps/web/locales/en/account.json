@@ -20,6 +20,7 @@
         "wallet": "Wallet"
       },
       "empty": "No auto-revoke activity yet. Approvals matching your rules will appear here as they are revoked.",
+      "empty_filtered": "No activity matches the current filters.",
       "empty_preview": "Auto-revoke activity will appear here once you upgrade to Ultimate and set up Auto-Revoking.",
       "reasons": {
         "awaiting_cheap_gas": "Waiting for lower gas prices to stretch your monthly budget.",

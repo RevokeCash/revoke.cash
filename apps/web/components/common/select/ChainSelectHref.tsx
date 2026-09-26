@@ -1,18 +1,13 @@
 'use client';
 
-import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from '@revoke.cash/core/chains';
+import { getChainName, isSupportedChain } from '@revoke.cash/core/chains';
 import ChainLogo from 'components/common/ChainLogo';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
-import { useTranslations } from 'next-intl';
 import { memo } from 'react';
 import Button from '../Button';
 import PlaceholderIcon from '../PlaceholderIcon';
 import SearchableSelect from './SearchableSelect';
-
-interface ChainOption {
-  value: string;
-  chainId: number;
-}
+import { type ChainOption, useChainSelectOptions } from './useChainSelectOptions';
 
 interface Props {
   selected: number;
@@ -25,29 +20,8 @@ interface Props {
 
 // This component is designed to match the styling of the ChainSelect component, but with links instead
 const ChainSelectHref = ({ selected, chainIds, getUrl, instanceId, menuAlign, showNames }: Props) => {
-  const t = useTranslations();
   const router = useCsrRouter();
-
-  const mainnetOptions = (chainIds ?? CHAIN_SELECT_MAINNETS).map((chainId) => ({
-    value: getChainName(chainId),
-    chainId,
-  }));
-
-  const testnetOptions = CHAIN_SELECT_TESTNETS.map((chainId) => ({
-    value: getChainName(chainId),
-    chainId,
-  }));
-
-  const groupedOptions = [
-    {
-      label: t('common.chain_select.mainnets'),
-      options: mainnetOptions,
-    },
-    {
-      label: t('common.chain_select.testnets'),
-      options: testnetOptions,
-    },
-  ];
+  const { options, allOptions } = useChainSelectOptions(chainIds);
 
   const displayOption = ({ chainId }: ChainOption, context: 'menu' | 'value') => {
     const chainName = getChainName(chainId);
@@ -73,8 +47,8 @@ const ChainSelectHref = ({ selected, chainIds, getUrl, instanceId, menuAlign, sh
       instanceId={instanceId ?? 'chain-select'}
       aria-label="Select Network"
       className="shrink-0"
-      value={groupedOptions.flatMap((group) => group.options).find((option) => option.chainId === selected)}
-      options={chainIds ? mainnetOptions : groupedOptions}
+      value={allOptions.find((option) => option.chainId === selected)}
+      options={options}
       isOptionDisabled={(option) => !isSupportedChain(option.chainId)}
       onChange={(option) => router.push(getUrl(option.chainId))}
       formatOptionLabel={displayOption}

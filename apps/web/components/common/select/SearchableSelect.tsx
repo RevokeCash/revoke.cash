@@ -75,8 +75,9 @@ const SearchableSelect = <O extends SelectOption, I extends boolean = false>(pro
   const displayOption = createOptionDisplay(props.formatOptionLabel);
   const optionGroups = toOptionGroups(props.options);
 
+  // Search the text the user sees: the option's label when it has one, otherwise its value
   const matchesQuery = (option: O) => {
-    return normaliseSearchText(option.value).includes(normaliseSearchText(query));
+    return normaliseSearchText(option.label ?? option.value).includes(normaliseSearchText(query));
   };
 
   const visibleGroups = optionGroups

@@ -1,14 +1,9 @@
-import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from '@revoke.cash/core/chains';
+import { getChainName, isSupportedChain } from '@revoke.cash/core/chains';
 import ChainLogo from 'components/common/ChainLogo';
-import { useTranslations } from 'next-intl';
 import { memo } from 'react';
 import PlaceholderIcon from '../PlaceholderIcon';
 import SearchableSelect from './SearchableSelect';
-
-interface ChainOption {
-  value: string;
-  chainId: number;
-}
+import { type ChainOption, useChainSelectOptions } from './useChainSelectOptions';
 
 interface Props {
   selected?: number;
@@ -20,28 +15,7 @@ interface Props {
 }
 
 const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, showNames }: Props) => {
-  const t = useTranslations();
-
-  const mainnetOptions = (chainIds ?? CHAIN_SELECT_MAINNETS).map((chainId) => ({
-    value: getChainName(chainId),
-    chainId,
-  }));
-
-  const testnetOptions = CHAIN_SELECT_TESTNETS.map((chainId) => ({
-    value: getChainName(chainId),
-    chainId,
-  }));
-
-  const groupedOptions = [
-    {
-      label: t('common.chain_select.mainnets'),
-      options: mainnetOptions,
-    },
-    {
-      label: t('common.chain_select.testnets'),
-      options: testnetOptions,
-    },
-  ];
+  const { options, allOptions } = useChainSelectOptions(chainIds);
 
   const onChange = ({ chainId }: ChainOption) => {
     onSelect?.(chainId);
@@ -63,8 +37,8 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
       instanceId={instanceId ?? 'chain-select'}
       aria-label="Select Network"
       className="shrink-0"
-      value={groupedOptions.flatMap((group) => group.options).find((option) => option.chainId === selected)}
-      options={chainIds ? mainnetOptions : groupedOptions}
+      value={allOptions.find((option) => option.chainId === selected)}
+      options={options}
       isOptionDisabled={(option) => !isSupportedChain(option.chainId)}
       onChange={onChange}
       formatOptionLabel={displayOption}

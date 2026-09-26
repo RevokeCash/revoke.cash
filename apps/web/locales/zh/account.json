@@ -20,6 +20,7 @@
         "wallet": "钱包"
       },
       "empty": "暂无自动撤销活动。符合您规则的授权在被撤销后将显示在此处。",
+      "empty_filtered": "没有符合所选筛选条件的活动。",
       "empty_preview": "升级至 Ultimate 并设置自动撤销后，自动撤销活动将显示在此处。",
       "reasons": {
         "awaiting_cheap_gas": "正在等待更低的 Gas 价格，以充分利用您的每月预算。",
