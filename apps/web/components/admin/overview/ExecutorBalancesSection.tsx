@@ -5,6 +5,7 @@ import { getChainName } from '@revoke.cash/core/chains';
 import { deduplicateArray } from '@revoke.cash/core/utils';
 import { formatFiatAmount } from '@revoke.cash/core/utils/formatting';
 import { createColumnHelper } from '@tanstack/react-table';
+import FundExecutorWalletButton from 'components/admin/gas/FundExecutorWalletButton';
 import Card, { CardTitle } from 'components/common/Card';
 import ChainLogo from 'components/common/ChainLogo';
 import StatusLabel, { type Status } from 'components/common/StatusLabel';
@@ -21,7 +22,12 @@ interface ChainRow {
 
 const columnHelper = createColumnHelper<AppTableFeatures, ChainRow>();
 
-const ExecutorBalancesSection = () => {
+interface Props {
+  // Fund buttons send funds from the connected wallet, so they only show on the gas tab
+  showFundButtons?: boolean;
+}
+
+const ExecutorBalancesSection = ({ showFundButtons = false }: Props) => {
   const { data, isLoading, error } = useAdminBalances();
 
   const rows = useMemo(
@@ -41,6 +47,7 @@ const ExecutorBalancesSection = () => {
                 (entry) => entry.chainId === info.row.original.chainId && entry.lane === lane,
               )}
               spend={data?.spend30d.find((entry) => entry.chainId === info.row.original.chainId && entry.lane === lane)}
+              showFundButton={showFundButtons}
             />
           </div>
         ),
@@ -60,7 +67,7 @@ const ExecutorBalancesSection = () => {
       laneColumn('normal', 'Normal lane'),
       laneColumn('urgent', 'Urgent lane'),
     ]);
-  }, [data]);
+  }, [data, showFundButtons]);
 
   const table = useTable({
     data: rows,
@@ -87,13 +94,19 @@ const ExecutorBalancesSection = () => {
 interface BalanceCellProps {
   balance?: ExecutorGasBalance;
   spend?: ExecutorSpend;
+  showFundButton: boolean;
 }
 
-const BalanceCell = ({ balance, spend }: BalanceCellProps) => {
+const BalanceCell = ({ balance, spend, showFundButton }: BalanceCellProps) => {
   if (!balance) return <span className="text-zinc-500">-</span>;
 
   if (balance.balance === null) {
-    return <span className="text-zinc-500">RPC error</span>;
+    return (
+      <div className="flex w-fit items-center gap-2">
+        <span className="text-zinc-500">RPC error</span>
+        {showFundButton && <FundExecutorWalletButton balance={balance} />}
+      </div>
+    );
   }
 
   const balanceDisplay = `${Number(balance.balance).toFixed(4)} ${balance.nativeToken}`;
@@ -117,6 +130,7 @@ const BalanceCell = ({ balance, spend }: BalanceCellProps) => {
       >
         <span className="text-xs text-zinc-500">{formatRunwayDisplay(runwayDays)}</span>
       </WithHoverTooltip>
+      {showFundButton && <FundExecutorWalletButton balance={balance} />}
     </div>
   );
 };

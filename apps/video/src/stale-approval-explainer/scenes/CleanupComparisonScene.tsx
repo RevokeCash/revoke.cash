@@ -3,24 +3,30 @@ import { riseIn } from '../../motion';
 import {
   ApprovalTimeline,
   EXPLOIT_AT,
-  MAGIC_EDEN_CLOSED_AT,
+  MAGIC_EDEN_STOPPED_AT,
   type PlayheadKeyframe,
-  STALE_REVOKED_AT,
+  STALE_AT,
   TIMELINE_START,
+  ULTIMATE_LAUNCHED_AT,
 } from '../components/ApprovalTimeline';
 
-// The playhead pauses briefly on each event so the markers have time to land.
+// The playhead pauses briefly on each event so the markers have time to land. The event frames sit on
+// the soundtrack's beat grid (every 12 frames in the full video), so keep them in step with
+// scripts/stale-approval-soundtrack/arrangement.mjs.
 const PLAYHEAD_KEYFRAMES: PlayheadKeyframe[] = [
   { frame: 18, date: TIMELINE_START },
-  { frame: 40, date: MAGIC_EDEN_CLOSED_AT },
-  { frame: 50, date: MAGIC_EDEN_CLOSED_AT },
-  { frame: 110, date: STALE_REVOKED_AT },
-  { frame: 126, date: STALE_REVOKED_AT },
+  { frame: 36, date: MAGIC_EDEN_STOPPED_AT },
+  { frame: 44, date: MAGIC_EDEN_STOPPED_AT },
+  { frame: 73, date: STALE_AT },
+  { frame: 79, date: STALE_AT },
+  { frame: 109, date: ULTIMATE_LAUNCHED_AT },
+  { frame: 121, date: ULTIMATE_LAUNCHED_AT },
   { frame: 144, date: EXPLOIT_AT },
 ];
 
-// The core argument: the same Magic Eden approval without cleanup runs into the exploit, and with
-// Stale Approval Cleanup it is revoked 20 days before the exploit hits.
+// The core argument: the same Magic Eden approval turns stale in April 2025. Left alone, it runs into
+// the exploit; with Stale Approval Cleanup, it is revoked once Revoke Ultimate launches in July 2026,
+// ten weeks before the exploit hits.
 export const CleanupComparisonScene = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -29,7 +35,7 @@ export const CleanupComparisonScene = () => {
     <AbsoluteFill className="items-center justify-center gap-16 bg-black">
       <h1 className="text-center font-heading text-[88px] leading-[1.05] font-semibold tracking-tight text-white">
         <span className="block" style={riseIn(frame, fps, 0)}>
-          Magic Eden left Ethereum in March.
+          Approved in 2024. Exploited in 2026.
         </span>
         <span className="block text-brand" style={riseIn(frame, fps, 8)}>
           Stale approvals don&apos;t have to stay.

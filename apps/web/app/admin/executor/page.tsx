@@ -1,6 +1,5 @@
 import DeferredActionsSection from 'components/admin/executor/DeferredActionsSection';
 import ExecutorPipelinesSection from 'components/admin/executor/ExecutorPipelinesSection';
-import ExecutorSpendSection from 'components/admin/executor/ExecutorSpendSection';
 import StuckSubmittedSection from 'components/admin/executor/StuckSubmittedSection';
 
 const AdminExecutorPage = () => (
@@ -8,7 +7,6 @@ const AdminExecutorPage = () => (
     <ExecutorPipelinesSection />
     <StuckSubmittedSection />
     <DeferredActionsSection />
-    <ExecutorSpendSection />
   </div>
 );
 

@@ -96,7 +96,7 @@ const ACTIVITY_ENTRIES: ActivityEntry[] = [
     asset: 'NFT',
     assetLabel: 'NFT Collection',
     spender: 'Payment Processor V2',
-    date: '5 Sep',
+    date: '16 Jul',
     appearAt: 50,
     statusTimeline: [
       { at: 0, status: 'pending' },
@@ -107,8 +107,8 @@ const ACTIVITY_ENTRIES: ActivityEntry[] = [
   {
     asset: 'WETH',
     assetLabel: 'WETH',
-    spender: 'Old DEX Router',
-    date: '5 Sep',
+    spender: 'Payment Processor V2',
+    date: '16 Jul',
     appearAt: 56,
     statusTimeline: [
       { at: 0, status: 'pending' },
@@ -120,7 +120,7 @@ const ACTIVITY_ENTRIES: ActivityEntry[] = [
     asset: 'PEPE',
     assetLabel: 'PEPE',
     spender: '0x1337de...aDBeef',
-    date: '5 Sep',
+    date: '16 Jul',
     appearAt: 62,
     statusTimeline: [
       { at: 0, status: 'pending' },
@@ -136,7 +136,7 @@ const ActivityPanel = ({ frame, fps }: SceneClock) => {
       <div className="flex flex-col gap-3">
         {ACTIVITY_ENTRIES.map((entry) => (
           <div
-            key={entry.spender}
+            key={`${entry.assetLabel}-${entry.spender}`}
             className="flex items-center justify-between gap-4"
             style={riseIn(frame, fps, entry.appearAt)}
           >

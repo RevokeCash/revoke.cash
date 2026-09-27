@@ -4,16 +4,19 @@ import { popIn } from '../../motion';
 
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 
-// Magic Eden's Ethereum marketplace shut down on 9 March 2026, so every approval it created is at
-// least that old. Even an approval from that very last day passed the default 180-day Stale Approval
-// Cleanup threshold on 5 September, 20 days before the exploit on 25 September.
-export const MAGIC_EDEN_CLOSED_AT = Date.UTC(2026, 2, 9);
+// Magic Eden stopped using Payment Processor in October 2024, so every approval it created is at
+// least that old. Counting from the last day of that month, those approvals passed the default 180-day
+// Stale Approval Cleanup threshold on 29 April 2025. Auto-Revoking only launched on 16 July 2026, so
+// that is the earliest it could revoke them: ten weeks before the exploit on 24 September 2026.
+export const MAGIC_EDEN_STOPPED_AT = Date.UTC(2024, 9, 31);
 export const STALE_THRESHOLD_DAYS = 180;
-export const STALE_REVOKED_AT = MAGIC_EDEN_CLOSED_AT + STALE_THRESHOLD_DAYS * DAY_IN_MS;
-export const EXPLOIT_AT = Date.UTC(2026, 8, 25);
-export const TIMELINE_START = Date.UTC(2026, 0, 1);
+export const STALE_AT = MAGIC_EDEN_STOPPED_AT + STALE_THRESHOLD_DAYS * DAY_IN_MS;
+export const ULTIMATE_LAUNCHED_AT = Date.UTC(2026, 6, 16);
+export const EXPLOIT_AT = Date.UTC(2026, 8, 24);
+export const TIMELINE_START = Date.UTC(2024, 6, 1);
 const TIMELINE_END = Date.UTC(2026, 10, 1);
-const MONTH_STARTS = Array.from({ length: 10 }, (_, monthIndex) => Date.UTC(2026, monthIndex, 1));
+// One axis label per quarter, from July 2024 to October 2026. January shows the year instead.
+const QUARTER_STARTS = Array.from({ length: 10 }, (_, quarterIndex) => Date.UTC(2024, 6 + quarterIndex * 3, 1));
 // Spelled out instead of toLocaleDateString, whose en-GB output abbreviates September as "Sept".
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -40,9 +43,10 @@ interface Props {
   keyframes: PlayheadKeyframe[];
 }
 
-// The same approval on a Jan-Oct 2026 axis, twice: once left alone, once with Stale Approval Cleanup.
-// One playhead sweeps through the keyframes for both tracks and every marker appears when the
-// playhead reaches its date.
+// The same approval on a July 2024 to October 2026 axis, twice: once left alone, and once with
+// Stale Approval Cleanup from the day Revoke Ultimate launched. Both turn stale after 180 days. One
+// playhead sweeps through the keyframes for both tracks and every marker appears when the playhead
+// reaches its date.
 export const ApprovalTimeline = ({ frame, fps, keyframes }: Props) => {
   const playhead = interpolate(
     frame,
@@ -58,20 +62,30 @@ export const ApprovalTimeline = ({ frame, fps, keyframes }: Props) => {
       <EventMarker
         frame={frame}
         fps={fps}
-        appearAt={frameWhenReached(keyframes, MAGIC_EDEN_CLOSED_AT)}
-        x={dateToX(MAGIC_EDEN_CLOSED_AT)}
+        appearAt={frameWhenReached(keyframes, MAGIC_EDEN_STOPPED_AT)}
+        x={dateToX(MAGIC_EDEN_STOPPED_AT)}
         align="left"
-        date="9 Mar"
-        title="Magic Eden closes on Ethereum"
+        date="Oct 2024"
+        title="Magic Eden drops Payment Processor"
         titleClassName="text-zinc-100"
+      />
+      <EventMarker
+        frame={frame}
+        fps={fps}
+        appearAt={frameWhenReached(keyframes, ULTIMATE_LAUNCHED_AT)}
+        x={dateToX(ULTIMATE_LAUNCHED_AT)}
+        align="right"
+        date="16 Jul 2026"
+        title="Ultimate launches"
+        titleClassName="text-brand"
       />
       <EventMarker
         frame={frame}
         fps={fps}
         appearAt={exploitAt}
         x={dateToX(EXPLOIT_AT)}
-        align="right"
-        date="25 Sep"
+        align="left"
+        date="24 Sep 2026"
         title="Exploit"
         titleClassName="text-red-400"
       />
@@ -83,6 +97,14 @@ export const ApprovalTimeline = ({ frame, fps, keyframes }: Props) => {
         playhead={playhead}
         exploitAt={exploitAt}
         revokedAt={null}
+        dayCount={{
+          until: EXPLOIT_AT,
+          completeAt: exploitAt,
+          outcome: 'still approved',
+          textClassName: 'text-red-400',
+          lineClassName: 'bg-red-400',
+          labelAtEnd: false,
+        }}
       />
       <ApprovalTrack
         frame={frame}
@@ -91,7 +113,15 @@ export const ApprovalTimeline = ({ frame, fps, keyframes }: Props) => {
         label="With Revoke Ultimate"
         playhead={playhead}
         exploitAt={exploitAt}
-        revokedAt={frameWhenReached(keyframes, STALE_REVOKED_AT)}
+        revokedAt={frameWhenReached(keyframes, ULTIMATE_LAUNCHED_AT)}
+        dayCount={{
+          until: STALE_AT,
+          completeAt: frameWhenReached(keyframes, STALE_AT),
+          outcome: 'stale',
+          textClassName: 'text-zinc-100',
+          lineClassName: 'bg-zinc-300',
+          labelAtEnd: true,
+        }}
       />
       <Axis />
       <Playhead playhead={playhead} />
@@ -107,7 +137,7 @@ const frameWhenReached = (keyframes: PlayheadKeyframe[], date: number) =>
 
 const formatDate = (date: number) => {
   const dateObject = new Date(date);
-  return `${dateObject.getUTCDate()} ${MONTH_NAMES[dateObject.getUTCMonth()]}`;
+  return `${dateObject.getUTCDate()} ${MONTH_NAMES[dateObject.getUTCMonth()]} ${dateObject.getUTCFullYear()}`;
 };
 
 interface EventMarkerProps {
@@ -115,7 +145,7 @@ interface EventMarkerProps {
   fps: number;
   appearAt: number;
   x: number;
-  // Which side of the label the drop line sits on, so labels near the right edge grow leftwards.
+  // Which side of the label the drop line sits on: left-aligned labels grow rightwards from it.
   align: 'left' | 'right';
   date: string;
   title: string;
@@ -155,6 +185,16 @@ const EventMarker = ({ frame, fps, appearAt, x, align, date, title, titleClassNa
   );
 };
 
+interface DayCount {
+  until: number;
+  completeAt: number;
+  outcome: string;
+  textClassName: string;
+  lineClassName: string;
+  // A short bracket is narrower than its label, so its count rides just past the bracket's end.
+  labelAtEnd: boolean;
+}
+
 interface ApprovalTrackProps {
   frame: number;
   fps: number;
@@ -164,11 +204,12 @@ interface ApprovalTrackProps {
   exploitAt: number;
   // The frame Stale Approval Cleanup revokes the approval, or null when nothing ever revokes it.
   revokedAt: number | null;
+  dayCount: DayCount;
 }
 
-const ApprovalTrack = ({ frame, fps, top, label, playhead, exploitAt, revokedAt }: ApprovalTrackProps) => {
+const ApprovalTrack = ({ frame, fps, top, label, playhead, exploitAt, revokedAt, dayCount }: ApprovalTrackProps) => {
   const isCleanedUp = revokedAt !== null;
-  const approvalEnd = isCleanedUp ? Math.min(playhead, STALE_REVOKED_AT) : playhead;
+  const approvalEnd = isCleanedUp ? Math.min(playhead, ULTIMATE_LAUNCHED_AT) : playhead;
   const endStateAt = revokedAt ?? exploitAt;
 
   return (
@@ -184,23 +225,16 @@ const ApprovalTrack = ({ frame, fps, top, label, playhead, exploitAt, revokedAt 
         endStateAt={endStateAt}
       />
       <ExploitPulse frame={frame} top={top} exploitAt={exploitAt} />
-      <DayCountBracket
-        frame={frame}
-        fps={fps}
-        top={top + BRACKET_OFFSET}
-        playhead={playhead}
-        end={isCleanedUp ? STALE_REVOKED_AT : EXPLOIT_AT}
-        completeAt={endStateAt}
-        isCleanedUp={isCleanedUp}
-      />
-      {/* Raised above the playhead, which stops on the exploit date right behind this pill. */}
+      <DayCountBracket frame={frame} fps={fps} top={top + BRACKET_OFFSET} playhead={playhead} dayCount={dayCount} />
+      {/* Centered on the exploit date, small enough to stay inside the timeline's right edge, and raised
+          above the playhead line that stops right behind it. */}
       {isCleanedUp && frame >= exploitAt && (
         <div
           className="absolute z-10"
           style={{ left: dateToX(EXPLOIT_AT), top: top + BAR_HEIGHT / 2, transform: 'translate(-50%, -50%)' }}
         >
           <div style={popIn(frame, fps, exploitAt + 6)}>
-            <Pill className="whitespace-nowrap bg-green-900 px-4 py-1.5 text-2xl text-green-400">Not affected</Pill>
+            <Pill className="whitespace-nowrap bg-green-900 px-3 py-1 text-xl text-green-400">Not affected</Pill>
           </div>
         </div>
       )}
@@ -236,6 +270,8 @@ const ApprovalBar = ({ frame, fps, top, label, approvalEnd, isCleanedUp, endStat
   });
   const endStateColor = isCleanedUp ? '#3f3f46' : '#dc2626';
   const endStateTextColor = isCleanedUp ? '#a1a1aa' : '#ffffff';
+  const barWidth = dateToX(approvalEnd);
+  const staleX = dateToX(STALE_AT);
 
   return (
     <div
@@ -243,20 +279,31 @@ const ApprovalBar = ({ frame, fps, top, label, approvalEnd, isCleanedUp, endStat
       style={{
         left: 0,
         top,
-        width: dateToX(approvalEnd),
+        width: barWidth,
         height: BAR_HEIGHT,
         backgroundColor: interpolateColors(endStateProgress, [0, 1], ['#e4e4e7', endStateColor]),
         maskImage: `linear-gradient(to right, transparent 0, black ${BAR_FADE_WIDTH}px)`,
       }}
     >
+      {/* Past the 180-day threshold the approval is stale, until the end state takes over. Grey stripes
+          rather than a warning color, like the neutral Stale trigger badge in the product. */}
+      <div
+        className="absolute inset-y-0"
+        style={{
+          left: staleX,
+          width: Math.max(0, barWidth - staleX),
+          opacity: 1 - endStateProgress,
+          background: 'repeating-linear-gradient(135deg, #a1a1aa 0 14px, #8e8e96 14px 28px)',
+        }}
+      />
       <span
-        className="shrink-0 pl-[110px] text-[28px] font-semibold whitespace-nowrap"
+        className="relative shrink-0 pl-[110px] text-[28px] font-semibold whitespace-nowrap"
         style={{ color: interpolateColors(endStateProgress, [0, 1], ['#18181b', endStateTextColor]) }}
       >
         {label}
       </span>
       {frame >= endStateAt && (
-        <div className="ml-auto pr-3" style={popIn(frame, fps, endStateAt)}>
+        <div className="relative ml-auto pr-3" style={popIn(frame, fps, endStateAt)}>
           {isCleanedUp ? (
             <Pill className="whitespace-nowrap bg-green-900 px-4 py-1.5 text-2xl text-green-400">Revoked</Pill>
           ) : (
@@ -294,40 +341,37 @@ interface DayCountBracketProps {
   fps: number;
   top: number;
   playhead: number;
-  end: number;
-  completeAt: number;
-  isCleanedUp: boolean;
+  dayCount: DayCount;
 }
 
-// Counts the days since Magic Eden closed while the playhead moves, then settles on the outcome:
-// still approved after 200 days, or auto-revoked after 180.
-const DayCountBracket = ({ frame, fps, top, playhead, end, completeAt, isCleanedUp }: DayCountBracketProps) => {
-  if (playhead <= MAGIC_EDEN_CLOSED_AT) return null;
+// Counts the days since Magic Eden stopped using Payment Processor while the playhead moves, then
+// settles on the outcome: stale after 180 days, or still approved when the exploit hits after 693.
+const DayCountBracket = ({ frame, fps, top, playhead, dayCount }: DayCountBracketProps) => {
+  if (playhead <= MAGIC_EDEN_STOPPED_AT) return null;
 
-  const bracketEnd = Math.min(playhead, end);
-  const dayCount = Math.round((bracketEnd - MAGIC_EDEN_CLOSED_AT) / DAY_IN_MS);
-  const isComplete = frame >= completeAt;
-  const completeColor = isCleanedUp ? 'text-green-400' : 'text-red-400';
-  const completeLineColor = isCleanedUp ? 'bg-green-400' : 'bg-red-400';
-  const lineColor = isComplete ? completeLineColor : 'bg-zinc-500';
-  const outcome = isCleanedUp ? 'auto-revoked' : 'still approved';
-  const outcomePop = spring({ frame: frame - completeAt, fps, durationInFrames: 15 });
+  const bracketEnd = Math.min(playhead, dayCount.until);
+  const days = Math.round((bracketEnd - MAGIC_EDEN_STOPPED_AT) / DAY_IN_MS);
+  const isComplete = frame >= dayCount.completeAt;
+  const lineColor = isComplete ? dayCount.lineClassName : 'bg-zinc-500';
+  const outcomePop = spring({ frame: frame - dayCount.completeAt, fps, durationInFrames: 15 });
 
-  const left = dateToX(MAGIC_EDEN_CLOSED_AT);
+  const left = dateToX(MAGIC_EDEN_STOPPED_AT);
   const width = dateToX(bracketEnd) - left;
 
-  // The count sits on the bracket line like a dimension label, with a black backing that cuts the line.
+  // A long bracket carries its count in the middle like a dimension label, with a black backing that
+  // cuts the line.
+  const labelPosition = dayCount.labelAtEnd ? 'absolute left-full ml-4' : 'absolute inset-x-0 flex justify-center';
   return (
     <div className="absolute" style={{ left, top, width }}>
       <div className={`absolute left-0 h-4 w-[3px] ${lineColor}`} style={{ top: -6 }} />
       <div className={`absolute right-0 h-4 w-[3px] ${lineColor}`} style={{ top: -6 }} />
       <div className={`h-[3px] w-full ${lineColor}`} />
-      <div className="absolute inset-x-0 flex justify-center" style={{ top: -20 }}>
+      <div className={labelPosition} style={{ top: -20 }}>
         <span
-          className={`whitespace-nowrap bg-black px-4 font-heading text-[30px] leading-[40px] font-semibold tabular-nums ${isComplete ? completeColor : 'text-zinc-300'}`}
+          className={`whitespace-nowrap bg-black px-4 font-heading text-[30px] leading-[40px] font-semibold tabular-nums ${isComplete ? dayCount.textClassName : 'text-zinc-300'}`}
           style={isComplete ? { transform: `scale(${interpolate(outcomePop, [0, 1], [0.85, 1])})` } : undefined}
         >
-          {dayCount} days{isComplete ? `: ${outcome}` : ''}
+          {days} days{isComplete ? `: ${dayCount.outcome}` : ''}
         </span>
       </div>
     </div>
@@ -338,14 +382,20 @@ const Axis = () => {
   return (
     <>
       <div className="absolute h-[3px] bg-zinc-700" style={{ left: 0, top: AXIS_TOP, width: TIMELINE_WIDTH }} />
-      {MONTH_STARTS.map((monthStart) => (
-        <div key={monthStart} className="absolute" style={{ left: dateToX(monthStart), top: AXIS_TOP }}>
-          <div className="h-3 w-[3px] bg-zinc-700" />
-          <span className="absolute top-4 left-3 text-2xl text-zinc-500">
-            {MONTH_NAMES[new Date(monthStart).getUTCMonth()]}
-          </span>
-        </div>
-      ))}
+      {QUARTER_STARTS.map((quarterStart) => {
+        const quarterDate = new Date(quarterStart);
+        const isYearStart = quarterDate.getUTCMonth() === 0;
+        return (
+          <div key={quarterStart} className="absolute" style={{ left: dateToX(quarterStart), top: AXIS_TOP }}>
+            <div className="h-3 w-[3px] bg-zinc-700" />
+            <span
+              className={`absolute top-4 left-3 text-2xl ${isYearStart ? 'font-semibold text-zinc-300' : 'text-zinc-500'}`}
+            >
+              {isYearStart ? quarterDate.getUTCFullYear() : MONTH_NAMES[quarterDate.getUTCMonth()]}
+            </span>
+          </div>
+        );
+      })}
     </>
   );
 };
@@ -361,7 +411,7 @@ const Playhead = ({ playhead }: { playhead: number }) => {
       />
       <div className="absolute" style={{ left: x, top: AXIS_TOP + 54, transform: 'translateX(-50%)' }}>
         <div className="whitespace-nowrap rounded-full bg-white px-4 py-1 text-2xl font-semibold text-zinc-900 tabular-nums">
-          {formatDate(playhead)} 2026
+          {formatDate(playhead)}
         </div>
       </div>
     </>

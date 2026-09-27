@@ -3,27 +3,22 @@ import { getChainExplorerUrl, getChainName } from '@revoke.cash/core/chains';
 import { formatUsdCents } from '@revoke.cash/core/utils/formatting';
 import {
   ACCENT_LIGHT,
-  BORDER_COLOR,
   CONTENT_WIDTH,
   drawAccentBar,
-  drawBrandHeader,
+  drawDocumentHeader,
   drawLine,
   drawPageFooters,
   drawSectionTitle,
+  drawTableHeaderRow,
+  drawTableRow,
   ensureSpace,
   formatPdfDate,
+  formatPeriodLabel,
   PAGE_MARGIN,
+  type PdfTableColumn,
   TEXT_PRIMARY,
-  TEXT_SECONDARY,
 } from 'lib/pdf';
 import PDFDocument from 'pdfkit';
-
-interface Column {
-  label: string;
-  x: number;
-  width: number;
-  align?: 'left' | 'right' | 'center';
-}
 
 interface GeneratePdfOptions {
   title: string;
@@ -42,10 +37,21 @@ export const generatePdf = ({ title, records, summary, from, to }: GeneratePdfOp
   const totalVat = summary.reduce((sum, r) => sum + r.vatAmount, 0);
 
   // --- Page 1: Header + VAT Summary ---
-  drawInvoiceHeader(doc, title, from, to, records.length, totalRevenue);
+  drawDocumentHeader(
+    doc,
+    title,
+    [
+      { label: 'Period', value: formatPeriodLabel(from, to) },
+      { label: 'Generated', value: new Date().toISOString().slice(0, 10) },
+    ],
+    [
+      { label: 'Transactions', value: records.length.toLocaleString() },
+      { label: 'Total Revenue', value: formatUsdCents(totalRevenue) },
+    ],
+  );
   drawSectionTitle(doc, 'Revenue by VAT Region');
 
-  const summaryColumns: Column[] = [
+  const summaryColumns: PdfTableColumn[] = [
     { label: 'Region', x: PAGE_MARGIN, width: 190 },
     { label: 'Revenue (USD)', x: PAGE_MARGIN + 190, width: 110, align: 'right' },
     { label: 'VAT Rate', x: PAGE_MARGIN + 300, width: 80, align: 'right' },
@@ -88,7 +94,7 @@ export const generatePdf = ({ title, records, summary, from, to }: GeneratePdfOp
   doc.y = PAGE_MARGIN + 10;
   drawSectionTitle(doc, 'Transaction Details');
 
-  const txColumns: Column[] = [
+  const txColumns: PdfTableColumn[] = [
     { label: 'Date/Time (UTC)', x: PAGE_MARGIN, width: 115 },
     { label: 'Chain', x: PAGE_MARGIN + 115, width: 75 },
     { label: 'Transaction Hash', x: PAGE_MARGIN + 190, width: 140 },
@@ -139,110 +145,4 @@ export const generatePdf = ({ title, records, summary, from, to }: GeneratePdfOp
     doc.on('end', () => resolve(Buffer.concat(chunks)));
     doc.on('error', reject);
   });
-};
-
-// --- PDF Drawing Helpers ---
-
-const drawTableHeaderRow = (doc: PDFKit.PDFDocument, columns: Column[], y: number): number => {
-  doc.rect(PAGE_MARGIN, y, CONTENT_WIDTH, 20).fill(ACCENT_LIGHT);
-
-  doc.font('Helvetica-Bold').fontSize(8).fillColor(TEXT_PRIMARY);
-  for (const col of columns) {
-    doc.text(col.label, col.x + 6, y + 6, {
-      width: col.width - 12,
-      align: col.align ?? 'left',
-    });
-  }
-
-  return y + 20;
-};
-
-const drawTableRow = (
-  doc: PDFKit.PDFDocument,
-  columns: Column[],
-  values: string[],
-  y: number,
-  options?: { bold?: boolean; bgColor?: string; link?: { colIndex: number; url: string } },
-): number => {
-  const rowHeight = 18;
-
-  if (options?.bgColor) {
-    doc.rect(PAGE_MARGIN, y, CONTENT_WIDTH, rowHeight).fill(options.bgColor);
-  }
-
-  doc
-    .font(options?.bold ? 'Helvetica-Bold' : 'Helvetica')
-    .fontSize(8)
-    .fillColor(TEXT_PRIMARY);
-
-  for (let i = 0; i < columns.length; i++) {
-    const col = columns[i];
-    const isLink = options?.link?.colIndex === i && options?.link?.url;
-
-    if (isLink) {
-      doc.fillColor('#B07A20').text(values[i], col.x + 6, y + 5, {
-        width: col.width - 12,
-        align: col.align ?? 'left',
-        link: options!.link!.url,
-      });
-      doc.fillColor(TEXT_PRIMARY);
-    } else {
-      doc.text(values[i], col.x + 6, y + 5, {
-        width: col.width - 12,
-        align: col.align ?? 'left',
-      });
-    }
-  }
-
-  drawLine(doc, PAGE_MARGIN, y + rowHeight, PAGE_MARGIN + CONTENT_WIDTH, BORDER_COLOR);
-
-  return y + rowHeight;
-};
-
-const drawInvoiceHeader = (
-  doc: PDFKit.PDFDocument,
-  title: string,
-  from: Date,
-  to: Date,
-  totalRecords: number,
-  totalRevenue: number,
-) => {
-  const titleY = drawBrandHeader(doc);
-
-  // Title
-  doc.font('Helvetica-Bold').fontSize(12).fillColor(TEXT_PRIMARY).text(title, PAGE_MARGIN, titleY);
-
-  // Divider
-  const dividerY = titleY + 18;
-  drawLine(doc, PAGE_MARGIN, dividerY, PAGE_MARGIN + CONTENT_WIDTH, BORDER_COLOR, 1);
-
-  // Info grid
-  const infoY = dividerY + 12;
-  const leftCol = PAGE_MARGIN;
-  const rightCol = PAGE_MARGIN + CONTENT_WIDTH / 2;
-
-  doc.font('Helvetica').fontSize(8).fillColor(TEXT_SECONDARY);
-  doc.text('Period', leftCol, infoY);
-  doc.text('Generated', leftCol, infoY + 22);
-  doc.text('Transactions', rightCol, infoY);
-  doc.text('Total Revenue', rightCol, infoY + 22);
-
-  doc.font('Helvetica-Bold').fontSize(9).fillColor(TEXT_PRIMARY);
-  doc.text(formatPeriodLabel(from, to), leftCol + 80, infoY);
-  doc.text(new Date().toISOString().slice(0, 10), leftCol + 80, infoY + 22);
-  doc.text(totalRecords.toLocaleString(), rightCol + 90, infoY);
-  doc.text(formatUsdCents(totalRevenue), rightCol + 90, infoY + 22);
-
-  // Divider
-  drawLine(doc, PAGE_MARGIN, infoY + 44, PAGE_MARGIN + CONTENT_WIDTH, BORDER_COLOR, 1);
-
-  doc.y = infoY + 58;
-};
-
-const formatPeriodLabel = (from: Date, to: Date): string => {
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  const fromMonth = months[from.getUTCMonth()];
-  const toMonth = months[to.getUTCMonth()];
-  const year = from.getUTCFullYear();
-  return `${fromMonth} ${from.getUTCDate()} – ${toMonth} ${to.getUTCDate()}, ${year}`;
 };

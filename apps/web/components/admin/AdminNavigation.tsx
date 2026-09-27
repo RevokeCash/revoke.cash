@@ -11,6 +11,7 @@ const AdminNavigation = () => (
     <NavigationTab name="Audit" href="/admin/audit" matchNestedRoutes />
     <NavigationTab name="Revenue" href="/admin/revenue" matchNestedRoutes />
     <NavigationTab name="Treasury" href="/admin/treasury" matchNestedRoutes />
+    <NavigationTab name="Gas" href="/admin/gas" matchNestedRoutes />
     <NavigationTab name="Executor" href="/admin/executor" matchNestedRoutes />
     <NavigationTab name="Lookup" href="/admin/lookup" matchNestedRoutes />
   </NavigationTabs>

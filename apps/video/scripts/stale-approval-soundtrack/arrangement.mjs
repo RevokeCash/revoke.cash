@@ -46,8 +46,9 @@ const roundToBeat = (frame) => Math.round(frame / BEAT) * BEAT;
 // Cue frames, from the in-scene frames in each scene file.
 const CUE = {
   tilesPulled: Array.from({ length: 8 }, (_, tileIndex) => HOOK + 46 + tileIndex * 4),
-  magicEdenClosed: COMPARISON + 40,
-  staleRevoked: COMPARISON + 110,
+  magicEdenStopped: COMPARISON + 36,
+  approvalStale: COMPARISON + 73,
+  ultimateLaunched: COMPARISON + 109,
   exploit: COMPARISON + 144,
   notAffected: COMPARISON + 150,
   ruleToggled: SET_IT_ONCE + 32,
@@ -57,6 +58,10 @@ const CUE = {
 
 // Musical sections start on the beat nearest to their scene cut.
 const GROOVE_START = roundToBeat(SET_IT_ONCE);
+// The timeline speeds up in two steps: on the beat after the Magic Eden marker, and when the approval
+// turns stale.
+const AGING_START = roundToBeat(CUE.magicEdenStopped) + BEAT;
+const RUNNING_OUT_START = roundToBeat(CUE.approvalStale);
 const LIFT_START = roundToBeat(BEFORE_THE_EXPLOIT);
 const CTA_DOWNBEAT = roundToBeat(CTA);
 
@@ -232,13 +237,12 @@ function playHook(tracks) {
 }
 
 // The clock: a tick-tock every two beats from the first frame, every beat once the approval starts
-// ageing, and every eighth note while the last days run out. It stops dead on the exploit.
+// ageing, and every eighth note once it is stale. It stops dead on the exploit.
 function playClock(tracks) {
-  const agingStart = CUE.magicEdenClosed + 9;
   const tickFrames = [
-    ...range(0, agingStart, 2 * BEAT),
-    ...range(agingStart, CUE.staleRevoked - 1, BEAT),
-    ...range(CUE.staleRevoked - 1, CUE.exploit - 2, EIGHTH),
+    ...range(0, AGING_START, 2 * BEAT),
+    ...range(AGING_START, RUNNING_OUT_START, BEAT),
+    ...range(RUNNING_OUT_START, CUE.exploit - 2, EIGHTH),
   ];
   tickFrames.forEach((frame, tickIndex) => {
     playTick(tracks.percussion, toSeconds(frame), {
@@ -249,23 +253,22 @@ function playClock(tracks) {
   });
 }
 
-// The timeline: a thud when Magic Eden's closing date lands, a pulsing D bass that opens up while
-// the days count, the revoked motif when stale cleanup revokes the lower track, and a swell into the
-// exploit.
+// The timeline: a thud when Magic Eden drops Payment Processor, a pulsing D bass that opens up while
+// the days count, the revoked motif when Revoke Ultimate launches and revokes the lower track, and a
+// swell into the exploit.
 function playTimeline(tracks) {
-  playTom(tracks.effects, toSeconds(CUE.magicEdenClosed), { gain: 0.5 });
+  playTom(tracks.effects, toSeconds(CUE.magicEdenStopped), { gain: 0.5 });
 
-  const pulseStart = CUE.magicEdenClosed + 9;
-  range(pulseStart, CUE.exploit - 2, EIGHTH).forEach((frame) => {
-    const progress = (frame - pulseStart) / (CUE.exploit - pulseStart);
+  range(AGING_START, CUE.exploit - 2, EIGHTH).forEach((frame) => {
+    const progress = (frame - AGING_START) / (CUE.exploit - AGING_START);
     playBass(tracks.bass, toSeconds(frame), toSeconds(4), NOTE.D2, {
       gain: 0.3 + 0.4 * progress,
       cutoff: 250 + 900 * progress,
     });
   });
 
-  playRevokedMotif(tracks, CUE.staleRevoked);
-  playRiser(tracks.effects, toSeconds(CUE.staleRevoked + 16), toSeconds(CUE.exploit), { gain: 0.5 });
+  playRevokedMotif(tracks, CUE.ultimateLaunched);
+  playRiser(tracks.effects, toSeconds(CUE.ultimateLaunched + 12), toSeconds(CUE.exploit), { gain: 0.5 });
 }
 
 // The exploit: one heavy hit and everything else stops. "Not affected" answers with the top of the

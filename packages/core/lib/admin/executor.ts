@@ -10,10 +10,13 @@ import { MINUTE } from '@revoke.cash/core/utils/time';
 import { and, desc, eq, getTableColumns, gte, inArray, isNotNull, lt, sql } from 'drizzle-orm';
 import { type Address, formatEther, isAddressEqual } from 'viem';
 
-const EXECUTOR_WALLETS: Array<{ lane: ExecutionLane; address: Address }> = [
+export const EXECUTOR_WALLETS: Array<{ lane: ExecutionLane; address: Address }> = [
   { lane: 'normal', address: AUTO_REVOKE_EXECUTOR_HOT_ADDRESS },
   { lane: 'urgent', address: AUTO_REVOKE_URGENT_EXECUTOR_HOT_ADDRESS },
 ];
+
+// The executor wallets were first funded in July 2026, so there is no executor gas activity before that
+export const EXECUTOR_WALLETS_FIRST_FUNDED_AT = new Date('2026-07-01T00:00:00.000Z');
 
 export const laneForSigner = (signerAddress: Address | null): ExecutionLane | null => {
   if (!signerAddress) return null;
@@ -28,6 +31,7 @@ export interface ExecutorGasBalance {
   // Balance as a decimal string in whole native tokens; null when the RPC call failed
   balance: string | null;
   balanceUsd: number | null;
+  nativeTokenPriceUsd: number | null;
 }
 
 export const getExecutorGasBalances = async (): Promise<ExecutorGasBalance[]> => {
@@ -43,7 +47,15 @@ export const getExecutorGasBalances = async (): Promise<ExecutorGasBalance[]> =>
           const balanceUsd =
             balance !== null && nativeTokenPriceUsd !== null ? Number(balance) * nativeTokenPriceUsd : null;
 
-          return { lane, address, chainId, nativeToken: getChainNativeToken(chainId), balance, balanceUsd };
+          return {
+            lane,
+            address,
+            chainId,
+            nativeToken: getChainNativeToken(chainId),
+            balance,
+            balanceUsd,
+            nativeTokenPriceUsd,
+          };
         }),
       );
     }),

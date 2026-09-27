@@ -10,6 +10,9 @@ import { HyperSyncEventGetter } from './HyperSyncEventGetter';
 import { NodeEventGetter } from './NodeEventGetter';
 import { RoutescanEventGetter } from './RoutescanEventGetter';
 
+// Importing EtherscanEventGetter directly (instead of through this barrel) hits a circular import with the logs providers
+export { createExplorerClients } from './EtherscanEventGetter';
+
 // Event getters should only be instantiated once. These singleton accessors keep
 // initialization lazy so we don't pay startup cost (or import side effects) until needed.
 

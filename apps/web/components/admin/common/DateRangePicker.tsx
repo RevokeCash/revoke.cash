@@ -5,6 +5,7 @@ import Select from 'components/common/select/Select';
 
 export const currentUtcYearStart = (): string => `${new Date().getUTCFullYear()}-01-01`;
 export const currentUtcDate = (): string => new Date().toISOString().slice(0, 10);
+export const currentUtcMonthStart = (): string => `${currentUtcDate().slice(0, 7)}-01`;
 
 interface PresetOption {
   value: string;

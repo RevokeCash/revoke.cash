@@ -13,7 +13,7 @@ const FIRST_FRAME_POSTER_FRAME = 200;
 const SOUNDTRACK_GAIN = 0.6;
 
 // Explainer for Stale Approval Cleanup, told through the Magic Eden / Limit Break exploit of
-// 25 September 2026: the exploit is only context, the timeline comparison carries the argument.
+// 24 September 2026: the exploit is only context, the timeline comparison carries the argument.
 // Render with: yarn render StaleApprovalExplainer out/stale-approval-explainer.mp4
 // The soundtrack's cue points follow these scene durations; after changing them, update
 // scripts/stale-approval-soundtrack/arrangement.mjs and regenerate the audio.

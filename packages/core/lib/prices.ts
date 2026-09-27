@@ -18,6 +18,10 @@ interface CoinGeckoSimplePriceResponse {
   };
 }
 
+interface CoinGeckoMarketChartResponse {
+  prices: Array<[timestampMs: number, priceUsd: number]>;
+}
+
 export class PriceError extends ExportableError {
   constructor(
     public readonly status: number,
@@ -76,6 +80,35 @@ export const getNativeTokenPriceUsd = async (chainId: number): Promise<number | 
 
   if (price === CACHE_MISS_VALUE) return null;
   return price;
+};
+
+// CoinGecko serves hourly prices for a range of a few hours, so the closest price is at most 30 minutes away
+const HISTORICAL_PRICE_WINDOW_SECONDS = 2 * 60 * 60;
+
+export const getHistoricalNativeTokenPriceUsd = async (chainId: number, timestamp: Date): Promise<number | null> => {
+  const nativeTokenCoingeckoId = getChainNativeTokenCoingeckoId(chainId);
+  if (!nativeTokenCoingeckoId) return null;
+
+  const timestampSeconds = Math.floor(timestamp.getTime() / 1000);
+
+  const result = await COINGECKO_PRICE_QUEUE.add(() =>
+    ky
+      .get(`${COINGECKO_API_BASE_URL}/coins/${nativeTokenCoingeckoId}/market_chart/range`, {
+        headers: getCoinGeckoHeaders(),
+        searchParams: {
+          vs_currency: 'usd',
+          from: timestampSeconds - HISTORICAL_PRICE_WINDOW_SECONDS,
+          to: timestampSeconds + HISTORICAL_PRICE_WINDOW_SECONDS,
+        },
+      })
+      .json<CoinGeckoMarketChartResponse>(),
+  );
+
+  const distanceToTimestamp = ([pointTimestampMs]: [number, number]) =>
+    Math.abs(pointTimestampMs - timestamp.getTime());
+  const [closestPrice] = [...result.prices].sort((a, b) => distanceToTimestamp(a) - distanceToTimestamp(b));
+
+  return closestPrice?.[1] ?? null;
 };
 
 export const getTokenPricesUsd = async (

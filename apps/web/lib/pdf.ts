@@ -69,6 +69,121 @@ export const drawBrandHeader = (doc: PDFKit.PDFDocument, includeCompanyInfo = tr
   return companyInfo ? headerY + 10 + companyInfo.split('\\n').length * 11 + 6 : headerY + 42;
 };
 
+export interface PdfHeaderDetail {
+  label: string;
+  value: string;
+}
+
+// Brand header, document title, and two columns of label/value details between dividers
+export const drawDocumentHeader = (
+  doc: PDFKit.PDFDocument,
+  title: string,
+  leftDetails: PdfHeaderDetail[],
+  rightDetails: PdfHeaderDetail[],
+) => {
+  const titleY = drawBrandHeader(doc);
+
+  doc.font('Helvetica-Bold').fontSize(12).fillColor(TEXT_PRIMARY).text(title, PAGE_MARGIN, titleY);
+
+  const dividerY = titleY + 18;
+  drawLine(doc, PAGE_MARGIN, dividerY, PAGE_MARGIN + CONTENT_WIDTH, BORDER_COLOR, 1);
+
+  const detailsY = dividerY + 12;
+  drawHeaderDetails(doc, leftDetails, PAGE_MARGIN, 80, detailsY);
+  drawHeaderDetails(doc, rightDetails, PAGE_MARGIN + CONTENT_WIDTH / 2, 90, detailsY);
+
+  const bottomDividerY = detailsY + Math.max(leftDetails.length, rightDetails.length) * 22;
+  drawLine(doc, PAGE_MARGIN, bottomDividerY, PAGE_MARGIN + CONTENT_WIDTH, BORDER_COLOR, 1);
+
+  // pdfkit keeps the x of the last positioned text, which would otherwise indent the next flowing text
+  doc.x = PAGE_MARGIN;
+  doc.y = bottomDividerY + 14;
+};
+
+const drawHeaderDetails = (
+  doc: PDFKit.PDFDocument,
+  details: PdfHeaderDetail[],
+  x: number,
+  valueOffset: number,
+  y: number,
+) => {
+  details.forEach((detail, index) => {
+    doc
+      .font('Helvetica')
+      .fontSize(8)
+      .fillColor(TEXT_SECONDARY)
+      .text(detail.label, x, y + index * 22);
+    doc
+      .font('Helvetica-Bold')
+      .fontSize(9)
+      .fillColor(TEXT_PRIMARY)
+      .text(detail.value, x + valueOffset, y + index * 22);
+  });
+};
+
+export interface PdfTableColumn {
+  label: string;
+  x: number;
+  width: number;
+  align?: 'left' | 'right' | 'center';
+}
+
+export const drawTableHeaderRow = (doc: PDFKit.PDFDocument, columns: PdfTableColumn[], y: number): number => {
+  doc.rect(PAGE_MARGIN, y, CONTENT_WIDTH, 20).fill(ACCENT_LIGHT);
+
+  doc.font('Helvetica-Bold').fontSize(8).fillColor(TEXT_PRIMARY);
+  for (const col of columns) {
+    doc.text(col.label, col.x + 6, y + 6, {
+      width: col.width - 12,
+      align: col.align ?? 'left',
+    });
+  }
+
+  return y + 20;
+};
+
+export const drawTableRow = (
+  doc: PDFKit.PDFDocument,
+  columns: PdfTableColumn[],
+  values: string[],
+  y: number,
+  options?: { bold?: boolean; bgColor?: string; link?: { colIndex: number; url: string } },
+): number => {
+  const rowHeight = 18;
+
+  if (options?.bgColor) {
+    doc.rect(PAGE_MARGIN, y, CONTENT_WIDTH, rowHeight).fill(options.bgColor);
+  }
+
+  doc
+    .font(options?.bold ? 'Helvetica-Bold' : 'Helvetica')
+    .fontSize(8)
+    .fillColor(TEXT_PRIMARY);
+
+  for (let i = 0; i < columns.length; i++) {
+    const col = columns[i];
+    const isLink = options?.link?.colIndex === i && options?.link?.url;
+
+    if (isLink) {
+      doc.fillColor('#B07A20').text(values[i], col.x + 6, y + 5, {
+        width: col.width - 12,
+        align: col.align ?? 'left',
+        link: options!.link!.url,
+      });
+      doc.fillColor(TEXT_PRIMARY);
+    } else {
+      doc.text(values[i], col.x + 6, y + 5, {
+        width: col.width - 12,
+        align: col.align ?? 'left',
+      });
+    }
+  }
+
+  drawLine(doc, PAGE_MARGIN, y + rowHeight, PAGE_MARGIN + CONTENT_WIDTH, BORDER_COLOR);
+
+  return y + rowHeight;
+};
+
 export const drawPageFooters = (doc: PDFKit.PDFDocument) => {
   const { start, count: totalPages } = doc.bufferedPageRange();
   for (let i = start; i < start + totalPages; i++) {
@@ -93,4 +208,12 @@ export const formatPdfDate = (date: Date): string => {
     .toISOString()
     .replace('T', ' ')
     .replace(/\.\d{3}Z$/, ' UTC');
+};
+
+export const formatPeriodLabel = (from: Date, to: Date): string => {
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const fromMonth = months[from.getUTCMonth()];
+  const toMonth = months[to.getUTCMonth()];
+  const year = from.getUTCFullYear();
+  return `${fromMonth} ${from.getUTCDate()} – ${toMonth} ${to.getUTCDate()}, ${year}`;
 };
