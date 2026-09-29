@@ -11,9 +11,11 @@ interface Props<T extends string> {
   value: T;
   onChange: (value: T) => void;
   disabled?: boolean;
+  // 'sm' matches the height of small buttons (h-6)
+  size?: 'sm' | 'md';
 }
 
-const SegmentedControl = <T extends string>({ options, value, onChange, disabled = false }: Props<T>) => {
+const SegmentedControl = <T extends string>({ options, value, onChange, disabled = false, size = 'md' }: Props<T>) => {
   const activeIndex = options.findIndex((option) => option.value === value);
   const count = options.length;
 
@@ -41,7 +43,8 @@ const SegmentedControl = <T extends string>({ options, value, onChange, disabled
           disabled={disabled}
           onClick={() => onChange(option.value)}
           className={twMerge(
-            'relative z-10 px-3 py-1.5 text-xs font-medium rounded-md transition-colors duration-200',
+            'relative z-10 text-xs font-medium rounded-md transition-colors duration-200',
+            size === 'sm' ? 'px-2 py-0.5' : 'px-3 py-1.5',
             value === option.value ? 'text-white dark:text-zinc-900' : 'text-zinc-600 dark:text-zinc-400',
           )}
         >

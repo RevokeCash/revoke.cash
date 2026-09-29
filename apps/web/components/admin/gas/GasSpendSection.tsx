@@ -24,7 +24,7 @@ interface Props {
 }
 
 const GasSpendSection = ({ from, to }: Props) => {
-  const { data, isLoading, error } = useAdminGasSpend(from, to);
+  const { data, isLoading, isPlaceholderData, error } = useAdminGasSpend(from, to);
 
   const rows = useMemo((): SpendRow[] => {
     if (!data || data.chains.length === 0) return [];
@@ -63,7 +63,7 @@ const GasSpendSection = ({ from, to }: Props) => {
         loading={isLoading}
         error={error}
         emptyChildren="No gas spend in this period"
-        className="border-none"
+        className={twMerge('border-none', isPlaceholderData && 'opacity-60')}
       />
     </Card>
   );

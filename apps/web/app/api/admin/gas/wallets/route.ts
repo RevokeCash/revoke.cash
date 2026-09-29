@@ -1,7 +1,7 @@
 import { getGasSpendReport } from '@revoke.cash/core/admin/gas-spend';
 import { buildGasDepositSummary, type GasDeposit, getGasWalletReport } from '@revoke.cash/core/admin/gas-wallets';
 import { generateGasStatementPdf } from 'lib/admin/gas-statement';
-import { periodQuerySchema, toUtcPeriod } from 'lib/admin/period';
+import { getPrintedEndDate, periodQuerySchema, toUtcPeriod } from 'lib/admin/period';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
@@ -24,17 +24,19 @@ export async function GET(req: NextRequest) {
     await authorizeRequest(req, { auth: 'siwe', requireAdmin: true, rateLimiter: RateLimiters.PREMIUM_READ });
     const { query } = await parseRequest(req, undefined, schemas);
     const { from, to } = toUtcPeriod(query.from, query.to);
+    const printedEndDate = getPrintedEndDate(query.to);
 
     if (query.format === 'pdf') {
       const [walletReport, spendReport] = await Promise.all([
         getGasWalletReport(from, to),
         getGasSpendReport(from, to),
       ]);
-      const pdf = await generateGasStatementPdf({ walletReport, spendReport, from, to });
+      const printedPeriod = toUtcPeriod(query.from, printedEndDate);
+      const pdf = await generateGasStatementPdf({ walletReport, spendReport, ...printedPeriod });
       return new NextResponse(new Uint8Array(pdf), {
         headers: {
           'Content-Type': 'application/pdf',
-          'Content-Disposition': `attachment; filename="gas-statement-${query.from}-to-${query.to}.pdf"`,
+          'Content-Disposition': `attachment; filename="gas-statement-${query.from}-to-${printedEndDate}.pdf"`,
           'Cache-Control': 'no-store',
         },
       });
@@ -46,7 +48,7 @@ export async function GET(req: NextRequest) {
       return new NextResponse(buildGasDepositsCsv(deposits), {
         headers: {
           'Content-Type': 'text/csv; charset=utf-8',
-          'Content-Disposition': `attachment; filename="gas-deposits-${query.from}-${query.to}.csv"`,
+          'Content-Disposition': `attachment; filename="gas-deposits-${query.from}-${printedEndDate}.csv"`,
           'Cache-Control': 'no-store',
         },
       });

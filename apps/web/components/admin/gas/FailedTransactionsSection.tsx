@@ -9,6 +9,7 @@ import { useAdminGasSpend } from 'lib/hooks/admin/useAdminGas';
 import { useTable } from 'lib/hooks/useTable';
 import type { AppTableFeatures } from 'lib/utils/table';
 import { useMemo } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface FailureRow extends GasSpendFailure {
   // Share of all recorded spend in the period
@@ -21,7 +22,7 @@ interface Props {
 }
 
 const FailedTransactionsSection = ({ from, to }: Props) => {
-  const { data, isLoading, error } = useAdminGasSpend(from, to);
+  const { data, isLoading, isPlaceholderData, error } = useAdminGasSpend(from, to);
 
   const rows = useMemo(
     (): FailureRow[] =>
@@ -54,7 +55,7 @@ const FailedTransactionsSection = ({ from, to }: Props) => {
         loading={isLoading}
         error={error}
         emptyChildren="No failed transactions in this period"
-        className="border-none"
+        className={twMerge('border-none', isPlaceholderData && 'opacity-60')}
       />
     </Card>
   );

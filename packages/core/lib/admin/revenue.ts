@@ -1,4 +1,5 @@
 import { ChainId } from '@revoke.cash/core/chains/ids';
+import { deduplicateArray } from '@revoke.cash/core/utils';
 
 // The revenue policy and every pure derivation over money data. This module is db-free so the
 // web app can run the same derivations client-side that the API routes run server-side; the
@@ -126,29 +127,38 @@ export const buildVatSummary = (records: FeeRecord[]): RegionSummary[] => {
   return rows;
 };
 
-export interface MonthlyRevenuePoint {
-  month: string;
+// Whole UTC days 'YYYY-MM-DD', inclusive on both ends. The caller picks the bucket size (a month, a week, a day)
+// and can pass extra fields, which come back unchanged on each point.
+export interface RevenueBucket {
+  from: string;
+  to: string;
+}
+
+export interface RevenueSeriesPoint<Bucket extends RevenueBucket> {
+  bucket: Bucket;
   subscriptionsUsdCents: number;
   batchRevokesUsdCents: number;
 }
 
-export const deriveMonthlySeries = (data: RevenueData, months: number): MonthlyRevenuePoint[] => {
-  const subscriptionsByMonth = new Map<string, number>();
-  for (const payment of data.payments.filter(isRevenueEligiblePayment)) {
-    const month = payment.confirmedAt.slice(0, 7);
-    subscriptionsByMonth.set(month, (subscriptionsByMonth.get(month) ?? 0) + payment.amountUsdCents);
-  }
+export const deriveRevenueSeries = <Bucket extends RevenueBucket>(
+  data: RevenueData,
+  buckets: Bucket[],
+): RevenueSeriesPoint<Bucket>[] => {
+  const subscriptionsByDay = sumUsdCentsByDay(
+    data.payments
+      .filter(isRevenueEligiblePayment)
+      .map((payment) => ({ day: payment.confirmedAt.slice(0, 10), usdCents: payment.amountUsdCents })),
+  );
+  const batchRevokesByDay = sumUsdCentsByDay(
+    data.batchRevokeGroups
+      .filter(isRevenueEligibleBatchGroup)
+      .map((group) => ({ day: group.day, usdCents: group.feeUsdCents })),
+  );
 
-  const batchRevokesByMonth = new Map<string, number>();
-  for (const group of data.batchRevokeGroups.filter(isRevenueEligibleBatchGroup)) {
-    const month = group.day.slice(0, 7);
-    batchRevokesByMonth.set(month, (batchRevokesByMonth.get(month) ?? 0) + group.feeUsdCents);
-  }
-
-  return listUtcMonths(months).map((month) => ({
-    month,
-    subscriptionsUsdCents: subscriptionsByMonth.get(month) ?? 0,
-    batchRevokesUsdCents: batchRevokesByMonth.get(month) ?? 0,
+  return buckets.map((bucket) => ({
+    bucket,
+    subscriptionsUsdCents: sumDaysInBucket(subscriptionsByDay, bucket),
+    batchRevokesUsdCents: sumDaysInBucket(batchRevokesByDay, bucket),
   }));
 };
 
@@ -222,9 +232,9 @@ export const deriveByPlan = (data: RevenueData, fromIso: string, toExclusiveIso:
 };
 
 // The payments table is both quote and payment (pending rows are short-lived quotes), so status
-// counts by quote month form a conversion funnel. All statuses count here, not just confirmed.
-export interface PaymentFunnelPoint {
-  month: string;
+// counts by quote day form a conversion funnel. All statuses count here, not just confirmed.
+export interface PaymentFunnelPoint<Bucket extends RevenueBucket> {
+  bucket: Bucket;
   pending: number;
   confirmed: number;
   expired: number;
@@ -233,48 +243,51 @@ export interface PaymentFunnelPoint {
   refunded: number;
 }
 
-export const deriveFunnel = (data: RevenueData, months: number): PaymentFunnelPoint[] => {
-  const pointsByMonth = new Map<string, PaymentFunnelPoint>(
-    listUtcMonths(months).map((month) => [
-      month,
-      { month, pending: 0, confirmed: 0, expired: 0, failed: 0, reversed: 0, refunded: 0 },
-    ]),
-  );
+export const deriveFunnel = <Bucket extends RevenueBucket>(
+  data: RevenueData,
+  buckets: Bucket[],
+): PaymentFunnelPoint<Bucket>[] =>
+  buckets.map((bucket) => {
+    const quotes = data.payments.filter((payment) => isDayInBucket(payment.createdAt.slice(0, 10), bucket));
+    const countQuotes = (status: RevenuePayment['status']) => quotes.filter((quote) => quote.status === status).length;
 
-  for (const payment of data.payments) {
-    const point = pointsByMonth.get(payment.createdAt.slice(0, 7));
-    if (point) point[payment.status] += 1;
-  }
+    return {
+      bucket,
+      pending: countQuotes('pending'),
+      confirmed: countQuotes('confirmed'),
+      expired: countQuotes('expired'),
+      failed: countQuotes('failed'),
+      reversed: countQuotes('reversed'),
+      refunded: countQuotes('refunded'),
+    };
+  });
 
-  return [...pointsByMonth.values()];
-};
-
-// Batch revoke usage split: paid fees vs waived (premium) vs sponsored chains, per month.
-// Only testnets are excluded; sponsored batches get their own buckets.
-interface BatchRevokeSplitPoint {
-  month: string;
+// Batch revoke usage split: paid fees vs waived (premium) vs sponsored chains, per bucket.
+// Only testnets are excluded; sponsored batches get their own entries.
+interface BatchRevokeSplitPoint<Bucket extends RevenueBucket> {
+  bucket: Bucket;
   sponsor: string | null;
   batchCount: number;
   feeUsdCents: number;
 }
 
-export const deriveSponsorSplit = (data: RevenueData, months: number): BatchRevokeSplitPoint[] => {
-  const windowMonths = new Set(listUtcMonths(months));
+export const deriveSponsorSplit = <Bucket extends RevenueBucket>(
+  data: RevenueData,
+  buckets: Bucket[],
+): BatchRevokeSplitPoint<Bucket>[] =>
+  buckets.flatMap((bucket) => {
+    const groups = data.batchRevokeGroups.filter((group) => !group.isTestnet && isDayInBucket(group.day, bucket));
 
-  const byMonthAndSponsor = new Map<string, BatchRevokeSplitPoint>();
-  for (const group of data.batchRevokeGroups) {
-    const month = group.day.slice(0, 7);
-    if (group.isTestnet || !windowMonths.has(month)) continue;
-
-    const key = `${month}|${group.sponsor ?? ''}`;
-    const point = byMonthAndSponsor.get(key) ?? { month, sponsor: group.sponsor, batchCount: 0, feeUsdCents: 0 };
-    point.batchCount += group.batchCount;
-    point.feeUsdCents += group.feeUsdCents;
-    byMonthAndSponsor.set(key, point);
-  }
-
-  return [...byMonthAndSponsor.values()];
-};
+    return deduplicateArray(groups.map((group) => group.sponsor)).map((sponsor) => {
+      const sponsorGroups = groups.filter((group) => group.sponsor === sponsor);
+      return {
+        bucket,
+        sponsor,
+        batchCount: sponsorGroups.reduce((total, group) => total + group.batchCount, 0),
+        feeUsdCents: sponsorGroups.reduce((total, group) => total + group.feeUsdCents, 0),
+      };
+    });
+  });
 
 export const utcMonthStartIso = (monthsAgo: number = 0): string => {
   return startOfUtcMonthsAgo(monthsAgo).toISOString();
@@ -304,10 +317,13 @@ const batchGroupsInWindow = (data: RevenueData, fromIso: string, toExclusiveIso:
   });
 };
 
-// The last `months` UTC months as 'YYYY-MM' strings, oldest first, ending with the current month
-const listUtcMonths = (months: number): string[] =>
-  Array.from({ length: months }, (_, index) =>
-    startOfUtcMonthsAgo(months - 1 - index)
-      .toISOString()
-      .slice(0, 7),
+const isDayInBucket = (day: string, bucket: RevenueBucket): boolean => day >= bucket.from && day <= bucket.to;
+
+const sumUsdCentsByDay = (entries: { day: string; usdCents: number }[]): Map<string, number> =>
+  entries.reduce(
+    (usdCentsByDay, entry) => usdCentsByDay.set(entry.day, (usdCentsByDay.get(entry.day) ?? 0) + entry.usdCents),
+    new Map<string, number>(),
   );
+
+const sumDaysInBucket = (usdCentsByDay: Map<string, number>, bucket: RevenueBucket): number =>
+  [...usdCentsByDay].filter(([day]) => isDayInBucket(day, bucket)).reduce((total, [, usdCents]) => total + usdCents, 0);

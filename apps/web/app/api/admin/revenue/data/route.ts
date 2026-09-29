@@ -7,7 +7,7 @@ import { z } from 'zod';
 const schemas = {
   params: z.undefined(),
   body: z.undefined(),
-  query: z.object({ months: z.coerce.number().int().min(1).max(36).default(12) }),
+  query: z.object({ months: z.coerce.number().int().min(1).default(12) }),
 };
 
 export async function GET(req: NextRequest) {

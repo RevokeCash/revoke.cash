@@ -2,29 +2,36 @@
 
 import type { GasSpendReport } from '@revoke.cash/core/admin/gas-spend';
 import { AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD } from '@revoke.cash/core/auto-revoke/config';
-import DateRangePicker, { currentUtcDate, currentUtcMonthStart } from 'components/admin/common/DateRangePicker';
+import DateRangePicker from 'components/admin/common/date-range-picker/DateRangePicker';
 import StatTile from 'components/admin/common/StatTile';
 import Button from 'components/common/Button';
 import Card, { CardHeader } from 'components/common/Card';
+import { type DateRange, getPeriod, getToday } from 'lib/admin/date-range';
 import { formatPercentage, formatUsd } from 'lib/admin/format';
 import { useAdminGasBudgets, useAdminGasSpend } from 'lib/hooks/admin/useAdminGas';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
-  from: string;
-  to: string;
-  onFromChange: (value: string) => void;
-  onToChange: (value: string) => void;
+  range: DateRange;
+  onRangeChange: (range: DateRange) => void;
 }
 
-const GasOverviewSection = ({ from, to, onFromChange, onToChange }: Props) => {
-  const { data: periodSpend, isLoading: isPeriodSpendLoading } = useAdminGasSpend(from, to);
-  const { data: monthSpend, isLoading: isMonthSpendLoading } = useAdminGasSpend(
-    currentUtcMonthStart(),
-    currentUtcDate(),
-  );
-  const { data: budgets, isLoading: isBudgetsLoading } = useAdminGasBudgets(from, to);
+const GasOverviewSection = ({ range, onRangeChange }: Props) => {
+  const { from, to } = range;
+  const today = getToday();
+  const {
+    data: periodSpend,
+    isLoading: isPeriodSpendLoading,
+    isPlaceholderData: isPeriodSpendPlaceholderData,
+  } = useAdminGasSpend(from, to);
+  const { data: monthSpend, isLoading: isMonthSpendLoading } = useAdminGasSpend(getPeriod('month', today).from, today);
+  const {
+    data: budgets,
+    isLoading: isBudgetsLoading,
+    isPlaceholderData: isBudgetsPlaceholderData,
+  } = useAdminGasBudgets(from, to);
   const isLoading = isPeriodSpendLoading || isMonthSpendLoading || isBudgetsLoading;
+  const isPlaceholderData = isPeriodSpendPlaceholderData || isBudgetsPlaceholderData;
 
   const statementUrl = `/api/admin/gas/wallets?${new URLSearchParams({ from, to, format: 'pdf' })}`;
 
@@ -38,7 +45,7 @@ const GasOverviewSection = ({ from, to, onFromChange, onToChange }: Props) => {
               <p>Auto-revoke executor gas spend, budgets and wallet flows in the selected period</p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <DateRangePicker from={from} to={to} onFromChange={onFromChange} onToChange={onToChange} />
+              <DateRangePicker value={range} onChange={onRangeChange} />
               <Button style="secondary" size="sm" href={statementUrl}>
                 Gas statement PDF
               </Button>
@@ -50,7 +57,12 @@ const GasOverviewSection = ({ from, to, onFromChange, onToChange }: Props) => {
       className={twMerge(isLoading && 'h-40')}
     >
       {periodSpend && monthSpend && budgets && (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div
+          className={twMerge(
+            'grid grid-cols-2 lg:grid-cols-4 gap-4 transition-opacity duration-150',
+            isPlaceholderData && 'opacity-60',
+          )}
+        >
           <StatTile
             label="Gas spend"
             value={formatUsd(periodSpend.spendUsd)}

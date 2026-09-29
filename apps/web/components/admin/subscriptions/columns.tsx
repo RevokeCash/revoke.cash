@@ -1,9 +1,10 @@
 import type { AdminSubscriptionListItem } from '@revoke.cash/core/admin/subscriptions';
 import { formatUsdCents } from '@revoke.cash/core/utils/formatting';
-import { formatDate } from '@revoke.cash/core/utils/time';
+import { formatDate, formatDateNormalised } from '@revoke.cash/core/utils/time';
 import { createColumnHelper } from '@tanstack/react-table';
 import AdminAddressLink from 'components/admin/common/AdminAddressLink';
 import Button from 'components/common/Button';
+import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import type { AppTableFeatures } from 'lib/utils/table';
 import SubscriptionPlanLabel from './SubscriptionPlanLabel';
 import SubscriptionStatusBadge from './SubscriptionStatusBadge';
@@ -34,9 +35,11 @@ export const columns = columnHelper.columns([
     id: 'period',
     header: 'Period',
     cell: (info) => (
-      <span className="text-sm text-zinc-600 dark:text-zinc-400">
-        {formatDate(info.getValue())} - {formatDate(info.row.original.endsAt)}
-      </span>
+      <WithHoverTooltip tooltip={`Started ${formatDateNormalised(new Date(info.getValue()))}`}>
+        <span className="text-sm text-zinc-600 dark:text-zinc-400">
+          {formatDate(info.getValue())} - {formatDate(info.row.original.endsAt)}
+        </span>
+      </WithHoverTooltip>
     ),
   }),
   columnHelper.accessor('addressCount', {

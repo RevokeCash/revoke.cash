@@ -214,6 +214,9 @@ export const formatPeriodLabel = (from: Date, to: Date): string => {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const fromMonth = months[from.getUTCMonth()];
   const toMonth = months[to.getUTCMonth()];
-  const year = from.getUTCFullYear();
-  return `${fromMonth} ${from.getUTCDate()} – ${toMonth} ${to.getUTCDate()}, ${year}`;
+  const fromYear = from.getUTCFullYear();
+  const toYear = to.getUTCFullYear();
+  // The from-year is printed only when it differs: 'Dec 1, 2025 – Jan 31, 2026'
+  const fromYearSuffix = fromYear === toYear ? '' : `, ${fromYear}`;
+  return `${fromMonth} ${from.getUTCDate()}${fromYearSuffix} – ${toMonth} ${to.getUTCDate()}, ${toYear}`;
 };

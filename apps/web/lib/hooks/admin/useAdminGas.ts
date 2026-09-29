@@ -5,7 +5,7 @@ import type { GasSpendReport } from '@revoke.cash/core/admin/gas-spend';
 import type { GasDepositChainSummary, GasWalletChainBalance } from '@revoke.cash/core/admin/gas-wallets';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { waitForTransactionConfirmation } from '@revoke.cash/core/wallet';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQueryClient } from '@tanstack/react-query';
 import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
 import { useAdminQuery } from 'lib/hooks/admin/useAdminQuery';
 import { useEnsureWalletClient } from 'lib/hooks/ethereum/ensureWalletClient';
@@ -25,6 +25,7 @@ export const useAdminGasSpend = (from: string, to: string) => {
   return useAdminQuery<GasSpendReport>(['admin', 'gas', 'spend', from, to], '/api/admin/gas/spend', {
     searchParams: { from, to },
     enabled: Boolean(from && to),
+    placeholderData: keepPreviousData,
   });
 };
 
@@ -32,6 +33,7 @@ export const useAdminGasBudgets = (from: string, to: string) => {
   return useAdminQuery<GasBudgetReport>(['admin', 'gas', 'budgets', from, to], '/api/admin/gas/budgets', {
     searchParams: { from, to },
     enabled: Boolean(from && to),
+    placeholderData: keepPreviousData,
   });
 };
 
@@ -39,6 +41,7 @@ export const useAdminGasWallets = (from: string, to: string) => {
   return useAdminQuery<AdminGasWalletReport>(['admin', 'gas', 'wallets', from, to], '/api/admin/gas/wallets', {
     searchParams: { from, to },
     enabled: Boolean(from && to),
+    placeholderData: keepPreviousData,
   });
 };
 

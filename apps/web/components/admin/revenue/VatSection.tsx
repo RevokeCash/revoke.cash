@@ -3,22 +3,24 @@
 import { formatVatRate, type RegionSummary } from '@revoke.cash/core/admin/revenue';
 import { formatUsdCents } from '@revoke.cash/core/utils/formatting';
 import { createColumnHelper } from '@tanstack/react-table';
-import DateRangePicker, { currentUtcDate, currentUtcYearStart } from 'components/admin/common/DateRangePicker';
 import Button from 'components/common/Button';
 import Card, { CardHeader } from 'components/common/Card';
 import Table from 'components/common/table/Table';
+import type { DateRange } from 'lib/admin/date-range';
 import { useAdminVatReport, type VatStream } from 'lib/hooks/admin/useAdminRevenue';
 import { useTable } from 'lib/hooks/useTable';
 import type { AppTableFeatures } from 'lib/utils/table';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-const VatSection = () => {
-  const [fromDate, setFromDate] = useState(currentUtcYearStart);
-  const [toDate, setToDate] = useState(currentUtcDate);
-  const { data, isLoading } = useAdminVatReport(fromDate, toDate);
+interface Props {
+  range: DateRange;
+}
 
-  const csvUrl = `/api/admin/revenue/vat?${new URLSearchParams({ from: fromDate, to: toDate, format: 'csv' })}`;
+const VatSection = ({ range }: Props) => {
+  const { data, isLoading, isPlaceholderData } = useAdminVatReport(range.from, range.to);
+
+  const csvUrl = `/api/admin/revenue/vat?${new URLSearchParams({ from: range.from, to: range.to, format: 'csv' })}`;
 
   return (
     <Card
@@ -29,12 +31,9 @@ const VatSection = () => {
               <h2 className="text-xl">VAT summary</h2>
               <p>Gross revenue per VAT region; VAT extracted from gross amounts at the standard rate</p>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <DateRangePicker from={fromDate} to={toDate} onFromChange={setFromDate} onToChange={setToDate} />
-              <Button style="secondary" size="sm" href={csvUrl}>
-                Download CSV
-              </Button>
-            </div>
+            <Button style="secondary" size="sm" href={csvUrl}>
+              Download CSV
+            </Button>
           </div>
         </CardHeader>
       }
@@ -42,16 +41,21 @@ const VatSection = () => {
       className={twMerge(isLoading && 'h-80')}
     >
       {data && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div
+          className={twMerge(
+            'grid grid-cols-1 lg:grid-cols-2 gap-6 transition-opacity duration-150',
+            isPlaceholderData && 'opacity-60',
+          )}
+        >
           <VatStreamTable
             title="Premium subscriptions"
             stream={data.premium}
-            invoiceUrl={buildInvoiceUrl('premium', fromDate, toDate)}
+            invoiceUrl={buildInvoiceUrl('premium', range.from, range.to)}
           />
           <VatStreamTable
             title="Batch revoke fees"
             stream={data.batchRevokes}
-            invoiceUrl={buildInvoiceUrl('batch_revokes', fromDate, toDate)}
+            invoiceUrl={buildInvoiceUrl('batch_revokes', range.from, range.to)}
           />
         </div>
       )}

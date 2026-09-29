@@ -22,7 +22,7 @@ interface Props {
 }
 
 const WalletBalancesSection = ({ from, to }: Props) => {
-  const { data, isLoading, error } = useAdminGasWallets(from, to);
+  const { data, isLoading, isPlaceholderData, error } = useAdminGasWallets(from, to);
 
   const rows = useMemo((): BalanceRow[] => {
     if (!data || data.balances.length === 0) return [];
@@ -54,7 +54,7 @@ const WalletBalancesSection = ({ from, to }: Props) => {
         loading={isLoading}
         error={error}
         emptyChildren="The executor wallets were not funded yet in this period"
-        className="border-none"
+        className={twMerge('border-none', isPlaceholderData && 'opacity-60')}
       />
     </Card>
   );

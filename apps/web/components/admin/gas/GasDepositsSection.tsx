@@ -24,7 +24,7 @@ interface Props {
 }
 
 const GasDepositsSection = ({ from, to }: Props) => {
-  const { data, isLoading, error } = useAdminGasWallets(from, to);
+  const { data, isLoading, isPlaceholderData, error } = useAdminGasWallets(from, to);
 
   const rows = useMemo((): DepositRow[] => {
     if (!data || data.depositSummary.length === 0) return [];
@@ -70,7 +70,7 @@ const GasDepositsSection = ({ from, to }: Props) => {
         loading={isLoading}
         error={error}
         emptyChildren="No deposits in this period"
-        className="border-none"
+        className={twMerge('border-none', isPlaceholderData && 'opacity-60')}
       />
     </Card>
   );

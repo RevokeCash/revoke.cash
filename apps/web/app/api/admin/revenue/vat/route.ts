@@ -1,5 +1,6 @@
 import { buildVatSummary, type FeeRecord } from '@revoke.cash/core/admin/revenue';
 import { fetchBatchRevokeFeeRecords, fetchPremiumFeeRecords } from '@revoke.cash/core/admin/revenue-queries';
+import { getPrintedEndDate, toUtcPeriod } from 'lib/admin/period';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
@@ -21,12 +22,11 @@ export async function GET(req: NextRequest) {
     await authorizeRequest(req, { auth: 'siwe', requireAdmin: true, rateLimiter: RateLimiters.PREMIUM_READ });
     const { query } = await parseRequest(req, undefined, schemas);
 
-    const from = new Date(`${query.from}T00:00:00.000Z`);
-    const toInclusive = new Date(`${query.to}T23:59:59.999Z`);
+    const { from, to } = toUtcPeriod(query.from, query.to);
 
     const [premiumRecords, batchRevokeRecords] = await Promise.all([
-      fetchPremiumFeeRecords(from, toInclusive),
-      fetchBatchRevokeFeeRecords(from, toInclusive),
+      fetchPremiumFeeRecords(from, to),
+      fetchBatchRevokeFeeRecords(from, to),
     ]);
 
     if (query.format === 'csv') {
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
       return new NextResponse(csv, {
         headers: {
           'Content-Type': 'text/csv; charset=utf-8',
-          'Content-Disposition': `attachment; filename="revenue-${query.from}-${query.to}.csv"`,
+          'Content-Disposition': `attachment; filename="revenue-${query.from}-${getPrintedEndDate(query.to)}.csv"`,
           'Cache-Control': 'no-store',
         },
       });

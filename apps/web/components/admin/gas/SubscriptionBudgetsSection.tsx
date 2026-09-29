@@ -13,6 +13,7 @@ import { formatPercentage, formatUsd } from 'lib/admin/format';
 import { useAdminGasBudgets } from 'lib/hooks/admin/useAdminGas';
 import { useTable } from 'lib/hooks/useTable';
 import type { AppTableFeatures } from 'lib/utils/table';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   from: string;
@@ -20,7 +21,7 @@ interface Props {
 }
 
 const SubscriptionBudgetsSection = ({ from, to }: Props) => {
-  const { data, isLoading, error } = useAdminGasBudgets(from, to);
+  const { data, isLoading, isPlaceholderData, error } = useAdminGasBudgets(from, to);
 
   const table = useTable({
     data: data?.subscriptions ?? [],
@@ -53,7 +54,7 @@ const SubscriptionBudgetsSection = ({ from, to }: Props) => {
         loading={isLoading}
         error={error}
         emptyChildren="No active Ultimate subscriptions"
-        className="border-none"
+        className={twMerge('border-none', isPlaceholderData && 'opacity-60')}
       />
     </Card>
   );

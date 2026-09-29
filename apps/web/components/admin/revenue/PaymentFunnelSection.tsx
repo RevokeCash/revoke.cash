@@ -4,16 +4,17 @@ import { deriveFunnel, type PaymentFunnelPoint } from '@revoke.cash/core/admin/r
 import { createColumnHelper } from '@tanstack/react-table';
 import Card, { CardTitle } from 'components/common/Card';
 import Table from 'components/common/table/Table';
-import { useAdminRevenueData } from 'lib/hooks/admin/useAdminRevenue';
+import { type DateRange, formatPeriodOrDays, getStartedPeriods, getToday, type Period } from 'lib/admin/date-range';
+import { useAdminRevenueDataSince } from 'lib/hooks/admin/useAdminRevenue';
 import { useTable } from 'lib/hooks/useTable';
 import type { AppTableFeatures } from 'lib/utils/table';
 import { useMemo } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-const columnHelper = createColumnHelper<AppTableFeatures, PaymentFunnelPoint>();
+const columnHelper = createColumnHelper<AppTableFeatures, PaymentFunnelPoint<Period>>();
 
 const columns = columnHelper.columns([
-  columnHelper.accessor('month', {
+  columnHelper.accessor((point) => formatPeriodOrDays(point.bucket), {
     id: 'month',
     header: 'Month',
     cell: (info) => <div className="py-1.5 pr-4 text-sm">{info.getValue()}</div>,
@@ -59,15 +60,23 @@ const columns = columnHelper.columns([
   }),
 ]);
 
-const PaymentFunnelSection = () => {
-  const { data, isLoading } = useAdminRevenueData(12);
+interface Props {
+  range: DateRange;
+}
 
-  const newestFirst = useMemo(() => (data ? [...deriveFunnel(data, 12)].reverse() : []), [data]);
+const PaymentFunnelSection = ({ range }: Props) => {
+  const { data, isLoading, isPlaceholderData } = useAdminRevenueDataSince(range.from);
+
+  const newestFirst = useMemo(() => {
+    if (!data) return [];
+    const months = getStartedPeriods(range, 'month', getToday());
+    return deriveFunnel(data, months).reverse();
+  }, [data, range]);
 
   const table = useTable({
     data: newestFirst,
     columns,
-    getRowId: (row) => row.month,
+    getRowId: (row) => row.bucket.from,
     pageSize: 12,
   });
 
@@ -76,12 +85,12 @@ const PaymentFunnelSection = () => {
       header={
         <CardTitle
           title="Payment funnel"
-          subtitle="Subscription payment quotes per UTC month by final status; reversed payments need attention"
+          subtitle="Subscription payment quotes per UTC month in the selected period, by final status; reversed payments need attention"
         />
       }
       className="p-0"
     >
-      <Table table={table} loading={isLoading} className="border-none" />
+      <Table table={table} loading={isLoading} className={twMerge('border-none', isPlaceholderData && 'opacity-60')} />
     </Card>
   );
 };

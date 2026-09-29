@@ -73,7 +73,6 @@ const ExecutorBalancesSection = ({ showFundButtons = false }: Props) => {
     data: rows,
     columns,
     getRowId: (row) => String(row.chainId),
-    pageSize: 10,
   });
 
   return (

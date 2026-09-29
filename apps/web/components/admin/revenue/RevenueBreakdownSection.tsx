@@ -4,43 +4,38 @@ import { type ChainRevenue, deriveByChain, deriveByPlan, type PlanRevenue } from
 import { getChainName } from '@revoke.cash/core/chains';
 import { formatUsdCents } from '@revoke.cash/core/utils/formatting';
 import { createColumnHelper } from '@tanstack/react-table';
-import DateRangePicker, { currentUtcDate, currentUtcYearStart } from 'components/admin/common/DateRangePicker';
-import Card, { CardHeader } from 'components/common/Card';
+import Card, { CardTitle } from 'components/common/Card';
 import ChainLogo from 'components/common/ChainLogo';
 import EmptyState from 'components/common/EmptyState';
 import Table from 'components/common/table/Table';
-import { useAdminRevenueData } from 'lib/hooks/admin/useAdminRevenue';
+import type { DateRange } from 'lib/admin/date-range';
+import { useAdminRevenueDataSince } from 'lib/hooks/admin/useAdminRevenue';
 import { useTable } from 'lib/hooks/useTable';
 import type { AppTableFeatures } from 'lib/utils/table';
-import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-const RevenueBreakdownSection = () => {
-  const [fromDate, setFromDate] = useState(currentUtcYearStart);
-  const [toDate, setToDate] = useState(currentUtcDate);
-  const { data, isLoading } = useAdminRevenueData(12);
+interface Props {
+  range: DateRange;
+}
 
-  const fromIso = `${fromDate}T00:00:00.000Z`;
-  const toExclusiveIso = `${toDate}T23:59:59.999Z`;
+const RevenueBreakdownSection = ({ range }: Props) => {
+  const { data, isLoading, isPlaceholderData } = useAdminRevenueDataSince(range.from);
+
+  const fromIso = `${range.from}T00:00:00.000Z`;
+  const toExclusiveIso = `${range.to}T23:59:59.999Z`;
 
   return (
     <Card
       header={
-        <CardHeader>
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <h2 className="text-xl">Revenue breakdown</h2>
-              <p>Confirmed revenue by chain and plan for the selected period</p>
-            </div>
-            <DateRangePicker from={fromDate} to={toDate} onFromChange={setFromDate} onToChange={setToDate} />
-          </div>
-        </CardHeader>
+        <CardTitle title="Revenue breakdown" subtitle="Confirmed revenue by chain and plan in the selected period" />
       }
       isLoading={isLoading}
       className={twMerge(isLoading && 'h-80')}
     >
       {data && (
-        <div className="flex flex-col gap-6">
+        <div
+          className={twMerge('flex flex-col gap-6 transition-opacity duration-150', isPlaceholderData && 'opacity-60')}
+        >
           <div className="flex flex-col gap-2">
             <h3 className="font-medium">By plan</h3>
             <RevenueByPlanTable byPlan={deriveByPlan(data, fromIso, toExclusiveIso)} />
