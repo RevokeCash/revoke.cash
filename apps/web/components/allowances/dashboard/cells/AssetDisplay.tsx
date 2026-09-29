@@ -25,6 +25,7 @@ const AssetDisplay = ({ asset, showChainOverlay = false }: Props) => {
       <ChainOverlayLogo
         src={asset.metadata.icon}
         alt={asset.metadata.symbol}
+        placeholderText={asset.metadata.symbol}
         chainId={showChainOverlay ? asset.chainId : undefined}
         size={24}
         overlaySize={20}

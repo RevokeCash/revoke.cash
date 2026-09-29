@@ -12,13 +12,34 @@ interface Props {
   square?: boolean;
   border?: boolean;
   className?: string;
+  placeholderText?: string;
 }
 
-const Logo = ({ src, alt, size, square, border, className }: Props) => {
+const Logo = ({ src, alt, size, square, border, className, placeholderText }: Props) => {
   const [error, setError] = useState(false);
 
   if (error || !src) {
-    return <PlaceholderIcon size={size ?? 24} border={border} square={square} />;
+    // Array.from splits by code point, so a leading emoji is not cut in half
+    const placeholderLetter = placeholderText ? Array.from(placeholderText)[0]?.toUpperCase() : undefined;
+
+    return (
+      <PlaceholderIcon
+        size={size ?? 24}
+        border={border}
+        square={square}
+        className="flex shrink-0 items-center justify-center overflow-hidden"
+      >
+        {placeholderLetter && (
+          <span
+            aria-hidden
+            style={{ fontSize: (size ?? 24) / 2 }}
+            className="font-semibold leading-none select-none text-zinc-600 dark:text-zinc-200"
+          >
+            {placeholderLetter}
+          </span>
+        )}
+      </PlaceholderIcon>
+    );
   }
 
   const classes = twMerge(
