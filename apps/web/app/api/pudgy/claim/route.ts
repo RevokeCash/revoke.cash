@@ -42,11 +42,14 @@ export async function POST(req: NextRequest) {
     const chainId = 1;
     const { address } = body;
 
-    // Get the events and allowances for the user
+    // Get the events and allowances for the user. We skip Transfer events and read allowances on-chain (like the
+    // frontend does), because some tokens (e.g. ERC6909-backed ZAMM coins) spend allowances without an ERC20 Transfer
     const publicClient = createViemPublicClientForChain(chainId);
     const logsProvider = getScriptLogsProvider(chainId);
-    const { events } = await getTokenEvents(chainId, address, logsProvider);
-    const allowances = await getAllowancesFromEvents(address, events, publicClient, chainId);
+    const { events } = await getTokenEvents(chainId, address, logsProvider, { includeTransferFromEvents: false });
+    const allowances = await getAllowancesFromEvents(address, events, publicClient, chainId, {
+      transferEventsAvailable: false,
+    });
     const revokableAllowances = await Promise.all(
       allowances.map((allowance) => simulateRevokeAllowance(allowance, publicClient)),
     );
