@@ -32,11 +32,13 @@ export const recordBatchRevoke = async (
   userAddress: Address,
   feeDollarAmount: string,
 ) => {
+  // keepalive lets the request finish when the user closes the page right after the wallet confirms
   await ky.post(`/api/${chainId}/batch-revoke`, {
     json: {
       transactionHash,
       userAddress,
       feeUsdCents: Math.round(Number(feeDollarAmount) * 100),
     },
+    keepalive: true,
   });
 };

@@ -17,6 +17,7 @@ import {
 import { TransactionType } from '@revoke.cash/core/types';
 import { chunkArray } from '@revoke.cash/core/utils';
 import { isBatchSizeError, isNoFeeRequiredError } from '@revoke.cash/core/utils/errors';
+import { MINUTE } from '@revoke.cash/core/utils/time';
 import { throwIfExcessiveGas } from '@revoke.cash/core/wallet';
 import { isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { trackRevokeTransaction } from 'lib/allowances';
@@ -127,7 +128,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
           });
 
           const callsStatusPromise = chunkPromise.then(({ id }) =>
-            walletClient.waitForCallsStatus({ id, pollingInterval: 1000 }),
+            walletClient.waitForCallsStatus({ id, pollingInterval: 1000, timeout: 10 * MINUTE }),
           );
 
           const transactionReceiptPromises = new Map<Hash, Promise<TransactionReceipt>>();
