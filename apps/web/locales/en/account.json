@@ -31,7 +31,7 @@
         "monthly_budget_urgent": "Waiting because this month's maximum spend for exploit-triggered revokes has been reached.",
         "nonce_consumed": "Resubmitting after a transaction conflict.",
         "per_action_cap": "Waiting because the estimated cost exceeds the per-revoke limit.",
-        "queued": "Waiting to be executed.",
+        "queued": "Waiting for its turn. Revokes with the most value at risk go first.",
         "subscription_inactive": "Waiting for an active subscription to cover this wallet.",
         "token_rejects_revoke": "The token contract rejects the revoke, so nobody can revoke this approval.",
         "transaction_reverted": "The revoke transaction reverted on-chain.",

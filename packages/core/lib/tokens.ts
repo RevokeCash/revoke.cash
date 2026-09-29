@@ -214,6 +214,26 @@ export const throwIfPhantomBalance = async (address: Address, publicClient: Publ
   if (balance !== 0n) throw new SpamError('balance');
 };
 
+// ERC20 and ERC721 share the balanceOf(address) signature. Failed calls (e.g. ERC1155) return 'Unknown'.
+export const getTokenBalances = async (
+  publicClient: PublicClient,
+  owner: Address,
+  tokenAddresses: Address[],
+  blockNumber?: bigint,
+): Promise<Record<Address, TokenBalance>> => {
+  const entries = await Promise.all(
+    tokenAddresses.map(async (address): Promise<[Address, TokenBalance]> => {
+      const balance = await withFallback<TokenBalance>(
+        publicClient.readContract({ address, abi: ERC20_ABI, functionName: 'balanceOf', args: [owner], blockNumber }),
+        'Unknown',
+      );
+      return [address, balance];
+    }),
+  );
+
+  return Object.fromEntries(entries);
+};
+
 export const hasZeroBalance = (balance: TokenBalance, decimals?: number) => {
   return balance !== 'Unknown' && formatFixedPointBigInt(balance, decimals) === '0';
 };

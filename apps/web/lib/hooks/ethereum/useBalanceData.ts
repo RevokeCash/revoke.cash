@@ -1,9 +1,7 @@
-import { ERC20_ABI } from '@revoke.cash/core/abis';
-import type { TokenBalance } from '@revoke.cash/core/tokens';
-import { withFallback } from '@revoke.cash/core/utils/promises';
+import { getTokenBalances, type TokenBalance } from '@revoke.cash/core/tokens';
 import { MINUTE } from '@revoke.cash/core/utils/time';
 import { useQueries } from '@tanstack/react-query';
-import type { Address, PublicClient } from 'viem';
+import type { Address } from 'viem';
 import { useConfig } from 'wagmi';
 import { getPublicClient } from 'wagmi/actions';
 
@@ -22,7 +20,13 @@ export const useBalanceData = (queries: ChainTokenQuery[]): Record<string, Token
   return useQueries({
     queries: queries.map(({ chainId, owner, tokens, blockNumber }) => ({
       queryKey: ['tokenBalances', chainId, owner, tokens.map((t) => t.address).sort(), blockNumber?.toString() ?? null],
-      queryFn: () => fetchBalancesForChain(getPublicClient(config, { chainId })!, owner, tokens, blockNumber),
+      queryFn: () =>
+        getTokenBalances(
+          getPublicClient(config, { chainId })!,
+          owner,
+          tokens.map((token) => token.address),
+          blockNumber,
+        ),
       staleTime: MINUTE,
       refetchOnWindowFocus: false,
       placeholderData: undefined,
@@ -39,24 +43,4 @@ export const useBalanceData = (queries: ChainTokenQuery[]): Record<string, Token
       return map;
     },
   });
-};
-
-const fetchBalancesForChain = async (
-  publicClient: PublicClient,
-  owner: Address,
-  tokens: Array<{ address: Address; isErc721: boolean }>,
-  blockNumber: bigint | undefined,
-): Promise<Record<Address, TokenBalance>> => {
-  const entries = await Promise.all(
-    tokens.map(async ({ address }): Promise<[Address, TokenBalance]> => {
-      // ERC20 and ERC721 share the balanceOf(address) signature. Failed calls (e.g. ERC1155) return 'Unknown'.
-      const balance = await withFallback<TokenBalance>(
-        publicClient.readContract({ address, abi: ERC20_ABI, functionName: 'balanceOf', args: [owner], blockNumber }),
-        'Unknown',
-      );
-      return [address, balance];
-    }),
-  );
-
-  return Object.fromEntries(entries);
 };

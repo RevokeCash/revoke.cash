@@ -19,6 +19,7 @@ import {
   isNotNull,
   isNull,
   lte,
+  ne,
   notExists,
   or,
   sql,
@@ -141,28 +142,70 @@ export const getActionById = async (actionId: string): Promise<Action | null> =>
 
 // Finds actions that are ready to be processed (queued or previously blocked by budget)
 export const findProcessableActions = async (limit: number): Promise<Action[]> => {
-  return getDb()
+  const db = getDb();
+
+  // The executor runs a chain's actions in no fixed order, so only the most urgent non-exploit actions of each
+  // wallet are released at a time. Otherwise a random subset of the wallet's revokes uses up its budget.
+  const rankedActionsExcludingExploits = db
+    .select({
+      actionId: sql<string>`${autoRevokeActions.id}`.as('ranked_action_id'),
+      revokeRank: sql<number>`row_number() over (
+        partition by ${autoRevokeObservations.address}, ${autoRevokeActions.chainId}
+        order by ${REVOKE_ORDER}
+      )`.as('revoke_rank'),
+    })
+    .from(autoRevokeActions)
+    .innerJoin(autoRevokeObservations, eq(autoRevokeObservations.id, autoRevokeActions.observationId))
+    .where(
+      and(
+        inArray(autoRevokeActions.status, ['queued', 'blocked_budget']),
+        ne(autoRevokeObservations.triggerType, 'exploit'),
+      ),
+    )
+    .as('ranked_actions');
+
+  return db
     .select({
       ...getTableColumns(autoRevokeActions),
       observation: getTableColumns(autoRevokeObservations),
     })
     .from(autoRevokeActions)
     .innerJoin(autoRevokeObservations, eq(autoRevokeObservations.id, autoRevokeActions.observationId))
+    .leftJoin(rankedActionsExcludingExploits, eq(rankedActionsExcludingExploits.actionId, autoRevokeActions.id))
     .where(
       or(
         and(
           inArray(autoRevokeActions.status, ['queued', 'blocked_budget']),
           or(isNull(autoRevokeActions.nextRetryAt), lte(autoRevokeActions.nextRetryAt, new Date())),
+          or(
+            eq(autoRevokeObservations.triggerType, 'exploit'),
+            // Enough released actions for one wallet to fill the chain pipeline
+            lte(rankedActionsExcludingExploits.revokeRank, MAX_PENDING_ACTIONS_PER_CHAIN),
+          ),
         ),
         eq(autoRevokeActions.status, 'submitted'),
       ),
     )
-    .orderBy(
-      sql`case when ${autoRevokeObservations.triggerType} = 'exploit' then 0 else 1 end`,
-      asc(autoRevokeActions.createdAt),
-    )
+    .orderBy(REVOKE_ORDER)
     .limit(limit);
 };
+
+// Most urgent first: exploits, risky spenders, known value at risk, held tokens without a price (e.g. NFTs without a
+// floor price), unknown balances, and approvals without value at risk last
+const REVOKE_ORDER = sql`
+  case
+    when ${autoRevokeObservations.triggerType} = 'exploit' then 0
+    when ${autoRevokeObservations.triggerType} = 'risk_score' then 1
+    when ${autoRevokeObservations.valueAtRiskUsd} >= 1 then 2
+    when ${autoRevokeObservations.tokenBalance} > 0 and ${autoRevokeObservations.valueAtRiskUsd} is null then 3
+    when ${autoRevokeObservations.tokenBalance} is null then 4
+    else 5
+  end,
+  ${autoRevokeObservations.valueAtRiskUsd} desc nulls last,
+  ${autoRevokeObservations.spenderRiskScore} desc,
+  ${autoRevokeObservations.lastUpdatedTimestamp} asc,
+  ${autoRevokeActions.createdAt} asc
+`;
 
 // Unblocks actions that were previously blocked by a missing permission and now have an active permission
 export const unblockActions = async (limit: number): Promise<Array<{ id: string }>> => {

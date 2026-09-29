@@ -53,6 +53,12 @@ services:
         sync: false
       - key: REDIS_URL
         sync: false
+      - key: COINGECKO_API_KEY
+        sync: false
+      - key: UPSTASH_REDIS_REST_URL
+        sync: false
+      - key: UPSTASH_REDIS_REST_TOKEN
+        sync: false
 
   - type: pserv
     name: auto-revoke-executor

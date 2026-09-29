@@ -63,6 +63,8 @@ const getTooltipReason = (
 ): string | null => {
   // Exploit-triggered revokes bypass the monthly budget; they only wait once the spending ceiling is reached
   if (errorCode === 'monthly_budget' && triggerType === 'exploit') return 'monthly_budget_urgent';
+  // Once the budget is available again, the revoke only waits for its turn behind more urgent revokes
+  if (errorCode === 'monthly_budget' && nextRetryAt && new Date(nextRetryAt) <= new Date()) return 'queued';
   if (errorCode) return errorCode;
   if (status !== 'queued') return null;
   if (nextRetryAt && new Date(nextRetryAt) > new Date()) return 'cooling';

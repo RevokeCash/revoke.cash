@@ -31,7 +31,7 @@
         "monthly_budget_urgent": "本月由漏洞触发的撤销支出已达上限，正在等待。",
         "nonce_consumed": "交易发生冲突，正在重新提交。",
         "per_action_cap": "预估费用超过单次撤销上限，正在等待。",
-        "queued": "等待执行中。",
+        "queued": "正在排队等待。存在风险金额最高的撤销会优先执行。",
         "subscription_inactive": "正在等待生效的订阅来覆盖此钱包。",
         "token_rejects_revoke": "代币合约拒绝撤销，因此任何人都无法撤销此授权。",
         "transaction_reverted": "撤销交易已在链上回滚。",

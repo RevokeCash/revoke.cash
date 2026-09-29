@@ -1,18 +1,24 @@
-import { type AllowancePayload, AllowanceType, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import {
+  type AllowancePayload,
+  AllowanceType,
+  calculateValueAtRisk,
+  type TokenAllowanceData,
+} from '@revoke.cash/core/allowances';
 import { type DatabaseTransaction, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { autoRevokeObservations } from '@revoke.cash/core/db/schema/auto-revoke';
 import type { indexerAllowances } from '@revoke.cash/core/db/schema/indexer';
 import { toLowercaseAddress } from '@revoke.cash/core/utils';
-import { and, eq, inArray, ne } from 'drizzle-orm';
+import { and, eq, inArray, ne, sql } from 'drizzle-orm';
+import { calculateRiskScore } from '../../risk';
 import { requeueObservationActions } from '../actions';
-import type { RuleContext, TriggerDetails } from './rules';
+import { getRiskFactors, type RuleContext, type TriggerDetails } from './rules';
 
 export type Observation = typeof autoRevokeObservations.$inferSelect;
 export type IndexedAllowance = typeof indexerAllowances.$inferSelect;
 
 type ObservationInsert = typeof autoRevokeObservations.$inferInsert;
 
-interface ObservationCandidate {
+export interface ObservationCandidate {
   triggerType: Observation['triggerType'];
   triggerDetails: TriggerDetails;
   ruleSnapshot: RuleContext;
@@ -63,6 +69,10 @@ export const createObservations = async (candidates: ObservationCandidate[]): Pr
       permit2Address,
       expiration,
       lastUpdatedTxHash: payload.lastUpdated.transactionHash,
+      lastUpdatedTimestamp: payload.lastUpdated.timestamp,
+      tokenBalance: typeof candidate.allowance.balance === 'bigint' ? candidate.allowance.balance : null,
+      valueAtRiskUsd: calculateValueAtRisk(candidate.allowance),
+      spenderRiskScore: calculateRiskScore(getRiskFactors(payload.spenderData)),
     };
   });
 
@@ -71,7 +81,19 @@ export const createObservations = async (candidates: ObservationCandidate[]): Pr
   const exploitObservationValues = observationValues.filter((observation) => observation.triggerType === 'exploit');
 
   return getTransactionalDb().transaction(async (trx) => {
-    await trx.insert(autoRevokeObservations).values(observationValues).onConflictDoNothing();
+    // The revoke order inputs are refreshed on every re-observation, since balances, prices and spender risk change
+    await trx
+      .insert(autoRevokeObservations)
+      .values(observationValues)
+      .onConflictDoUpdate({
+        target: autoRevokeObservations.allowanceFingerprint,
+        set: {
+          lastUpdatedTimestamp: sql`excluded.last_updated_timestamp`,
+          tokenBalance: sql`excluded.token_balance`,
+          valueAtRiskUsd: sql`excluded.value_at_risk_usd`,
+          spenderRiskScore: sql`excluded.spender_risk_score`,
+        },
+      });
 
     // A previously observed allowance can later be affected by an exploit
     const escalatedObservationIds = await escalateExploitObservations(trx, exploitObservationValues);

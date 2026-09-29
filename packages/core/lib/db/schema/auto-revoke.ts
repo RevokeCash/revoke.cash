@@ -129,6 +129,10 @@ export const autoRevokeObservations = autoRevokeSchema.table(
     permit2Address: lowercaseAddress('permit2_address'),
     expiration: bigint('expiration', { mode: 'number' }),
     lastUpdatedTxHash: text('last_updated_tx_hash').notNull().$type<Hash>(),
+    lastUpdatedTimestamp: bigint('last_updated_timestamp', { mode: 'number' }),
+    tokenBalance: numeric('token_balance', { mode: 'bigint' }),
+    valueAtRiskUsd: numeric('value_at_risk_usd', { mode: 'number' }),
+    spenderRiskScore: integer('spender_risk_score').notNull().default(0),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .notNull()

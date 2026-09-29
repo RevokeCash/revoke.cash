@@ -31,7 +31,7 @@
         "monthly_budget_urgent": "A la espera porque se ha alcanzado el gasto máximo de este mes para las revocaciones provocadas por exploits.",
         "nonce_consumed": "Reenviando tras un conflicto de transacciones.",
         "per_action_cap": "A la espera porque el coste estimado supera el límite por revocación.",
-        "queued": "A la espera de que se ejecute.",
+        "queued": "A la espera de su turno. Primero se ejecutan las revocaciones con más valor en riesgo.",
         "subscription_inactive": "A la espera de una suscripción activa que cubra esta cartera.",
         "token_rejects_revoke": "El contrato del token rechaza la revocación, por lo que nadie puede revocar esta aprobación.",
         "transaction_reverted": "La transacción de revocación se ha revertido en la cadena de bloques.",

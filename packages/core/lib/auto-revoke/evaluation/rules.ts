@@ -382,7 +382,7 @@ export const getPrimaryTrigger = (matchedTriggers: MatchedTrigger[]): MatchedTri
   return 'stale';
 };
 
-const getRiskFactors = (spenderData: SpenderRiskData | null | undefined): RiskFactor[] =>
+export const getRiskFactors = (spenderData: SpenderRiskData | null | undefined): RiskFactor[] =>
   filterUnknownRiskFactors(spenderData?.riskFactors ?? []);
 
 const shouldMatchRiskScore = (riskFactors: RiskFactor[], sensitivity: RiskSensitivity): boolean => {
