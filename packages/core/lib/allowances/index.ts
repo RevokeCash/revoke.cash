@@ -18,10 +18,10 @@ import type { Nullable } from '@revoke.cash/core/types';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
 import { isRevertedError, isTransientError, parseErrorMessage, stringifyError } from '@revoke.cash/core/utils/errors';
 import { formatFixedPointBigInt } from '@revoke.cash/core/utils/formatting';
-import { bigintMin, fixedPointMultiply } from '@revoke.cash/core/utils/math';
+import { bigintMin, calculateFiatValue } from '@revoke.cash/core/utils/math';
 import { throwIfExcessiveGas } from '@revoke.cash/core/wallet';
 import type { SpenderRiskData } from '@revoke.cash/core/whois';
-import { type Address, formatUnits, maxUint256, type PublicClient, type WriteContractParameters } from 'viem';
+import { type Address, maxUint256, type PublicClient, type WriteContractParameters } from 'viem';
 import { getPermit2AllowancesFromApprovals, preparePermit2Approve } from './permit2';
 
 export interface AddressData {
@@ -547,10 +547,7 @@ export const calculateValueAtRisk = (allowance: TokenAllowanceData): number | nu
   const allowanceAmount = calculateMaxAllowanceAmount(allowance);
 
   const amount = bigintMin(allowance.balance, allowanceAmount)!;
-  const valueAtRisk = fixedPointMultiply(amount, allowance.metadata.price, allowance.metadata.decimals ?? 0);
-  const float = Number(formatUnits(valueAtRisk, allowance.metadata.decimals ?? 0));
-
-  return float;
+  return calculateFiatValue(amount, allowance.metadata.price, allowance.metadata.decimals ?? 0);
 };
 
 export interface AllowanceUpdateProperties {

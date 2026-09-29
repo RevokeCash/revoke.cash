@@ -88,7 +88,7 @@ export const enrichAllowances = (
     const spenderKey = getSpenderKey(allowance.chainId, allowance.payload.spender);
     const allowanceKey = getAllowanceKey(allowance);
 
-    const price = isHistorical || isErc721(allowance.token) ? null : priceData[priceKey];
+    const price = isHistorical ? null : (priceData[priceKey] ?? null);
     const balance = balanceData[balanceKey];
     const metadata = { ...allowance.metadata, price };
     const payload = {

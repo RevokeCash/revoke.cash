@@ -118,6 +118,7 @@ export const CHAINS = {
     name: 'Abstract',
     nativeCurrency: ETH,
     coingeckoNetworkId: 'abstract',
+    coingeckoAssetPlatformId: 'abstract',
     logoUrl: '/assets/images/vendor/chains/abstract.jpg',
     infoUrl: 'https://abs.xyz',
     explorerUrl: 'https://abscan.org',
@@ -149,6 +150,7 @@ export const CHAINS = {
     nativeCurrency: { name: 'ApeCoin', symbol: 'APE', decimals: 18 },
     nativeTokenCoingeckoId: 'apecoin',
     coingeckoNetworkId: 'apechain',
+    coingeckoAssetPlatformId: 'apechain',
     logoUrl: '/assets/images/vendor/chains/apechain.svg',
     explorerUrl: 'https://apescan.io',
     infoUrl: 'https://apechain.com',
@@ -164,6 +166,7 @@ export const CHAINS = {
     name: 'Arbitrum',
     nativeCurrency: ETH,
     coingeckoNetworkId: 'arbitrum',
+    coingeckoAssetPlatformId: 'arbitrum-one',
     logoUrl: '/assets/images/vendor/chains/arbitrum.svg',
     infoUrl: 'https://arbitrum.io',
     explorerUrl: 'https://arbiscan.io',
@@ -261,6 +264,7 @@ export const CHAINS = {
     nativeCurrency: { name: 'Avalanche', symbol: 'AVAX', decimals: 18 },
     nativeTokenCoingeckoId: 'avalanche-2',
     coingeckoNetworkId: 'avax',
+    coingeckoAssetPlatformId: 'avalanche',
     logoUrl: '/assets/images/vendor/chains/avalanche.svg',
     infoUrl: 'https://www.avax.network/',
     explorerUrl: 'https://snowscan.xyz',
@@ -276,6 +280,7 @@ export const CHAINS = {
     name: 'Base',
     nativeCurrency: ETH,
     coingeckoNetworkId: 'base',
+    coingeckoAssetPlatformId: 'base',
     logoUrl: '/assets/images/vendor/chains/base.svg',
     explorerUrl: 'https://basescan.org',
     infoUrl: 'https://base.org',
@@ -327,6 +332,7 @@ export const CHAINS = {
     nativeCurrency: { name: 'BERA Token', symbol: 'BERA', decimals: 18 },
     nativeTokenCoingeckoId: 'berachain-bera',
     coingeckoNetworkId: 'berachain',
+    coingeckoAssetPlatformId: 'berachain',
     logoUrl: '/assets/images/vendor/chains/berachain.svg',
     infoUrl: 'https://www.berachain.com',
     explorerUrl: 'https://berascan.com',
@@ -342,6 +348,7 @@ export const CHAINS = {
     name: 'Blast',
     nativeCurrency: ETH,
     coingeckoNetworkId: 'blast',
+    coingeckoAssetPlatformId: 'blast',
     logoUrl: '/assets/images/vendor/chains/blast.jpg',
     infoUrl: 'https://blast.io/',
     explorerUrl: 'https://blastscan.io',
@@ -359,6 +366,7 @@ export const CHAINS = {
     nativeCurrency: { name: 'BNB Chain Native Token', symbol: 'BNB', decimals: 18 },
     nativeTokenCoingeckoId: 'binancecoin',
     coingeckoNetworkId: 'bsc',
+    coingeckoAssetPlatformId: 'binance-smart-chain',
     logoUrl: '/assets/images/vendor/chains/bnb-chain.svg',
     explorerUrl: 'https://bscscan.com',
     infoUrl: 'https://www.bnbchain.org/en',
@@ -537,6 +545,7 @@ export const CHAINS = {
     name: 'Ethereum',
     nativeCurrency: ETH,
     coingeckoNetworkId: 'eth',
+    coingeckoAssetPlatformId: 'ethereum',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
     explorerUrl: 'https://etherscan.io',
     infoUrl: 'https://ethereum.org',
@@ -786,6 +795,7 @@ export const CHAINS = {
     nativeCurrency: { name: 'HYPE', symbol: 'HYPE', decimals: 18 },
     nativeTokenCoingeckoId: 'hyperliquid',
     coingeckoNetworkId: 'hyperevm',
+    coingeckoAssetPlatformId: 'hyperevm',
     explorerUrl: 'https://hyperevmscan.io',
     infoUrl: 'https://hyperfoundation.org/',
     logoUrl: '/assets/images/vendor/chains/hyperliquid.svg',
@@ -896,6 +906,7 @@ export const CHAINS = {
     name: 'Kaia',
     nativeCurrency: { name: 'KAIA', symbol: 'KAIA', decimals: 18 },
     coingeckoNetworkId: 'kaia',
+    coingeckoAssetPlatformId: 'klay-token',
     logoUrl: '/assets/images/vendor/chains/kaia.svg',
     explorerUrl: 'https://kaiascope.com',
     infoUrl: 'https://kaia.io',
@@ -1205,6 +1216,7 @@ export const CHAINS = {
     name: 'Optimism',
     nativeCurrency: ETH,
     coingeckoNetworkId: 'optimism',
+    coingeckoAssetPlatformId: 'optimistic-ethereum',
     logoUrl: '/assets/images/vendor/chains/optimism.svg',
     explorerUrl: 'https://optimistic.etherscan.io',
     infoUrl: 'https://optimism.io',
@@ -1270,6 +1282,7 @@ export const CHAINS = {
     nativeCurrency: { name: 'POL', symbol: 'POL', decimals: 18 },
     nativeTokenCoingeckoId: 'polygon-ecosystem-token',
     coingeckoNetworkId: 'polygon_pos',
+    coingeckoAssetPlatformId: 'polygon-pos',
     logoUrl: '/assets/images/vendor/chains/polygon.svg',
     explorerUrl: 'https://polygonscan.com',
     infoUrl: 'https://polygon.technology/',
@@ -1359,6 +1372,7 @@ export const CHAINS = {
     name: 'Robinhood Chain',
     nativeCurrency: ETH,
     coingeckoNetworkId: 'robinhood',
+    coingeckoAssetPlatformId: 'robinhood',
     logoUrl: '/assets/images/vendor/chains/robinhood.png',
     explorerUrl: 'https://robinhoodchain.blockscout.com',
     infoUrl: 'https://docs.robinhood.com/chain',
@@ -1390,6 +1404,7 @@ export const CHAINS = {
     nativeCurrency: { name: 'RON', symbol: 'RON', decimals: 18 },
     nativeTokenCoingeckoId: 'ronin',
     coingeckoNetworkId: 'ronin',
+    coingeckoAssetPlatformId: 'ronin',
     logoUrl: '/assets/images/vendor/chains/ronin.svg',
     explorerUrl: 'https://explorer.roninchain.com',
     infoUrl: 'https://roninchain.com',
@@ -1858,6 +1873,10 @@ export const getChainNativeTokenCoingeckoId = (chainId: DocumentedChainId): stri
 
 export const getChainCoingeckoNetworkId = (chainId: DocumentedChainId): string | undefined => {
   return getChainConfig(chainId).getCoingeckoNetworkId();
+};
+
+export const getChainCoingeckoAssetPlatformId = (chainId: DocumentedChainId): string | undefined => {
+  return getChainConfig(chainId).getCoingeckoAssetPlatformId();
 };
 
 export const getChainApiUrl = (chainId: DocumentedChainId): string | undefined => {

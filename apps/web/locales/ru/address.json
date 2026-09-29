@@ -3,6 +3,7 @@
     "amount": "{amount} {symbol}",
     "count": "{count, plural, =0 {Нет доступов} one {# доступ} few {# доступа} many {# доступов} other {# доступа}}",
     "empty_chains_count": "{count, plural, =0 {Нет сетей без доступов} one {# сеть без доступов} few {# сети без доступов} many {# сетей без доступов} other {# сети без доступов}}",
+    "nft_balance": "{count, plural, other {# NFT}}",
     "none_found": "Доступы не найдены",
     "none_found_filtered": "Для выбранных фильтров доступы не найдены",
     "none_found_premium": "Доступы не найдены ни в одной из поддерживаемых сетей. Все чисто!",

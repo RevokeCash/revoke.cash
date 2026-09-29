@@ -48,10 +48,8 @@ const fetchBalancesForChain = async (
   blockNumber: bigint | undefined,
 ): Promise<Record<Address, TokenBalance>> => {
   const entries = await Promise.all(
-    tokens.map(async ({ address, isErc721 }): Promise<[Address, TokenBalance]> => {
-      // We don't display balances for ERC721s
-      if (isErc721) return [address, 'Unknown'];
-
+    tokens.map(async ({ address }): Promise<[Address, TokenBalance]> => {
+      // ERC20 and ERC721 share the balanceOf(address) signature. Failed calls (e.g. ERC1155) return 'Unknown'.
       const balance = await withFallback<TokenBalance>(
         publicClient.readContract({ address, abi: ERC20_ABI, functionName: 'balanceOf', args: [owner], blockNumber }),
         'Unknown',

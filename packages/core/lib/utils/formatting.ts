@@ -2,7 +2,7 @@ import type { TokenBalance } from '@revoke.cash/core/tokens';
 import type { Nullable } from '@revoke.cash/core/types';
 import { formatUnits, parseEther } from 'viem';
 import { isNullish } from '.';
-import { fixedPointMultiply } from './math';
+import { calculateFiatValue } from './math';
 
 export function shortenAddress(address: string, characters?: number): string;
 export function shortenAddress(address: Nullable<string>, characters?: number): Nullable<string>;
@@ -62,7 +62,7 @@ export const formatFiatBalance = (
   if (balance === undefined) return null;
   if (balance === 'Unknown') return null;
   if (isNullish(price)) return null;
-  const amount = Number(formatUnits(fixedPointMultiply(balance, price, decimals ?? 18), decimals ?? 18));
+  const amount = calculateFiatValue(balance, price, decimals ?? 18);
   return formatFiatAmount(amount, 2, fiatSign);
 };
 

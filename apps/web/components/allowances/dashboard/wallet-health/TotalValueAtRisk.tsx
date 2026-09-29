@@ -21,11 +21,11 @@ const TotalValueAtRisk = ({ allowances, isLoading, isCounting, error }: Props) =
 
   const totalValueAtRisk = calculateTotalValueAtRisk(allowances ?? []);
 
-  const hasNftsAtRisk = allowances?.some(
+  const hasUnpricedNftsAtRisk = allowances?.some(
     (allowance) =>
       isErc721(allowance.token) &&
       allowance.balance !== undefined &&
-      (allowance.balance === 'Unknown' || allowance.balance > 0n),
+      (allowance.balance === 'Unknown' || (allowance.balance > 0n && isNullish(allowance.metadata.price))),
   );
 
   return (
@@ -41,7 +41,7 @@ const TotalValueAtRisk = ({ allowances, isLoading, isCounting, error }: Props) =
             t('address.allowances.unknown')
           ) : (
             <>
-              {formatFiatAmount(totalValueAtRisk ?? 0, 0)} {hasNftsAtRisk ? '+ NFTs' : null}
+              {formatFiatAmount(totalValueAtRisk ?? 0, 0)} {hasUnpricedNftsAtRisk ? '+ NFTs' : null}
             </>
           )}
           {isCounting && <Spinner className="w-3 h-3 mx-0" />}

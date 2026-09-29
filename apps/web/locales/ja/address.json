@@ -3,6 +3,7 @@
     "amount": "{amount} {symbol}",
     "count": "{count, plural, =0 {承認なし} other {#件の承認}}",
     "empty_chains_count": "{count, plural, =0 {承認のないネットワークはありません} other {承認のないネットワーク#件}}",
+    "nft_balance": "{count, plural, other {# NFT}}",
     "none_found": "承認は見つかりませんでした",
     "none_found_filtered": "選択したフィルターに一致する承認は見つかりませんでした",
     "none_found_premium": "対応しているいずれのネットワークでも承認は見つかりませんでした。すべて問題ありません！",

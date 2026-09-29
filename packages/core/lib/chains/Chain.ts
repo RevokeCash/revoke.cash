@@ -23,6 +23,7 @@ export interface ChainOptions {
   nativeCurrency: NativeCurrency;
   nativeTokenCoingeckoId?: string;
   coingeckoNetworkId?: string;
+  coingeckoAssetPlatformId?: string;
   explorerUrl: string;
   etherscanCompatibleApiUrl?: string;
   rpc: {
@@ -139,6 +140,10 @@ export class Chain {
 
   getCoingeckoNetworkId(): string | undefined {
     return this.options.coingeckoNetworkId;
+  }
+
+  getCoingeckoAssetPlatformId(): string | undefined {
+    return this.options.coingeckoAssetPlatformId;
   }
 
   getEtherscanCompatibleApiUrl(): string | undefined {

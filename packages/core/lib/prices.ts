@@ -1,4 +1,8 @@
-import { getChainCoingeckoNetworkId, getChainNativeTokenCoingeckoId } from '@revoke.cash/core/chains';
+import {
+  getChainCoingeckoAssetPlatformId,
+  getChainCoingeckoNetworkId,
+  getChainNativeTokenCoingeckoId,
+} from '@revoke.cash/core/chains';
 import { COINGECKO_API_BASE_URL, COINGECKO_API_KEY } from '@revoke.cash/core/constants';
 import ky from '@revoke.cash/core/ky';
 import { RequestQueue } from '@revoke.cash/core/request-queue';
@@ -6,7 +10,7 @@ import { chunkArray, deduplicateArray, isNullish } from '@revoke.cash/core/utils
 import { ExportableError } from '@revoke.cash/core/utils/errors';
 import { MINUTE } from '@revoke.cash/core/utils/time';
 import { Redis } from '@upstash/redis';
-import { type Address, getAddress } from 'viem';
+import { type Address, getAddress, isAddress } from 'viem';
 
 interface CoinGeckoSimplePriceResponse {
   data: {
@@ -20,6 +24,12 @@ interface CoinGeckoSimplePriceResponse {
 
 interface CoinGeckoMarketChartResponse {
   prices: Array<[timestampMs: number, priceUsd: number]>;
+}
+
+interface CoinGeckoNftMarket {
+  id: string;
+  contract_address: string | null;
+  floor_price: { usd: number | null } | null;
 }
 
 export class PriceError extends ExportableError {
@@ -40,6 +50,7 @@ const CACHE_TTL_SECONDS = 20 * 60;
 const CACHE_MISS_VALUE = -1;
 const COINGECKO_MAX_ADDRESSES_PER_REQUEST = 100;
 const MIN_TOTAL_RESERVE_USD = 50_000;
+const COINGECKO_NFT_MARKETS_PAGE_SIZE = 250;
 
 const PRICE_CACHE = process.env.UPSTASH_REDIS_REST_URL
   ? new Redis({
@@ -209,12 +220,84 @@ const setCachedTokenPrice = async (chainId: number, address: Address, price: num
   });
 };
 
+// CoinGecko only tracks a few thousand NFT collections, so we fetch the floor prices of all collections on a chain at
+// once, rather than requesting (and mostly missing) each contract separately
+export const getNftFloorPricesUsd = async (
+  chainId: number,
+  addresses: Address[],
+): Promise<Record<Address, number | null>> => {
+  if (addresses.length === 0) return {};
+
+  const assetPlatformId = getChainCoingeckoAssetPlatformId(chainId);
+  if (!assetPlatformId) throw new PriceError(404, 'Chain has no CoinGecko asset platform mapping');
+
+  const floorPrices = await getNftFloorPricesForAssetPlatform(assetPlatformId);
+
+  return Object.fromEntries(
+    addresses.map((address) => [getAddress(address), floorPrices[getAddress(address)] ?? null]),
+  );
+};
+
+const getNftFloorPricesForAssetPlatform = async (assetPlatformId: string): Promise<Record<Address, number>> => {
+  const cacheKey = getNftFloorPricesCacheKey(assetPlatformId);
+  const cachedFloorPrices = await PRICE_CACHE?.get<Record<Address, number>>(cacheKey);
+  if (cachedFloorPrices) return cachedFloorPrices;
+
+  const floorPrices = await fetchNftFloorPricesFromCoinGecko(assetPlatformId);
+  await PRICE_CACHE?.set(cacheKey, floorPrices, { ex: CACHE_TTL_SECONDS });
+
+  return floorPrices;
+};
+
+const fetchNftFloorPricesFromCoinGecko = async (assetPlatformId: string): Promise<Record<Address, number>> => {
+  try {
+    const markets = deduplicateArray(await fetchNftMarketsFromCoinGecko(assetPlatformId), (market) => market.id);
+
+    const collections = markets
+      .filter((market) => isAddress(market.contract_address ?? '', { strict: false }))
+      .map((market) => ({ address: getAddress(market.contract_address!), floorPriceUsd: market.floor_price?.usd }));
+
+    // Some contracts hold multiple collections (e.g. Art Blocks), so a single floor price for the contract would be wrong
+    const collectionCountByAddress = collections.reduce(
+      (counts, collection) => counts.set(collection.address, (counts.get(collection.address) ?? 0) + 1),
+      new Map<Address, number>(),
+    );
+
+    return Object.fromEntries(
+      collections
+        .filter((collection) => collectionCountByAddress.get(collection.address) === 1)
+        .flatMap(({ address, floorPriceUsd }) => (isNullish(floorPriceUsd) ? [] : [[address, floorPriceUsd]])),
+    );
+  } catch (error) {
+    console.error('Failed to fetch NFT floor prices from CoinGecko', error);
+    throw new PriceError(503, 'NFT floor prices are temporarily unavailable');
+  }
+};
+
+const fetchNftMarketsFromCoinGecko = async (assetPlatformId: string, page = 1): Promise<CoinGeckoNftMarket[]> => {
+  const markets = await COINGECKO_PRICE_QUEUE.add(() =>
+    ky
+      .get(`${COINGECKO_API_BASE_URL}/nfts/markets`, {
+        headers: getCoinGeckoHeaders(),
+        searchParams: { asset_platform_id: assetPlatformId, per_page: COINGECKO_NFT_MARKETS_PAGE_SIZE, page },
+      })
+      .json<CoinGeckoNftMarket[]>(),
+  );
+
+  if (markets.length < COINGECKO_NFT_MARKETS_PAGE_SIZE) return markets;
+  return [...markets, ...(await fetchNftMarketsFromCoinGecko(assetPlatformId, page + 1))];
+};
+
 const getNativeTokenCacheKey = (chainId: number): string => {
   return `token-price-native:${chainId}`;
 };
 
 const getTokenPriceCacheKey = (chainId: number, address: Address): string => {
   return `token-prices-onchain:${chainId}:${address}`;
+};
+
+const getNftFloorPricesCacheKey = (assetPlatformId: string): string => {
+  return `nft-floor-prices:${assetPlatformId}`;
 };
 
 const getCoinGeckoHeaders = () => {

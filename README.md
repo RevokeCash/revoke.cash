@@ -38,6 +38,19 @@ Then there are a few less essential variables:
 - `NEXT_PUBLIC_MIXPANEL_API_KEY` is used for Analytics - if omitted, no Analytics are collected.
 - `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are used for queueing third-party API calls - these are only necessary when hosting in a serverless environment such as Vercel.
 
+### Using HTTP/2 locally
+
+The dev server only supports HTTP/1.1, where browsers allow 6 connections per host. The Premium multichain dashboard sends two API requests per network, so other requests (including JS chunks) can wait in the browser queue for close to a minute. In production this is not an issue because Vercel serves HTTP/2.
+
+To use HTTP/2 locally, run [Caddy](https://caddyserver.com) as a reverse proxy in front of the dev server and open https://localhost:3443 instead of http://localhost:3000:
+
+```
+brew install caddy
+caddy reverse-proxy --from localhost:3443 --to localhost:3000
+```
+
+The first run asks for your password to add Caddy's local certificate authority to the system trust store.
+
 ## Contributing
 
 ### Adding a new network

@@ -4,6 +4,7 @@ import { isErc721, type TokenData } from '@revoke.cash/core/tokens';
 import { isNullish } from '@revoke.cash/core/utils';
 import { formatBalance, formatFiatBalance } from '@revoke.cash/core/utils/formatting';
 import Loader from 'components/common/Loader';
+import { useTranslations } from 'next-intl';
 import AssetDisplay from './AssetDisplay';
 
 interface Props {
@@ -11,16 +12,13 @@ interface Props {
 }
 
 const AssetCell = ({ asset }: Props) => {
-  if (isErc721(asset.token)) {
-    return (
-      <div className="flex items-center gap-1 py-1 w-48 lg:w-56 h-12">
-        <AssetDisplay asset={asset} />
-      </div>
-    );
-  }
+  const t = useTranslations();
 
   const isBalanceLoading = isNullish(asset.balance);
-  const balanceText = formatBalance(asset.metadata.symbol, asset.balance, asset.metadata.decimals);
+  const balanceText =
+    isErc721(asset.token) && typeof asset.balance === 'bigint'
+      ? t('address.allowances.nft_balance', { count: Number(asset.balance) })
+      : formatBalance(asset.metadata.symbol, asset.balance, asset.metadata.decimals);
   const fiatBalanceText = formatFiatBalance(asset.balance, asset.metadata.price, asset.metadata.decimals);
 
   return (

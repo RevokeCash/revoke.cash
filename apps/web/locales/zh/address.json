@@ -3,6 +3,7 @@
     "amount": "{amount} {symbol}",
     "count": "{count, plural, =0 {没有授权} other {# 项授权}}",
     "empty_chains_count": "{count, plural, =0 {没有无授权的网络} other {# 个无授权的网络}}",
+    "nft_balance": "{count, plural, other {# 个 NFT}}",
     "none_found": "未找到授权",
     "none_found_filtered": "所选筛选条件下未找到授权",
     "none_found_premium": "在所有支持的网络上均未找到授权。一切安全！",

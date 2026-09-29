@@ -20,3 +20,18 @@ export const getTokenPrices = async (
 
   return response.prices;
 };
+
+export const getNftFloorPrices = async (
+  chainId: number,
+  addresses: Address[],
+): Promise<Record<Address, number | null>> => {
+  if (addresses.length === 0) return {};
+
+  const normalizedAddresses = addresses.map((address) => getAddress(address));
+
+  const response = await ky
+    .post(`/api/${chainId}/nft-prices`, { json: { addresses: normalizedAddresses } })
+    .json<{ prices: Record<Address, number | null> }>();
+
+  return response.prices;
+};
