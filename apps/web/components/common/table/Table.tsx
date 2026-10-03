@@ -21,6 +21,8 @@ interface Props<TMeta extends object, T extends RowData> {
   error?: Nullable<Error>;
   emptyChildren?: React.ReactNode;
   partialLoadingRows?: number;
+  // Number of placeholder rows while loading; defaults to the page size
+  loadingRows?: number;
   // Renders a full-width sub-row (e.g. an expanded details <tr>) below rows that are expanded
   renderSubComponent?: (row: Row<AppTableFeatures<TMeta>, T>) => React.ReactNode;
   // Makes expandable rows toggle their expansion when clicked anywhere outside an interactive element
@@ -34,6 +36,7 @@ const Table = <TMeta extends object, T extends RowData>({
   table,
   emptyChildren,
   partialLoadingRows,
+  loadingRows,
   renderSubComponent,
   expandOnRowClick,
   className,
@@ -60,6 +63,7 @@ const Table = <TMeta extends object, T extends RowData>({
                 table={table}
                 isLoading={loading}
                 partialLoadingRows={partialLoadingRows}
+                loadingRows={loadingRows}
                 renderSubComponent={renderSubComponent}
                 expandOnRowClick={expandOnRowClick}
               />

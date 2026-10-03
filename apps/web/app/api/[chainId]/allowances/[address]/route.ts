@@ -3,6 +3,7 @@ import { recomputeAllowances, recordAllowanceFailure } from '@revoke.cash/core/i
 import { getCachedAddressData } from '@revoke.cash/core/indexer/allowances-read';
 import {
   failFastIfAddressHasTooMuchActivity,
+  failFastIfAddressIsTokenContract,
   failFastIfAllowanceStateIsTooFarBehind,
   failFastIfEventsStateIsBehind,
   getIndexerReadStates,
@@ -46,6 +47,7 @@ export async function POST(req: NextRequest, props: Props) {
     const { eventsState, allowanceState } = await getIndexerReadStates(params.address, params.chainId);
     failFastIfAddressHasTooMuchActivity(eventsState, params.chainId);
     failFastIfAddressHasTooMuchActivity(allowanceState, params.chainId);
+    failFastIfAddressIsTokenContract(eventsState, params.chainId);
     failFastIfEventsStateIsBehind(eventsState);
     failFastIfAllowanceStateIsTooFarBehind(eventsState, allowanceState);
 

@@ -61,13 +61,27 @@ export const hasChainActivity = async (
   address: Address,
   publicClient?: PublicClient,
 ): Promise<boolean> => {
-  if (chainId === ChainId.PulseChain) return hasPulseChainPostForkActivity(address);
+  const { hasActivity } = await getChainActivity(chainId, address, publicClient);
+  return hasActivity;
+};
+
+// The transaction count is only included where it decides the activity, so it is missing for PulseChain
+export const getChainActivity = async (
+  chainId: DocumentedChainId,
+  address: Address,
+  publicClient?: PublicClient,
+): Promise<{ hasActivity: boolean; transactionCount?: number }> => {
+  if (chainId === ChainId.PulseChain) return { hasActivity: await hasPulseChainPostForkActivity(address) };
 
   // If the address is an EOA and has no transactions, we can skip fetching events for efficiency. Note that all deployed contracts have a nonce of >= 1
   // See https://eips.ethereum.org/EIPS/eip-161
   const client = publicClient ?? createViemPublicClientForChain(chainId);
-  const nonce = await withTimeout(client.getTransactionCount({ address }), 10 * SECOND, 'RPC is unresponsive');
-  return nonce > 0;
+  const transactionCount = await withTimeout(
+    client.getTransactionCount({ address }),
+    10 * SECOND,
+    'RPC is unresponsive',
+  );
+  return { hasActivity: transactionCount > 0, transactionCount };
 };
 
 // For pulsechain we want to check whether an account has transacted after the fork timestamp,

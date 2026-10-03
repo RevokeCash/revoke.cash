@@ -3,9 +3,10 @@ import {
   createViemPublicClientForChain,
   type DocumentedChainId,
   getChainLogsRpcUrl,
+  getChainName,
   isBackendSupportedChain,
 } from '@revoke.cash/core/chains';
-import { hasChainActivity } from '@revoke.cash/core/chains/events';
+import { getChainActivity } from '@revoke.cash/core/chains/events';
 import { type DatabaseTransaction, type DatabaseWriter, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { indexerEvents, indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
 import { acquireAdvisoryLock } from '@revoke.cash/core/db/utils';
@@ -18,8 +19,11 @@ import {
   ViemLogsProvider,
 } from '@revoke.cash/core/events/providers';
 import { addressToTopic } from '@revoke.cash/core/events/utils';
+import { disableIndexingForAddress } from '@revoke.cash/core/indexer/register';
+import { throwIfNotErc20, throwIfNotErc721 } from '@revoke.cash/core/tokens';
 import { HOUR, MINUTE, SECOND } from '@revoke.cash/core/utils/time';
-import { and, eq, gte, lte, sql } from 'drizzle-orm';
+import { getAccountType } from '@revoke.cash/core/wallet';
+import { and, eq, gte, isNull, lte, sql } from 'drizzle-orm';
 import type { AnyPgColumn } from 'drizzle-orm/pg-core';
 import type { Address, Hex, PublicClient } from 'viem';
 import { buildTokenEventFilters } from '../events/filters';
@@ -33,6 +37,10 @@ import {
   parseErrorMessage,
 } from '../utils/errors';
 import { mapAsync, mapAsyncSequential } from '../utils/promises';
+
+// The busiest subscriber wallet had 82,347 transactions on one chain on 2026-10-02, while the Relay solver that a bug once
+// subscribed had over 1 million on 10 chains (17 million on Base)
+const MAX_TRANSACTION_COUNT = 1_000_000;
 
 // Most chains have RPC limits around 10k blocks, so this should be safe. Some chains might have a lower public RPC
 // limit, which gets handled by the DivideAndConquerLogsProvider.
@@ -94,18 +102,45 @@ export const indexEvents = async (address: Address, chainId: DocumentedChainId):
     where: and(eq(indexerEventsState.address, address), eq(indexerEventsState.chainId, chainId)),
   });
 
+  // A manually paused address is not scanned, so jobs that were already queued for it finish without doing any work
+  if (existingState?.disabledAt) {
+    return buildIndexEventsResult({ isDisabled: true, durationMs: Date.now() - start });
+  }
+
   const publicClient = createViemPublicClientForChain(chainId);
 
   // Most wallets have no activity on most chains, so check activity before everything else
-  if (isNullish(existingState?.lastToBlock) && !(await hasChainActivity(chainId, address, publicClient))) {
-    const headBlock = await getRpcLogsProvider(chainId).getLatestBlock();
-    await upsertEventsState(db, address, chainId, {
-      nextRunAt: computeNextRunAt(0),
-      consecutiveFailures: 0,
-      lastError: null,
-      lastObservedHeadBlock: headBlock,
-    });
-    return buildIndexEventsResult({ nonceZeroSkipped: true, durationMs: Date.now() - start });
+  if (isNullish(existingState?.lastToBlock)) {
+    const { hasActivity, transactionCount } = await getChainActivity(chainId, address, publicClient);
+
+    // Before the first scan on a chain, stop addresses that send far more transactions than any personal wallet (bots,
+    // solvers, exchange hot wallets)
+    if (!isNullish(transactionCount) && transactionCount >= MAX_TRANSACTION_COUNT) {
+      const reason = `Address has too much activity: ${transactionCount} transactions on ${getChainName(chainId)}`;
+      await disableIndexingForAddress(db, address, reason);
+      return buildIndexEventsResult({ isDisabled: true, durationMs: Date.now() - start });
+    }
+
+    if (!hasActivity) {
+      const headBlock = await getRpcLogsProvider(chainId).getLatestBlock();
+      await upsertEventsState(db, address, chainId, {
+        nextRunAt: computeNextRunAt(0),
+        consecutiveFailures: 0,
+        lastError: null,
+        lastObservedHeadBlock: headBlock,
+      });
+      return buildIndexEventsResult({ nonceZeroSkipped: true, durationMs: Date.now() - start });
+    }
+
+    // A token contract is never a personal wallet, and indexing one is endless work. Only this chain is paused, since
+    // the same address is usually not a token on other chains
+    if (await isTokenContract(address, publicClient)) {
+      await upsertEventsState(db, address, chainId, {
+        disabledAt: new Date(),
+        lastError: `Address is a token contract on ${getChainName(chainId)}`,
+      });
+      return buildIndexEventsResult({ isDisabled: true, durationMs: Date.now() - start });
+    }
   }
 
   const initialMaxBlockRange = existingState?.maxBlockRange ?? Number.POSITIVE_INFINITY;
@@ -129,10 +164,11 @@ export const indexEvents = async (address: Address, chainId: DocumentedChainId):
 
       const currentState = await trx.query.indexerEventsState.findFirst({
         where: and(eq(indexerEventsState.address, address), eq(indexerEventsState.chainId, chainId)),
-        columns: { lastEventAt: true, lastScanAt: true, lastToBlock: true, maxBlockRange: true },
+        columns: { lastEventAt: true, lastScanAt: true, lastToBlock: true, maxBlockRange: true, disabledAt: true },
       });
 
-      if (eventScanWasSuperseded(start, currentState, currentToBlock)) {
+      // Paused while this scan was running: committing would still write its events and clear the pause reason
+      if (currentState?.disabledAt || eventScanWasSuperseded(start, currentState, currentToBlock)) {
         return null;
       }
 
@@ -158,11 +194,22 @@ export const indexEvents = async (address: Address, chainId: DocumentedChainId):
       logsWritten: committedFilterEvents?.reduce((acc, r) => acc + r.logsWritten, 0) ?? 0,
       logsReorgedMarked: committedFilterEvents?.reduce((acc, r) => acc + r.logsReorgedMarked, 0) ?? 0,
       isCapped: isCapped || rangeReductions > 0,
-      isDisabled: !isNullish(existingState?.disabledAt),
       rangeReductions,
       durationMs: Date.now() - start,
     });
   });
+};
+
+const isTokenContract = async (address: Address, publicClient: PublicClient): Promise<boolean> => {
+  // Wallets without code and EIP-7702 delegated wallets are never tokens
+  if ((await getAccountType(address, publicClient)) !== 'smart_contract') return false;
+
+  const results = await Promise.allSettled([
+    throwIfNotErc20(address, publicClient),
+    throwIfNotErc721(address, publicClient),
+  ]);
+
+  return results.some((result) => result.status === 'fulfilled');
 };
 
 const getScanLogsProvider = (chainId: number, isNarrow: boolean): LogsProvider => {
@@ -290,6 +337,8 @@ const upsertEventsState = async (
     .onConflictDoUpdate({
       target: [indexerEventsState.address, indexerEventsState.chainId],
       set: update,
+      // A scan that was still running when the address was paused must not overwrite the pause reason
+      setWhere: isNull(indexerEventsState.disabledAt),
     });
 };
 

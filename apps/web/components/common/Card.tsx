@@ -1,18 +1,23 @@
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import type { Nullable } from '@revoke.cash/core/types';
 import { isNullish } from '@revoke.cash/core/utils';
 import type { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
+import EmptyState from './EmptyState';
+import ErrorDisplay from './ErrorDisplay';
 import Loader from './Loader';
 
 interface Props {
   header?: ReactNode;
   image?: ReactNode;
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
   isLoading?: boolean;
+  error?: Nullable<Error>;
   hover?: 'scale';
 }
 
-const Card = ({ header, children, className, image, hover, isLoading }: Props) => {
+const Card = ({ header, children, className, image, hover, isLoading, error }: Props) => {
   const hasTopContent = !isNullish(header) || !isNullish(image);
 
   const outerClass = twMerge(
@@ -36,7 +41,15 @@ const Card = ({ header, children, className, image, hover, isLoading }: Props) =
         </div>
       ) : null}
       <Loader isLoading={Boolean(isLoading)} className={twMerge('border-none', hasTopContent && 'rounded-t-none')}>
-        <div className={contentClass}>{children}</div>
+        <div className={contentClass}>
+          {error ? (
+            <EmptyState icon={ExclamationTriangleIcon} iconClassName="text-red-500 dark:text-red-400">
+              <ErrorDisplay error={error} withIcon={false} />
+            </EmptyState>
+          ) : (
+            children
+          )}
+        </div>
       </Loader>
     </div>
   );

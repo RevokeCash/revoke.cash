@@ -51,6 +51,12 @@ caddy reverse-proxy --from localhost:3443 --to localhost:3000
 
 The first run asks for your password to add Caddy's local certificate authority to the system trust store.
 
+You can also start the dev server and Caddy with a single command:
+
+```
+yarn dev:caddy
+```
+
 ## Contributing
 
 ### Adding a new network

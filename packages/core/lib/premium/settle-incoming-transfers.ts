@@ -37,19 +37,20 @@ export interface SettleIncomingTransfersResult {
   belowMinimumAmount: number;
   deferred: number;
   skippedUnknownToken: number;
+  skippedUnknownSender: number;
   errors: number;
 }
 
 // The inverse of quote-based reconciliation: scan every accepted payment token transfer sent to the
 // subscriptions address and make sure each one credits a subscription. Transfers first settle into
 // an unmatched quote from the same sender for the same token; without one, a settled payment is
-// created on the spot.
+// created on the spot, but only for a sender with an earlier payment record. Other senders, such as a
+// bridge solver delivering our own treasury funds, a swap router or an exchange hot wallet, are not
+// customers, and crediting them would start a subscription (and indexing) for that address.
 //
-// Known limitations: the on-chain sender is trusted as the subscription owner, so transfers
-// originating from exchange custody or contracts credit the sending address (payments must come
-// from the owner wallet, as documented at checkout). Credits are keyed by transaction hash, so a
-// single transaction carrying multiple qualifying transfers credits only one payment, even when
-// those transfers are of different accepted tokens.
+// Known limitation: credits are keyed by transaction hash, so a single transaction carrying multiple
+// qualifying transfers credits only one payment, even when those transfers are of different accepted
+// tokens.
 export const settleIncomingTransfers = async (): Promise<SettleIncomingTransfersResult> => {
   const result: SettleIncomingTransfersResult = {
     transfers: 0,
@@ -59,6 +60,7 @@ export const settleIncomingTransfers = async (): Promise<SettleIncomingTransfers
     belowMinimumAmount: 0,
     deferred: 0,
     skippedUnknownToken: 0,
+    skippedUnknownSender: 0,
     errors: 0,
   };
 
@@ -210,6 +212,14 @@ const settleTransfer = async (
     return 'settled';
   }
 
+  if (!(await hasPaymentRecord(transfer.senderAddress))) {
+    console.warn(
+      `Unmatched transfer from an address without any payment record: ${transfer.txHash} on chain ${chainId}`,
+    );
+    result.skippedUnknownSender += 1;
+    return 'settled';
+  }
+
   const createdPayment = await createSettledPayment(transfer, chainId, paymentToken, coveredPlan);
   if (createdPayment) {
     result.createdPayments += 1;
@@ -224,6 +234,16 @@ const settleTransfer = async (
   }
 
   return 'settled';
+};
+
+// Any payment record, including an expired quote or a granted subscription, shows the address belongs to a user
+const hasPaymentRecord = async (senderAddress: Address): Promise<boolean> => {
+  const payment = await getDb().query.premiumPayments.findFirst({
+    where: eq(premiumPayments.ownerAddress, senderAddress),
+    columns: { id: true },
+  });
+
+  return payment !== undefined;
 };
 
 const parseIncomingTransfer = (log: Log, chainId: number): IncomingTransfer | null => {

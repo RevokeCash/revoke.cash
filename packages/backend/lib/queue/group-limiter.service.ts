@@ -56,6 +56,12 @@ export class GroupLimiterService {
     this.group.on('error', (error) => {
       this.logger.error({ event: 'group_limiter_error', outcome: 'failed', error: parseErrorMessage(error), groupId });
     });
+
+    // If a limiter's Redis init fails (e.g. a settings hash without 'version'), every job on it fails with the init
+    // error. Deleting the key removes the limiter and its Redis keys, so the next job creates a fresh limiter.
+    this.group.on('created', (limiter, groupKey) => {
+      limiter.ready().catch(() => this.group.deleteKey(groupKey));
+    });
   }
 
   async runWithLimit<T>(groupKey: string | number, fn: () => Promise<T>): Promise<T | null>;

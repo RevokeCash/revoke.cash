@@ -42,6 +42,8 @@ export const TRACE_SUPPORTED_FROM_BLOCK: Record<number, number> = {
   [ChainId.Optimism]: 105_235_063,
   // Anchorage migration: same legacy-backend situation as pre-Bedrock Optimism
   [ChainId.Boba]: 1_149_019,
+  // Mantle v2 (Tectonic) migration: same legacy-backend situation as pre-Bedrock Optimism
+  [ChainId.Mantle]: 61_171_947,
 };
 
 // Trace calls are rate-budgeted per PROVIDER, not per chain

@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "dev": "yarn workspace web dev",
+    "dev:caddy": "caddy reverse-proxy --from localhost:3443 --to localhost:3000 & yarn dev",
     "build": "yarn workspace web build",
     "build:preview": "yarn workspace web build:preview",
     "build:images": "yarn workspace web build:images",

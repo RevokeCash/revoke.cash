@@ -26,17 +26,21 @@ export interface VerifyBatchRevokeFeePaymentsResult {
 
 export type FeePaymentVerdict = { outcome: 'verified' } | { outcome: 'failed'; error: string } | { outcome: 'pending' };
 
+// Shared with the admin health tile so it always shows exactly the queue this cron works through
+export const unverifiedFeePaymentConditions = () =>
+  and(
+    isNotNull(batchRevokes.feeTransactionHash),
+    isNull(batchRevokes.feeVerifiedAt),
+    isNull(batchRevokes.feeVerificationError),
+  );
+
 // Batch revokes are client-reported, so a paid fee only counts as revenue once its transaction is found
 // on chain and moved value to the fees address
 export const verifyBatchRevokeFeePayments = async (limit = 100): Promise<VerifyBatchRevokeFeePaymentsResult> => {
   const db = getDb();
 
   const unverifiedRows = await db.query.batchRevokes.findMany({
-    where: and(
-      isNotNull(batchRevokes.feeTransactionHash),
-      isNull(batchRevokes.feeVerifiedAt),
-      isNull(batchRevokes.feeVerificationError),
-    ),
+    where: unverifiedFeePaymentConditions(),
     orderBy: asc(batchRevokes.id),
     columns: { id: true, chainId: true, feeTransactionHash: true, timestamp: true },
     limit,

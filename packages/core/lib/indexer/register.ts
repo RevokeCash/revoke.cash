@@ -1,7 +1,7 @@
 import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
 import type { DatabaseWriter } from '@revoke.cash/core/db/client';
 import { indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
-import { and, inArray, isNull, notInArray } from 'drizzle-orm';
+import { and, eq, inArray, isNull, notInArray } from 'drizzle-orm';
 import type { Address } from 'viem';
 
 export const registerAddressForIndexing = async (writer: DatabaseWriter, address: Address): Promise<void> => {
@@ -21,6 +21,15 @@ export const scheduleEventsReindex = async (
     .update(indexerEventsState)
     .set({ nextRunAt: runAt })
     .where(and(inArray(indexerEventsState.address, addresses), inArray(indexerEventsState.chainId, chainIds)));
+};
+
+// Pauses all chains the address is registered on. An admin reset of the address runs the checks again, so an address
+// that is still too busy gets paused again
+export const disableIndexingForAddress = async (writer: DatabaseWriter, address: Address, reason: string) => {
+  await writer
+    .update(indexerEventsState)
+    .set({ disabledAt: new Date(), lastError: reason })
+    .where(and(eq(indexerEventsState.address, address), isNull(indexerEventsState.disabledAt)));
 };
 
 export const disableIndexingForRemovedChains = async (writer: DatabaseWriter): Promise<number> => {

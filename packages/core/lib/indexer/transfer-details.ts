@@ -288,6 +288,8 @@ export const findUnclassifiedTransferTransactions = async (
             and(
               eq(indexerEventsState.chainId, indexerEvents.chainId),
               sql`${indexerEventsState.address} = '0x' || substring(${indexerEvents.topic1} from 27)`,
+              // A manually paused address must not keep its transfers being traced
+              isNull(indexerEventsState.disabledAt),
             ),
           ),
       );

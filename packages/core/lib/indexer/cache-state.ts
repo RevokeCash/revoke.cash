@@ -1,10 +1,10 @@
 import { getDb } from '@revoke.cash/core/db/client';
 import { indexerAllowanceState, indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
 import { isNullish } from '@revoke.cash/core/utils';
-import { isTooMuchActivityError } from '@revoke.cash/core/utils/errors';
+import { isTokenContractError, isTooMuchActivityError } from '@revoke.cash/core/utils/errors';
 import { and, eq } from 'drizzle-orm';
 import type { Address } from 'viem';
-import { ChainUnresponsiveError, StillIndexingError, TooMuchActivityError } from './errors';
+import { ChainUnresponsiveError, StillIndexingError, TokenContractError, TooMuchActivityError } from './errors';
 import { assertIndexerIsNotTooFarBehind } from './progress';
 
 export type EventsState = Pick<
@@ -37,7 +37,7 @@ export interface IndexerReadStates {
 // After this many recorded failures we surface the stored `last_error` to the dashboard instead
 // of quietly returning stale cache data. Matches the threshold where the scheduler backs off to
 // a 24-hour cadence.
-const FAIL_FAST_FAILURE_THRESHOLD = 3;
+export const FAIL_FAST_FAILURE_THRESHOLD = 3;
 
 export const getIndexerEventsState = async (address: Address, chainId: number): Promise<EventsState | undefined> => {
   return getDb().query.indexerEventsState.findFirst({
@@ -75,6 +75,12 @@ export const getIndexerReadStates = async (address: Address, chainId: number): P
 export const failFastIfAddressHasTooMuchActivity = (state: FailureState, chainId: number): void => {
   if (state?.lastError && isTooMuchActivityError(state.lastError)) {
     throw new TooMuchActivityError(chainId);
+  }
+};
+
+export const failFastIfAddressIsTokenContract = (state: EventsState | undefined, chainId: number): void => {
+  if (state?.lastError && isTokenContractError(state.lastError)) {
+    throw new TokenContractError(chainId);
   }
 };
 

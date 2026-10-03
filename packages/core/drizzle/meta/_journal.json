@@ -134,6 +134,13 @@
       "when": 1790421154938,
       "tag": "0018_auto_revoke_observation_revoke_order",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1790969673721,
+      "tag": "0019_indexer_events_topic1_block_number",
+      "breakpoints": true
     }
   ]
 }

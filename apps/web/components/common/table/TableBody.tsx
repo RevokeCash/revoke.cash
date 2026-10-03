@@ -9,6 +9,8 @@ interface Props<TMeta extends object, T extends RowData> {
   isLoading?: boolean;
   table: ReactTable<AppTableFeatures<TMeta>, T>;
   partialLoadingRows?: number;
+  // Number of placeholder rows while loading; defaults to the page size
+  loadingRows?: number;
   // Renders a full-width sub-row (e.g. an expanded details <tr>) below rows that are expanded
   renderSubComponent?: (row: Row<AppTableFeatures<TMeta>, T>) => React.ReactNode;
   // Makes expandable rows toggle their expansion when clicked anywhere outside an interactive element
@@ -19,6 +21,7 @@ const TableBody = <TMeta extends object, T extends RowData>({
   table,
   isLoading,
   partialLoadingRows = 0,
+  loadingRows,
   renderSubComponent,
   expandOnRowClick,
 }: Props<TMeta, T>) => {
@@ -29,7 +32,7 @@ const TableBody = <TMeta extends object, T extends RowData>({
     return (
       <TableBodyLoader
         columns={table.getVisibleFlatColumns()}
-        rowCount={table.state.pagination.pageSize}
+        rowCount={loadingRows ?? table.state.pagination.pageSize}
         className="allowances-loader"
       />
     );

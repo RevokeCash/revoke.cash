@@ -90,7 +90,9 @@ export const indexerEvents = indexerSchema.table(
       columns: [table.chainId, table.transactionHash, table.logIndex],
     }),
     index('idx_events_topic0').on(table.chainId, table.topic0),
-    index('idx_events_topic1').on(table.chainId, table.topic1).where(sql`${table.topic1} IS NOT NULL`),
+    index('idx_events_topic1_block_number')
+      .on(table.chainId, table.topic1, table.blockNumber)
+      .where(sql`${table.topic1} IS NOT NULL`),
     index('idx_events_topic2').on(table.chainId, table.topic2).where(sql`${table.topic2} IS NOT NULL`),
     index('idx_events_topic3').on(table.chainId, table.topic3).where(sql`${table.topic3} IS NOT NULL`),
     index('idx_events_unresolved_timestamps')

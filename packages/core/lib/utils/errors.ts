@@ -163,6 +163,16 @@ export const isTooMuchActivityError = (error?: string | any): boolean => {
   return false;
 };
 
+export const isTokenContractError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isTokenContractError(parseErrorMessage(error)) || isTokenContractError(stringifyError(error));
+  }
+
+  return error.toLowerCase().includes('is a token contract on');
+};
+
 export const isChainUnresponsiveError = (error?: string | any): boolean => {
   if (!error) return false;
 

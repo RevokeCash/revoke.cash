@@ -6,7 +6,7 @@ export interface FeeSponsor {
   url?: string;
 }
 
-// Chains where a partner covers the batch revoke fee, so users are not charged
+// Chains where a sponsor covers the batch revoke fee, so users are not charged
 export const FEE_SPONSORS: Record<number, FeeSponsor> = {
   [ChainId.Optimism]: {
     name: 'Optimism Foundation',
@@ -15,6 +15,10 @@ export const FEE_SPONSORS: Record<number, FeeSponsor> = {
   [ChainId.Monad]: {
     name: 'Monad Foundation',
     url: 'https://www.monad.foundation/',
+  },
+  // Tempo has no native token and rejects native value transfers, so the fee cannot be paid there
+  [ChainId.Tempo]: {
+    name: 'Revoke.cash',
   },
 };
 

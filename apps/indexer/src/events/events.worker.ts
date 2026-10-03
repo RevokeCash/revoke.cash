@@ -35,6 +35,7 @@ import {
   recordEventsFailure,
   reduceEventsMaxBlockRangeAfterFailure,
 } from '@revoke.cash/core/indexer/events';
+import { hasActivePremiumEntitlement } from '@revoke.cash/core/premium/entitlements';
 import { isApprovedTransfersSupportedChain } from '@revoke.cash/core/transfers/config';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { Job, Queue } from 'bullmq';
@@ -90,11 +91,17 @@ export class EventsWorker extends WorkerHost {
       return;
     }
 
+    if (result.isDisabled) {
+      this.logger.debug({ event: 'events_indexing_completed', outcome: 'disabled', eventsScanId, chainId, address });
+      return;
+    }
+
     this.logger.log({ event: 'events_indexing_completed', outcome: 'ok', eventsScanId, chainId, address, ...result });
 
     // If the result was capped, we immediately queue another scan, so we can catch up faster than if we wait for the scheduler to pick it up
-    // Catchup scans skip the scheduler, which is the only place `disabled_at` is honoured, so a manually paused pair breaks the chain here
-    if (result.isCapped && !result.isDisabled) {
+    // Catchup scans skip the scheduler, which is the only place the active subscription is checked, so an address whose subscription ended
+    // breaks the chain here (a manually paused address is already skipped by indexEvents)
+    if (result.isCapped && (await hasActivePremiumEntitlement(address))) {
       await this.enqueueCatchupScan(chainId, address, result.toBlock, eventsScanId);
     }
 
