@@ -838,7 +838,7 @@ export const CHAINS = {
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 4335972 } },
   }),
   [ChainId.Injective]: new Chain({
-    type: SupportType.BLOCKSCOUT,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId.Injective,
     name: 'Injective',
     nativeCurrency: { name: 'Injective', symbol: 'INJ', decimals: 18 },
@@ -847,7 +847,6 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/injective.svg',
     infoUrl: 'https://injective.com',
     explorerUrl: 'https://blockscout.injective.network',
-    etherscanCompatibleApiUrl: 'https://blockscout-api.injective.network/api',
     rpc: {
       main: `https://injective-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://sentry.evm-rpc.injective.network',
@@ -1695,7 +1694,7 @@ export const CHAINS = {
     isOpStack: true,
   }),
   [ChainId.XDC]: new Chain({
-    type: SupportType.HYPERSYNC,
+    type: SupportType.ETHERSCAN,
     chainId: ChainId.XDC,
     name: 'XDC',
     nativeCurrency: { name: 'XinFin', symbol: 'XDC', decimals: 18 },

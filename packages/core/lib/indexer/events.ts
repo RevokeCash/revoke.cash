@@ -150,6 +150,12 @@ export const indexEvents = async (address: Address, chainId: DocumentedChainId):
     initialMaxBlockRange,
   );
 
+  if (toBlock < fromBlock) {
+    throw new Error(
+      `Event log source is behind: it is at block ${headBlock}, but this address was already scanned up to block ${existingState?.lastToBlock}`,
+    );
+  }
+
   const addressTopic = addressToTopic(address);
 
   return runWithRangeReduction(fromBlock, toBlock, async (currentToBlock, rangeReductions) => {
