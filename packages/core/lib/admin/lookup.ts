@@ -36,7 +36,7 @@ export const getAddressIndexerStates = async (address: Address): Promise<Address
     ...allowanceStates.map((state) => state.chainId),
   ]).sort((left, right) => left - right);
 
-  return chainIds.map((chainId) => {
+  const states = chainIds.map((chainId) => {
     const eventsState = eventsStatesByChain.get(chainId);
     const allowanceState = allowanceStatesByChain.get(chainId);
 
@@ -57,6 +57,9 @@ export const getAddressIndexerStates = async (address: Address): Promise<Address
       evaluationPending,
     };
   });
+
+  // Failing chains first so they show on the first page; the stable sort keeps the chain order within each count
+  return states.sort((left, right) => right.consecutiveFailures - left.consecutiveFailures);
 };
 
 export interface AddressSubscription {

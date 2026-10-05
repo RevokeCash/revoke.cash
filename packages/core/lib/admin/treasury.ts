@@ -13,10 +13,14 @@ import {
   type PremiumPaymentChainId,
 } from '@revoke.cash/core/premium/payment-config';
 import { getNativeTokenPriceUsd, getTokenPricesUsd } from '@revoke.cash/core/prices';
-import type { Address } from 'viem';
+import type { Address, PublicClient } from 'viem';
 
 // Native token balances are always denominated in wei, matching what eth_getBalance returns
 const NATIVE_TOKEN_DECIMALS = 18;
+
+// Bridging a token takes an approval plus a deposit (about 140k gas), and wallets reserve a max fee of up to about 3x the
+// current gas price
+const TOKEN_MOVE_GAS = 500_000n;
 
 export interface TreasuryNativeBalance {
   chainId: number;
@@ -29,7 +33,7 @@ export interface TreasuryNativeBalance {
 }
 
 export interface TreasuryTokenBalance {
-  chainId: number;
+  chainId: PremiumPaymentChainId;
   tokenSymbol: PaymentTokenSymbol;
   tokenAddress: Address;
   decimals: number;
@@ -37,6 +41,10 @@ export interface TreasuryTokenBalance {
   balance: string | null;
   priceUsd: number | null;
   balanceUsd: number | null;
+  nativeToken: string;
+  // Whether the subscriptions address holds enough of the native token to pay the gas for moving its tokens on this
+  // chain; null when the RPC calls failed
+  hasEnoughGas: boolean | null;
 }
 
 export interface TreasuryBalances {
@@ -93,21 +101,25 @@ const getSubscriptionTokenBalancesForChain = async (
   chainId: PremiumPaymentChainId,
 ): Promise<TreasuryTokenBalance[]> => {
   const publicClient = createViemPublicClientForChain(chainId);
+  const nativeToken = getChainNativeToken(chainId);
 
-  // The public client batches the reads for a single chain into one multicall
-  const balances = await Promise.all(
-    getPaymentTokens(chainId).map(async (paymentToken) => ({
-      paymentToken,
-      balanceUnits: await publicClient
-        .readContract({
-          address: paymentToken.address,
-          abi: ERC20_ABI,
-          functionName: 'balanceOf',
-          args: [SUBSCRIPTIONS_ADDRESS],
-        })
-        .catch(() => null),
-    })),
-  );
+  const [balances, hasEnoughGas] = await Promise.all([
+    // The public client batches the token reads for a single chain into one multicall
+    Promise.all(
+      getPaymentTokens(chainId).map(async (paymentToken) => ({
+        paymentToken,
+        balanceUnits: await publicClient
+          .readContract({
+            address: paymentToken.address,
+            abi: ERC20_ABI,
+            functionName: 'balanceOf',
+            args: [SUBSCRIPTIONS_ADDRESS],
+          })
+          .catch(() => null),
+      })),
+    ),
+    hasGasToMoveTokens(publicClient),
+  ]);
 
   const addressesWithBalance = balances
     .filter((entry) => entry.balanceUnits)
@@ -127,8 +139,23 @@ const getSubscriptionTokenBalancesForChain = async (
       balance: balanceUnits?.toString() ?? null,
       priceUsd,
       balanceUsd: balanceUnits === null ? null : toBalanceUsd(balanceUnits, paymentToken.decimals, priceUsd),
+      nativeToken,
+      hasEnoughGas,
     };
   });
+};
+
+const hasGasToMoveTokens = async (publicClient: PublicClient): Promise<boolean | null> => {
+  try {
+    const [nativeBalanceWei, gasPrice] = await Promise.all([
+      publicClient.getBalance({ address: SUBSCRIPTIONS_ADDRESS }),
+      publicClient.getGasPrice(),
+    ]);
+
+    return nativeBalanceWei >= gasPrice * TOKEN_MOVE_GAS;
+  } catch {
+    return null;
+  }
 };
 
 // A zero balance is worth nothing whether or not a price could be found for the token

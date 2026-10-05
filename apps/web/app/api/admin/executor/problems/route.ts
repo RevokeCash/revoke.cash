@@ -1,11 +1,15 @@
-import { getDeferredActions, getStuckSubmittedActions } from '@revoke.cash/core/admin/executor';
+import { getDeferredActions, getNotUpgradedWallets, getStuckSubmittedActions } from '@revoke.cash/core/admin/executor';
 import { handleAdminRead } from 'lib/api/admin';
 import type { NextRequest } from 'next/server';
 
 export async function GET(req: NextRequest) {
   const handler = async () => {
-    const [stuckSubmitted, deferred] = await Promise.all([getStuckSubmittedActions(), getDeferredActions()]);
-    return { stuckSubmitted, deferred };
+    const [stuckSubmitted, deferred, notUpgradedWallets] = await Promise.all([
+      getStuckSubmittedActions(),
+      getDeferredActions(),
+      getNotUpgradedWallets(),
+    ]);
+    return { stuckSubmitted, deferred, notUpgradedWallets };
   };
 
   return handleAdminRead(req, handler);

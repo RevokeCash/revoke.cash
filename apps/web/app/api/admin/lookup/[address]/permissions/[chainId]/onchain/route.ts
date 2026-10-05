@@ -1,4 +1,8 @@
-import { findActivePermission, isPermissionEnabledOnChain } from '@revoke.cash/core/auto-revoke/permissions';
+import {
+  checkDelegatorAccountUpgraded,
+  findActivePermission,
+  isPermissionEnabledOnChain,
+} from '@revoke.cash/core/auto-revoke/permissions';
 import { addressSchema, chainIdSchema } from '@revoke.cash/core/schemas';
 import { handleAdminRead } from 'lib/api/admin';
 import { parseRequest } from 'lib/api/validation';
@@ -19,9 +23,14 @@ export async function GET(req: NextRequest, props: Props) {
     const { params } = await parseRequest(req, props, schemas);
 
     const permission = await findActivePermission(params.address, params.chainId);
-    const enabledOnChain = permission ? await isPermissionEnabledOnChain(permission) : null;
+    if (!permission) return { enabledOnChain: null, accountUpgraded: null };
 
-    return { enabledOnChain };
+    const [enabledOnChain, accountUpgraded] = await Promise.all([
+      isPermissionEnabledOnChain(permission),
+      checkDelegatorAccountUpgraded(permission.chainId, permission.address),
+    ]);
+
+    return { enabledOnChain, accountUpgraded };
   };
 
   return handleAdminRead(req, handler, 'Failed to check on-chain permission status');

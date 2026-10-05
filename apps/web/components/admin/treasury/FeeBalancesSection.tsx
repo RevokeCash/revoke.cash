@@ -1,5 +1,6 @@
 'use client';
 
+import { getFeeRoute } from '@revoke.cash/core/admin/treasury-routes';
 import { FEES_ADDRESS } from '@revoke.cash/core/constants';
 import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import Card, { CardTitle } from 'components/common/Card';
@@ -26,6 +27,7 @@ const FeeBalancesSection = () => {
           balance: nativeBalance.balance,
           priceUsd: nativeBalance.priceUsd,
           balanceUsd: nativeBalance.balanceUsd,
+          route: getFeeRoute(nativeBalance.chainId),
         }),
       )
       .sort((a, b) => (b.balanceUsd ?? -1) - (a.balanceUsd ?? -1));

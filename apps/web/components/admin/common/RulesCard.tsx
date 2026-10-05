@@ -1,6 +1,7 @@
 'use client';
 
 import type { AutoRevokeRules, RulesSource } from '@revoke.cash/core/auto-revoke/evaluation/rules';
+import type { Nullable } from '@revoke.cash/core/types';
 import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import Button from 'components/common/Button';
 import Card, { CardTitle } from 'components/common/Card';
@@ -11,6 +12,7 @@ interface Props {
   rules?: AutoRevokeRules;
   source?: RulesSource;
   isLoading?: boolean;
+  error?: Nullable<Error>;
 }
 
 const RISK_SENSITIVITY_LABELS: Record<string, string> = {
@@ -19,7 +21,7 @@ const RISK_SENSITIVITY_LABELS: Record<string, string> = {
   medium: 'Medium risk',
 };
 
-const RulesCard = ({ rules, source, isLoading }: Props) => {
+const RulesCard = ({ rules, source, isLoading, error }: Props) => {
   const subtitle = source
     ? 'Effective auto-revoke rules and where they come from'
     : 'Evaluation rules applied to the covered addresses';
@@ -28,6 +30,7 @@ const RulesCard = ({ rules, source, isLoading }: Props) => {
     <Card
       header={<CardTitle title="Rules" subtitle={subtitle} />}
       isLoading={isLoading}
+      error={error}
       className={twMerge(isLoading && 'h-40')}
     >
       {rules && (

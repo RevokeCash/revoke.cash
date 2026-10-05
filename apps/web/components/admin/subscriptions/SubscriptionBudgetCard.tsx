@@ -10,12 +10,13 @@ interface Props {
 }
 
 const SubscriptionBudgetCard = ({ subscriptionId }: Props) => {
-  const { data: budget, isLoading } = useAdminSubscriptionBudget(subscriptionId);
+  const { data: budget, isLoading, error } = useAdminSubscriptionBudget(subscriptionId);
 
   return (
     <Card
       header={<CardTitle title="Gas budget" subtitle="Auto-revoke gas spend for the current UTC month" />}
       isLoading={isLoading}
+      error={error}
       className={twMerge(isLoading && 'h-40')}
     >
       {budget && <AutoRevokeBudgetSummary budget={budget} />}

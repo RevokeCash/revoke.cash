@@ -17,8 +17,9 @@ interface AdminLookupResult {
   indexerStates: AddressIndexerState[];
 }
 
-interface OnChainPermissionCheck {
+export interface OnChainPermissionCheck {
   enabledOnChain: boolean | null;
+  accountUpgraded: boolean | null;
 }
 
 const getAdminLookupQueryKey = (address: Address) => ['admin', 'lookup', address] as const;

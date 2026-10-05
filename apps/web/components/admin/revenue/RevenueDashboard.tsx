@@ -3,6 +3,7 @@
 import { type DateRange, getPeriod, getToday } from 'lib/admin/date-range';
 import { useState } from 'react';
 import BatchRevokeSplitSection from './BatchRevokeSplitSection';
+import FeeReconciliationSection from './FeeReconciliationSection';
 import PaymentFunnelSection from './PaymentFunnelSection';
 import RevenueBreakdownSection from './RevenueBreakdownSection';
 import RevenueChart from './RevenueChart';
@@ -18,6 +19,7 @@ const RevenueDashboard = () => {
       <RevenueBreakdownSection range={range} />
       <PaymentFunnelSection range={range} />
       <BatchRevokeSplitSection range={range} />
+      <FeeReconciliationSection range={range} />
       <VatSection range={range} />
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import type { ExecutorPipeline, ProblemAction } from '@revoke.cash/core/admin/executor';
+import type { ExecutorPipeline, NotUpgradedWallet, ProblemAction } from '@revoke.cash/core/admin/executor';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAdminQuery } from 'lib/hooks/admin/useAdminQuery';
@@ -15,6 +15,7 @@ interface AdminExecutorPipelinesResponse {
 interface AdminExecutorProblemsResponse {
   stuckSubmitted: ProblemAction[];
   deferred: ProblemAction[];
+  notUpgradedWallets: NotUpgradedWallet[];
 }
 
 export const useAdminExecutorPipelines = () => {

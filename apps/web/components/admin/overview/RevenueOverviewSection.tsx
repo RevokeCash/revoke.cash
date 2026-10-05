@@ -9,8 +9,8 @@ import { twMerge } from 'tailwind-merge';
 
 const RevenueOverviewSection = () => {
   // months=12 matches the revenue page so both share the same cached fetch
-  const { data: revenueData, isLoading: isRevenueDataLoading } = useAdminRevenueData(12);
-  const { data: runRateData, isLoading: isRunRateLoading } = useAdminRevenueOverview();
+  const { data: revenueData, isLoading: isRevenueDataLoading, error: revenueDataError } = useAdminRevenueData(12);
+  const { data: runRateData, isLoading: isRunRateLoading, error: runRateError } = useAdminRevenueOverview();
   const isLoading = isRevenueDataLoading || isRunRateLoading;
 
   const currentMonth = revenueData && deriveTotals(revenueData, utcMonthStartIso(), new Date().toISOString());
@@ -20,6 +20,7 @@ const RevenueOverviewSection = () => {
     <Card
       header={<CardTitle title="Revenue" subtitle="Confirmed subscription payments and recorded batch revoke fees" />}
       isLoading={isLoading}
+      error={revenueDataError ?? runRateError}
       className={twMerge(isLoading && 'h-40')}
     >
       {currentMonth && previousMonth && runRateData && (

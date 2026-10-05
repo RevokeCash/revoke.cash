@@ -57,7 +57,7 @@ const columns = columnHelper.columns([
       <div className="flex items-center gap-1 py-1.5 pr-4">
         {info.getValue() ?? '-'}
         {info.row.original.hasStuckHeadOfLine && (
-          <WithHoverTooltip tooltip="The head-of-line transaction at this nonce has been in flight for over 30 minutes, blocking the rest of the pipeline">
+          <WithHoverTooltip tooltip="The head-of-line transaction at this nonce was submitted over 30 minutes ago, or fee-bumped 2+ times, without settling, blocking the rest of the pipeline">
             <ExclamationTriangleIcon className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
           </WithHoverTooltip>
         )}
@@ -114,6 +114,7 @@ const ExecutorPipelinesSection = () => {
       <Table
         table={table}
         loading={pipelinesQuery.isLoading}
+        error={pipelinesQuery.error}
         emptyChildren="No executor pipelines with assigned nonces yet"
         className="border-none"
       />

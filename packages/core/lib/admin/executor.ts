@@ -3,11 +3,32 @@ import { AUTO_REVOKE_SUPPORTED_CHAINS } from '@revoke.cash/core/auto-revoke/conf
 import type { ExecutionLane } from '@revoke.cash/core/auto-revoke/execution/signer';
 import { createViemPublicClientForChain, getChainNativeToken } from '@revoke.cash/core/chains';
 import { AUTO_REVOKE_EXECUTOR_HOT_ADDRESS, AUTO_REVOKE_URGENT_EXECUTOR_HOT_ADDRESS } from '@revoke.cash/core/constants';
-import { getDb } from '@revoke.cash/core/db/client';
-import { autoRevokeActions, autoRevokeObservations } from '@revoke.cash/core/db/schema/auto-revoke';
+import { type DatabaseWriter, getDb } from '@revoke.cash/core/db/client';
+import {
+  autoRevokeActions,
+  autoRevokeObservations,
+  autoRevokePermissions,
+} from '@revoke.cash/core/db/schema/auto-revoke';
+import { premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
+import { activeSubscriptionsQuery } from '@revoke.cash/core/premium/subscriptions';
 import { getNativeTokenPriceUsd } from '@revoke.cash/core/prices';
 import { MINUTE } from '@revoke.cash/core/utils/time';
-import { and, desc, eq, getTableColumns, gte, inArray, isNotNull, lt, sql } from 'drizzle-orm';
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  exists,
+  getTableColumns,
+  gt,
+  gte,
+  inArray,
+  isNotNull,
+  isNull,
+  lt,
+  or,
+  sql,
+} from 'drizzle-orm';
 import { type Address, formatEther, isAddressEqual } from 'viem';
 
 export const EXECUTOR_WALLETS: Array<{ lane: ExecutionLane; address: Address }> = [
@@ -142,17 +163,31 @@ export interface ProblemAction {
   costDeferredAt: string | null;
   nextRetryAt: string | null;
   createdAt: string;
+  bumpCount: number;
 }
 
-// Submitted actions whose transaction has not settled within the expected confirmation window
-export const getStuckSubmittedActions = async (): Promise<ProblemAction[]> => {
-  const cutoff = new Date(Date.now() - 30 * MINUTE);
+const STUCK_SUBMITTED_AGE = 30 * MINUTE;
 
+// The original transaction plus two fee bumps
+const STUCK_SUBMITTED_TRANSACTION_COUNT = 3;
+
+// Submitted actions whose transaction has not settled within the expected confirmation window. Every fee bump
+// resets submitted_at, so a head that keeps getting bumped is caught by its transaction count instead.
+export const stuckSubmittedConditions = () =>
+  and(
+    eq(autoRevokeActions.status, 'submitted'),
+    or(
+      lt(autoRevokeActions.submittedAt, new Date(Date.now() - STUCK_SUBMITTED_AGE)),
+      sql`jsonb_array_length(${autoRevokeActions.transaction} -> 'txHashes') >= ${STUCK_SUBMITTED_TRANSACTION_COUNT}`,
+    ),
+  );
+
+export const getStuckSubmittedActions = async (): Promise<ProblemAction[]> => {
   const rows = await getDb()
     .select({ ...getTableColumns(autoRevokeActions), address: autoRevokeObservations.address })
     .from(autoRevokeActions)
     .innerJoin(autoRevokeObservations, eq(autoRevokeObservations.id, autoRevokeActions.observationId))
-    .where(and(eq(autoRevokeActions.status, 'submitted'), lt(autoRevokeActions.submittedAt, cutoff)))
+    .where(stuckSubmittedConditions())
     .orderBy(desc(autoRevokeActions.submittedAt));
 
   return rows.map(mapProblemAction);
@@ -187,4 +222,76 @@ const mapProblemAction = (row: ProblemActionRow): ProblemAction => ({
   costDeferredAt: row.costDeferredAt?.toISOString() ?? null,
   nextRetryAt: row.nextRetryAt?.toISOString() ?? null,
   createdAt: row.createdAt.toISOString(),
+  bumpCount: Math.max((row.transaction?.txHashes ?? []).length - 1, 0),
 });
+
+export interface NotUpgradedWallet {
+  address: Address;
+  chainId: number;
+  // The subscription that pays for this wallet's revokes (earliest started, as in findBillingSubscriptionIds)
+  subscriptionId: string;
+  permissionCreatedAt: string;
+  blockedActionCount: number;
+  // Sum over the blocked actions; null when there are none or none of them has a known value
+  valueAtRiskUsd: number | null;
+}
+
+// Live permissions of Ultimate wallets that cannot execute until the wallet upgrades to the MetaMask smart account
+export const notUpgradedPermissionConditions = (db: DatabaseWriter) =>
+  and(
+    inArray(autoRevokePermissions.chainId, [...AUTO_REVOKE_SUPPORTED_CHAINS]),
+    isNull(autoRevokePermissions.revokedAt),
+    gt(autoRevokePermissions.expiresAt, new Date()),
+    eq(autoRevokePermissions.accountUpgraded, false),
+    exists(activeSubscriptionsQuery(db, autoRevokePermissions.address, 'ultimate')),
+  );
+
+export const getNotUpgradedWallets = async (): Promise<NotUpgradedWallet[]> => {
+  const db = getDb();
+
+  // unblockActions only wakes blocked_permission actions once their wallet's permission on that chain is upgraded
+  const blockedActions = db
+    .select({
+      address: autoRevokeObservations.address,
+      chainId: autoRevokeObservations.chainId,
+      actionCount: sql<number>`count(*)::int`.as('blocked_action_count'),
+      valueAtRiskUsd: sql<number | null>`sum(${autoRevokeObservations.valueAtRiskUsd})::float`.as(
+        'blocked_value_at_risk_usd',
+      ),
+    })
+    .from(autoRevokeActions)
+    .innerJoin(autoRevokeObservations, eq(autoRevokeObservations.id, autoRevokeActions.observationId))
+    .where(eq(autoRevokeActions.status, 'blocked_permission'))
+    .groupBy(autoRevokeObservations.address, autoRevokeObservations.chainId)
+    .as('blocked_actions');
+
+  const billingSubscriptionId = activeSubscriptionsQuery(db, autoRevokePermissions.address, 'ultimate')
+    .orderBy(asc(premiumSubscriptions.startsAt), asc(premiumSubscriptions.id))
+    .limit(1);
+
+  const rows = await db
+    .select({
+      address: autoRevokePermissions.address,
+      chainId: autoRevokePermissions.chainId,
+      subscriptionId: sql<string>`${billingSubscriptionId}`,
+      permissionCreatedAt: autoRevokePermissions.createdAt,
+      blockedActionCount: blockedActions.actionCount,
+      valueAtRiskUsd: blockedActions.valueAtRiskUsd,
+    })
+    .from(autoRevokePermissions)
+    .leftJoin(
+      blockedActions,
+      and(
+        eq(blockedActions.address, autoRevokePermissions.address),
+        eq(blockedActions.chainId, autoRevokePermissions.chainId),
+      ),
+    )
+    .where(notUpgradedPermissionConditions(db))
+    .orderBy(sql`${blockedActions.valueAtRiskUsd} desc nulls last`, asc(autoRevokePermissions.createdAt));
+
+  return rows.map((row) => ({
+    ...row,
+    permissionCreatedAt: row.permissionCreatedAt.toISOString(),
+    blockedActionCount: row.blockedActionCount ?? 0,
+  }));
+};

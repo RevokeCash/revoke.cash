@@ -19,7 +19,7 @@ interface Props {
 }
 
 const RevenueBreakdownSection = ({ range }: Props) => {
-  const { data, isLoading, isPlaceholderData } = useAdminRevenueDataSince(range.from);
+  const { data, isLoading, isPlaceholderData, error } = useAdminRevenueDataSince(range.from);
 
   const fromIso = `${range.from}T00:00:00.000Z`;
   const toExclusiveIso = `${range.to}T23:59:59.999Z`;
@@ -30,6 +30,7 @@ const RevenueBreakdownSection = ({ range }: Props) => {
         <CardTitle title="Revenue breakdown" subtitle="Confirmed revenue by chain and plan in the selected period" />
       }
       isLoading={isLoading}
+      error={error}
       className={twMerge(isLoading && 'h-80')}
     >
       {data && (

@@ -1,5 +1,6 @@
 'use client';
 
+import type { FeeReconciliationRow } from '@revoke.cash/core/admin/fee-reconciliation';
 import type { RegionSummary, RevenueData } from '@revoke.cash/core/admin/revenue';
 import { keepPreviousData } from '@tanstack/react-query';
 import { countMonths, getToday } from 'lib/admin/date-range';
@@ -34,4 +35,13 @@ export const useAdminVatReport = (from: string, to: string) => {
     enabled: Boolean(from && to),
     placeholderData: keepPreviousData,
   });
+};
+
+// Lazy query: the explorer scan takes up to a minute, so it only runs when the admin clicks "Check payments"
+export const useAdminFeeReconciliation = (from: string, to: string) => {
+  return useAdminQuery<FeeReconciliationRow[]>(
+    ['admin', 'revenue', 'fee-reconciliation', from, to],
+    '/api/admin/revenue/fee-reconciliation',
+    { searchParams: { from, to }, enabled: false },
+  );
 };

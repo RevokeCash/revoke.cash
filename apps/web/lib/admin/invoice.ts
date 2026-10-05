@@ -1,5 +1,5 @@
 import { EU_VAT_RATES, type FeeRecord, formatVatRate, type RegionSummary } from '@revoke.cash/core/admin/revenue';
-import { getChainExplorerUrl, getChainName } from '@revoke.cash/core/chains';
+import { getChainConfig, getChainName } from '@revoke.cash/core/chains';
 import { formatUsdCents } from '@revoke.cash/core/utils/formatting';
 import {
   ACCENT_LIGHT,
@@ -95,12 +95,12 @@ export const generatePdf = ({ title, records, summary, from, to }: GeneratePdfOp
   drawSectionTitle(doc, 'Transaction Details');
 
   const txColumns: PdfTableColumn[] = [
-    { label: 'Date/Time (UTC)', x: PAGE_MARGIN, width: 115 },
-    { label: 'Chain', x: PAGE_MARGIN + 115, width: 75 },
-    { label: 'Transaction Hash', x: PAGE_MARGIN + 190, width: 140 },
-    { label: 'Region', x: PAGE_MARGIN + 330, width: 40, align: 'center' },
-    { label: 'Amount', x: PAGE_MARGIN + 370, width: 60, align: 'right' },
-    { label: 'VAT', x: PAGE_MARGIN + 430, width: 65, align: 'right' },
+    { label: 'Date/Time (UTC)', x: PAGE_MARGIN, width: 110 },
+    { label: 'Chain', x: PAGE_MARGIN + 110, width: 82 },
+    { label: 'Transaction Hash', x: PAGE_MARGIN + 192, width: 128 },
+    { label: 'Region', x: PAGE_MARGIN + 320, width: 40, align: 'center' },
+    { label: 'Amount', x: PAGE_MARGIN + 360, width: 50, align: 'right' },
+    { label: 'VAT', x: PAGE_MARGIN + 410, width: 85, align: 'right' },
   ];
 
   y = drawTableHeaderRow(doc, txColumns, doc.y);
@@ -117,8 +117,9 @@ export const generatePdf = ({ title, records, summary, from, to }: GeneratePdfOp
 
     const txHash = record.feeTransactionHash ? `${record.feeTransactionHash.slice(0, 22)}...` : '—';
     const chainName = getChainName(record.chainId);
-    const explorerUrl = getChainExplorerUrl(record.chainId);
-    const txUrl = record.feeTransactionHash ? `${explorerUrl}/tx/${record.feeTransactionHash}` : null;
+    // Fees paid on chains that were removed later have no explorer link
+    const explorerUrl = getChainConfig(record.chainId)?.getExplorerUrl();
+    const txUrl = record.feeTransactionHash && explorerUrl ? `${explorerUrl}/tx/${record.feeTransactionHash}` : null;
     const region = record.vatRegion?.trim().toUpperCase() ?? '—';
     const vatRate = EU_VAT_RATES[region]?.rate ?? 0;
     const vatAmount = Math.round((record.feeUsdCents * vatRate) / (1 + vatRate));

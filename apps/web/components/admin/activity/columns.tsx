@@ -15,7 +15,8 @@ import ActivityStatusCell from './ActivityStatusCell';
 import ActivityTxHashCell from './ActivityTxHashCell';
 import RetryActionButton from './RetryActionButton';
 
-const RETRYABLE_STATUSES: readonly ActionStatus[] = ['queued', 'blocked_budget', 'blocked_permission', 'blocked_rules'];
+// Matches retryActionNow: the executor only polls these statuses, so a retry does nothing for other parked rows
+const RETRYABLE_STATUSES: readonly ActionStatus[] = ['queued', 'blocked_budget'];
 
 const cellClasses = 'pr-4 text-sm';
 

@@ -3,9 +3,14 @@ import {
   type SubscriptionAddressChangeCounts,
 } from '@revoke.cash/core/admin/audit';
 import { REVENUE_EXCLUDED_CHAIN_IDS } from '@revoke.cash/core/admin/revenue';
+import { AUTO_REVOKE_SUPPORTED_CHAINS } from '@revoke.cash/core/auto-revoke/config';
 import { BATCH_REVOKE_FEE_USD_CENTS, PREMIUM_BATCH_REVOKE_SPONSOR } from '@revoke.cash/core/constants';
 import { getDb } from '@revoke.cash/core/db/client';
-import { autoRevokeActions } from '@revoke.cash/core/db/schema/auto-revoke';
+import {
+  autoRevokeActions,
+  autoRevokeObservations,
+  autoRevokePermissions,
+} from '@revoke.cash/core/db/schema/auto-revoke';
 import { batchRevokes } from '@revoke.cash/core/db/schema/batch-revokes';
 import {
   premiumPayments,
@@ -35,6 +40,17 @@ export interface AdminSubscriptionListItem {
   maxAddresses: number;
   confirmedPaymentCount: number;
   totalPaidUsdCents: number;
+  // null for Premium subscriptions
+  autoRevokeCoverage: AutoRevokeCoverage | null;
+}
+
+// Counts only live permissions (not revoked, not expired) on Auto-Revoke chains
+export interface AutoRevokeCoverage {
+  // Distinct chains where at least one of the subscription's wallets has a permission and is upgraded
+  protectedChainCount: number;
+  notUpgradedPermissionCount: number;
+  // blocked_permission actions stay parked until the wallet has an upgraded permission, even after a manual revoke
+  blockedActionCount: number;
 }
 
 export interface AdminSubscriptionsPage {
@@ -133,6 +149,11 @@ export const getAdminSubscriptions = async ({
     db.select({ totalCount: count() }).from(premiumSubscriptions).where(conditions),
   ]);
 
+  const ultimateSubscriptionIds = subscriptions
+    .filter((subscription) => subscription.plan.tier === 'ultimate')
+    .map((subscription) => subscription.id);
+  const autoRevokeCoverageBySubscriptionId = await getAutoRevokeCoverage(ultimateSubscriptionIds);
+
   const items = subscriptions.map((subscription): AdminSubscriptionListItem => {
     // Testnet payments and complimentary grants are excluded so the list totals line up with the
     // revenue aggregates
@@ -157,10 +178,69 @@ export const getAdminSubscriptions = async ({
       maxAddresses: subscription.plan.maxAddresses,
       confirmedPaymentCount: confirmedPayments.length,
       totalPaidUsdCents: confirmedPayments.reduce((sum, payment) => sum + payment.amountUsdCents, 0),
+      autoRevokeCoverage: autoRevokeCoverageBySubscriptionId.get(subscription.id) ?? null,
     };
   });
 
   return { items, totalCount };
+};
+
+// Grouped selects over the page's ids, since a correlated subquery breaks inside findMany (see the anomaly filter)
+const getAutoRevokeCoverage = async (subscriptionIds: string[]): Promise<Map<string, AutoRevokeCoverage>> => {
+  if (subscriptionIds.length === 0) return new Map();
+
+  const db = getDb();
+
+  const [permissionRows, blockedActionRows] = await Promise.all([
+    db
+      .select({
+        subscriptionId: premiumSubscriptionAddresses.subscriptionId,
+        protectedChainCount: sql<number>`(count(distinct ${autoRevokePermissions.chainId}) filter (where ${autoRevokePermissions.accountUpgraded}))::int`,
+        notUpgradedPermissionCount: sql<number>`(count(*) filter (where not ${autoRevokePermissions.accountUpgraded}))::int`,
+      })
+      .from(premiumSubscriptionAddresses)
+      .innerJoin(autoRevokePermissions, eq(autoRevokePermissions.address, premiumSubscriptionAddresses.address))
+      .where(
+        and(
+          inArray(premiumSubscriptionAddresses.subscriptionId, subscriptionIds),
+          inArray(autoRevokePermissions.chainId, [...AUTO_REVOKE_SUPPORTED_CHAINS]),
+          isNull(autoRevokePermissions.revokedAt),
+          gt(autoRevokePermissions.expiresAt, new Date()),
+        ),
+      )
+      .groupBy(premiumSubscriptionAddresses.subscriptionId),
+    db
+      .select({
+        subscriptionId: premiumSubscriptionAddresses.subscriptionId,
+        blockedActionCount: sql<number>`count(*)::int`,
+      })
+      .from(premiumSubscriptionAddresses)
+      .innerJoin(autoRevokeObservations, eq(autoRevokeObservations.address, premiumSubscriptionAddresses.address))
+      .innerJoin(autoRevokeActions, eq(autoRevokeActions.observationId, autoRevokeObservations.id))
+      .where(
+        and(
+          inArray(premiumSubscriptionAddresses.subscriptionId, subscriptionIds),
+          eq(autoRevokeActions.status, 'blocked_permission'),
+        ),
+      )
+      .groupBy(premiumSubscriptionAddresses.subscriptionId),
+  ]);
+
+  return new Map(
+    subscriptionIds.map((subscriptionId): [string, AutoRevokeCoverage] => {
+      const permissionRow = permissionRows.find((row) => row.subscriptionId === subscriptionId);
+      const blockedActionRow = blockedActionRows.find((row) => row.subscriptionId === subscriptionId);
+
+      return [
+        subscriptionId,
+        {
+          protectedChainCount: permissionRow?.protectedChainCount ?? 0,
+          notUpgradedPermissionCount: permissionRow?.notUpgradedPermissionCount ?? 0,
+          blockedActionCount: blockedActionRow?.blockedActionCount ?? 0,
+        },
+      ];
+    }),
+  );
 };
 
 export interface AdminPayment {

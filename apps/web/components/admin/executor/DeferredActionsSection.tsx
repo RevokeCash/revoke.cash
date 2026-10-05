@@ -74,7 +74,7 @@ const buildColumns = (retryAction: ReturnType<typeof useAdminRetryAction>) =>
   ]);
 
 const DeferredActionsSection = () => {
-  const { data, isLoading } = useAdminExecutorProblems();
+  const { data, isLoading, error } = useAdminExecutorProblems();
   const retryAction = useAdminRetryAction();
 
   const table = useTable({
@@ -94,7 +94,13 @@ const DeferredActionsSection = () => {
       }
       className="p-0"
     >
-      <Table table={table} loading={isLoading} emptyChildren="No deferred actions" className="border-none" />
+      <Table
+        table={table}
+        loading={isLoading}
+        error={error}
+        emptyChildren="No deferred actions"
+        className="border-none"
+      />
     </Card>
   );
 };

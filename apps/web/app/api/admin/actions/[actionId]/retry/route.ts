@@ -20,12 +20,14 @@ export async function POST(req: NextRequest, props: Props) {
   const handler = async (adminAddress: Address) => {
     const { params } = await parseRequest(req, props, schemas);
 
-    const retried = await retryActionNow(params.actionId);
-    if (!retried) throw new ApiError(404, 'No retryable action found');
+    const retriedAction = await retryActionNow(params.actionId);
+    if (!retriedAction) throw new ApiError(404, 'No retryable action found');
 
     await recordAuditEvent({
       action: 'admin_auto_revoke_action_retried',
       actorAddress: adminAddress,
+      targetAddress: retriedAction.address,
+      chainId: retriedAction.chainId,
       details: { actionId: params.actionId },
     });
 

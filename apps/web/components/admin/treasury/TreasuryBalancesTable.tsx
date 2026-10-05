@@ -1,5 +1,6 @@
 'use client';
 
+import type { TreasuryRoute } from '@revoke.cash/core/admin/treasury-routes';
 import type { Nullable } from '@revoke.cash/core/types';
 import { formatFiatAmount, formatFixedPointBigInt } from '@revoke.cash/core/utils/formatting';
 import { createColumnHelper } from '@tanstack/react-table';
@@ -9,6 +10,7 @@ import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useTable } from 'lib/hooks/useTable';
 import type { AppTableFeatures } from 'lib/utils/table';
 import { type ReactNode, useMemo } from 'react';
+import TreasuryRouteCell from './TreasuryRouteCell';
 
 export interface TreasuryBalanceRow {
   id: string;
@@ -19,6 +21,9 @@ export interface TreasuryBalanceRow {
   balance: string | null;
   priceUsd: number | null;
   balanceUsd: number | null;
+  route: TreasuryRoute | null;
+  // Native token that the address lacks to pay the gas for moving a token balance; native balances pay their own gas
+  missingGasToken?: string;
 }
 
 interface Props {
@@ -33,21 +38,12 @@ const columnHelper = createColumnHelper<AppTableFeatures, TreasuryBalanceRow>();
 // Every balance fits on a single page, since the point of these tables is to see all chains at once
 const PAGE_SIZE = 100;
 
-// Balances worth less than this are not worth reconciling, so they are summarized below the table instead
-const MINIMUM_DISPLAYED_VALUE_USD = 10;
-
-// Balances whose value could not be determined are always shown: leaving an unread or unpriced chain out
-// would make it look like it holds nothing
-const isWorthDisplaying = (row: TreasuryBalanceRow) =>
-  row.balanceUsd === null || row.balanceUsd >= MINIMUM_DISPLAYED_VALUE_USD;
+// A full page of placeholder rows would push everything below far down while the balances load
+const LOADING_ROWS = 5;
 
 // Shared table for the treasury balance sections, which all show a balance and its dollar value per chain
 const TreasuryBalancesTable = ({ rows, isLoading, error, emptyChildren }: Props) => {
-  const displayedRows = useMemo(() => rows.filter(isWorthDisplaying), [rows]);
-  const hiddenRows = useMemo(() => rows.filter((row) => !isWorthDisplaying(row)), [rows]);
-
   const columns = useMemo(() => {
-    // The total covers the hidden balances too, so that it stays the full amount held
     const totalUsd = rows.reduce((total, row) => total + (row.balanceUsd ?? 0), 0);
 
     // A total of zero before the balances have loaded would read as a real number, so the total row
@@ -74,6 +70,15 @@ const TreasuryBalancesTable = ({ rows, isLoading, error, emptyChildren }: Props)
           </div>
         ),
       }),
+      columnHelper.display({
+        id: 'route',
+        header: 'Route',
+        cell: (info) => (
+          <div className="py-1.5 pr-4 text-sm">
+            <TreasuryRouteCell row={info.row.original} />
+          </div>
+        ),
+      }),
       columnHelper.accessor('balanceUsd', {
         id: 'value',
         header: () => <div className="text-right">Value</div>,
@@ -87,31 +92,17 @@ const TreasuryBalancesTable = ({ rows, isLoading, error, emptyChildren }: Props)
     ]);
   }, [rows]);
 
-  const table = useTable({ data: displayedRows, columns, getRowId: (row) => row.id, pageSize: PAGE_SIZE });
-
-  const hiddenUsd = hiddenRows.reduce((total, row) => total + (row.balanceUsd ?? 0), 0);
+  const table = useTable({ data: rows, columns, getRowId: (row) => row.id, pageSize: PAGE_SIZE });
 
   return (
-    <>
-      <Table
-        table={table}
-        loading={isLoading}
-        error={error}
-        // Balances that exist but are all too small to list would make the caller's empty state a lie
-        emptyChildren={
-          hiddenRows.length > 0
-            ? `Every balance is under ${formatFiatAmount(MINIMUM_DISPLAYED_VALUE_USD)}`
-            : emptyChildren
-        }
-        className="border-none"
-      />
-      {hiddenRows.length > 0 && (
-        <div className="px-4 py-2 text-xs text-zinc-500">
-          {hiddenRows.length} {hiddenRows.length === 1 ? 'balance' : 'balances'} under{' '}
-          {formatFiatAmount(MINIMUM_DISPLAYED_VALUE_USD)} hidden, worth {formatFiatAmount(hiddenUsd)} in total
-        </div>
-      )}
-    </>
+    <Table
+      table={table}
+      loading={isLoading}
+      loadingRows={LOADING_ROWS}
+      error={error}
+      emptyChildren={emptyChildren}
+      className="border-none"
+    />
   );
 };
 

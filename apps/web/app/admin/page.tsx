@@ -5,8 +5,8 @@ import RevenueOverviewSection from 'components/admin/overview/RevenueOverviewSec
 const AdminOverviewPage = () => (
   <div className="flex flex-col gap-6">
     <RevenueOverviewSection />
-    <ExecutorBalancesSection />
     <HealthSection />
+    <ExecutorBalancesSection />
   </div>
 );
 

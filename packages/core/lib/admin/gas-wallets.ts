@@ -1,13 +1,14 @@
 import { EXECUTOR_WALLETS, EXECUTOR_WALLETS_FIRST_FUNDED_AT } from '@revoke.cash/core/admin/executor';
+import {
+  type BlockRange,
+  type ExplorerTransaction,
+  fetchExplorerTransactions,
+  getBlockRange,
+  getExplorerWalletBalance,
+} from '@revoke.cash/core/admin/explorer';
 import { AUTO_REVOKE_SUPPORTED_CHAINS } from '@revoke.cash/core/auto-revoke/config';
 import type { ExecutionLane } from '@revoke.cash/core/auto-revoke/execution/signer';
-import {
-  createViemPublicClientForChain,
-  getChainApiKey,
-  getChainApiUrl,
-  getChainNativeToken,
-} from '@revoke.cash/core/chains';
-import { createExplorerClients } from '@revoke.cash/core/events/getters';
+import { createViemPublicClientForChain, getChainNativeToken } from '@revoke.cash/core/chains';
 import { getHistoricalNativeTokenPriceUsd } from '@revoke.cash/core/prices';
 import { type Address, formatEther, getAddress, type Hash, isAddressEqual } from 'viem';
 
@@ -15,10 +16,6 @@ import { type Address, formatEther, getAddress, type Hash, isAddressEqual } from
 // Native transfers emit no logs, so deposits are read from the explorer transaction lists: direct transfers show up
 // in the normal list, while bridge deliveries (how most chains are funded) show up in the internal list. Balances at
 // the period boundaries turn the deposits into a reconciliation: spent = opening balance + deposits - closing balance.
-
-const EXPLORER_PAGE_SIZE = 1000;
-
-const EXPLORER_CLIENTS = createExplorerClients(AUTO_REVOKE_SUPPORTED_CHAINS);
 
 export interface GasWalletReport {
   deposits: GasDeposit[];
@@ -58,28 +55,6 @@ export interface GasDepositChainSummary {
   // Raw amount in wei as a string, because JSON has no bigint
   amountWei: string;
   valueUsdCents: number;
-}
-
-interface ExplorerTransaction {
-  hash: Hash;
-  timeStamp: string;
-  from: Address;
-  // Empty for contract creations
-  to: string;
-  value: string;
-  isError: string;
-}
-
-interface ExplorerResponse<T> {
-  status: string;
-  message: string;
-  // An error message instead of the result when the request failed
-  result: T | string;
-}
-
-interface BlockRange {
-  startBlock: number;
-  endBlock: number;
 }
 
 export const getGasWalletReport = async (from: Date, to: Date): Promise<GasWalletReport> => {
@@ -225,94 +200,4 @@ const getWalletBalance = async (chainId: number, address: Address, blockNumber: 
   } catch {
     return getExplorerWalletBalance(chainId, address, blockNumber);
   }
-};
-
-const getExplorerWalletBalance = async (chainId: number, address: Address, blockNumber: number): Promise<bigint> => {
-  const response = await EXPLORER_CLIENTS[chainId]
-    .get(getChainApiUrl(chainId)!, {
-      searchParams: {
-        chainid: chainId,
-        module: 'account',
-        action: 'balancehistory',
-        address,
-        blockno: blockNumber,
-        apikey: getChainApiKey(chainId),
-      },
-    })
-    .json<ExplorerResponse<string>>();
-
-  if (response.status !== '1') {
-    throw new Error(`Failed to fetch the balance of ${address} on chain ${chainId}: ${response.result}`);
-  }
-
-  return BigInt(response.result);
-};
-
-const getBlockRange = async (chainId: number, from: Date, to: Date): Promise<BlockRange> => {
-  const [startBlock, endBlock] = await Promise.all([
-    getBlockNumberByTime(chainId, from, 'after'),
-    getBlockNumberByTime(chainId, to, 'before'),
-  ]);
-
-  return { startBlock, endBlock };
-};
-
-const getBlockNumberByTime = async (chainId: number, time: Date, closest: 'before' | 'after'): Promise<number> => {
-  const response = await EXPLORER_CLIENTS[chainId]
-    .get(getChainApiUrl(chainId)!, {
-      searchParams: {
-        chainid: chainId,
-        module: 'block',
-        action: 'getblocknobytime',
-        timestamp: Math.floor(time.getTime() / 1000),
-        closest,
-        apikey: getChainApiKey(chainId),
-      },
-    })
-    .json<ExplorerResponse<string | { blockNumber: string } | null>>();
-
-  // Blockscout wraps the block number in an object, where Etherscan returns it directly
-  const blockNumber = Number(typeof response.result === 'object' ? response.result?.blockNumber : response.result);
-  if (!Number.isInteger(blockNumber)) {
-    // Etherscan puts the error in the result, Blockscout in the message
-    const errorMessage = typeof response.result === 'string' ? response.result : response.message;
-    throw new Error(`Failed to look up block by time on chain ${chainId}: ${errorMessage}`);
-  }
-
-  return blockNumber;
-};
-
-const fetchExplorerTransactions = async (
-  chainId: number,
-  action: 'txlist' | 'txlistinternal',
-  address: Address,
-  blockRange: BlockRange,
-  page: number = 1,
-): Promise<ExplorerTransaction[]> => {
-  const response = await EXPLORER_CLIENTS[chainId]
-    .get(getChainApiUrl(chainId)!, {
-      searchParams: {
-        chainid: chainId,
-        module: 'account',
-        action,
-        address,
-        startblock: blockRange.startBlock,
-        endblock: blockRange.endBlock,
-        page,
-        offset: EXPLORER_PAGE_SIZE,
-        sort: 'asc',
-        apikey: getChainApiKey(chainId),
-      },
-    })
-    .json<ExplorerResponse<ExplorerTransaction[]>>();
-
-  // An empty result is still an array (with the message "No transactions found"), so a string is always an error
-  if (!Array.isArray(response.result)) {
-    throw new Error(`Failed to fetch ${action} for ${address} on chain ${chainId}: ${response.result}`);
-  }
-
-  if (response.result.length < EXPLORER_PAGE_SIZE) return response.result;
-
-  const nextPageTransactions = await fetchExplorerTransactions(chainId, action, address, blockRange, page + 1);
-  return [...response.result, ...nextPageTransactions];
 };

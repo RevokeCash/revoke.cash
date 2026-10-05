@@ -1,6 +1,7 @@
 'use client';
 
 import type { ExecutorGasBalance, ExecutorSpend } from '@revoke.cash/core/admin/executor';
+import { AUTO_REVOKE_MAX_ACTION_COST_USD } from '@revoke.cash/core/auto-revoke/config';
 import { getChainName } from '@revoke.cash/core/chains';
 import { deduplicateArray } from '@revoke.cash/core/utils';
 import { formatFiatAmount } from '@revoke.cash/core/utils/formatting';
@@ -80,7 +81,7 @@ const ExecutorBalancesSection = ({ showFundButtons = false }: Props) => {
       header={
         <CardTitle
           title="Executor gas balances"
-          subtitle="Hot wallet balances per chain with days of runway based on trailing 30-day spend"
+          subtitle={`Hot wallet balances per chain with days of runway based on trailing 30-day spend. Red when a wallet cannot pay one revoke at the $${AUTO_REVOKE_MAX_ACTION_COST_USD} per-action cap`}
         />
       }
       className="p-0"
@@ -112,13 +113,16 @@ const BalanceCell = ({ balance, spend, showFundButton }: BalanceCellProps) => {
 
   const spendPerDayUsd = spend ? spend.spendUsd / 30 : 0;
   const runwayDays = balance.balanceUsd !== null && spendPerDayUsd > 0 ? balance.balanceUsd / spendPerDayUsd : null;
+  const isBelowActionCap = balance.balanceUsd !== null && balance.balanceUsd < AUTO_REVOKE_MAX_ACTION_COST_USD;
 
   return (
     <div className="flex w-fit items-center gap-2">
       <WithHoverTooltip tooltip={balanceDisplay}>
         <span>
           {balance.balanceUsd !== null ? (
-            <StatusLabel status={runwayStatus(runwayDays)}>{formatFiatAmount(balance.balanceUsd)}</StatusLabel>
+            <StatusLabel status={isBelowActionCap ? 'danger' : runwayStatus(runwayDays)}>
+              {formatFiatAmount(balance.balanceUsd)}
+            </StatusLabel>
           ) : (
             <StatusLabel status="neutral">no price</StatusLabel>
           )}
@@ -127,7 +131,9 @@ const BalanceCell = ({ balance, spend, showFundButton }: BalanceCellProps) => {
       <WithHoverTooltip
         tooltip={`30-day spend: ${formatFiatAmount(spend?.spendUsd ?? 0)} (${spend?.actionCount ?? 0} actions)`}
       >
-        <span className="text-xs text-zinc-500">{formatRunwayDisplay(runwayDays)}</span>
+        <span className="text-xs text-zinc-500">
+          {isBelowActionCap ? `below $${AUTO_REVOKE_MAX_ACTION_COST_USD} action cap` : formatRunwayDisplay(runwayDays)}
+        </span>
       </WithHoverTooltip>
       {showFundButton && <FundExecutorWalletButton balance={balance} />}
     </div>

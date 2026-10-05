@@ -18,7 +18,7 @@ interface Props {
 }
 
 const VatSection = ({ range }: Props) => {
-  const { data, isLoading, isPlaceholderData } = useAdminVatReport(range.from, range.to);
+  const { data, isLoading, isPlaceholderData, error } = useAdminVatReport(range.from, range.to);
 
   const csvUrl = `/api/admin/revenue/vat?${new URLSearchParams({ from: range.from, to: range.to, format: 'csv' })}`;
 
@@ -38,6 +38,7 @@ const VatSection = ({ range }: Props) => {
         </CardHeader>
       }
       isLoading={isLoading}
+      error={error}
       className={twMerge(isLoading && 'h-80')}
     >
       {data && (

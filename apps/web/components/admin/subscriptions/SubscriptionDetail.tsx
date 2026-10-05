@@ -1,12 +1,9 @@
 'use client';
 
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import ActivityTable from 'components/admin/activity/ActivityTable';
 import PermissionsCard from 'components/admin/common/PermissionsCard';
 import RulesCard from 'components/admin/common/RulesCard';
 import Card from 'components/common/Card';
-import EmptyState from 'components/common/EmptyState';
-import ErrorDisplay from 'components/common/ErrorDisplay';
 import {
   useAdminSubscription,
   useAdminSubscriptionPermissions,
@@ -24,19 +21,15 @@ interface Props {
 
 const SubscriptionDetail = ({ subscriptionId }: Props) => {
   const { data: subscription, isLoading, error } = useAdminSubscription(subscriptionId);
-  const { data: permissions, isLoading: isLoadingPermissions } = useAdminSubscriptionPermissions(subscriptionId);
-  const { data: rules, isLoading: isLoadingRules } = useAdminSubscriptionRules(subscriptionId);
+  const {
+    data: permissions,
+    isLoading: isLoadingPermissions,
+    error: permissionsError,
+  } = useAdminSubscriptionPermissions(subscriptionId);
+  const { data: rules, isLoading: isLoadingRules, error: rulesError } = useAdminSubscriptionRules(subscriptionId);
 
   if (isLoading || error || !subscription) {
-    return (
-      <Card isLoading={isLoading}>
-        {error && (
-          <EmptyState icon={ExclamationTriangleIcon} iconClassName="text-red-500 dark:text-red-400">
-            <ErrorDisplay error={error} withIcon={false} />
-          </EmptyState>
-        )}
-      </Card>
-    );
+    return <Card isLoading={isLoading} error={error} />;
   }
 
   return (
@@ -46,8 +39,8 @@ const SubscriptionDetail = ({ subscriptionId }: Props) => {
       <CoveredAddressesCard addresses={subscription.addresses} />
       <SubscriptionPaymentsCard payments={subscription.payments} />
       <SubscriptionBudgetCard subscriptionId={subscriptionId} />
-      <PermissionsCard permissions={permissions} isLoading={isLoadingPermissions} />
-      <RulesCard rules={rules} isLoading={isLoadingRules} />
+      <PermissionsCard permissions={permissions} isLoading={isLoadingPermissions} error={permissionsError} />
+      <RulesCard rules={rules} isLoading={isLoadingRules} error={rulesError} />
       <ActivityTable
         scope={{ subscriptionId }}
         title="Activity"

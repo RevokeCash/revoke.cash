@@ -23,12 +23,18 @@ const GasOverviewSection = ({ range, onRangeChange }: Props) => {
     data: periodSpend,
     isLoading: isPeriodSpendLoading,
     isPlaceholderData: isPeriodSpendPlaceholderData,
+    error: periodSpendError,
   } = useAdminGasSpend(from, to);
-  const { data: monthSpend, isLoading: isMonthSpendLoading } = useAdminGasSpend(getPeriod('month', today).from, today);
+  const {
+    data: monthSpend,
+    isLoading: isMonthSpendLoading,
+    error: monthSpendError,
+  } = useAdminGasSpend(getPeriod('month', today).from, today);
   const {
     data: budgets,
     isLoading: isBudgetsLoading,
     isPlaceholderData: isBudgetsPlaceholderData,
+    error: budgetsError,
   } = useAdminGasBudgets(from, to);
   const isLoading = isPeriodSpendLoading || isMonthSpendLoading || isBudgetsLoading;
   const isPlaceholderData = isPeriodSpendPlaceholderData || isBudgetsPlaceholderData;
@@ -54,6 +60,7 @@ const GasOverviewSection = ({ range, onRangeChange }: Props) => {
         </CardHeader>
       }
       isLoading={isLoading}
+      error={periodSpendError ?? monthSpendError ?? budgetsError}
       className={twMerge(isLoading && 'h-40')}
     >
       {periodSpend && monthSpend && budgets && (

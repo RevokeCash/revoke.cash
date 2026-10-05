@@ -44,7 +44,7 @@ const AddressSubscriptionsCard = ({ address, subscriptions, isLoading }: Props) 
     >
       {subscriptions && subscriptions.length === 0 && (
         <EmptyState icon={ExclamationTriangleIcon} iconClassName="text-red-500 dark:text-red-400">
-          No active subscription includes this address, so auto-revoke will not run for it.
+          No active subscription includes this address, so indexing and auto-revoke will not run for it.
         </EmptyState>
       )}
       {subscriptions && subscriptions.length > 0 && (

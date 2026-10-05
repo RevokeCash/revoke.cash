@@ -1,5 +1,6 @@
 'use client';
 
+import { getSubscriptionRoute } from '@revoke.cash/core/admin/treasury-routes';
 import { SUBSCRIPTIONS_ADDRESS } from '@revoke.cash/core/constants';
 import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import Card, { CardTitle } from 'components/common/Card';
@@ -10,8 +11,7 @@ import TreasuryBalancesTable, { type TreasuryBalanceRow } from './TreasuryBalanc
 const SubscriptionBalancesSection = () => {
   const { data, isLoading, error } = useAdminTreasury();
 
-  // Chains and tokens that hold nothing are left out entirely rather than counted among the balances the
-  // table hides for being too small, which it only reports for balances that actually exist
+  // Chains and tokens that hold nothing are left out, so only balances that can be moved are listed
   const rows = useMemo(() => {
     const tokenBalances = data?.tokenBalances ?? [];
 
@@ -26,6 +26,8 @@ const SubscriptionBalancesSection = () => {
           balance: tokenBalance.balance,
           priceUsd: tokenBalance.priceUsd,
           balanceUsd: tokenBalance.balanceUsd,
+          route: getSubscriptionRoute(tokenBalance.chainId, tokenBalance.tokenSymbol),
+          missingGasToken: tokenBalance.hasEnoughGas === false ? tokenBalance.nativeToken : undefined,
         }),
       );
   }, [data]);

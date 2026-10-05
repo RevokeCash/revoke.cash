@@ -1,153 +1,121 @@
 'use client';
 
-import type { IndexerProblemKind, IndexerProblemRow } from '@revoke.cash/core/admin/health';
+import type { IndexerProblemGroup, IndexingStage } from '@revoke.cash/core/admin/health';
 import { createColumnHelper } from '@tanstack/react-table';
 import AdminAddressLink from 'components/admin/common/AdminAddressLink';
-import TimeAgoCell from 'components/admin/common/TimeAgoCell';
 import Button from 'components/common/Button';
 import ChainDisplay from 'components/common/ChainDisplay';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAdminIndexerProblems } from 'lib/hooks/admin/useAdminHealthDetails';
-import { useResetAddressIndexing, useResetChainIndexing } from 'lib/hooks/admin/useAdminLookup';
+import { useResetChainIndexing } from 'lib/hooks/admin/useAdminLookup';
 import type { AppTableFeatures } from 'lib/utils/table';
-import { useMemo } from 'react';
-import { twMerge } from 'tailwind-merge';
-import type { Address } from 'viem';
 import HealthDetailPanel from './HealthDetailPanel';
 
 interface Props {
-  kind: IndexerProblemKind;
   isOpen: boolean;
 }
 
-const columnHelper = createColumnHelper<AppTableFeatures, IndexerProblemRow>();
+const STAGE_LABELS: Record<IndexingStage, string> = {
+  events: 'Events scan',
+  allowances: 'Allowance recompute',
+};
 
-// The Disabled column only applies to indexer rows that were disabled after repeated failures
-const buildIndexerProblemColumns = (kind: IndexerProblemKind) =>
-  columnHelper.columns([
-    columnHelper.accessor('address', {
-      id: 'address',
-      header: 'Address',
-      cell: (info) => (
-        <div className="py-1.5 pr-4 text-sm">
-          <AdminAddressLink address={info.getValue()} />
-        </div>
-      ),
-    }),
-    columnHelper.accessor('chainId', {
-      id: 'chain',
-      header: 'Chain',
-      cell: (info) => (
-        <div className="py-1.5 pr-4 text-sm">
-          <ChainDisplay chainId={info.getValue()} />
-        </div>
-      ),
-    }),
-    columnHelper.accessor('consecutiveFailures', {
-      id: 'failures',
-      header: 'Failures',
-      cell: (info) => (
-        <div className="py-1.5 pr-4 text-sm">
-          <span className={twMerge(info.getValue() > 0 && 'text-red-600 dark:text-red-400 font-medium')}>
-            {info.getValue()}
-          </span>
-        </div>
-      ),
-    }),
-    ...(kind === 'disabled'
-      ? [
-          columnHelper.accessor('disabledAt', {
-            id: 'disabled',
-            header: 'Disabled',
-            cell: (info) => (
-              <div className="py-1.5 pr-4 text-sm">
-                <TimeAgoCell timestamp={info.getValue()} />
-              </div>
-            ),
-          }),
-        ]
-      : []),
-    columnHelper.accessor('lastError', {
-      id: 'lastError',
-      header: 'Last error',
-      cell: (info) => {
-        const lastError = info.getValue();
-        return (
-          <div className="py-1.5 pr-4 text-sm">
-            {lastError ? (
-              <WithHoverTooltip tooltip={lastError}>
-                <span className="block max-w-60 truncate text-red-600 dark:text-red-400">{lastError}</span>
-              </WithHoverTooltip>
-            ) : (
-              <span className="text-zinc-500">-</span>
-            )}
-          </div>
-        );
-      },
-    }),
-    columnHelper.accessor('nextRunAt', {
-      id: 'nextRun',
-      header: 'Next run',
-      cell: (info) => (
-        <div className="py-1.5 pr-4 text-sm">
-          <TimeAgoCell timestamp={info.getValue()} />
-        </div>
-      ),
-    }),
-    columnHelper.display({
-      id: 'actions',
-      header: 'Actions',
-      cell: (info) => (
-        <div className="py-1.5 text-sm">
-          <ResetIndexingCell address={info.row.original.address} chainId={info.row.original.chainId} />
-        </div>
-      ),
-    }),
-  ]);
+// A chain-wide outage can hit dozens of wallets, and the chain reset covers all of them
+const MAX_LISTED_ADDRESSES = 5;
 
-const IndexerProblemsPanel = ({ kind, isOpen }: Props) => {
-  const query = useAdminIndexerProblems(kind, isOpen);
+const columnHelper = createColumnHelper<AppTableFeatures, IndexerProblemGroup>();
 
-  const columns = useMemo(() => buildIndexerProblemColumns(kind), [kind]);
+const columns = columnHelper.columns([
+  columnHelper.accessor('chainId', {
+    id: 'chain',
+    header: 'Chain',
+    cell: (info) => (
+      <div className="py-1.5 pr-4 text-sm">
+        <ChainDisplay chainId={info.getValue()} />
+      </div>
+    ),
+  }),
+  columnHelper.accessor('stage', {
+    id: 'stage',
+    header: 'Stage',
+    cell: (info) => <div className="py-1.5 pr-4 text-sm whitespace-nowrap">{STAGE_LABELS[info.getValue()]}</div>,
+  }),
+  columnHelper.accessor('lastError', {
+    id: 'lastError',
+    header: 'Last error',
+    cell: (info) => {
+      const lastError = info.getValue();
+      return (
+        <div className="py-1.5 pr-4 text-sm">
+          {lastError ? (
+            <WithHoverTooltip tooltip={lastError}>
+              <span className="block max-w-60 truncate text-red-600 dark:text-red-400">{lastError}</span>
+            </WithHoverTooltip>
+          ) : (
+            <span className="text-zinc-500">-</span>
+          )}
+        </div>
+      );
+    },
+  }),
+  columnHelper.accessor('addresses', {
+    id: 'wallets',
+    header: 'Wallets',
+    cell: (info) => {
+      const addresses = info.getValue();
+      const unlistedAddressCount = addresses.length - MAX_LISTED_ADDRESSES;
+      return (
+        <div className="flex flex-col gap-1 py-1.5 pr-4 text-sm">
+          <span className="font-medium">{addresses.length}</span>
+          {addresses.slice(0, MAX_LISTED_ADDRESSES).map((address) => (
+            <AdminAddressLink key={address} address={address} />
+          ))}
+          {unlistedAddressCount > 0 && <span className="text-zinc-500">+{unlistedAddressCount} more</span>}
+        </div>
+      );
+    },
+  }),
+  columnHelper.display({
+    id: 'actions',
+    header: 'Actions',
+    cell: (info) => (
+      <div className="py-1.5 text-sm">
+        <ResetChainIndexingCell chainId={info.row.original.chainId} />
+      </div>
+    ),
+  }),
+]);
+
+const IndexerProblemsPanel = ({ isOpen }: Props) => {
+  const query = useAdminIndexerProblems(isOpen);
 
   return (
     <HealthDetailPanel
       isOpen={isOpen}
       query={query}
       columns={columns}
-      getRowId={(row) => `${row.address}-${row.chainId}`}
-      emptyChildren={`No ${kind} indexer rows`}
+      getRowId={(group) => `${group.stage}-${group.chainId}-${group.lastError ?? ''}`}
+      emptyChildren="No failing indexing for subscribed addresses"
     />
   );
 };
 
-const ResetIndexingCell = ({ address, chainId }: { address: Address; chainId: number }) => {
-  const resetAddressIndexing = useResetAddressIndexing(address);
+// The reset only clears events rows, but the recompute is queued after every successful scan, so it also fixes the
+// allowance stage. Per-address resets live on the Lookup page.
+const ResetChainIndexingCell = ({ chainId }: { chainId: number }) => {
   const resetChainIndexing = useResetChainIndexing(chainId);
 
   return (
-    <div className="flex items-center gap-2">
-      <WithHoverTooltip tooltip="Reset indexing on all chains for this address">
-        <Button
-          style="secondary"
-          size="sm"
-          onClick={() => resetAddressIndexing.mutate()}
-          loading={resetAddressIndexing.isPending}
-        >
-          Reset address
-        </Button>
-      </WithHoverTooltip>
-      <WithHoverTooltip tooltip="Reset indexing for all addresses on this chain">
-        <Button
-          style="secondary"
-          size="sm"
-          onClick={() => resetChainIndexing.mutate()}
-          loading={resetChainIndexing.isPending}
-        >
-          Reset chain
-        </Button>
-      </WithHoverTooltip>
-    </div>
+    <WithHoverTooltip tooltip="Rescan all addresses on this chain now; a successful rescan also recomputes their allowances">
+      <Button
+        style="secondary"
+        size="sm"
+        onClick={() => resetChainIndexing.mutate()}
+        loading={resetChainIndexing.isPending}
+      >
+        Reset chain
+      </Button>
+    </WithHoverTooltip>
   );
 };
 

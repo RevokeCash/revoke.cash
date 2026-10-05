@@ -29,7 +29,7 @@ interface Props {
 }
 
 const BatchRevokeSplitSection = ({ range }: Props) => {
-  const { data, isLoading, isPlaceholderData } = useAdminRevenueDataSince(range.from);
+  const { data, isLoading, isPlaceholderData, error } = useAdminRevenueDataSince(range.from);
 
   const splitPoints = useMemo(() => {
     if (!data) return [];
@@ -115,7 +115,7 @@ const BatchRevokeSplitSection = ({ range }: Props) => {
       header={
         <CardTitle
           title="Batch revoke split"
-          subtitle="Batch revokes per UTC month in the selected period: paid fees vs waived (Revoke Premium) vs sponsored chains; counts and fee totals are client-reported"
+          subtitle="Batch revokes per UTC month in the selected period: paid fees vs waived (Revoke Premium) vs sponsored chains; paid fees count only once verified on chain, waived and sponsored counts are client-reported"
         />
       }
       className="p-0"
@@ -123,6 +123,7 @@ const BatchRevokeSplitSection = ({ range }: Props) => {
       <Table
         table={table}
         loading={isLoading}
+        error={error}
         emptyChildren="No batch revokes recorded in the selected period"
         className={twMerge('border-none', isPlaceholderData && 'opacity-60')}
       />

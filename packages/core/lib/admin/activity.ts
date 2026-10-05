@@ -6,6 +6,7 @@ import {
   loadMetadataByChain,
   mapActivityItem,
 } from '@revoke.cash/core/auto-revoke/activity';
+import type { AutoRevokeRules, MatchedTrigger, RulesSource } from '@revoke.cash/core/auto-revoke/evaluation/rules';
 import type { ExecutionLane } from '@revoke.cash/core/auto-revoke/execution/signer';
 import { getDb } from '@revoke.cash/core/db/client';
 import { autoRevokeActions, autoRevokeObservations } from '@revoke.cash/core/db/schema/auto-revoke';
@@ -25,6 +26,14 @@ export interface AdminActivityItem extends AutoRevokeActivityItem {
   costDeferredAt: string | null;
   estimatedCostUsd: number | null;
   txHashes: Hash[];
+  matchedTriggers: MatchedTrigger[];
+  rules: AutoRevokeRules;
+  rulesSource: RulesSource;
+  valueAtRiskUsd: number | null;
+  // Null when the balance is unknown. The raw balance is not sent because the item has no token decimals.
+  holdsToken: boolean | null;
+  spenderRiskScore: number;
+  approvalLastUpdatedAt: string | null;
 }
 
 interface AdminActivityFilters {
@@ -73,6 +82,7 @@ export const getAdminActivity = async (filters: AdminActivityFilters): Promise<A
 
   const items = actions.map((action): AdminActivityItem => {
     const item = mapActivityItem(action, metadataByChain.get(action.observation.chainId));
+    const { observation } = action;
 
     return {
       ...item,
@@ -86,6 +96,16 @@ export const getAdminActivity = async (filters: AdminActivityFilters): Promise<A
       costDeferredAt: action.costDeferredAt?.toISOString() ?? null,
       estimatedCostUsd: action.transaction?.estimatedCostUsd ?? null,
       txHashes: action.transaction?.txHashes ?? [],
+      matchedTriggers: observation.triggerDetails.matchedTriggers,
+      rules: observation.ruleSnapshot.rules,
+      rulesSource: observation.ruleSnapshot.rulesSource,
+      valueAtRiskUsd: observation.valueAtRiskUsd,
+      holdsToken: observation.tokenBalance === null ? null : observation.tokenBalance > 0n,
+      spenderRiskScore: observation.spenderRiskScore,
+      approvalLastUpdatedAt:
+        observation.lastUpdatedTimestamp === null
+          ? null
+          : new Date(observation.lastUpdatedTimestamp * 1000).toISOString(),
     };
   });
 

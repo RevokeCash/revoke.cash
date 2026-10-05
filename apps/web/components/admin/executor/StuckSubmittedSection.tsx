@@ -52,9 +52,14 @@ const columns = columnHelper.columns([
       </div>
     ),
   }),
+  columnHelper.accessor('bumpCount', {
+    id: 'bumps',
+    header: 'Bumps',
+    cell: (info) => <div className="py-1.5 pr-4">{info.getValue()}</div>,
+  }),
   columnHelper.accessor('submittedAt', {
     id: 'submitted',
-    header: 'Submitted',
+    header: 'Last submitted',
     cell: (info) => (
       <div className="py-1.5 pr-4">
         <TimeAgoCell timestamp={info.getValue()} />
@@ -64,7 +69,7 @@ const columns = columnHelper.columns([
 ]);
 
 const StuckSubmittedSection = () => {
-  const { data, isLoading } = useAdminExecutorProblems();
+  const { data, isLoading, error } = useAdminExecutorProblems();
 
   const table = useTable({
     data: data?.stuckSubmitted ?? [],
@@ -78,12 +83,18 @@ const StuckSubmittedSection = () => {
       header={
         <CardTitle
           title="Stuck submitted actions"
-          subtitle="Submitted over 30 minutes ago without settling. These rows are executor-owned and read-only; retrying them here would corrupt the nonce pipeline."
+          subtitle="Submitted over 30 minutes ago, or fee-bumped 2+ times, without settling. These rows are executor-owned and read-only; retrying them here would corrupt the nonce pipeline."
         />
       }
       className="p-0"
     >
-      <Table table={table} loading={isLoading} emptyChildren="No stuck submitted actions" className="border-none" />
+      <Table
+        table={table}
+        loading={isLoading}
+        error={error}
+        emptyChildren="No stuck submitted actions"
+        className="border-none"
+      />
     </Card>
   );
 };

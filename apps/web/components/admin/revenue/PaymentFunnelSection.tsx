@@ -65,7 +65,7 @@ interface Props {
 }
 
 const PaymentFunnelSection = ({ range }: Props) => {
-  const { data, isLoading, isPlaceholderData } = useAdminRevenueDataSince(range.from);
+  const { data, isLoading, isPlaceholderData, error } = useAdminRevenueDataSince(range.from);
 
   const newestFirst = useMemo(() => {
     if (!data) return [];
@@ -90,7 +90,12 @@ const PaymentFunnelSection = ({ range }: Props) => {
       }
       className="p-0"
     >
-      <Table table={table} loading={isLoading} className={twMerge('border-none', isPlaceholderData && 'opacity-60')} />
+      <Table
+        table={table}
+        loading={isLoading}
+        error={error}
+        className={twMerge('border-none', isPlaceholderData && 'opacity-60')}
+      />
     </Card>
   );
 };

@@ -1,6 +1,6 @@
 import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
 import { getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
-import { autoRevokeActions } from '@revoke.cash/core/db/schema/auto-revoke';
+import { autoRevokeActions, autoRevokeObservations } from '@revoke.cash/core/db/schema/auto-revoke';
 import { indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
 import { premiumPayments, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
 import { acquireAdvisoryLock } from '@revoke.cash/core/db/utils';
@@ -11,24 +11,28 @@ import {
   rebuildSubscriptionFromPayments,
 } from '@revoke.cash/core/premium/subscriptions';
 import { reconcilePaymentByOwner } from '@revoke.cash/core/premium/verify-payment';
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray, isNull, notIlike, or } from 'drizzle-orm';
 import { type Address, zeroAddress } from 'viem';
 
 // Makes a parked action eligible on the executor's next poll. Submitted rows are executor-owned
 // (their nonce pipeline must not be disturbed) and settled rows are final, so neither is touched.
-export const retryActionNow = async (actionId: string): Promise<boolean> => {
-  const updatedRows = await getTransactionalDb()
+// The executor never polls blocked_permission or blocked_rules rows (they wake through a permission
+// grant or a rules change), so next_retry_at would do nothing for them.
+export const retryActionNow = async (actionId: string): Promise<{ address: Address; chainId: number } | null> => {
+  const [retriedAction] = await getTransactionalDb()
     .update(autoRevokeActions)
     .set({ nextRetryAt: new Date() })
+    .from(autoRevokeObservations)
     .where(
       and(
         eq(autoRevokeActions.id, actionId),
-        inArray(autoRevokeActions.status, ['queued', 'blocked_budget', 'blocked_permission', 'blocked_rules']),
+        eq(autoRevokeObservations.id, autoRevokeActions.observationId),
+        inArray(autoRevokeActions.status, ['queued', 'blocked_budget']),
       ),
     )
-    .returning({ id: autoRevokeActions.id });
+    .returning({ address: autoRevokeObservations.address, chainId: autoRevokeActions.chainId });
 
-  return updatedRows.length > 0;
+  return retriedAction ?? null;
 };
 
 // Re-enables indexing for all of an address's chain rows. The indexer manager's scheduler polls
@@ -45,12 +49,25 @@ export const resetAddressIndexing = async (address: Address): Promise<number> =>
 };
 
 // The chain-scoped counterpart of resetAddressIndexing: re-enables indexing for all address rows
-// on a single chain, for when a chain-wide problem (e.g. a broken RPC) has been resolved.
+// on a single chain, for when a chain-wide problem (e.g. a broken RPC) has been resolved. Addresses
+// that were paused for having too much activity or for being a token contract stay paused.
 export const resetChainIndexing = async (chainId: number): Promise<number> => {
   const updatedRows = await getTransactionalDb()
     .update(indexerEventsState)
     .set({ disabledAt: null, consecutiveFailures: 0, lastError: null, nextRunAt: new Date() })
-    .where(eq(indexerEventsState.chainId, chainId))
+    .where(
+      and(
+        eq(indexerEventsState.chainId, chainId),
+        or(
+          isNull(indexerEventsState.disabledAt),
+          isNull(indexerEventsState.lastError),
+          and(
+            notIlike(indexerEventsState.lastError, 'address has too much activity%'),
+            notIlike(indexerEventsState.lastError, 'address is a token contract%'),
+          ),
+        ),
+      ),
+    )
     .returning({ address: indexerEventsState.address });
 
   return updatedRows.length;

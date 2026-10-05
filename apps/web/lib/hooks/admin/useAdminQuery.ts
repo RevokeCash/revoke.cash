@@ -17,6 +17,7 @@ export const useAdminQuery = <T>(queryKey: QueryKey, path: string, options?: Adm
     queryKey,
     queryFn: () => ky.get(path, { searchParams: options?.searchParams }).json<T>(),
     staleTime: 1 * MINUTE,
+    refetchOnWindowFocus: true,
     enabled: options?.enabled,
     placeholderData: options?.placeholderData,
   });

@@ -3,6 +3,7 @@
 import { AUTO_REVOKE_SUPPORTED_CHAINS } from '@revoke.cash/core/auto-revoke/config';
 import type { AutoRevokePermission } from '@revoke.cash/core/auto-revoke/permissions';
 import { getChainName } from '@revoke.cash/core/chains';
+import type { Nullable } from '@revoke.cash/core/types';
 import { createColumnHelper } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import Card, { CardTitle } from 'components/common/Card';
@@ -11,7 +12,7 @@ import StatusLabel from 'components/common/StatusLabel';
 import TimeAgo from 'components/common/TimeAgo';
 import Table from 'components/common/table/Table';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { useOnChainPermissionCheck } from 'lib/hooks/admin/useAdminLookup';
+import { type OnChainPermissionCheck, useOnChainPermissionCheck } from 'lib/hooks/admin/useAdminLookup';
 import { useTable } from 'lib/hooks/useTable';
 import type { AppTableFeatures } from 'lib/utils/table';
 import { useMemo } from 'react';
@@ -24,6 +25,7 @@ interface Props {
   address?: Address;
   permissions?: AutoRevokePermission[];
   isLoading?: boolean;
+  error?: Nullable<Error>;
 }
 
 interface PermissionRow {
@@ -62,10 +64,11 @@ const columns = columnHelper.columns([
       const label = !permission ? 'Missing' : permission.isActive ? 'Active' : 'Expired';
 
       return (
-        <div className="py-2 pr-4">
+        <div className="flex items-center gap-2 py-2 pr-4">
           <StatusLabel status={permission?.isActive ? 'success' : 'neutral'} className="py-0.75">
             {label}
           </StatusLabel>
+          {permission?.isActive && !permission.accountUpgraded && <NotUpgradedLabel />}
         </div>
       );
     },
@@ -104,7 +107,7 @@ const columns = columnHelper.columns([
   }),
 ]);
 
-const PermissionsCard = ({ address, permissions, isLoading }: Props) => {
+const PermissionsCard = ({ address, permissions, isLoading, error }: Props) => {
   const isAddressScope = address !== undefined;
 
   const subtitle = isAddressScope
@@ -142,6 +145,7 @@ const PermissionsCard = ({ address, permissions, isLoading }: Props) => {
       <Table
         table={table}
         loading={Boolean(isLoading)}
+        error={error}
         emptyChildren="No permissions granted"
         className="border-none"
       />
@@ -171,13 +175,15 @@ const OnChainCell = ({ address, chainId, permission }: OnChainCellProps) => {
       <Button style="secondary" size="sm" onClick={() => refetch()} loading={isFetching}>
         Check on-chain
       </Button>
-      {data && !isFetching && <OnChainResultLabel enabledOnChain={data.enabledOnChain} />}
+      {data && !isFetching && (
+        <OnChainResultLabel enabledOnChain={data.enabledOnChain} accountUpgraded={data.accountUpgraded} />
+      )}
       {error && !isFetching && <span className="text-xs text-red-600 dark:text-red-400">Check failed</span>}
     </div>
   );
 };
 
-const OnChainResultLabel = ({ enabledOnChain }: { enabledOnChain: boolean | null }) => {
+const OnChainResultLabel = ({ enabledOnChain, accountUpgraded }: OnChainPermissionCheck) => {
   if (enabledOnChain === null) {
     return (
       <StatusLabel status="neutral" className="py-0.75">
@@ -187,10 +193,21 @@ const OnChainResultLabel = ({ enabledOnChain }: { enabledOnChain: boolean | null
   }
 
   return (
-    <StatusLabel status={enabledOnChain ? 'success' : 'danger'} className="py-0.75">
-      {enabledOnChain ? 'enabled' : 'disabled'}
-    </StatusLabel>
+    <>
+      <StatusLabel status={enabledOnChain ? 'success' : 'danger'} className="py-0.75">
+        {enabledOnChain ? 'enabled' : 'disabled'}
+      </StatusLabel>
+      {accountUpgraded === false && <NotUpgradedLabel />}
+    </>
   );
 };
+
+const NotUpgradedLabel = () => (
+  <WithHoverTooltip tooltip="Wallet has no MetaMask delegator code on this chain. Actions wait as blocked_permission/account_not_upgraded until it upgrades.">
+    <StatusLabel status="warning" className="py-0.75">
+      not upgraded
+    </StatusLabel>
+  </WithHoverTooltip>
+);
 
 export default PermissionsCard;
