@@ -161,7 +161,6 @@
       "low": "低风险",
       "medium": "中风险"
     },
-    "phishing_risk": "遭遇网络钓鱼时会增加风险面",
     "proxy": "可升级的代理合约",
     "source": "由 <source-link>{source}</source-link> 报告",
     "suspicious_address": "可疑地址",

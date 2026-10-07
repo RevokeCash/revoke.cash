@@ -161,7 +161,6 @@
       "low": "低リスク",
       "medium": "中リスク"
     },
-    "phishing_risk": "フィッシング被害時のリスク領域が増加",
     "proxy": "アップグレード可能なプロキシコントラクト",
     "source": "<source-link>{source}</source-link>による報告",
     "suspicious_address": "不審なアドレス",

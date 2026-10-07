@@ -14,7 +14,6 @@ export const RiskFactorScore: Record<string, number> = {
   eoa: 100,
   excessive_expiration: 60,
   exploit: 100,
-  phishing_risk: 40,
   proxy: 20,
   suspicious_address: 60,
   unsafe: 40,

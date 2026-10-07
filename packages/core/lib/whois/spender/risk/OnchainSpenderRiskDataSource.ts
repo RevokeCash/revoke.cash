@@ -4,14 +4,6 @@ import type { SpenderRiskData } from '@revoke.cash/core/whois';
 import type { Address, Hex } from 'viem';
 import type { SpenderDataSource } from '../SpenderDataSource';
 
-const Addresses = {
-  OPENSEA_SEAPORT: '0x1E0049783F008A0085193E00003D00cd54003c71',
-  BLUR_MARKETPLACE: '0x00000000000111AbE46ff893f3B2fdF1F759a8A8',
-  BLUR_MARKETPLACE_V2: '0x2f18F339620a63e43f0839Eeb18D7de1e1Be4DfB',
-  X2Y2_MARKETPLACE: '0xF849de01B080aDC3A814FaBE1E2087475cF2E354',
-  PERMIT2: '0x000000000022D473030F116dDEE9F6B43aC78BA3',
-};
-
 export class OnchainSpenderRiskDataSource implements SpenderDataSource {
   async getSpenderData(address: Address, chainId: number): Promise<SpenderRiskData | null> {
     const publicClient = createViemPublicClientForChain(chainId);
@@ -29,7 +21,6 @@ export class OnchainSpenderRiskDataSource implements SpenderDataSource {
       if (this.isUninitialized(bytecode, nonce)) riskFactors.push({ type: 'uninitialized', source: 'onchain' });
       // if (this.isSmallBytecode(bytecode)) riskFactors.push({ type: 'unsafe', source: 'revoke' });
       if (this.isOpenSeaProxy(bytecode)) riskFactors.push({ type: 'deprecated', source: 'onchain' });
-      if (this.hasPhishingRisk(address, bytecode)) riskFactors.push({ type: 'phishing_risk', source: 'onchain' });
       if (this.isSuspiciousAddress(address)) riskFactors.push({ type: 'suspicious_address', source: 'onchain' });
       if (this.isCrimeEnjoyor(bytecode)) riskFactors.push({ type: 'blocklist', source: 'onchain' });
 
@@ -64,19 +55,6 @@ export class OnchainSpenderRiskDataSource implements SpenderDataSource {
 
   isEip7702Account(bytecode?: Hex): boolean {
     return !isNullish(bytecode) && bytecode.startsWith('0xef0100') && bytecode.length === 48;
-  }
-
-  hasPhishingRisk(address: Address, bytecode?: Hex): boolean {
-    // TODO: Add more addresses also for other chains
-    const PHISHING_RISK_ADDRESSES = [
-      Addresses.OPENSEA_SEAPORT,
-      Addresses.BLUR_MARKETPLACE,
-      Addresses.BLUR_MARKETPLACE_V2,
-      Addresses.X2Y2_MARKETPLACE,
-      Addresses.PERMIT2,
-    ];
-
-    return PHISHING_RISK_ADDRESSES.includes(address) || this.isOpenSeaProxy(bytecode);
   }
 
   isOpenSeaProxy(bytecode?: Hex): boolean {

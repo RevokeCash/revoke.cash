@@ -161,7 +161,6 @@
       "low": "bajo riesgo",
       "medium": "riesgo medio"
     },
-    "phishing_risk": "Aumenta la superficie de riesgo en caso de phishing",
     "proxy": "Contrato de proxy actualizable",
     "source": "reportado por <source-link>{source}</source-link>",
     "suspicious_address": "Dirección de aspecto sospechoso",
