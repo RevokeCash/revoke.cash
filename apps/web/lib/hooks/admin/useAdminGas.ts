@@ -76,10 +76,7 @@ export const useFundExecutorWallet = () => {
       setStep('confirming');
       const publicClient = getPublicClient(wagmiConfig, { chainId });
       if (!publicClient) throw new Error(`No public client available for chain ${chainId}`);
-      const receipt = await waitForTransactionConfirmation(transactionHash, publicClient);
-      if (receipt?.status === 'reverted') {
-        throw new Error(`Funding transaction reverted on-chain: ${transactionHash}`);
-      }
+      await waitForTransactionConfirmation(transactionHash, publicClient);
     },
     onSuccess: () => toast.success('Executor wallet funded'),
     onError: (error) => toast.error(parseErrorMessage(error) || 'Failed to fund the executor wallet'),

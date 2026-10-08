@@ -86,7 +86,8 @@
       "too_much_activity": "このアドレスは{chainName}でのアクティビティが多すぎるため、無料プランでは表示できません。承認を表示するには、<premium-link>プレミアムにアップグレード</premium-link>してください。",
       "too_much_activity_premium": "このアドレスは{chainName}でのアクティビティが多すぎるため、承認を読み込むことができません。"
     },
-    "unknown_wallet_error": "ウォレットから不明なエラーが返されました"
+    "unknown_wallet_error": "ウォレットから不明なエラーが返されました",
+    "wallet_locked": "ウォレットがロックされています。ロックを解除してから、もう一度お試しください。"
   },
   "footer": {
     "about": "私たちについて",

@@ -86,7 +86,8 @@
       "too_much_activity": "This address has too much activity on {chainName} for the free tier, please <premium-link>upgrade to Premium</premium-link> to view its approvals.",
       "too_much_activity_premium": "This address has too much activity on {chainName}, so its approvals cannot be loaded."
     },
-    "unknown_wallet_error": "Your wallet returned an unknown error"
+    "unknown_wallet_error": "Your wallet returned an unknown error",
+    "wallet_locked": "Your wallet is locked. Unlock it and try again."
   },
   "footer": {
     "about": "About Us",

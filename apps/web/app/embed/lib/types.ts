@@ -9,7 +9,7 @@ export interface EmbedConfig {
   type: EmbedType;
   connectors: CreateConnectorFn[];
   detectAutoConnect: () => Promise<string | null>;
-  onConnected?: () => Promise<void>;
+  onAutoConnectFinished?: () => Promise<void>;
   renderShareAction?: (props: { allowances?: any[] }) => ReactNode;
   routePrefix: string;
   showChainSelect?: boolean;

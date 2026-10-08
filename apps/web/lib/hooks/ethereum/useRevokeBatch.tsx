@@ -6,7 +6,6 @@ import {
   isAccountUpgradeRejectionError,
   isSwitchChainNotSupportedError,
   isUserRejectionError,
-  parseErrorMessage,
 } from '@revoke.cash/core/utils/errors';
 import { getFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
@@ -19,6 +18,7 @@ import { useNativeTokenPrice } from './useNativeTokenPrice';
 import { useRevokeBatchEip5792 } from './useRevokeBatchEip5792';
 import { useRevokeBatchQueuedTransactions } from './useRevokeBatchQueuedTransactions';
 import { useWalletCapabilities } from './useWalletCapabilities';
+import { useWalletErrorMessage } from './useWalletErrorMessage';
 
 export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   // Get chainId from the first allowance (all selected allowances should be from the same chain)
@@ -27,6 +27,7 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
 
   const { results, getTransaction, updateTransaction } = useTransactionStore();
   const walletCapabilities = useWalletCapabilities(chainId);
+  const getWalletErrorMessage = useWalletErrorMessage();
   const batchAtomic = useRevokeBatchEip5792(allowances, onUpdate);
   const batchQueued = useRevokeBatchQueuedTransactions(allowances, onUpdate);
   const { nativeTokenPrice } = useNativeTokenPrice(chainId);
@@ -69,7 +70,7 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
     } catch (error) {
       // Rejecting the chain switch prompt is intentional, and switch failures already get their own toast
       if (!isUserRejectionError(error) && !isSwitchChainNotSupportedError(error)) {
-        toast.error(parseErrorMessage(error));
+        toast.error(getWalletErrorMessage(error));
       }
       throw error;
     }

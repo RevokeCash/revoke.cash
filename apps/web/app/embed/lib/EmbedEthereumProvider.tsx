@@ -37,7 +37,7 @@ export const EmbedEthereumProvider = ({ children }: Props) => {
 };
 
 const AutoConnect = memo(({ children }: Props) => {
-  const { detectAutoConnect, onConnected } = useEmbedConfig();
+  const { detectAutoConnect, onAutoConnectFinished } = useEmbedConfig();
   const { mutateAsync: connectAsync } = useConnect();
   const connectors = useConnectors();
   const { connector } = useConnection();
@@ -66,11 +66,12 @@ const AutoConnect = memo(({ children }: Props) => {
         }
 
         await connectAsync({ connector: targetConnector });
-        await onConnected?.();
         setStatus('connected');
       } catch (error) {
         console.error('Auto-connect failed:', error);
         setStatus('failed');
+      } finally {
+        await onAutoConnectFinished?.();
       }
     };
 

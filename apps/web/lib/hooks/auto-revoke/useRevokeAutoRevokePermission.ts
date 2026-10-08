@@ -1,7 +1,7 @@
 import { contracts } from '@metamask/smart-accounts-kit';
 import { decodeDelegations } from '@metamask/smart-accounts-kit/utils';
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
-import { isUserRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { isUserRejectionError, parseErrorMessage, TransactionRevertedError } from '@revoke.cash/core/utils/errors';
 import { waitForTransactionConfirmation } from '@revoke.cash/core/wallet';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ky from 'lib/ky';
@@ -50,10 +50,13 @@ export const useRevokeAutoRevokePermission = () => {
 
       if (transactionHash) {
         const publicClient = createViemPublicClientForChain(chainId);
-        const receipt = await waitForTransactionConfirmation(transactionHash, publicClient);
-        if (receipt?.status === 'reverted') {
-          throw new Error(t('account.auto_revoke.permissions.revoke_transaction_reverted'));
-        }
+        await waitForTransactionConfirmation(transactionHash, publicClient).catch((error) => {
+          if (error instanceof TransactionRevertedError) {
+            throw new Error(t('account.auto_revoke.permissions.revoke_transaction_reverted'));
+          }
+
+          throw error;
+        });
       }
     },
     onError: (error) => {

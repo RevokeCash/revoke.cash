@@ -86,7 +86,8 @@
       "too_much_activity": "Esta dirección tiene demasiada actividad en {chainName} para el plan gratuito, por favor <premium-link>actualiza a Premium</premium-link> para ver sus aprobaciones.",
       "too_much_activity_premium": "Esta dirección tiene demasiada actividad en {chainName}, por lo que no se pueden cargar sus aprobaciones."
     },
-    "unknown_wallet_error": "Tu cartera devolvió un error desconocido"
+    "unknown_wallet_error": "Tu cartera devolvió un error desconocido",
+    "wallet_locked": "Tu cartera está bloqueada. Desbloquéala e inténtalo de nuevo."
   },
   "footer": {
     "about": "Sobre nosotros",

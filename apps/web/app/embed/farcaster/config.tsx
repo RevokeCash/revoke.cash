@@ -12,7 +12,8 @@ export const farcasterEmbedConfig: EmbedConfig = {
     if (await farcasterSdk.isInMiniApp()) return 'farcaster';
     return null;
   },
-  onConnected: async () => {
+  onAutoConnectFinished: async () => {
+    if (!(await farcasterSdk.isInMiniApp())) return;
     await farcasterSdk.actions.ready().catch(console.error);
   },
   renderShareAction: ({ allowances }) => <FarcasterShareButton allowances={allowances} />,

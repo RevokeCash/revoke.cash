@@ -1,7 +1,6 @@
 import { type TransactionSubmitted, TransactionType } from '@revoke.cash/core/types';
 import {
   isLedgerNanoSError,
-  isMalformedWalletError,
   isNoFeeRequiredError,
   isRevertedError,
   isSwitchChainNotSupportedError,
@@ -12,9 +11,11 @@ import { displayTransactionSubmittedToast } from 'components/common/TransactionS
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 import { stringify } from 'viem';
+import { useWalletErrorMessage } from './useWalletErrorMessage';
 
 export const useHandleTransaction = (chainId: number) => {
   const t = useTranslations();
+  const getWalletErrorMessage = useWalletErrorMessage();
 
   const checkError = (e: any, type: TransactionType): void => {
     const parsedMessage = parseErrorMessage(e);
@@ -29,7 +30,7 @@ export const useHandleTransaction = (chainId: number) => {
 
     console.debug(stringify(e, null, 2));
 
-    const message = isMalformedWalletError(parsedMessage) ? t('common.errors.unknown_wallet_error') : parsedMessage;
+    const message = getWalletErrorMessage(parsedMessage);
 
     // Not all ERC20 contracts allow for simple changes in approval to be made
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729

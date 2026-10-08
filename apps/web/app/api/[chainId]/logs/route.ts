@@ -16,7 +16,7 @@ const schemas = {
   body: z
     .strictObject({
       address: addressSchema.optional(),
-      topics: z.array(hexStringSchema.nullable()),
+      topics: z.tuple([hexStringSchema, hexStringSchema], hexStringSchema.nullable()),
       fromBlock: z.number().int().nonnegative(),
       toBlock: z.number().int().nonnegative(),
     })

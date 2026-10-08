@@ -3,6 +3,7 @@ import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
 import SpenderCell from 'components/allowances/dashboard/cells/SpenderCell';
 import StatusCell from 'components/allowances/dashboard/cells/StatusCell';
 import TransactionHashCell from 'components/allowances/dashboard/cells/TransactionHashCell';
+import { useWalletErrorMessage } from 'lib/hooks/ethereum/useWalletErrorMessage';
 import type { TransactionResults } from 'lib/stores/transaction-store';
 import { useTranslations } from 'next-intl';
 
@@ -13,6 +14,9 @@ interface Props {
 
 const BatchRevokeTable = ({ selectedAllowances, results }: Props) => {
   const t = useTranslations();
+  const getWalletErrorMessage = useWalletErrorMessage();
+
+  const getStatusReason = (error?: string) => (error ? getWalletErrorMessage(error) : undefined);
 
   return (
     <table className="w-full border-collapse">
@@ -38,7 +42,7 @@ const BatchRevokeTable = ({ selectedAllowances, results }: Props) => {
             <td>
               <StatusCell
                 status={results[getAllowanceKey(allowance)]?.status}
-                reason={results[getAllowanceKey(allowance)]?.error}
+                reason={getStatusReason(results[getAllowanceKey(allowance)]?.error)}
               />
             </td>
             <td>

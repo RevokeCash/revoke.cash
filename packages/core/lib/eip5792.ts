@@ -1,4 +1,6 @@
 import type { TransactionSubmitted } from '@revoke.cash/core/types';
+import { TransactionRevertedError } from '@revoke.cash/core/utils/errors';
+import { throwIfTransactionReverted } from '@revoke.cash/core/wallet';
 import type {
   Call,
   Capabilities,
@@ -62,8 +64,14 @@ export const mapWalletCallReceiptToTransactionSubmitted = (
   onUpdate?: OnUpdate,
 ): TransactionSubmitted => {
   const awaitConfirmationAndUpdate = async () => {
+    if (walletCallReceipt.status === 'reverted') {
+      throw new TransactionRevertedError(walletCallReceipt.transactionHash);
+    }
+
     // The wallet's node can be a block ahead of ours, so the receipt is polled for rather than fetched once
     const receipt = await waitForTransactionReceipt(walletCallReceipt.transactionHash);
+    throwIfTransactionReverted(receipt);
+
     if (allowance && onUpdate) onUpdate(allowance, undefined);
     return receipt;
   };

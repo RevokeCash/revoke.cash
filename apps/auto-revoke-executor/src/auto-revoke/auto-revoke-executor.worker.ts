@@ -56,6 +56,7 @@ export class AutoRevokeExecutorWorker extends WorkerHost {
       actionId,
       chainId,
       txHash: result.txHash,
+      reason: result.reason,
       detail: result.detail,
     });
   }

@@ -94,10 +94,7 @@ export const useProcessRefund = (request: PendingRefundRequest) => {
       displayTransactionSubmittedToast(request.payment.chainId, refundTxHash);
 
       setStep('confirming');
-      const receipt = await waitForTransactionConfirmation(refundTxHash, publicClient);
-      if (receipt?.status === 'reverted') {
-        throw new Error(`Refund transaction reverted on-chain: ${refundTxHash}`);
-      }
+      await waitForTransactionConfirmation(refundTxHash, publicClient);
 
       setStep('recording');
       return ky

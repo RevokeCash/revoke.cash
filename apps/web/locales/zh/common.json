@@ -86,7 +86,8 @@
       "too_much_activity": "该地址在{chainName}上的活动过多，超出免费版的限制，请<premium-link>升级至 Premium</premium-link>以查看其授权。",
       "too_much_activity_premium": "该地址在{chainName}上的活动过多，因此无法加载其授权。"
     },
-    "unknown_wallet_error": "您的钱包返回了未知错误"
+    "unknown_wallet_error": "您的钱包返回了未知错误",
+    "wallet_locked": "您的钱包已锁定。请解锁后重试。"
   },
   "footer": {
     "about": "关于我们",

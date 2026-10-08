@@ -1,3 +1,4 @@
+import { splitBlockRangeInChunks } from '@revoke.cash/core/blocks';
 import { isCovalentSupportedChain } from '@revoke.cash/core/chains';
 import type { Filter, Log } from '@revoke.cash/core/events';
 import { isLogRequestSizeError, isLogResponseSizeError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
@@ -6,6 +7,8 @@ import type { LogsProvider } from './LogsProvider';
 export interface DivideAndConquerOptions {
   splitOnRequestSize?: boolean;
 }
+
+const COVALENT_PRE_SPLIT_BLOCK_RANGE = 5_000_000;
 
 export class DivideAndConquerLogsProvider implements LogsProvider {
   constructor(
@@ -24,8 +27,8 @@ export class DivideAndConquerLogsProvider implements LogsProvider {
   async getLogs(filter: Filter): Promise<Log[]> {
     // We pre-emptively split the requests for Covalent-supported chains, to limit potential downsides when
     // we potentially need to divide-and-conquer the requests down the line
-    if (isCovalentSupportedChain(this.chainId) && filter.toBlock - filter.fromBlock > 5_000_000) {
-      return this.divideAndConquer(filter, 2);
+    if (isCovalentSupportedChain(this.chainId) && filter.toBlock - filter.fromBlock > COVALENT_PRE_SPLIT_BLOCK_RANGE) {
+      return this.getLogsInChunks(filter, COVALENT_PRE_SPLIT_BLOCK_RANGE);
     }
 
     try {
@@ -45,6 +48,21 @@ export class DivideAndConquerLogsProvider implements LogsProvider {
 
       return this.divideAndConquer(filter, 2);
     }
+  }
+
+  // The range is capped at the latest block first, so a toBlock far beyond the chain head cannot create a huge number of chunks
+  private async getLogsInChunks(filter: Filter, chunkSize: number): Promise<Log[]> {
+    const toBlock = Math.min(filter.toBlock, await this.getLatestBlock());
+    if (toBlock < filter.fromBlock) return [];
+
+    const blockRanges = splitBlockRangeInChunks([[filter.fromBlock, toBlock]], chunkSize);
+    const results = await Promise.all(
+      blockRanges.map(([chunkFromBlock, chunkToBlock]) =>
+        this.getLogs({ ...filter, fromBlock: chunkFromBlock, toBlock: chunkToBlock }),
+      ),
+    );
+
+    return results.flat();
   }
 
   private isSplittableError(error: unknown): boolean {

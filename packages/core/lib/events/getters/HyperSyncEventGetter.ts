@@ -36,7 +36,8 @@ export class HyperSyncEventGetter implements EventGetter {
     const eventResponse = await client.collectEvents(
       {
         fromBlock: filter.fromBlock,
-        toBlock: filter.toBlock,
+        // HyperSync's toBlock is exclusive, while our filters (like eth_getLogs) include toBlock
+        toBlock: filter.toBlock + 1,
         logs: [
           {
             address: filter.address ? [filter.address] : undefined,

@@ -33,6 +33,13 @@ const UNIT_OPTIONS: SegmentedOption<ChartUnit>[] = [
   { value: 'day', label: 'Daily' },
 ];
 
+type ChartScale = 'linear' | 'log';
+
+const SCALE_OPTIONS: SegmentedOption<ChartScale>[] = [
+  { value: 'linear', label: 'Linear' },
+  { value: 'log', label: 'Log' },
+];
+
 const BAR_AREA_HEIGHT_PIXELS = 144;
 // Each bar keeps at least this much width (bar plus gap), so a year of days still fits a desktop card
 const MINIMUM_BAR_SLOT_PIXELS = 2;
@@ -52,6 +59,7 @@ interface Props {
 
 const RevenueChart = ({ range, onRangeChange }: Props) => {
   const [unit, setUnit] = useState<ChartUnit>('month');
+  const [scale, setScale] = useState<ChartScale>('linear');
   const { data, isLoading, isPlaceholderData, error } = useAdminRevenueDataSince(range.from);
 
   const today = getToday();
@@ -66,7 +74,12 @@ const RevenueChart = ({ range, onRangeChange }: Props) => {
   const medianTotalUsdCents = completePeriodTotalsUsdCents.length > 0 ? getMedian(completePeriodTotalsUsdCents) : null;
   const unitLabel = UNIT_OPTIONS.find((option) => option.value === unit)?.label;
 
-  const maxTotalUsdCents = Math.max(...(series ?? []).map(getTotalUsdCents), 1);
+  // The average and median lines count too, so a log scale never puts them below its start
+  const axis = getValueAxis(scale, [
+    ...(series ?? []).map(getTotalUsdCents),
+    averageTotalUsdCents,
+    medianTotalUsdCents ?? 0,
+  ]);
   const showsValueLabels = buckets.length <= MAXIMUM_BARS_WITH_VALUE_LABELS;
   // Long daily ranges label the first day of each month, so the labels line up with the months
   const labelsMonthStarts = unit === 'day' && buckets.length > 180;
@@ -86,6 +99,7 @@ const RevenueChart = ({ range, onRangeChange }: Props) => {
               <p>Confirmed subscription payments and batch revoke fees per UTC {unit} in the selected period</p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
+              <SegmentedControl size="sm" options={SCALE_OPTIONS} value={scale} onChange={setScale} />
               <SegmentedControl size="sm" options={UNIT_OPTIONS} value={unit} onChange={setUnit} />
               <DateRangePicker value={range} onChange={onRangeChange} />
             </div>
@@ -134,12 +148,7 @@ const RevenueChart = ({ range, onRangeChange }: Props) => {
                 )}
               >
                 {series.map((point) => (
-                  <RevenueBar
-                    key={point.bucket.from}
-                    point={point}
-                    maxTotalUsdCents={maxTotalUsdCents}
-                    showsValueLabel={showsValueLabels}
-                  />
+                  <RevenueBar key={point.bucket.from} point={point} axis={axis} showsValueLabel={showsValueLabels} />
                 ))}
                 {averageTotalUsdCents > 0 && (
                   <div
@@ -148,7 +157,7 @@ const RevenueChart = ({ range, onRangeChange }: Props) => {
                       'pointer-events-none absolute inset-x-0 border-t border-dashed',
                       AVERAGE_LINE_COLOR_CLASSES,
                     )}
-                    style={{ bottom: segmentHeightPixels(averageTotalUsdCents, maxTotalUsdCents) }}
+                    style={{ bottom: barHeightPixels(averageTotalUsdCents, axis) }}
                   />
                 )}
                 {medianTotalUsdCents !== null && medianTotalUsdCents > 0 && (
@@ -158,7 +167,7 @@ const RevenueChart = ({ range, onRangeChange }: Props) => {
                       'pointer-events-none absolute inset-x-0 border-t-2 border-dotted',
                       MEDIAN_LINE_COLOR_CLASSES,
                     )}
-                    style={{ bottom: segmentHeightPixels(medianTotalUsdCents, maxTotalUsdCents) }}
+                    style={{ bottom: barHeightPixels(medianTotalUsdCents, axis) }}
                   />
                 )}
               </div>
@@ -201,14 +210,15 @@ const RevenueChart = ({ range, onRangeChange }: Props) => {
 
 interface RevenueBarProps {
   point: RevenueSeriesPoint<Period>;
-  maxTotalUsdCents: number;
+  axis: ValueAxis;
   showsValueLabel: boolean;
 }
 
-const RevenueBar = ({ point, maxTotalUsdCents, showsValueLabel }: RevenueBarProps) => {
+const RevenueBar = ({ point, axis, showsValueLabel }: RevenueBarProps) => {
   const totalUsdCents = getTotalUsdCents(point);
-  const subscriptionsHeight = segmentHeightPixels(point.subscriptionsUsdCents, maxTotalUsdCents);
-  const batchRevokesHeight = segmentHeightPixels(point.batchRevokesUsdCents, maxTotalUsdCents);
+  const totalHeight = barHeightPixels(totalUsdCents, axis);
+  const subscriptionsHeight = segmentHeightPixels(point.subscriptionsUsdCents, totalUsdCents, totalHeight);
+  const batchRevokesHeight = segmentHeightPixels(point.batchRevokesUsdCents, totalUsdCents, totalHeight);
 
   const tooltip = (
     <div className="flex flex-col gap-1.5 py-1 text-left">
@@ -296,9 +306,36 @@ const formatBucketTitle = (bucket: Period): string =>
 const formatAxisLabel = (bucket: Period): string =>
   bucket.unit === 'month' ? formatShortPeriodName(bucket) : formatMonthAndDay(bucket.from);
 
-const segmentHeightPixels = (valueUsdCents: number, maxTotalUsdCents: number): number => {
+interface ValueAxis {
+  scale: ChartScale;
+  startUsdCents: number;
+  endUsdCents: number;
+}
+
+// A log scale cannot start at zero, so it starts just below the smallest non-zero value. Starting close to it spreads
+// the bars over more height, and the margin keeps the smallest bar visibly above zero.
+const getValueAxis = (scale: ChartScale, valuesUsdCents: number[]): ValueAxis => {
+  const endUsdCents = Math.max(...valuesUsdCents, 1);
+  if (scale === 'linear') return { scale, startUsdCents: 0, endUsdCents };
+
+  const smallestUsdCents = Math.min(...valuesUsdCents.filter((value) => value > 0), endUsdCents);
+  const startUsdCents = (smallestUsdCents * 2) / 3;
+  return { scale, startUsdCents, endUsdCents };
+};
+
+const barHeightPixels = (valueUsdCents: number, axis: ValueAxis): number => {
   if (valueUsdCents === 0) return 0;
-  return Math.max(2, Math.round((valueUsdCents / maxTotalUsdCents) * BAR_AREA_HEIGHT_PIXELS));
+  const fraction =
+    axis.scale === 'log'
+      ? Math.log(valueUsdCents / axis.startUsdCents) / Math.log(axis.endUsdCents / axis.startUsdCents)
+      : valueUsdCents / axis.endUsdCents;
+  return Math.max(2, Math.round(fraction * BAR_AREA_HEIGHT_PIXELS));
+};
+
+// Segments split the bar by their share of the total, since log heights of the parts do not add up to the whole
+const segmentHeightPixels = (valueUsdCents: number, totalUsdCents: number, totalHeightPixels: number): number => {
+  if (valueUsdCents === 0) return 0;
+  return Math.max(2, Math.round((valueUsdCents / totalUsdCents) * totalHeightPixels));
 };
 
 const formatUsdCentsRounded = (cents: number): string => formatFiatAmount(cents / 100, 0) ?? '$0';

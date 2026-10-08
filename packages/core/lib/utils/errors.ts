@@ -1,5 +1,5 @@
 import { REVERT_ERRORS_ABI } from '@revoke.cash/core/abis';
-import { BaseError, decodeErrorResult, type Hex, isHex, stringify } from 'viem';
+import { BaseError, decodeErrorResult, type Hash, type Hex, isHex, stringify } from 'viem';
 
 // Base class for errors thrown by core that map to a specific HTTP response shape. Subclasses
 // own their HTTP status and response body; route handlers can catch the base class and serialize
@@ -82,6 +82,16 @@ export const isMalformedWalletError = (error?: string | any): boolean => {
   if (lowercaseMessage?.includes('is not an object. (evaluating')) return true; // Safari
   if (lowercaseMessage?.includes("invalid 'in' operand")) return true; // Firefox
   return false;
+};
+
+export const isWalletLockedError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isWalletLockedError(parseErrorMessage(error)) || isWalletLockedError(stringifyError(error));
+  }
+
+  return error?.toLowerCase()?.includes('while the controller is locked'); // MetaMask KeyringController
 };
 
 export const isBatchSizeError = (error?: string | any): boolean => {
@@ -378,6 +388,14 @@ export const stringifyError = (error: any, indent?: number): string => {
 };
 
 export type SpamReason = 'whois' | 'symbol' | 'bytecode' | 'balance';
+
+// Thrown when a transaction was mined but reverted, so callers do not treat its receipt as a success
+export class TransactionRevertedError extends Error {
+  constructor(readonly transactionHash: Hash) {
+    super(`Transaction ${transactionHash} reverted onchain`);
+    this.name = 'TransactionRevertedError';
+  }
+}
 
 export class SpamError extends Error {
   readonly reason: SpamReason;

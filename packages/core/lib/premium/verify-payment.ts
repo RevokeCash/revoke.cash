@@ -197,15 +197,19 @@ export const findMatchingTransferTxHash = async (
   const siblingPaymentAmounts = await getSiblingPendingPaymentAmounts(payment);
 
   // Since sender/receiver are topic-matched, we only need an amount check.
-  // We intentionally accept >= expectedAmount to allow overpayments, but a transfer that exactly
-  // matches another pending payment's amount belongs to that payment (e.g. a pending $99 Premium
-  // quote must not consume the $199 transfer paying for a newer Ultimate quote).
+  // We intentionally accept >= expectedAmount to allow overpayments. Like the incoming transfer scanner, a
+  // transfer belongs to the most expensive matchable quote it covers, so a transfer that also covers a more
+  // expensive sibling quote is left for that quote (e.g. a pending $99 Premium quote must not consume a $199
+  // or $200 transfer while a $199 Ultimate quote is also pending).
+  const coversMoreExpensiveSibling = (amount: bigint) =>
+    siblingPaymentAmounts.some((siblingAmount) => siblingAmount > expectedAmount && siblingAmount <= amount);
+
   const candidateTxHashes = logs
     .map((log) => parseTransferLog(log, payment.chainId, ownerAddress))
     .flatMap((transfer) =>
       transfer?.type === TokenEventType.TRANSFER_ERC20 &&
       transfer.payload.amount >= expectedAmount &&
-      !siblingPaymentAmounts.includes(transfer.payload.amount)
+      !coversMoreExpensiveSibling(transfer.payload.amount)
         ? [transfer.time.transactionHash]
         : [],
     );

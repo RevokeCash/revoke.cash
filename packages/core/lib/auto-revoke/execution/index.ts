@@ -614,12 +614,15 @@ const getFinalCostUsd = async (
 };
 
 const isTransactionReadyForReplacement = (transaction: SubmittedTransaction, isUrgent: boolean): boolean => {
+  // A transaction that no node accepted yet (e.g. because the hot wallet ran out of funds) is rebroadcast unchanged.
+  // Higher fees would not get it mined, and each replacement raises the cost it reserves against the user's budget.
+  if (!transaction.broadcastedAt) return false;
+
   const replacementDelayMs = isUrgent
     ? URGENT_SUBMITTED_ATTEMPT_REPLACEMENT_DELAY_MS
     : SUBMITTED_ATTEMPT_REPLACEMENT_DELAY_MS;
 
-  const referenceTime = transaction.broadcastedAt ?? transaction.submittedAt;
-  return Date.now() - referenceTime.getTime() >= replacementDelayMs;
+  return Date.now() - transaction.broadcastedAt.getTime() >= replacementDelayMs;
 };
 
 const addGasLimitBuffer = (gas: bigint): bigint => {
