@@ -77,6 +77,7 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.Rollux]: '0x75CCD3a10D9325aE2BF7f59d23A892061952fAF3', // Robinhood Chain
   [ChainId.Ronin]: '0x85abC7587044c5b587e6550FC5b048A8DaBb328b',
   [ChainId.Rootstock]: '0x93BeAC98aBAC34cc174B5F772b16B388FC5b30e3',
+  [ChainId.SCDOShard0EVM]: '0x206E3b5612f0809e5E0244B53124e3973df4da9F',
   [ChainId.Scroll]: '0x509Ec750cAB3C6ae4989d93E1A14cbcbbF8972C9',
   [ChainId.Sei]: '0x98792117648ADf88f1c71d029Ea1aaA9E9Cc0AC7',
   [ChainId.Shape]: '0xDe64A183ff3abcd5f59a30d3ec6300F2496dF6AB',
