@@ -1,4 +1,10 @@
-import { getChainIdFromSlug, getChainName, getChainSlug, SUPPORTED_CHAINS } from '@revoke.cash/core/chains';
+import {
+  getChainIdFromSlug,
+  getChainName,
+  getChainSlug,
+  ROUNDED_DOWN_NETWORK_COUNT,
+  SUPPORTED_CHAINS,
+} from '@revoke.cash/core/chains';
 import SharedLayout from 'app/layouts/SharedLayout';
 import ChainDescription from 'components/common/ChainDescription';
 import ChainLogo from 'components/common/ChainLogo';
@@ -38,7 +44,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 
   return {
     title: t('token_approval_checker.meta.title', { chainName }),
-    description: t('common.meta.description', { chainName }),
+    description: t('common.meta.description', { chainName, networkCount: ROUNDED_DOWN_NETWORK_COUNT }),
     openGraph: {
       images: getOpenGraphImageUrl(`/token-approval-checker/${slug}`, locale),
     },
@@ -96,7 +102,13 @@ const TokenApprovalCheckerPage: NextPage<Props> = async ({ params }) => {
           <h2>{t('token_approval_checker.how_to_revoke.title', { chainName })}</h2>
           <p>
             <RichText>
-              {(tags) => t.rich('token_approval_checker.how_to_revoke.content', { ...tags, chainName })}
+              {(tags) =>
+                t.rich('token_approval_checker.how_to_revoke.content', {
+                  ...tags,
+                  chainName,
+                  networkCount: ROUNDED_DOWN_NETWORK_COUNT,
+                })
+              }
             </RichText>
           </p>
         </Prose>

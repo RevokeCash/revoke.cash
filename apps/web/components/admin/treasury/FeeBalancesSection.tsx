@@ -11,7 +11,7 @@ import TreasuryBalancesTable, { type TreasuryBalanceRow } from './TreasuryBalanc
 const FeeBalancesSection = () => {
   const { data, isLoading, error } = useAdminTreasury();
 
-  // Chains that hold nothing are left out: with 100+ supported mainnets, only the ones that still hold a
+  // Chains that hold nothing are left out: with this many supported mainnets, only the ones that still hold a
   // balance (or could not be read at all) are relevant for reconciliation
   const rows = useMemo(() => {
     const nativeBalances = data?.nativeBalances ?? [];

@@ -39,7 +39,7 @@
   },
   "premium": {
     "best_protection": "最高の保護",
-    "description": "100以上のネットワークでトークン承認を監視・保護できます。年間{price}からご利用いただけます。",
+    "description": "{networkCount}以上のネットワークでトークン承認を監視・保護できます。年間{price}からご利用いただけます。",
     "free_features": {
       "batch_revoke": "一括取り消し（1.50ドル/バッチ）",
       "exploit_checker": "シングルチェーンエクスプロイトチェッカー",

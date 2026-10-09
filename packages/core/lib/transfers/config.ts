@@ -7,14 +7,11 @@ export const APPROVED_TRANSFERS_UNSUPPORTED_CHAINS: number[] = [
   ChainId.Etherlink,
   ChainId.Matchain,
   ChainId.Oasys,
-  ChainId.Reya,
   ChainId.Rollux,
   ChainId.XDC, // dRPC serves XDC but without debug/trace methods
-  ChainId.EthereumClassic, // dRPC serves ETC but without debug/trace methods
   ChainId.ArbitrumNova, // dRPC serves Arbitrum Nova but rejects all callTracer configs
   ChainId.Songbird,
   ChainId.Shido,
-  ChainId.FilecoinEVM, // no debug_traceTransaction (only parity-style trace methods)
   ChainId.PulseChain, // no debug_traceTransaction (only parity-style trace methods)
   ChainId.Taiko, // traces fail on recent transactions (only sufficiently old ones succeed)
   // ZKsync-stack nodes ignore withLog, so their traces never contain the frame logs extraction requires
@@ -23,7 +20,6 @@ export const APPROVED_TRANSFERS_UNSUPPORTED_CHAINS: number[] = [
   ChainId.Lens,
   // These chains' tracers accept withLog but return no frame logs (probed 2026-08-02)
   ChainId.Aurora,
-  ChainId.KCC,
   ChainId.Metis,
   ChainId.Scroll,
   ChainId.TAC,

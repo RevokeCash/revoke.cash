@@ -98,18 +98,6 @@
       "decimals": 18
     }
   },
-  "61": {
-    "name": "Ethereum Classic",
-    "status": "active",
-    "explorerUrl": "https://etc.blockscout.com",
-    "rpcUrl": "https://etc.rivet.link",
-    "infoUrl": "https://ethereumclassic.org",
-    "nativeCurrency": {
-      "name": "Ether",
-      "symbol": "ETC",
-      "decimals": 18
-    }
-  },
   "88": {
     "name": "Viction",
     "rpcUrl": "https://rpc.viction.xyz",
@@ -294,28 +282,6 @@
     "nativeCurrency": {
       "name": "Ether",
       "symbol": "ETH",
-      "decimals": 18
-    }
-  },
-  "314": {
-    "name": "Filecoin - Mainnet",
-    "explorerUrl": "https://filfox.info/en",
-    "rpcUrl": "https://api.node.glif.io/",
-    "infoUrl": "https://filecoin.io",
-    "nativeCurrency": {
-      "name": "filecoin",
-      "symbol": "FIL",
-      "decimals": 18
-    }
-  },
-  "321": {
-    "name": "KCC Mainnet",
-    "explorerUrl": "https://explorer.kcc.io/en",
-    "rpcUrl": "https://rpc-mainnet.kcc.network",
-    "infoUrl": "https://kcc.io",
-    "nativeCurrency": {
-      "name": "KuCoin Token",
-      "symbol": "KCS",
       "decimals": 18
     }
   },
@@ -530,17 +496,6 @@
       "decimals": 18
     }
   },
-  "1729": {
-    "name": "Reya Network",
-    "explorerUrl": "https://explorer.reya.network",
-    "rpcUrl": "https://rpc.reya.network",
-    "infoUrl": "https://reya.network",
-    "nativeCurrency": {
-      "name": "Ether",
-      "symbol": "ETH",
-      "decimals": 18
-    }
-  },
   "1776": {
     "name": "Injective",
     "explorerUrl": "https://blockscout.injective.network",
@@ -560,17 +515,6 @@
     "infoUrl": "https://soneium.org",
     "nativeCurrency": {
       "name": "Ether",
-      "symbol": "ETH",
-      "decimals": 18
-    }
-  },
-  "1890": {
-    "name": "Lightlink Phoenix Mainnet",
-    "explorerUrl": "https://phoenix.lightlink.io",
-    "rpcUrl": "https://replicator.phoenix.lightlink.io/rpc/v1",
-    "infoUrl": "https://lightlink.io",
-    "nativeCurrency": {
-      "name": "Ethereum",
       "symbol": "ETH",
       "decimals": 18
     }

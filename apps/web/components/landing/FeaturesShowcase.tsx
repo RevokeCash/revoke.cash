@@ -1,3 +1,4 @@
+import { ROUNDED_DOWN_NETWORK_COUNT } from '@revoke.cash/core/chains';
 import FadeIn from 'components/common/FadeIn';
 import Href from 'components/common/Href';
 import Label from 'components/common/Label';
@@ -98,7 +99,7 @@ export const Feature = ({
           {badge && <Label className="w-fit bg-zinc-900 text-white dark:bg-zinc-200 dark:text-zinc-900">{badge}</Label>}
         </div>
         <p className="text-base leading-7 text-zinc-600 dark:text-zinc-400">
-          {t(`${translationPrefix}.${featureKey}.description`)}
+          {t(`${translationPrefix}.${featureKey}.description`, { networkCount: ROUNDED_DOWN_NETWORK_COUNT })}
         </p>
         {link && (
           <Href href={link.href} router underline="always" className="w-fit text-base font-medium">

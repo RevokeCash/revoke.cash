@@ -129,7 +129,7 @@
         "title": "批量撤销无额外费用"
       },
       "multichain_dashboard": {
-        "description": "在一个统一的仪表盘中查看和管理您在 100+ 个网络上的全部代币授权，包括完整的授权历史。无需再逐个切换网络。",
+        "description": "在一个统一的仪表盘中查看和管理您在 {networkCount}+ 个网络上的全部代币授权，包括完整的授权历史。无需再逐个切换网络。",
         "link_label": "查看实际效果",
         "title": "多链仪表盘"
       },
@@ -163,7 +163,7 @@
       "one_chain": "一次一条链",
       "per_batch": "每批次 {price}",
       "priority_support": "优先支持",
-      "revoke_approvals": "在 100+ 个网络上撤销授权",
+      "revoke_approvals": "在 {networkCount}+ 个网络上撤销授权",
       "time_machine": "Time Machine"
     },
     "includes_tier": "包含 {tierName} 的全部功能，此外还有：",

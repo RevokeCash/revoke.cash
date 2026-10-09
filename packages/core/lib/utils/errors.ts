@@ -242,6 +242,8 @@ export const isLogRequestSizeError = (error?: string | any): boolean => {
   if (lowercaseMessage?.includes('you can make eth_getlogs requests with up to')) return true;
   if (lowercaseMessage?.includes('query exceeds max block range')) return true; // Citrea ("query exceeds max block range 1000")
   if (lowercaseMessage?.includes('maximum [from, to] blocks distance')) return true; // Stable ("maximum [from, to] blocks distance: 500")
+  if (lowercaseMessage?.includes('maximum block range size')) return true; // Lightlink
+  if (lowercaseMessage?.includes('cannot request logs over more than')) return true; // Etherlink
   return false;
 };
 

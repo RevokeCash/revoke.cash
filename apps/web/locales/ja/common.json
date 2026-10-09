@@ -120,7 +120,7 @@
       "description": "Revoke.cashはいくつかのサードパーティ製ツールやサービスを利用しています。このページではそれらを一覧にしています。",
       "title": "謝辞"
     },
-    "description": "{chainName}とその他100以上のネットワークで、過去に付与したトークン承認や許可を取り消すことにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
+    "description": "{chainName}とその他{networkCount}以上のネットワークで、過去に付与したトークン承認や許可を取り消すことにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
     "disclaimer": {
       "description": "Revoke.cashの免責事項",
       "title": "免責事項"
@@ -133,7 +133,7 @@
       "description": "Revoke.cashの利用規約",
       "title": "利用規約"
     },
-    "title": "100以上のネットワークでトークンの承認を取り消す"
+    "title": "{networkCount}以上のネットワークでトークンの承認を取り消す"
   },
   "nav": {
     "about": "私たちについて",

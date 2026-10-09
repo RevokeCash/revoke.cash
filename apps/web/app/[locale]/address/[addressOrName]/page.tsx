@@ -1,4 +1,4 @@
-import { getChainName, isSupportedChain } from '@revoke.cash/core/chains';
+import { getChainName, isSupportedChain, ROUNDED_DOWN_NETWORK_COUNT } from '@revoke.cash/core/chains';
 import { isNullish } from '@revoke.cash/core/utils';
 import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import { getAddressAndDomainName } from '@revoke.cash/core/whois';
@@ -39,7 +39,10 @@ export const generateMetadata = async ({ params, searchParams }: Props): Promise
 
   return {
     title,
-    description: t('common.meta.description', { chainName: chainName ?? 'Ethereum' }),
+    description: t('common.meta.description', {
+      chainName: chainName ?? 'Ethereum',
+      networkCount: ROUNDED_DOWN_NETWORK_COUNT,
+    }),
   };
 };
 

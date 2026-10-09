@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
-import { CHAIN_SELECT_MAINNETS } from '@revoke.cash/core/chains';
+import { CHAIN_SELECT_MAINNETS, ROUNDED_DOWN_NETWORK_COUNT } from '@revoke.cash/core/chains';
 import Button from 'components/common/Button';
 import ChainLogoStack from 'components/common/ChainLogoStack';
 import TestimonialCarousel from 'components/landing/TestimonialCarousel';
@@ -53,7 +53,7 @@ const HeroSection = () => {
                   overlapClassName="-space-x-1.5"
                 />
                 <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                  {t('landing.stats.networks_supported', { count: '100+' }).toLowerCase()}
+                  {t('landing.stats.networks_supported', { count: `${ROUNDED_DOWN_NETWORK_COUNT}+` }).toLowerCase()}
                 </span>
               </div>
             </div>

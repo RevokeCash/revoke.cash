@@ -1,5 +1,6 @@
 import { CheckIcon } from '@heroicons/react/24/solid';
 import { AUTO_REVOKE_SUPPORTED_CHAINS } from '@revoke.cash/core/auto-revoke/config';
+import { ROUNDED_DOWN_NETWORK_COUNT } from '@revoke.cash/core/chains';
 import Button from 'components/common/Button';
 import FadeIn from 'components/common/FadeIn';
 import InformationIconTooltip from 'components/common/InformationIconTooltip';
@@ -15,7 +16,7 @@ const PremiumSection = () => {
   return (
     <FullWidthLandingSection title={t('landing.premium.title')} size="lg">
       <p className="-mt-4 text-center text-lg text-zinc-600 dark:text-zinc-400">
-        {t('landing.premium.description', { price: '$99' })}
+        {t('landing.premium.description', { price: '$99', networkCount: ROUNDED_DOWN_NETWORK_COUNT })}
       </p>
       <FadeIn stagger className="grid grid-cols-1 gap-6 md:grid-cols-3">
         <PremiumSectionCard title={t('landing.premium.free_title')}>

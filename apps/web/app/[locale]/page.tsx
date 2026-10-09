@@ -1,3 +1,4 @@
+import { ROUNDED_DOWN_NETWORK_COUNT } from '@revoke.cash/core/chains';
 import SharedLayout from 'app/layouts/SharedLayout';
 import Divider from 'components/common/Divider';
 import FeaturesShowcase from 'components/landing/FeaturesShowcase';
@@ -31,8 +32,8 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
   const t = await getTranslations({ locale });
 
   return {
-    title: t('common.meta.title'),
-    description: t('common.meta.description', { chainName: 'Ethereum' }),
+    title: t('common.meta.title', { networkCount: ROUNDED_DOWN_NETWORK_COUNT }),
+    description: t('common.meta.description', { chainName: 'Ethereum', networkCount: ROUNDED_DOWN_NETWORK_COUNT }),
   };
 };
 

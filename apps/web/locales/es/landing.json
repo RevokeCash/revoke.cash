@@ -39,7 +39,7 @@
   },
   "premium": {
     "best_protection": "La mejor protección",
-    "description": "Supervisa y protege tus aprobaciones de tokens en más de 100 redes. A partir de {price}/año.",
+    "description": "Supervisa y protege tus aprobaciones de tokens en más de {networkCount} redes. A partir de {price}/año.",
     "free_features": {
       "batch_revoke": "Revocación por lotes ($1,50/lote)",
       "exploit_checker": "Comprobador de exploits de cadena única",

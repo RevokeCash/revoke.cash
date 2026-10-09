@@ -129,7 +129,7 @@
         "title": "手数料無料の一括取り消し"
       },
       "multichain_dashboard": {
-        "description": "100以上のネットワークにわたるすべてのトークン承認を、完全な承認履歴も含めて、1つの統合ダッシュボードから表示・管理できます。チェーンを1つずつ切り替える必要はもうありません。",
+        "description": "{networkCount}以上のネットワークにわたるすべてのトークン承認を、完全な承認履歴も含めて、1つの統合ダッシュボードから表示・管理できます。チェーンを1つずつ切り替える必要はもうありません。",
         "link_label": "実際の動作を見る",
         "title": "マルチチェーンダッシュボード"
       },
@@ -163,7 +163,7 @@
       "one_chain": "チェーンは一度に1つずつ",
       "per_batch": "1バッチあたり {price}",
       "priority_support": "優先サポート",
-      "revoke_approvals": "100以上のネットワークで承認を取り消す",
+      "revoke_approvals": "{networkCount}以上のネットワークで承認を取り消す",
       "time_machine": "タイムマシン"
     },
     "includes_tier": "{tierName}のすべての機能に加えて：",

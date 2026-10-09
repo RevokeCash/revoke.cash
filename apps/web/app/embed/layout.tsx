@@ -1,3 +1,4 @@
+import { ROUNDED_DOWN_NETWORK_COUNT } from '@revoke.cash/core/chains';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Analytics from 'app/Analytics';
 import TopLoader from 'components/common/TopLoader';
@@ -12,7 +13,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
 
   return {
     title: 'Revoke.cash',
-    description: t('common.meta.description', { chainName: 'Ethereum' }),
+    description: t('common.meta.description', { chainName: 'Ethereum', networkCount: ROUNDED_DOWN_NETWORK_COUNT }),
   };
 };
 

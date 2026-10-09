@@ -39,7 +39,7 @@
   },
   "premium": {
     "best_protection": "最佳保护",
-    "description": "监控并保护您在 100+ 个网络上的代币授权。{price}/年起。",
+    "description": "监控并保护您在 {networkCount}+ 个网络上的代币授权。{price}/年起。",
     "free_features": {
       "batch_revoke": "批量撤销（$1.50/批次）",
       "exploit_checker": "单链漏洞检查器",

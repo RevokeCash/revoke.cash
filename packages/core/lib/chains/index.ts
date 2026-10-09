@@ -39,7 +39,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.PulseChain,
   ChainId.Blast,
   ChainId.ZkSyncEra,
-  ChainId.FilecoinEVM,
   ChainId.Fraxtal,
   ChainId.Taiko,
   ChainId.BOB,
@@ -47,7 +46,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ImmutableZkEVM,
   ChainId.Rollux,
   ChainId.Scroll,
-  ChainId.Reya,
   ChainId.RISE,
   ChainId.Abstract,
   ChainId.FlowEVM,
@@ -85,10 +83,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Viction,
   ChainId.Oasys,
   ChainId.Vana,
-  ChainId.KCC,
   ChainId.Fuse,
-  ChainId.EthereumClassic,
-  ChainId.Lightlink,
   ChainId.Shape,
   ChainId.Gensyn,
   ChainId.Matchain,
@@ -107,6 +102,9 @@ export const CHAIN_SELECT_TESTNETS = [
 ] as const;
 
 export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS] as const;
+
+// Copy claims "{networkCount}+ networks", so the count is rounded down to keep that true as chains are added or removed
+export const ROUNDED_DOWN_NETWORK_COUNT = Math.floor(CHAIN_SELECT_MAINNETS.length / 10) * 10;
 
 // Shared by every network that uses Ether as its native currency
 const ETH: NativeCurrency = { name: 'Ether', symbol: 'ETH', decimals: 18 };
@@ -557,22 +555,6 @@ export const CHAINS = {
       ensUniversalResolver: { address: '0xeeeeeeee14d718c2b47d9923deab1335e144eeee' },
     },
   }),
-  [ChainId.EthereumClassic]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.EthereumClassic,
-    name: 'Ethereum Classic',
-    nativeCurrency: { name: 'Ether', symbol: 'ETC', decimals: 18 },
-    nativeTokenCoingeckoId: 'ethereum-classic',
-    coingeckoNetworkId: 'ethereum_classic',
-    logoUrl: '/assets/images/vendor/chains/etc.png',
-    explorerUrl: 'https://etc.blockscout.com',
-    infoUrl: 'https://ethereumclassic.org',
-    rpc: {
-      main: `https://lb.drpc.live/ethereum-classic/${DRPC_API_KEY}`,
-      free: 'https://0xrpc.io/etc',
-    },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 18288646 } },
-  }),
   [ChainId.EthereumSepolia]: new Chain({
     type: SupportType.ETHERSCAN,
     chainId: ChainId.EthereumSepolia,
@@ -617,22 +599,6 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.ftm.tools',
     },
-  }),
-  [ChainId.FilecoinEVM]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.FilecoinEVM,
-    name: 'Filecoin EVM',
-    nativeCurrency: { name: 'filecoin', symbol: 'FIL', decimals: 18 },
-    nativeTokenCoingeckoId: 'filecoin',
-    coingeckoNetworkId: 'filecoin',
-    logoUrl: '/assets/images/vendor/chains/filecoin.svg',
-    explorerUrl: 'https://filecoin.blockscout.com',
-    infoUrl: 'https://filecoin.io',
-    rpc: {
-      main: `https://lb.drpc.live/filecoin/${DRPC_API_KEY}`,
-      free: `https://filecoin.drpc.org`,
-    },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 3328594 } },
   }),
   [ChainId.Flare]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -941,21 +907,6 @@ export const CHAINS = {
       free: 'https://rpc.katana.network',
     },
   }),
-  [ChainId.KCC]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.KCC,
-    name: 'KCC',
-    nativeCurrency: { name: 'KuCoin Token', symbol: 'KCS', decimals: 18 },
-    nativeTokenCoingeckoId: 'kucoin-shares',
-    coingeckoNetworkId: 'kcc',
-    logoUrl: '/assets/images/vendor/chains/kcc.svg',
-    explorerUrl: 'https://scan.kcc.io',
-    infoUrl: 'https://kcc.io',
-    rpc: {
-      main: 'https://rpc-mainnet.kcc.network',
-    },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 11760430 } },
-  }),
   [ChainId.Lens]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.Lens,
@@ -971,20 +922,6 @@ export const CHAINS = {
       free: 'https://rpc.lens.xyz',
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 1724216 } },
-  }),
-  [ChainId.Lightlink]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.Lightlink,
-    name: 'Lightlink',
-    nativeCurrency: ETH,
-    coingeckoNetworkId: 'lightlink-phoenix',
-    logoUrl: '/assets/images/vendor/chains/lightlink.jpg',
-    explorerUrl: 'https://phoenix.lightlink.io',
-    infoUrl: 'https://lightlink.io',
-    rpc: {
-      main: 'https://replicator.phoenix.lightlink.io/rpc/v1',
-    },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 125499184 } },
   }),
   [ChainId.Linea]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -1334,19 +1271,6 @@ export const CHAINS = {
     explorerUrl: 'https://otherscan.pulsechain.box',
     etherscanCompatibleApiUrl: 'https://api.scan.pulsechain.com/api',
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 14353601 } },
-  }),
-  [ChainId.Reya]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.Reya,
-    name: 'Reya',
-    nativeCurrency: ETH,
-    logoUrl: '/assets/images/vendor/chains/reya.svg',
-    infoUrl: 'https://reya.network',
-    explorerUrl: 'https://explorer-reya-network.t.conduit.xyz',
-    rpc: {
-      main: 'https://rpc.reya.network',
-    },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 10458805 } },
   }),
   [ChainId.RISE]: new Chain({
     type: SupportType.BLOCKSCOUT,

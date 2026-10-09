@@ -1,3 +1,4 @@
+import { ROUNDED_DOWN_NETWORK_COUNT } from '@revoke.cash/core/chains';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Analytics from 'app/Analytics';
 import CrispChat from 'app/CrispChat';
@@ -54,9 +55,9 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
     metadataBase: new URL('https://revoke.cash'),
     title: {
       template: '%s | Revoke.cash',
-      default: t('common.meta.title'),
+      default: t('common.meta.title', { networkCount: ROUNDED_DOWN_NETWORK_COUNT }),
     },
-    description: t('common.meta.description', { chainName: 'Ethereum' }),
+    description: t('common.meta.description', { chainName: 'Ethereum', networkCount: ROUNDED_DOWN_NETWORK_COUNT }),
     applicationName: 'Revoke.cash',
     generator: 'Next.js',
   };

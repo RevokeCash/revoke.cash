@@ -120,7 +120,7 @@
       "description": "Revoke.cash 依赖多个第三方工具和服务，本页面将它们一一列出。",
       "title": "致谢"
     },
-    "description": "撤销您在 {chainName} 及其他 100 多个网络上授予的代币授权和权限，重新掌控自己的钱包，确保资金安全。",
+    "description": "撤销您在 {chainName} 及其他 {networkCount} 多个网络上授予的代币授权和权限，重新掌控自己的钱包，确保资金安全。",
     "disclaimer": {
       "description": "Revoke.cash 免责声明",
       "title": "免责声明"
@@ -133,7 +133,7 @@
       "description": "Revoke.cash 条款和条件",
       "title": "条款和条件"
     },
-    "title": "撤销 100+ 区块链网络上的代币授权"
+    "title": "撤销 {networkCount}+ 区块链网络上的代币授权"
   },
   "nav": {
     "about": "关于我们",

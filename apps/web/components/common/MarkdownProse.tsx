@@ -1,3 +1,4 @@
+import { ROUNDED_DOWN_NETWORK_COUNT } from '@revoke.cash/core/chains';
 import { slugify } from '@revoke.cash/core/utils';
 import Faq from 'components/faq/Faq';
 import FaqItem from 'components/faq/FaqItem';
@@ -95,6 +96,8 @@ const MarkdownProse = ({ content, meta, className, directives = true }: Props) =
         </SyntaxHighlighter>
       );
     },
+    // Articles write :network-count instead of a number, so the count follows the supported chains
+    'network-count': () => <>{ROUNDED_DOWN_NETWORK_COUNT}</>,
     faq: ({ children }: any) => {
       return <Faq>{children}</Faq>;
     },

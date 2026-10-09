@@ -129,7 +129,7 @@
         "title": "Revocaciones por lotes sin tarifa"
       },
       "multichain_dashboard": {
-        "description": "Consulta y gestiona todas tus aprobaciones de tokens en más de 100 redes desde un único panel de control unificado, incluido tu historial completo de aprobaciones. Se acabó tener que cambiar de cadena una por una.",
+        "description": "Consulta y gestiona todas tus aprobaciones de tokens en más de {networkCount} redes desde un único panel de control unificado, incluido tu historial completo de aprobaciones. Se acabó tener que cambiar de cadena una por una.",
         "link_label": "Míralo en acción",
         "title": "Panel de control multicadena"
       },
@@ -163,7 +163,7 @@
       "one_chain": "Una cadena a la vez",
       "per_batch": "{price} por lote",
       "priority_support": "Soporte prioritario",
-      "revoke_approvals": "Revoca aprobaciones en más de 100 redes",
+      "revoke_approvals": "Revoca aprobaciones en más de {networkCount} redes",
       "time_machine": "Time Machine"
     },
     "includes_tier": "Todo lo de la versión {tierName}, y además:",

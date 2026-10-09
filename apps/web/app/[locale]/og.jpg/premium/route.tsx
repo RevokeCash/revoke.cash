@@ -1,4 +1,5 @@
 import { AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD } from '@revoke.cash/core/auto-revoke/config';
+import { ROUNDED_DOWN_NETWORK_COUNT } from '@revoke.cash/core/chains';
 import { FEATURES, TIER_MAX_ADDRESSES, type TierKey } from 'components/premium/pricing/pricing-data';
 import { locales } from 'lib/i18n/routing';
 import {
@@ -143,6 +144,7 @@ const getCardFeatureLabels = (t: Translator, tierKey: TierKey, referencesTier: T
     t(`premium.pricing.features.${feature.cardLabelKey?.[tierKey] ?? feature.labelKey}`, {
       price: '$1.50',
       budget: `$${AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD}`,
+      networkCount: ROUNDED_DOWN_NETWORK_COUNT,
     }),
   );
 };

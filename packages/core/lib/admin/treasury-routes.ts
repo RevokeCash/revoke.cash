@@ -58,8 +58,6 @@ const FEE_ROUTES: Partial<Record<ChainId, TreasuryRoute>> = {
   [ChainId.Berachain]: kraken('BERA', 'Berachain', '0.5'),
   [ChainId.Plasma]: kraken('XPL', 'Plasma', '5'),
   [ChainId.Songbird]: kraken('SGB', 'Songbird', '1'),
-  // Kraken takes about 12 hours to credit ETC, but no bridge supports Ethereum Classic
-  [ChainId.EthereumClassic]: kraken('ETC', 'Ethereum Classic', '0.01'),
   [ChainId.XDC]: kraken('XDC', 'XDC Network', '70'),
   [ChainId.Etherlink]: kraken('XTZ', 'Etherlink', '15'),
   // Kraken still lists DATA under its old name, IP on the Story network

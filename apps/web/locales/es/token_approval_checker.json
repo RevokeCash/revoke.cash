@@ -1,7 +1,7 @@
 {
   "different_chain": "O comprueba las autorizaciones de tus tokens en una red diferente",
   "how_to_revoke": {
-    "content": "Cuando ingreses tu dirección arriba, verás una lista de todas tus autorizaciones de tokens de {chainName}. La lista contendrá todos los detalles de cada autorización, como la fecha, el monto y el gastador. Puedes ordenar la lista y filtrarla por cualquiera de estas propiedades. Luego puedes revocar cualquier autorización de tokens haciendo clic en el botón revocar, lo que hará que tu cartera te pida confirmar la transacción de revocación, que cuesta una pequeña tarifa de gas. Además de {chainName}, también puedes comprobar tus autorizaciones en más de 100 redes usando el menú desplegable. Obtén más información sobre cómo revocar autorizaciones de tokens en nuestro <revoking-approvals>artículo de la sección Aprender</revoking-approvals>.",
+    "content": "Cuando ingreses tu dirección arriba, verás una lista de todas tus autorizaciones de tokens de {chainName}. La lista contendrá todos los detalles de cada autorización, como la fecha, el monto y el gastador. Puedes ordenar la lista y filtrarla por cualquiera de estas propiedades. Luego puedes revocar cualquier autorización de tokens haciendo clic en el botón revocar, lo que hará que tu cartera te pida confirmar la transacción de revocación, que cuesta una pequeña tarifa de gas. Además de {chainName}, también puedes comprobar tus autorizaciones en más de {networkCount} redes usando el menú desplegable. Obtén más información sobre cómo revocar autorizaciones de tokens en nuestro <revoking-approvals>artículo de la sección Aprender</revoking-approvals>.",
     "title": "Cómo Revocar Autorizaciones de Tokens de {chainName}."
   },
   "meta": {

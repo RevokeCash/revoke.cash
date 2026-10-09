@@ -56,7 +56,7 @@ No. While Permit signatures are signed off-chain, they are still tied to a speci
 :::
 
 :::faq-item{question="Why does Revoke.cash show testnets if they aren't dangerous?"}
-We support over 100 networks, including testnets, because we are a tool for everyone. Developers rely on Revoke.cash during the build phase to verify that their smart contracts request and clear permissions correctly before going live.
+We support :network-count+ networks, including testnets, because we are a tool for everyone. Developers rely on Revoke.cash during the build phase to verify that their smart contracts request and clear permissions correctly before going live.
 :::
 
 :::faq-item{question="I see ETH in my wallet on a testnet, but I didn't buy it? Am I being hacked?"}

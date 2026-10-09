@@ -129,7 +129,7 @@
         "title": "Fee-Free Batch Revokes"
       },
       "multichain_dashboard": {
-        "description": "View and manage all your token approvals across 100+ networks from a single unified dashboard, including your full approval history. No more switching chains one by one.",
+        "description": "View and manage all your token approvals across {networkCount}+ networks from a single unified dashboard, including your full approval history. No more switching chains one by one.",
         "link_label": "See it in action",
         "title": "Multichain Dashboard"
       },
@@ -163,7 +163,7 @@
       "one_chain": "One chain at a time",
       "per_batch": "{price} per batch",
       "priority_support": "Priority support",
-      "revoke_approvals": "Revoke approvals on 100+ networks",
+      "revoke_approvals": "Revoke approvals on {networkCount}+ networks",
       "time_machine": "Time machine"
     },
     "includes_tier": "Everything in {tierName}, plus:",

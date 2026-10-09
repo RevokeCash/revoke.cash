@@ -1,3 +1,4 @@
+import { ROUNDED_DOWN_NETWORK_COUNT } from '@revoke.cash/core/chains';
 import FadeIn from 'components/common/FadeIn';
 import { useTranslations } from 'next-intl';
 import FullWidthLandingSection from './FullWidthLandingSection';
@@ -11,7 +12,10 @@ const StatsBar = () => {
         <StatsBarItem value="$140M+" label={t('landing.stats.protected_from_exploits')} />
         <StatsBarItem value="2M+" label={t('landing.stats.total_users')} />
         <StatsBarItem value="20M+" label={t('landing.stats.approvals_revoked')} />
-        <StatsBarItem value="100+" label={t('landing.stats.networks_supported', { count: '' }).trim()} />
+        <StatsBarItem
+          value={`${ROUNDED_DOWN_NETWORK_COUNT}+`}
+          label={t('landing.stats.networks_supported', { count: '' }).trim()}
+        />
       </FadeIn>
     </FullWidthLandingSection>
   );

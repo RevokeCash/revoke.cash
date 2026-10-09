@@ -39,7 +39,7 @@
   },
   "premium": {
     "best_protection": "Best Protection",
-    "description": "Monitor and protect your token approvals across 100+ networks. Starting at {price}/year.",
+    "description": "Monitor and protect your token approvals across {networkCount}+ networks. Starting at {price}/year.",
     "free_features": {
       "batch_revoke": "Batch revoke ($1.50/batch)",
       "exploit_checker": "Single-chain exploit checker",

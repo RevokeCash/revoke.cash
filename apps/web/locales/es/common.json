@@ -120,7 +120,7 @@
       "description": "Revoke.cash depende de varias herramientas y servicios de terceros. Esta página los enumera.",
       "title": "Agradecimientos"
     },
-    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones de tokens y los permisos que concediste en {chainName} y en más de otras 100 redes.",
+    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones de tokens y los permisos que concediste en {chainName} y en más de otras {networkCount} redes.",
     "disclaimer": {
       "description": "Descargo de responsabilidad de Revoke.cash",
       "title": "Descargo de responsabilidad"
@@ -133,7 +133,7 @@
       "description": "Términos y condiciones de Revoke.cash",
       "title": "Términos y condiciones"
     },
-    "title": "Revoca las Aprobaciones de Tus Tokens en Más de 100 Redes"
+    "title": "Revoca las Aprobaciones de Tus Tokens en Más de {networkCount} Redes"
   },
   "nav": {
     "about": "Sobre nosotros",

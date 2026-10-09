@@ -1,5 +1,6 @@
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import { AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD, AUTO_REVOKE_SUPPORTED_CHAINS } from '@revoke.cash/core/auto-revoke/config';
+import { ROUNDED_DOWN_NETWORK_COUNT } from '@revoke.cash/core/chains';
 import InformationIconTooltip from 'components/common/InformationIconTooltip';
 import { useTranslations } from 'next-intl';
 import { FEATURES, TIER_KEYS, type TierKey } from './pricing-data';
@@ -17,6 +18,7 @@ const ComparisonTable = ({ walletSlots }: Props) => {
       price: '$1.50',
       budget: `$${AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD}`,
       count: walletSlots[tierKey] ?? 0,
+      networkCount: ROUNDED_DOWN_NETWORK_COUNT,
     });
   };
 
@@ -42,7 +44,7 @@ const ComparisonTable = ({ walletSlots }: Props) => {
               <tr key={feature.labelKey} className={index % 2 === 0 ? '' : 'bg-zinc-50/50 dark:bg-zinc-900/50'}>
                 <td className="py-3 pl-5 pr-4 text-zinc-700 dark:text-zinc-300">
                   <span className="flex items-center gap-1">
-                    {t(`premium.pricing.features.${feature.labelKey}`)}
+                    {t(`premium.pricing.features.${feature.labelKey}`, { networkCount: ROUNDED_DOWN_NETWORK_COUNT })}
                     {feature.tooltipKey && (
                       <InformationIconTooltip
                         tooltip={t(`premium.pricing.tooltips.${feature.tooltipKey}`, {

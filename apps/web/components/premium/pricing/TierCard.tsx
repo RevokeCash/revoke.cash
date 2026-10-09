@@ -1,5 +1,6 @@
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import { AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD, AUTO_REVOKE_SUPPORTED_CHAINS } from '@revoke.cash/core/auto-revoke/config';
+import { ROUNDED_DOWN_NETWORK_COUNT } from '@revoke.cash/core/chains';
 import { isNullish } from '@revoke.cash/core/utils';
 import Button from 'components/common/Button';
 import Href from 'components/common/Href';
@@ -159,6 +160,7 @@ const FeatureItem = ({ feature, tierKey, included }: FeatureItemProps) => {
         {t(`premium.pricing.features.${labelKey}`, {
           price: '$1.50',
           budget: `$${AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD}`,
+          networkCount: ROUNDED_DOWN_NETWORK_COUNT,
         })}
         {feature.tooltipKey && (
           <InformationIconTooltip
