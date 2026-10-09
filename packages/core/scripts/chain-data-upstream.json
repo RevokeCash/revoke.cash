@@ -718,6 +718,17 @@
       "decimals": 18
     }
   },
+  "5680": {
+    "name": "SCDO Shard0",
+    "explorerUrl": "https://scdoscan.io",
+    "rpcUrl": "https://scdoscan.io/rpc/0",
+    "infoUrl": "https://scdoscan.io",
+    "nativeCurrency": {
+      "name": "SCDO",
+      "symbol": "SCDO",
+      "decimals": 18
+    }
+  },
   "7000": {
     "name": "ZetaChain Mainnet",
     "status": "active",

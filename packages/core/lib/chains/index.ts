@@ -95,6 +95,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.KasplexZkEVM,
   ChainId.Mythos,
   ChainId.Animechain,
+  ChainId.SCDOShard0EVM,
 ] as const;
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -1426,6 +1427,18 @@ export const CHAINS = {
       free: 'https://public-node.rsk.co',
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 4249540 } },
+  }),
+  [ChainId.SCDOShard0EVM]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.SCDOShard0EVM,
+    name: 'SCDO Shard0 EVM',
+    nativeCurrency: { name: 'SCDO', symbol: 'SCDO', decimals: 18 },
+    logoUrl: '/assets/images/vendor/chains/scdo.png',
+    infoUrl: 'https://scdoscan.io',
+    explorerUrl: 'https://scdoscan.io',
+    rpc: {
+      main: 'https://scdoscan.io/rpc/0',
+    },
   }),
   [ChainId.Scroll]: new Chain({
     type: SupportType.HYPERSYNC,
