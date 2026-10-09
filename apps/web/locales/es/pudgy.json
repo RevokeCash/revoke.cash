@@ -11,7 +11,8 @@
   },
   "landing": {
     "paragraph_1": "Las hot wallets son ideales para operar, pero te exponen a malware, phishing y estafas. Una verdadera cold wallet, protegida con un dispositivo de hardware y sin aprobaciones de tokens, es la forma más segura de proteger tus NFT y tokens a largo plazo.",
-    "paragraph_2": "Por eso, <b>Revoke.cash y Pudgy Penguins</b> lanzan el Cold Storage SBT. Al revocar las aprobaciones y demostrar que comprendes la importancia del cold storage, puedes ganar una insignia que demuestre tu compromiso con la salud de tu cartera y las prácticas de seguridad. Y no olvides leer nuestra <what-is-a-cold-wallet>guía</what-is-a-cold-wallet> para obtener más información sobre el cold storage."
+    "paragraph_2": "Por eso, <b>Revoke.cash y Pudgy Penguins</b> lanzan el Cold Storage SBT. Al revocar las aprobaciones y demostrar que comprendes la importancia del cold storage, puedes ganar una insignia que demuestre tu compromiso con la salud de tu cartera y las prácticas de seguridad. Y no olvides leer nuestra <what-is-a-cold-wallet>guía</what-is-a-cold-wallet> para obtener más información sobre el cold storage.",
+    "update": "<b>Actualización:</b> Ya no necesitas tener un Pudgy Penguin o un Lil Pudgy para reclamar el Cold Storage SBT. Ahora cualquiera puede reclamarlo, siempre que su cartera cumpla los requisitos. La cartera no debe tener aprobaciones de tokens activas en Ethereum y debe haber enviado al menos una transacción en Ethereum o tener saldo de ETH."
   },
   "quiz": {
     "finish_quiz": "Finalizar cuestionario",

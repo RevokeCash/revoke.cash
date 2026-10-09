@@ -9,6 +9,8 @@ translator: <Your Name Here (or remove)>
 
 # Revoke.cash x Pudgy Penguins: Cold Storage SBT
 
+> **Update (September 2026):** You no longer need to hold a Pudgy Penguin or Lil Pudgy to claim the Cold Storage SBT. Everyone can now claim it, as long as their wallet is eligible. The wallet must have no active token approvals on Ethereum, and it must have sent at least one transaction on Ethereum or hold an ETH balance. Head over to the [Claim Page](/cold-storage-sbt) to check if your wallet is eligible.
+
 It is important to use a cold wallet to store your crypto assets. To help users understand the importance of cold storage, we've partnered with Pudgy Penguins to create a Cold Storage SBT. Pudgy Penguins is one of the most security-focused communities in the crypto space, and we're proud to partner with them to help reward users for understanding the value of cold storage.
 
 ## Why Cold Storage Matters
@@ -27,11 +29,11 @@ To celebrate this partnership, we’ve created a **Cold Storage Soulbound Token 
 
 Here’s how to claim it:
 
-1. **Move your Pudgy Penguin NFT into a cold wallet.**
+1. **Move your valuable NFTs and tokens into a cold wallet.**
    This should be a hardware wallet or another wallet that you don’t use for approvals or day-to-day transactions.
 
 2. **Verify through Revoke.cash.**
-   Visit the [Claim Page](/cold-storage-sbt) and enter your cold wallet address. Revoke.cash will check that you don't have any active token approvals.
+   Visit the [Claim Page](/cold-storage-sbt) and enter your cold wallet address. Revoke.cash will check that you don't have any active token approvals on Ethereum, and that your wallet has sent at least one transaction on Ethereum or holds an ETH balance.
 
 3. **Pass the quiz.**
    Once you've verified your wallet, you'll be able to pass the quiz. The quiz is a simple security quiz that will help you understand the importance of cold storage.

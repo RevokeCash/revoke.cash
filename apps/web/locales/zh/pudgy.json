@@ -11,7 +11,8 @@
   },
   "landing": {
     "paragraph_1": "热钱包非常适合交易，但它会让您面临恶意软件、网络钓鱼和诈骗的风险。真正的冷钱包由硬件设备保护，并且不留任何代币授权，是长期保护您的 NFT 和代币最安全的方式。",
-    "paragraph_2": "因此，<b>Revoke.cash 和 Pudgy Penguins</b>推出了冷存储 SBT。通过撤销授权并证明您了解冷存储的重要性，即可获得一枚徽章，证明您对钱包卫生和安全实践的重视。另外，请务必阅读我们的<what-is-a-cold-wallet>指南</what-is-a-cold-wallet>，了解有关冷存储的更多信息。"
+    "paragraph_2": "因此，<b>Revoke.cash 和 Pudgy Penguins</b>推出了冷存储 SBT。通过撤销授权并证明您了解冷存储的重要性，即可获得一枚徽章，证明您对钱包卫生和安全实践的重视。另外，请务必阅读我们的<what-is-a-cold-wallet>指南</what-is-a-cold-wallet>，了解有关冷存储的更多信息。",
+    "update": "<b>更新：</b>领取冷存储 SBT 不再需要持有 Pudgy Penguin 或 Lil Pudgy。现在，只要钱包符合资格，任何人都可以领取。钱包在 Ethereum 上不能有任何有效的代币授权，并且需要在 Ethereum 上至少发送过一笔交易，或持有 ETH 余额。"
   },
   "quiz": {
     "finish_quiz": "完成测验",

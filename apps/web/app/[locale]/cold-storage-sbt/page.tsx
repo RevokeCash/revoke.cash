@@ -54,6 +54,9 @@ const PudgyPage: NextPage<Props> = async ({ params }) => {
         <p>
           <RichText>{(tags) => t.rich('pudgy.landing.paragraph_2', tags)}</RichText>
         </p>
+        <p>
+          <RichText>{(tags) => t.rich('pudgy.landing.update', tags)}</RichText>
+        </p>
       </Prose>
 
       <div className="flex flex-col gap-4 mt-6">
