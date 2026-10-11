@@ -13,11 +13,6 @@ const nextConfig = {
     // The invoice header embeds the logo via an fs read from public/
     '/api/admin/revenue/invoice': ['./public/assets/images/revoke-icon-orange-black.png'],
   },
-  turbopack: {
-    resolveAlias: {
-      siwe: './app/embed/world/stubs/siwe.js',
-    },
-  },
   images: {
     qualities: [25, 50, 75, 100],
     unoptimized: process.env.NODE_ENV === 'development',
@@ -61,6 +56,12 @@ const nextConfig = {
       {
         source: '/learn/wallets/add-network',
         destination: '/learn/wallets/add-network/ethereum',
+        permanent: true,
+      },
+      // The embedded versions (Safe, Ledger, World App, Farcaster) were removed, old links go to the homepage
+      {
+        source: '/embed/:path*',
+        destination: '/',
         permanent: true,
       },
       // Some images are somehow being requested (probably by other websites). We redirect them to a placeholder image.
