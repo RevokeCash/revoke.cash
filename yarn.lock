@@ -1516,53 +1516,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@farcaster/miniapp-core@npm:0.6.0":
-  version: 0.6.0
-  resolution: "@farcaster/miniapp-core@npm:0.6.0"
-  dependencies:
-    "@solana/web3.js": "npm:^1.98.2"
-    ox: "npm:^0.14.0"
-    zod: "npm:^4.0.0"
-  checksum: 10/0dceb2445e8e7719c9b8c528f600731045669666e8117a4475fc6e59cba14bedc945d44f4a842f666c19bd434f9f44acc786ae0b02c0fcd4ca30411ff3bfcc86
-  languageName: node
-  linkType: hard
-
-"@farcaster/miniapp-sdk@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "@farcaster/miniapp-sdk@npm:0.3.0"
-  dependencies:
-    "@farcaster/miniapp-core": "npm:0.6.0"
-    "@farcaster/quick-auth": "npm:^0.0.6"
-    comlink: "npm:^4.4.2"
-    eventemitter3: "npm:^5.0.1"
-    ox: "npm:^0.14.0"
-  checksum: 10/761809ff4e5478de5484bcac3e0d66f921f8983930132030eb5fc76fd86e48c423601294c479ef47619d8ddc3200ee2a5b934cae8b12ed8a554c4d6390790659
-  languageName: node
-  linkType: hard
-
-"@farcaster/miniapp-wagmi-connector@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@farcaster/miniapp-wagmi-connector@npm:2.0.0"
-  peerDependencies:
-    "@farcaster/miniapp-sdk": ^0.3.0
-    "@wagmi/core": ^2.14.1
-    viem: ^2.21.55
-  checksum: 10/e6a257aa8d52eec132dac71f9a0ccccbf5f83bf49a429257690ac98590aefa7c0cdf71290d325bc3ebb5f5ec53ce29701af9ecf785358e809a5a01d845718bbf
-  languageName: node
-  linkType: hard
-
-"@farcaster/quick-auth@npm:^0.0.6":
-  version: 0.0.6
-  resolution: "@farcaster/quick-auth@npm:0.0.6"
-  dependencies:
-    jose: "npm:^5.2.3"
-    zod: "npm:^3.25.1"
-  peerDependencies:
-    typescript: 5.8.3
-  checksum: 10/5854a4e952c51ee9a855b2ce470bf135dbd5c056aa4a0cf455fad4ec08e280ea9e242ec74dfcf3bb476a3a5c9054f8f38f9ff77bfb9f33d845db94e48fb205cf
-  languageName: node
-  linkType: hard
-
 "@fast-csv/format@npm:5.0.7":
   version: 5.0.7
   resolution: "@fast-csv/format@npm:5.0.7"
@@ -5408,7 +5361,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solana/web3.js@npm:^1.98.1, @solana/web3.js@npm:^1.98.2":
+"@solana/web3.js@npm:^1.98.1":
   version: 1.98.4
   resolution: "@solana/web3.js@npm:1.98.4"
   dependencies:
@@ -7491,27 +7444,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@worldcoin/minikit-js@npm:2.0.3":
-  version: 2.0.3
-  resolution: "@worldcoin/minikit-js@npm:2.0.3"
-  dependencies:
-    abitype: "npm:^1.2.3"
-  peerDependencies:
-    react: ^17 || ^18 || ^19
-    siwe: ^3.0.0
-    viem: ^2.21.0
-    wagmi: ^3.0.0
-  peerDependenciesMeta:
-    siwe:
-      optional: true
-    viem:
-      optional: true
-    wagmi:
-      optional: true
-  checksum: 10/6a16958110295e07f1384b49a5103277a82d0c8e2482238126afb4c8d20a1cd8453569103ab08bbe5c13764c56687e59309716e600b007778bd3b1b34a84ce23
-  languageName: node
-  linkType: hard
-
 "@xstate/fsm@npm:^1.4.0":
   version: 1.6.5
   resolution: "@xstate/fsm@npm:1.6.5"
@@ -8594,13 +8526,6 @@ __metadata:
   dependencies:
     delayed-stream: "npm:~1.0.0"
   checksum: 10/2e969e637d05d09fa50b02d74c83a1186f6914aae89e6653b62595cc75a221464f884f55f231b8f4df7a49537fba60bdc0427acd2bf324c09a1dbb84837e36e4
-  languageName: node
-  linkType: hard
-
-"comlink@npm:^4.4.2":
-  version: 4.4.2
-  resolution: "comlink@npm:4.4.2"
-  checksum: 10/ecee53b5b4536b3aa3f7636c383f831e68fbc013def77665cc7fad873d72cfa23b994e1ec4b49e83e4e909c1089a03acae03a523e33a5e5ed938cdb613456434
   languageName: node
   linkType: hard
 
@@ -11428,13 +11353,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^5.2.3":
-  version: 5.10.0
-  resolution: "jose@npm:5.10.0"
-  checksum: 10/03881d1dfb390dcf50926402edcfe233bf557b5a77321fcb1bdb53453bc1cdd26d2d0a9ab28c7445cbb826881f84fdf5074179700f10c2711ccb9880f51065d7
-  languageName: node
-  linkType: hard
-
 "jose@npm:^6.0.8":
   version: 6.2.1
   resolution: "jose@npm:6.2.1"
@@ -13695,7 +13613,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ox@npm:0.14.29, ox@npm:^0.14.0":
+"ox@npm:0.14.29":
   version: 0.14.29
   resolution: "ox@npm:0.14.29"
   dependencies:
@@ -16882,8 +16800,6 @@ __metadata:
     "@coinbase/wallet-sdk": "npm:^4.3.7"
     "@cypress/grep": "npm:^6.0.3"
     "@dotenvx/dotenvx": "npm:^2.21.0"
-    "@farcaster/miniapp-sdk": "npm:^0.3.0"
-    "@farcaster/miniapp-wagmi-connector": "npm:^2.0.0"
     "@floating-ui/react": "npm:^0.27.20"
     "@headlessui/react": "npm:^2.2.10"
     "@heroicons/react": "npm:^2.2.0"
@@ -16909,7 +16825,6 @@ __metadata:
     "@upstash/redis": "npm:^1.38.2"
     "@vercel/speed-insights": "npm:^2.0.0"
     "@walletconnect/ethereum-provider": "npm:^2.23.10"
-    "@worldcoin/minikit-js": "npm:2.0.3"
     chai: "npm:^6.2.2"
     crisp-sdk-web: "npm:^1.2.0"
     cypress: "npm:^15.21.0"
@@ -17397,14 +17312,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:4.4.3, zod@npm:^4.0.0, zod@npm:^4.4.3":
+"zod@npm:4.4.3, zod@npm:^4.4.3":
   version: 4.4.3
   resolution: "zod@npm:4.4.3"
   checksum: 10/804b9a42aa8f35f2b3c5a8dff906291cb749115f83ee2afe3576d70b5b5c53c965365c7f4967690647a9c54af9838ff232a85ff9577a0a36c44b68bc6cdefe36
   languageName: node
   linkType: hard
 
-"zod@npm:^3.24.4, zod@npm:^3.25.1":
+"zod@npm:^3.24.4":
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 10/f0c963ec40cd96858451d1690404d603d36507c1fc9682f2dae59ab38b578687d542708a7fdbf645f77926f78c9ed558f57c3d3aa226c285f798df0c4da16995
