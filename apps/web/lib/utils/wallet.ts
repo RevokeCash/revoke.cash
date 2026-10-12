@@ -1,4 +1,5 @@
 import { deduplicateArray } from '@revoke.cash/core/utils';
+import { ABSTRACT_CONNECTOR_ID, GLYPH_CONNECTOR_ID, VEEFRIENDS_CONNECTOR_ID } from 'lib/utils/wagmi';
 import type { Connector } from 'wagmi';
 
 export const getWalletIcon = (connector: Connector): string | undefined => {
@@ -79,9 +80,21 @@ export const getConnectorName = (connector: Connector): string => {
 };
 
 export const filterAndSortConnectors = (connectors: readonly Connector[]) => {
+  const hasInjectedProvider = typeof window !== 'undefined' && Boolean((window as any).ethereum);
+
+  // On mobile browsers without an injected wallet, only connectors that support deep links can work
+  const prioritizeDeepLinkConnectors = isMobileDevice() && !hasInjectedProvider;
+
   const getConnectorRank = (connector: Connector) => {
+    if (prioritizeDeepLinkConnectors && connector.id === 'walletConnect') return -2;
+    if (prioritizeDeepLinkConnectors && connector.id === 'coinbaseWalletSDK') return -1;
+
     // Sort MetaMask at the top
     if (connector.id === 'io.metamask') return 0;
+
+    // App-specific connectors that are always configured should never outrank the user's own wallets
+    // (the Abstract connector's dotted id would otherwise match the discovered connector check below)
+    if ([ABSTRACT_CONNECTOR_ID, VEEFRIENDS_CONNECTOR_ID, GLYPH_CONNECTOR_ID].includes(connector.id)) return 4;
 
     // Sort other multi-provider discovered connectors next
     if (connector.id.includes('.')) return 1;
@@ -92,9 +105,13 @@ export const filterAndSortConnectors = (connectors: readonly Connector[]) => {
     return 3;
   };
 
-  return deduplicateArray(connectors, getConnectorName)
-    .filter((connector) => connector.id !== 'safe')
-    .sort((a, b) => getConnectorRank(a) - getConnectorRank(b));
+  return (
+    deduplicateArray(connectors, getConnectorName)
+      .filter((connector) => connector.id !== 'safe')
+      // The generic injected connector ("Browser Wallet") can only connect when an injected provider exists
+      .filter((connector) => connector.id !== 'injected' || hasInjectedProvider)
+      .sort((a, b) => getConnectorRank(a) - getConnectorRank(b))
+  );
 };
 
 export const isMobileDevice = (): boolean => {

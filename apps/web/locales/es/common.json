@@ -57,7 +57,9 @@
     "system": "Sistema"
   },
   "connect_wallet": {
+    "check_wallet": "Comprueba tu cartera para ver la solicitud de conexión.",
     "failed": "No se pudo conectar: {message}",
+    "request_already_pending": "Ya hay una solicitud de conexión abierta en tu cartera. Busca la ventana emergente de la cartera y apruébala o recházala allí.",
     "title": "Conecta Tu Cartera"
   },
   "errors": {
@@ -168,6 +170,7 @@
     "no_options": "Sin opciones"
   },
   "toasts": {
+    "chain_mismatch": "❌ Tu cartera está conectada a una red distinta de {chainName}. Por favor, vuelve a esa red e inténtalo de nuevo.",
     "clipboard_failed": "❌ No se pudo copiar al portapapeles",
     "clipboard_success": "✅ Copiado al portapapeles",
     "fee_payment_failed": "❌ Fallo en el pago de la tarifa: {message}",

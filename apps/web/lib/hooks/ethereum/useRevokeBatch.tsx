@@ -1,14 +1,17 @@
 'use client';
 
 import { getAllowanceKey, type OnUpdate, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { getChainName } from '@revoke.cash/core/chains';
 import { walletSupportsEip5792 } from '@revoke.cash/core/eip5792';
 import {
   isAccountUpgradeRejectionError,
+  isChainMismatchError,
   isSwitchChainNotSupportedError,
   isUserRejectionError,
 } from '@revoke.cash/core/utils/errors';
 import { getFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
+import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
@@ -21,6 +24,8 @@ import { useWalletCapabilities } from './useWalletCapabilities';
 import { useWalletErrorMessage } from './useWalletErrorMessage';
 
 export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
+  const t = useTranslations();
+
   // Get chainId from the first allowance (all selected allowances should be from the same chain)
   const chainId = allowances[0]?.chainId ?? 1;
   const { isPremium } = useAddress();
@@ -70,7 +75,11 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
     } catch (error) {
       // Rejecting the chain switch prompt is intentional, and switch failures already get their own toast
       if (!isUserRejectionError(error) && !isSwitchChainNotSupportedError(error)) {
-        toast.error(getWalletErrorMessage(error));
+        if (isChainMismatchError(error)) {
+          toast.error(t('common.toasts.chain_mismatch', { chainName: getChainName(chainId) }));
+        } else {
+          toast.error(getWalletErrorMessage(error));
+        }
       }
       throw error;
     }

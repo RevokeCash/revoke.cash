@@ -57,7 +57,9 @@
     "system": "系统"
   },
   "connect_wallet": {
+    "check_wallet": "请在钱包中查看连接请求。",
     "failed": "无法连接：{message}",
+    "request_already_pending": "钱包中已有一个待处理的连接请求。请找到钱包弹窗，在那里批准或拒绝该请求。",
     "title": "连接钱包"
   },
   "errors": {
@@ -168,6 +170,7 @@
     "no_options": "无选项"
   },
   "toasts": {
+    "chain_mismatch": "❌ 您的钱包连接的网络不是{chainName}。请切换回该网络后重试。",
     "clipboard_failed": "❌ 无法复制到剪贴板",
     "clipboard_success": "✅ 已复制到剪贴板",
     "fee_payment_failed": "❌ 费用支付失败：{message}",

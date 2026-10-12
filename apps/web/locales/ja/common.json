@@ -57,7 +57,9 @@
     "system": "システム"
   },
   "connect_wallet": {
+    "check_wallet": "ウォレットで接続リクエストを確認してください。",
     "failed": "接続できませんでした：{message}",
+    "request_already_pending": "ウォレットに接続リクエストがすでに開いています。ウォレットのポップアップを探して、そこで承認または拒否してください。",
     "title": "ウォレットを接続する"
   },
   "errors": {
@@ -168,6 +170,7 @@
     "no_options": "選択肢がありません"
   },
   "toasts": {
+    "chain_mismatch": "❌ ウォレットが{chainName}とは別のネットワークに接続されています。ネットワークを切り替えてから、もう一度お試しください。",
     "clipboard_failed": "❌ クリップボードにコピーできませんでした",
     "clipboard_success": "✅ クリップボードにコピーされました",
     "fee_payment_failed": "❌ 手数料の支払いに失敗しました：{message}",

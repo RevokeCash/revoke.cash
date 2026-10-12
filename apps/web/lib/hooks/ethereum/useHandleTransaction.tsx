@@ -1,5 +1,7 @@
+import { getChainName } from '@revoke.cash/core/chains';
 import { type TransactionSubmitted, TransactionType } from '@revoke.cash/core/types';
 import {
+  isChainMismatchError,
   isLedgerNanoSError,
   isNoFeeRequiredError,
   isRevertedError,
@@ -27,6 +29,11 @@ export const useHandleTransaction = (chainId: number) => {
 
     // Chain switch failures already get their own toast in useSwitchChain
     if (isSwitchChainNotSupportedError(e)) return;
+
+    // The wallet's active chain changed between the chain switch and the transaction being sent
+    if (isChainMismatchError(e)) {
+      return void toast.error(t('common.toasts.chain_mismatch', { chainName: getChainName(chainId) }));
+    }
 
     console.debug(stringify(e, null, 2));
 

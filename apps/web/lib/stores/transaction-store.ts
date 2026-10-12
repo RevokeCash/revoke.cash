@@ -2,6 +2,7 @@ import type { TransactionStatus, TransactionSubmitted, TransactionType } from '@
 import {
   isAccountUpgradeRejectionError,
   isBatchSizeError,
+  isChainMismatchError,
   isSwitchChainNotSupportedError,
   isUserRejectionError,
   parseErrorMessage,
@@ -95,8 +96,11 @@ export const wrapTransaction = ({
       return transactionSubmitted;
     } catch (error) {
       const message = parseErrorMessage(error);
-      if (isUserRejectionError(message) || isSwitchChainNotSupportedError(error)) {
+      // A chain mismatch means the wallet switched networks mid-flow, so we reset instead of marking reverted
+      if (isUserRejectionError(message) || isSwitchChainNotSupportedError(error) || isChainMismatchError(error)) {
         updateTransaction(transactionKey, { status: 'not_started' });
+        // The batch flows pass no handleTransaction to toast errors, so we rethrow for the caller to surface it
+        if (isChainMismatchError(error) && !handleTransaction) throw error;
       } else if (isBatchSizeError(message) || isAccountUpgradeRejectionError(message)) {
         updateTransaction(transactionKey, { status: 'retrying' });
         throw error;

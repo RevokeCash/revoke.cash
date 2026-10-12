@@ -43,6 +43,23 @@ export const isUserRejectionError = (error?: string | any): boolean => {
   return false;
 };
 
+// Wallets throw this when a connection request is already open, e.g. when retrying while an earlier
+// (possibly hidden) wallet popup is still waiting for a response
+export const isRequestAlreadyPendingError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return (
+      isRequestAlreadyPendingError(parseErrorMessage(error)) || isRequestAlreadyPendingError(stringifyError(error))
+    );
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
+  if (lowercaseMessage?.includes('already pending')) return true; // MetaMask (wallet_requestPermissions)
+  if (lowercaseMessage?.includes('already processing')) return true; // MetaMask (eth_requestAccounts)
+  return false;
+};
+
 export const isNoFeeRequiredError = (error?: string | any): boolean => {
   if (!error) return false;
 
@@ -316,6 +333,20 @@ export const isSwitchChainNotSupportedError = (error?: string | any): boolean =>
   }
 
   return error?.toLowerCase()?.includes('does not support programmatic chain switching');
+};
+
+// The wallet's active chain changed between the app's chain switch and the transaction being sent
+export const isChainMismatchError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isChainMismatchError(parseErrorMessage(error)) || isChainMismatchError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
+  if (lowercaseMessage?.includes('does not match the target chain')) return true; // viem ChainMismatchError
+  if (lowercaseMessage?.includes("does not match the connection's chain")) return true; // wagmi ConnectorChainMismatchError
+  return false;
 };
 
 // Transient errors are expected to resolve themselves after some time

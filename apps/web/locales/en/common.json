@@ -57,7 +57,9 @@
     "system": "System"
   },
   "connect_wallet": {
+    "check_wallet": "Check your wallet for a connection request.",
     "failed": "Couldn't connect: {message}",
+    "request_already_pending": "A connection request is already open in your wallet. Find the wallet popup and approve or reject it there.",
     "title": "Connect Your Wallet"
   },
   "errors": {
@@ -168,6 +170,7 @@
     "no_options": "No options"
   },
   "toasts": {
+    "chain_mismatch": "❌ Your wallet is connected to a different network than {chainName}. Please switch back and try again.",
     "clipboard_failed": "❌ Couldn't copy to clipboard",
     "clipboard_success": "✅ Copied to clipboard",
     "fee_payment_failed": "❌ Fee payment failed: {message}",

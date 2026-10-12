@@ -2,8 +2,9 @@
 
 import { getAllowanceKey, type OnUpdate, type TokenAllowanceData } from '@revoke.cash/core/allowances';
 import { getBatchRevokeSponsor } from '@revoke.cash/core/batch-revokes/sponsors';
+import { getChainName } from '@revoke.cash/core/chains';
 import { TransactionType } from '@revoke.cash/core/types';
-import { isUserRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { isChainMismatchError, isUserRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { revokeAllowance, trackRevokeTransaction } from 'lib/allowances';
 import { recordBatchRevoke, trackBatchRevoke } from 'lib/allowances/batch-revoke';
@@ -67,6 +68,8 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
         } catch (error) {
           if (isUserRejectionError(error)) {
             toast.error(t('common.toasts.fee_payment_rejected'));
+          } else if (isChainMismatchError(error)) {
+            toast.error(t('common.toasts.chain_mismatch', { chainName: getChainName(chainId) }));
           } else {
             toast.error(t('common.toasts.fee_payment_failed', { message: parseErrorMessage(error) }));
           }

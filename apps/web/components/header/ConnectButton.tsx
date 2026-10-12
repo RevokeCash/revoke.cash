@@ -1,7 +1,7 @@
 'use client';
 
 import { DialogTitle } from '@headlessui/react';
-import { isUserRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { isRequestAlreadyPendingError, isUserRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import Button from 'components/common/Button';
 import Logo from 'components/common/Logo';
 import Modal from 'components/common/Modal';
@@ -78,7 +78,14 @@ const ConnectButton = ({ size, style, className, text, redirect, onClick, onConn
   };
 
   const sortedConnectors = useMemo(() => filterAndSortConnectors(connectors), [connectors]);
-  const displayedError = error && !isUserRejectionError(error) ? parseErrorMessage(error) : null;
+
+  const getDisplayedError = (): string | null => {
+    if (!error || isUserRejectionError(error)) return null;
+    if (isRequestAlreadyPendingError(error)) return t('common.connect_wallet.request_already_pending');
+    return t('common.connect_wallet.failed', { message: parseErrorMessage(error) });
+  };
+
+  const displayedError = getDisplayedError();
 
   return (
     <>
@@ -117,17 +124,17 @@ const ConnectButton = ({ size, style, className, text, redirect, onClick, onConn
               </div>
 
               {isPending && (
-                <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80 dark:bg-black/80">
+                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-white/80 dark:bg-black/80">
                   <Spinner className="w-8 h-8" />
+                  <p className="text-sm text-center">{t('common.connect_wallet.check_wallet')}</p>
+                  <Button style="secondary" size="sm" onClick={reset}>
+                    {t('common.buttons.cancel')}
+                  </Button>
                 </div>
               )}
             </div>
 
-            {displayedError && (
-              <p className="text-sm text-center text-red-600 dark:text-red-400">
-                {t('common.connect_wallet.failed', { message: displayedError })}
-              </p>
-            )}
+            {displayedError && <p className="text-sm text-center text-red-600 dark:text-red-400">{displayedError}</p>}
           </div>
         </div>
       </Modal>

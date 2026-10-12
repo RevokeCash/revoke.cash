@@ -10,14 +10,19 @@ import type { Chain } from 'viem';
 import { createConfig } from 'wagmi';
 import { coinbaseWallet, injected, safe, walletConnect } from 'wagmi/connectors';
 
+// The Abstract connector always registers itself with this hardcoded id
+export const ABSTRACT_CONNECTOR_ID = 'xyz.abs.privy';
+export const VEEFRIENDS_CONNECTOR_ID = 'cm5158iom02kdwmj4wj527lc4';
+export const GLYPH_CONNECTOR_ID = 'cly38x0w10ac945q9yg9sm71i';
+
 const veeFriendsConnector = toPrivyWalletConnector({
-  id: 'cm5158iom02kdwmj4wj527lc4',
+  id: VEEFRIENDS_CONNECTOR_ID,
   name: 'VeeFriends Wallet',
   iconUrl: '/assets/images/vendor/wallets/veefriends.svg',
 });
 
 const glyphConnector = toPrivyWalletConnector({
-  id: 'cly38x0w10ac945q9yg9sm71i',
+  id: GLYPH_CONNECTOR_ID,
   name: 'Glyph',
   iconUrl: '/assets/images/vendor/wallets/glyph.png',
 });
@@ -34,7 +39,6 @@ export const connectors = [
             description: `Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on Ethereum and over ${ROUNDED_DOWN_NETWORK_COUNT} other networks.`,
             url: 'https://revoke.cash',
             icons: ['https://revoke.cash/assets/images/revoke-icon-orange-black.svg', 'https://revoke.cash/icon.png'],
-            redirect: { universal: 'https://revoke.cash' },
           },
         }),
       ]
