@@ -1128,7 +1128,7 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://scan.oasys.games/api',
   }),
   [ChainId.OpBNB]: new Chain({
-    type: SupportType.ETHERSCAN,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId.OpBNB,
     name: 'opBNB',
     nativeCurrency: { name: 'BNB Chain Native Token', symbol: 'BNB', decimals: 18 },

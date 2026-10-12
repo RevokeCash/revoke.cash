@@ -1,7 +1,16 @@
-import kyBase, { HTTPError } from 'ky';
+import kyBase, { type BeforeErrorHook, HTTPError } from 'ky';
 import PQueue from 'p-queue';
 
 export const kyQueue = new PQueue({ concurrency: 50 });
+
+// Matches search params such as apiKey=... or apikey=... in a URL
+const API_KEY_SEARCH_PARAM_PATTERN = /([?&][^=&\s]*key=)[^&\s]+/gi;
+
+// Ky error messages include the request URL, so API keys are redacted before the error is logged, stored or sent to clients
+const redactApiKeysInErrorMessage: BeforeErrorHook = ({ error }) => {
+  error.message = error.message.replace(API_KEY_SEARCH_PARAM_PATTERN, '$1REDACTED');
+  return error;
+};
 
 // POST requests are only retried if they are 429 (rate limited)
 const ky = kyBase.extend({
@@ -17,6 +26,7 @@ const ky = kyBase.extend({
         if (request.method === 'POST' && !isRateLimited) throw error;
       },
     ],
+    beforeError: [redactApiKeysInErrorMessage],
   },
 });
 
