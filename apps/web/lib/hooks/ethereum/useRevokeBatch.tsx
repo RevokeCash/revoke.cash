@@ -17,6 +17,7 @@ import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
 import { isTransactionStatusLoadingState, useTransactionStore } from '../../stores/transaction-store';
 import { useEnsureWalletClient } from './ensureWalletClient';
+import { useFeePayment } from './useFeePayment';
 import { useNativeTokenPrice } from './useNativeTokenPrice';
 import { useRevokeBatchEip5792 } from './useRevokeBatchEip5792';
 import { useRevokeBatchQueuedTransactions } from './useRevokeBatchQueuedTransactions';
@@ -36,6 +37,7 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
   const batchAtomic = useRevokeBatchEip5792(allowances, onUpdate);
   const batchQueued = useRevokeBatchQueuedTransactions(allowances, onUpdate);
   const { nativeTokenPrice } = useNativeTokenPrice(chainId);
+  const { hasEnoughBalanceForFee, nativeToken } = useFeePayment(chainId);
 
   // If we cannot get the native token price, we set the fee to $0 (this will result in no fee payment downstream)
   const feeDollarAmount = nativeTokenPrice ? getFeeDollarAmount(chainId, allowances.length, isPremium).toFixed(2) : '0';
@@ -51,6 +53,11 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
   const { execute: revoke, loading: isSubmitting } = useAsyncCallback(async (): Promise<void> => {
     try {
       const walletClient = await ensureWalletClient(chainId);
+
+      if (!(await hasEnoughBalanceForFee(feeDollarAmount, walletClient))) {
+        toast.error(t('common.toasts.fee_insufficient_balance', { feeDollarAmount, nativeToken }));
+        return;
+      }
 
       const supportsEip5792 = walletCapabilities.isLoading
         ? await walletSupportsEip5792(walletClient, chainId)

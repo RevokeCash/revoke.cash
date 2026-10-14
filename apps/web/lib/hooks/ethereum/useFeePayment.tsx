@@ -50,6 +50,18 @@ export const useFeePayment = (chainId: number) => {
     };
   };
 
+  // Some batching wallets skip a fee call that the balance cannot cover and still execute the revokes
+  const hasEnoughBalanceForFee = async (dollarAmount: string, walletClient: ConnectedWalletClient) => {
+    try {
+      const { value } = prepareFeePayment(dollarAmount, walletClient);
+      const balance = await publicClient.getBalance({ address: walletClient.account.address });
+      return balance >= (value ?? 0n);
+    } catch (error) {
+      if (isNoFeeRequiredError(error)) return true;
+      throw error;
+    }
+  };
+
   const sendFeePayment = async (dollarAmount: string): Promise<TransactionSubmitted | undefined> => {
     if (!dollarAmount || Number(dollarAmount) === 0) return;
 
@@ -85,5 +97,5 @@ export const useFeePayment = (chainId: number) => {
     analytics.track('Fee Paid', { address, chainId, dollarAmount, transactionHash });
   };
 
-  return { prepareFeePayment, sendFeePayment, nativeToken, trackFeePaid };
+  return { prepareFeePayment, hasEnoughBalanceForFee, sendFeePayment, nativeToken, trackFeePaid };
 };

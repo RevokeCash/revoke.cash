@@ -173,6 +173,7 @@
     "chain_mismatch": "❌ Your wallet is connected to a different network than {chainName}. Please switch back and try again.",
     "clipboard_failed": "❌ Couldn't copy to clipboard",
     "clipboard_success": "✅ Copied to clipboard",
+    "fee_insufficient_balance": "❌ Your {nativeToken} balance is too low to pay the ${feeDollarAmount} batch revoke fee. Please add {nativeToken} to your wallet and try again, or revoke one-by-one for free.",
     "fee_payment_failed": "❌ Fee payment failed: {message}",
     "fee_payment_rejected": "❌ Please pay the batch revoke fee to continue",
     "revoke_failed": "❌ Revoking failed: {message}",

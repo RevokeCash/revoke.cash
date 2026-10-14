@@ -173,6 +173,7 @@
     "chain_mismatch": "❌ Tu cartera está conectada a una red distinta de {chainName}. Por favor, vuelve a esa red e inténtalo de nuevo.",
     "clipboard_failed": "❌ No se pudo copiar al portapapeles",
     "clipboard_success": "✅ Copiado al portapapeles",
+    "fee_insufficient_balance": "❌ Tu saldo de {nativeToken} es insuficiente para pagar la tarifa de revocación por lotes de ${feeDollarAmount}. Añade {nativeToken} a tu cartera e inténtalo de nuevo, o revoca las aprobaciones una por una de forma gratuita.",
     "fee_payment_failed": "❌ Fallo en el pago de la tarifa: {message}",
     "fee_payment_rejected": "❌ Por favor, paga la tarifa de revocación por lotes para continuar",
     "revoke_failed": "❌ No se pudo revocar la autorización: {message}",

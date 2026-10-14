@@ -173,6 +173,7 @@
     "chain_mismatch": "❌ ウォレットが{chainName}とは別のネットワークに接続されています。ネットワークを切り替えてから、もう一度お試しください。",
     "clipboard_failed": "❌ クリップボードにコピーできませんでした",
     "clipboard_success": "✅ クリップボードにコピーされました",
+    "fee_insufficient_balance": "❌ {nativeToken}の残高が不足しているため、${feeDollarAmount}の一括取り消し手数料を支払えません。ウォレットに{nativeToken}を追加してからもう一度お試しいただくか、承認を1つずつ無料で取り消してください。",
     "fee_payment_failed": "❌ 手数料の支払いに失敗しました：{message}",
     "fee_payment_rejected": "❌ 続行するには一括取り消し手数料をお支払いください",
     "revoke_failed": "❌ 取り消しに失敗しました：{message}",

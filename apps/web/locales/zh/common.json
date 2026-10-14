@@ -173,6 +173,7 @@
     "chain_mismatch": "❌ 您的钱包连接的网络不是{chainName}。请切换回该网络后重试。",
     "clipboard_failed": "❌ 无法复制到剪贴板",
     "clipboard_success": "✅ 已复制到剪贴板",
+    "fee_insufficient_balance": "❌ 您的 {nativeToken} 余额不足以支付 ${feeDollarAmount} 的批量撤销费用。请向钱包中添加 {nativeToken} 后重试，或免费逐笔撤销授权。",
     "fee_payment_failed": "❌ 费用支付失败：{message}",
     "fee_payment_rejected": "❌ 请支付批量撤销费用才能继续",
     "revoke_failed": "❌ 撤销失败：{message}",
