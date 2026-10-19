@@ -3,6 +3,7 @@
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { usePathname } from 'lib/i18n/navigation';
 import { wagmiConfig } from 'lib/utils/wagmi';
+import { isLedgerLive } from 'lib/utils/wallet';
 import { memo, type ReactNode, useEffect } from 'react';
 import { useConnect, useConnection, useConnectors, WagmiProvider } from 'wagmi';
 
@@ -36,9 +37,10 @@ const AutoConnect = memo(({ children }: Props) => {
     if (!safeConnector || connector === safeConnector) return;
 
     connectAsync({ connector: safeConnector })
-      .then(({ accounts: [account] }) => {
+      .then(({ accounts: [account], chainId }) => {
+        // The address page defaults to Ethereum, so we open it on the wallet's chain (a chainId in the URL still wins)
         if (pathName === '/') {
-          router.push(`/address/${account}`, { retainSearchParams: ['chainId'] });
+          router.push(`/address/${account}?chainId=${chainId}`, { retainSearchParams: ['chainId'] });
         }
       })
       .catch(console.error);
@@ -54,9 +56,10 @@ const AutoConnect = memo(({ children }: Props) => {
     if (!injectedConnector || connector === injectedConnector) return;
 
     connectAsync({ connector: injectedConnector })
-      .then(({ accounts: [account] }) => {
+      .then(({ accounts: [account], chainId }) => {
+        // The address page defaults to Ethereum, so we open it on the wallet's chain (a chainId in the URL still wins)
         if (pathName === '/') {
-          router.push(`/address/${account}`, { retainSearchParams: ['chainId'] });
+          router.push(`/address/${account}?chainId=${chainId}`, { retainSearchParams: ['chainId'] });
         }
       })
       .catch(console.error);
@@ -78,8 +81,4 @@ const AutoConnect = memo(({ children }: Props) => {
 
 const isIframe = () => {
   return window?.parent !== window;
-};
-
-const isLedgerLive = () => {
-  return (window as any)?.ethereum?.isLedgerLive;
 };

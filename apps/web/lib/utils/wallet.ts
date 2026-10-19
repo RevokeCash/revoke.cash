@@ -1,6 +1,9 @@
 import { deduplicateArray } from '@revoke.cash/core/utils';
-import { ABSTRACT_CONNECTOR_ID, GLYPH_CONNECTOR_ID, VEEFRIENDS_CONNECTOR_ID } from 'lib/utils/wagmi';
+import { throwIfTransactionReverted, waitForTransactionConfirmation } from '@revoke.cash/core/wallet';
+import { ABSTRACT_CONNECTOR_ID, GLYPH_CONNECTOR_ID, VEEFRIENDS_CONNECTOR_ID, wagmiConfig } from 'lib/utils/wagmi';
+import { type Hash, type PublicClient, publicActions, type WalletClient } from 'viem';
 import type { Connector } from 'wagmi';
+import { getConnection } from 'wagmi/actions';
 
 export const getWalletIcon = (connector: Connector): string | undefined => {
   const walletName = getConnectorName(connector);
@@ -119,4 +122,30 @@ export const isMobileDevice = (): boolean => {
   if (/android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent)) return true;
   // iPads report a desktop (Macintosh) user agent, but are identifiable by their touch support
   return navigator.userAgent.includes('Macintosh') && navigator.maxTouchPoints > 1;
+};
+
+export const isLedgerLive = (): boolean => {
+  return typeof window !== 'undefined' && Boolean((window as any).ethereum?.isLedgerLive);
+};
+
+export const isSafeConnection = (): boolean => {
+  return getConnection(wagmiConfig).connector?.id === 'safe';
+};
+
+// Safe Apps return a safeTxHash instead of a transaction hash, and only the Safe provider can resolve it to the
+// executed transaction. A multisig transaction can wait a long time for its other signers, so there is no timeout.
+export const waitForWalletTransactionConfirmation = async (
+  hash: Hash,
+  publicClient: PublicClient,
+  walletClient: WalletClient,
+) => {
+  if (!isSafeConnection()) return waitForTransactionConfirmation(hash, publicClient);
+
+  // The Safe provider returns a placeholder transaction for a safeTxHash, so replacement detection does not apply
+  const transactionReceipt = await walletClient
+    .extend(publicActions)
+    .waitForTransactionReceipt({ hash, timeout: 0, checkReplacement: false });
+
+  throwIfTransactionReverted(transactionReceipt);
+  return transactionReceipt;
 };

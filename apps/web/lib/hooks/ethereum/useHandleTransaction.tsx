@@ -5,9 +5,9 @@ import {
   isLedgerNanoSError,
   isNoFeeRequiredError,
   isRevertedError,
-  isSwitchChainNotSupportedError,
   isUserRejectionError,
   parseErrorMessage,
+  SwitchChainHandledError,
 } from '@revoke.cash/core/utils/errors';
 import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
 import { useTranslations } from 'next-intl';
@@ -28,7 +28,7 @@ export const useHandleTransaction = (chainId: number) => {
     if (isNoFeeRequiredError(parsedMessage)) return;
 
     // Chain switch failures already get their own toast in useSwitchChain
-    if (isSwitchChainNotSupportedError(e)) return;
+    if (e instanceof SwitchChainHandledError) return;
 
     // The wallet's active chain changed between the chain switch and the transaction being sent
     if (isChainMismatchError(e)) {

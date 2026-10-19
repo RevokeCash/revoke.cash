@@ -22,6 +22,7 @@ import { throwIfExcessiveGas } from '@revoke.cash/core/wallet';
 import { isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { trackRevokeTransaction } from 'lib/allowances';
 import { recordBatchRevoke, trackBatchRevoke } from 'lib/allowances/batch-revoke';
+import { isSafeConnection } from 'lib/utils/wallet';
 import { useTranslations } from 'next-intl';
 import PQueue from 'p-queue';
 import type { Capabilities, EstimateContractGasParameters, Hash, TransactionReceipt } from 'viem'; // viem has an issue with typing the capability. Until they fix it, we are manually importing it.
@@ -127,8 +128,10 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
             ...getPaymasterDetails(walletCapabilities, chainId),
           });
 
+          // A Safe multisig batch can wait a long time for its other signers, so it has no timeout
+          const callsStatusTimeout = isSafeConnection() ? 0 : 10 * MINUTE;
           const callsStatusPromise = chunkPromise.then(({ id }) =>
-            walletClient.waitForCallsStatus({ id, pollingInterval: 1000, timeout: 10 * MINUTE }),
+            walletClient.waitForCallsStatus({ id, pollingInterval: 1000, timeout: callsStatusTimeout }),
           );
 
           const transactionReceiptPromises = new Map<Hash, Promise<TransactionReceipt>>();

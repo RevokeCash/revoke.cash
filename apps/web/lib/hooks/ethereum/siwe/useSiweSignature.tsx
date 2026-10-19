@@ -15,7 +15,7 @@ export const useSiweSignature = (address?: Address) => {
     error,
     refetch: signIn,
   } = useQuery({
-    queryKey: ['siwe', 'signature', address, { persist: true }],
+    queryKey: ['siwe', 'signature', address],
     queryFn: async () => {
       // A sign-in triggered right after connecting can run before the connection hook state has
       // propagated, so fall back to the imperative connection state for the just-connected address.
@@ -40,6 +40,7 @@ export const useSiweSignature = (address?: Address) => {
     },
     enabled: false, // Signing in is done manually
     staleTime: Infinity,
+    retry: false, // A retry would show a new signature request right after the user rejected one
   });
 
   return { siwe, error, isLoading, signIn };

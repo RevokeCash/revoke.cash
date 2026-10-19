@@ -182,6 +182,7 @@
     "switch_chain_failed": "❌ チェーンの切り替えに失敗しました。ウォレットで手動で{chainName}に切り替えてください。",
     "transaction_failed": "❌ トランザクションが失敗しました：{message}",
     "transaction_submitted": "✅ トランザクションを送信しました！",
+    "transaction_submitted_safe": "✅ Safeでトランザクションを作成しました。他の署名者がSafeで承認する必要がある場合があります。",
     "update_failed": "❌ このトークンは許可の更新をサポートしていません。代わりに取り消してください。"
   }
 }

@@ -4,11 +4,12 @@ import { type DocumentedChainId, getChainNativeToken, isTestnetChain } from '@re
 import { FEES_ADDRESS } from '@revoke.cash/core/constants';
 import type { TransactionSubmitted } from '@revoke.cash/core/types';
 import { isNoFeeRequiredError } from '@revoke.cash/core/utils/errors';
+import { withFallback } from '@revoke.cash/core/utils/promises';
 import { HOUR } from '@revoke.cash/core/utils/time';
-import { waitForTransactionConfirmation } from '@revoke.cash/core/wallet';
 import { isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { recordBatchRevoke } from 'lib/allowances/batch-revoke';
 import analytics from 'lib/utils/analytics';
+import { waitForWalletTransactionConfirmation } from 'lib/utils/wallet';
 import useLocalStorage from 'use-local-storage';
 import { type Address, type Hash, parseEther, type SendTransactionParameters } from 'viem';
 import { usePublicClient } from 'wagmi';
@@ -24,8 +25,8 @@ export const useFeePayment = (chainId: number) => {
   // We keep track of the most recent fee payments per chain/address combination, to prevent potential duplicate fee payments
   const [lastFeePayments, setLastFeePayments] = useLocalStorage<Record<string, number>>('last-fee-payments', {});
 
-  const prepareFeePayment = (dollarAmount: string, walletClient: ConnectedWalletClient): SendTransactionParameters => {
-    const feePaymentKey = `${chainId}-${walletClient.account.address}`;
+  const getFeeValue = (dollarAmount: string, address: Address): bigint => {
+    const feePaymentKey = `${chainId}-${address}`;
     const lastFeePayment = lastFeePayments[feePaymentKey];
     if (lastFeePayment && Date.now() - lastFeePayment < 1 * HOUR) {
       throw new Error('No fee required: Fee payment already registered in the last hour');
@@ -40,22 +41,26 @@ export const useFeePayment = (chainId: number) => {
     }
 
     const tokenAmount = Number(dollarAmount) / nativeTokenPrice;
+    return parseEther(tokenAmount.toString());
+  };
 
+  const prepareFeePayment = (dollarAmount: string, walletClient: ConnectedWalletClient): SendTransactionParameters => {
     return {
       account: walletClient.account!,
       to: FEES_ADDRESS,
-      value: parseEther(tokenAmount.toString()),
+      value: getFeeValue(dollarAmount, walletClient.account.address),
       chain: walletClient.chain,
       kzg: undefined, // TODO: Idk why I need to add this, but since Viem v2 it's required 😅
     };
   };
 
   // Some batching wallets skip a fee call that the balance cannot cover and still execute the revokes
-  const hasEnoughBalanceForFee = async (dollarAmount: string, walletClient: ConnectedWalletClient) => {
+  const hasEnoughBalanceForFee = async (dollarAmount: string, address: Address) => {
     try {
-      const { value } = prepareFeePayment(dollarAmount, walletClient);
-      const balance = await publicClient.getBalance({ address: walletClient.account.address });
-      return balance >= (value ?? 0n);
+      const value = getFeeValue(dollarAmount, address);
+      // If the balance cannot be fetched, the wallet handles an insufficient balance instead of us blocking the batch
+      const balance = await withFallback<bigint | null>(publicClient.getBalance({ address }), null);
+      return balance === null || balance >= value;
     } catch (error) {
       if (isNoFeeRequiredError(error)) return true;
       throw error;
@@ -71,7 +76,7 @@ export const useFeePayment = (chainId: number) => {
 
       trackFeePaid(chainId, walletClient.account.address, dollarAmount, hash);
 
-      return { hash, confirmation: waitForTransactionConfirmation(hash, publicClient) };
+      return { hash, confirmation: waitForWalletTransactionConfirmation(hash, publicClient, walletClient) };
     } catch (error) {
       if (isNoFeeRequiredError(error)) return;
       throw error;

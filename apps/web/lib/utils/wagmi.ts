@@ -28,7 +28,7 @@ const glyphConnector = toPrivyWalletConnector({
 });
 
 export const connectors = [
-  safe({ debug: false }),
+  safe({ debug: false, allowedDomains: [/^https:\/\/app\.safe\.global$/] }),
   injected(),
   ...(typeof window !== 'undefined'
     ? [

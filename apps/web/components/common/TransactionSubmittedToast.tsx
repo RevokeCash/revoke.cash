@@ -1,5 +1,6 @@
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import { getChainExplorerUrl } from '@revoke.cash/core/chains';
+import { isSafeConnection } from 'lib/utils/wallet';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 import Href from './Href';
@@ -11,6 +12,11 @@ interface Props {
 
 const TransactionSubmittedToast = ({ chainId, transactionHash }: Props) => {
   const t = useTranslations();
+
+  // A Safe returns a safeTxHash that block explorers do not know, and the Safe UI already tracks the transaction
+  if (isSafeConnection()) {
+    return <div className="text-center">{t('common.toasts.transaction_submitted_safe')}</div>;
+  }
 
   const explorerUrl = getChainExplorerUrl(chainId);
 

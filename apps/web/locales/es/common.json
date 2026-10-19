@@ -182,6 +182,7 @@
     "switch_chain_failed": "❌ Error al cambiar de cadena, por favor cambia manualmente a {chainName} en tu cartera.",
     "transaction_failed": "❌ Transacción fallida: {message}",
     "transaction_submitted": "✅ ¡Transacción enviada!",
+    "transaction_submitted_safe": "✅ Transacción creada en tu Safe. Es posible que otros firmantes deban confirmarla allí.",
     "update_failed": "❌ Este token no admite la actualización de aprobaciones, por favor revócala en su lugar."
   }
 }

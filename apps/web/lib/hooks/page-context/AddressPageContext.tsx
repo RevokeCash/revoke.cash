@@ -36,7 +36,7 @@ export const AddressPageContextProvider = ({
   const path = usePathname();
   const router = useCsrRouter();
 
-  // The default selected chain ID is either the chainId query parameter, the connected chain ID, or 1 (Ethereum)
+  // The default selected chain ID is either the initial chain ID, the chainId query parameter, or 1 (Ethereum)
   const queryChainId = Number(searchParams.get('chainId')) || undefined;
   const defaultChainId = [initialChainId, queryChainId, 1]
     .filter((chainId) => !isNullish(chainId))

@@ -182,6 +182,7 @@
     "switch_chain_failed": "❌ Switching chain failed, please switch to {chainName} manually in your wallet.",
     "transaction_failed": "❌ Transaction failed: {message}",
     "transaction_submitted": "✅ Transaction submitted!",
+    "transaction_submitted_safe": "✅ Transaction created in your Safe. Other signers may need to confirm it there.",
     "update_failed": "❌ This token does not support updating approvals, please revoke instead."
   }
 }

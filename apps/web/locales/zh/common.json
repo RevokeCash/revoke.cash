@@ -182,6 +182,7 @@
     "switch_chain_failed": "❌ 切换链失败，请在钱包中手动切换到{chainName}。",
     "transaction_failed": "❌ 交易失败：{message}",
     "transaction_submitted": "✅ 交易已提交！",
+    "transaction_submitted_safe": "✅ 已在您的 Safe 中创建交易。其他签名人可能需要在 Safe 中确认。",
     "update_failed": "❌ 此代币不支持更新授权，请改为撤销。"
   }
 }

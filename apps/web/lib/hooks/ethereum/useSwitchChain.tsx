@@ -1,5 +1,9 @@
 import { getChainAddEthereumChainParameter, getChainName } from '@revoke.cash/core/chains';
-import { isRequestAlreadyPendingError, isUserRejectionError } from '@revoke.cash/core/utils/errors';
+import {
+  isRequestAlreadyPendingError,
+  isUserRejectionError,
+  SwitchChainHandledError,
+} from '@revoke.cash/core/utils/errors';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
@@ -25,7 +29,7 @@ export const useSwitchChain = () => {
         if (!isRejectedByUser(error) && !isRequestAlreadyPendingError(error)) {
           toast.error(t('common.toasts.switch_chain_failed', { chainName: getChainName(chainId) }));
         }
-        throw error;
+        throw new SwitchChainHandledError(error);
       }
     },
     [switchChainAsyncInternal, t],

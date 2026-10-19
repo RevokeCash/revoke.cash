@@ -7,6 +7,7 @@ import { AUTH_SESSION_QUERY_KEY, ENSURE_API_SESSION_QUERY_KEY } from 'lib/auth/s
 import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { useMounted } from 'lib/hooks/useMounted';
 import ky from 'lib/ky';
+import { isLedgerLive } from 'lib/utils/wallet';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useConnection, useDisconnect } from 'wagmi';
@@ -25,11 +26,14 @@ const WalletIndicatorDropdown = ({ size, style, className, compact }: Props) => 
   const isMounted = useMounted();
 
   const queryClient = useQueryClient();
-  const { address: account } = useConnection();
+  const { address: account, connector } = useConnection();
   const { domainName } = useNameLookup(account);
   const { mutate: disconnect } = useDisconnect();
 
   const isLandingPage = pathname === '/' || /^\/[a-z]{2}$/.test(pathname);
+
+  // The Safe App and Ledger Live connect the wallet automatically, so they would undo a disconnect right away
+  const canDisconnect = connector?.id !== 'safe' && !isLedgerLive();
 
   const handleDisconnect = async () => {
     await ky.post('/api/auth/logout').catch(() => {});
@@ -64,7 +68,9 @@ const WalletIndicatorDropdown = ({ size, style, className, compact }: Props) => 
           <DropdownMenuItem href="/account" router>
             {t('common.buttons.my_account')}
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleDisconnect}>{t('common.buttons.disconnect')}</DropdownMenuItem>
+          {canDisconnect && (
+            <DropdownMenuItem onClick={handleDisconnect}>{t('common.buttons.disconnect')}</DropdownMenuItem>
+          )}
         </DropdownMenu>
       ) : (
         <ConnectButton size={size} style={style} className={className} text={connectText} redirect={isLandingPage} />

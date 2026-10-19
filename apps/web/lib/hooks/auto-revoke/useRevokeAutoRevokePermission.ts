@@ -1,7 +1,12 @@
 import { contracts } from '@metamask/smart-accounts-kit';
 import { decodeDelegations } from '@metamask/smart-accounts-kit/utils';
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
-import { isUserRejectionError, parseErrorMessage, TransactionRevertedError } from '@revoke.cash/core/utils/errors';
+import {
+  isUserRejectionError,
+  parseErrorMessage,
+  SwitchChainHandledError,
+  TransactionRevertedError,
+} from '@revoke.cash/core/utils/errors';
 import { waitForTransactionConfirmation } from '@revoke.cash/core/wallet';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ky from 'lib/ky';
@@ -60,7 +65,7 @@ export const useRevokeAutoRevokePermission = () => {
       }
     },
     onError: (error) => {
-      if (isUserRejectionError(error)) return;
+      if (isUserRejectionError(error) || error instanceof SwitchChainHandledError) return;
       console.error('Failed to revoke permission:', error);
       toast.error(parseErrorMessage(error) || t('account.auto_revoke.permissions.revoke_failed'));
     },

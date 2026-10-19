@@ -2,16 +2,14 @@ import { ChainId } from '@revoke.cash/core/chains/ids';
 import type { TransactionSubmitted } from '@revoke.cash/core/types';
 import { isNullish } from '@revoke.cash/core/utils';
 import { TransactionRevertedError } from '@revoke.cash/core/utils/errors';
-import {
-  type Address,
-  type EstimateContractGasParameters,
-  type Hash,
-  type PublicClient,
-  TransactionNotFoundError,
-  type TransactionReceipt,
-  TransactionReceiptNotFoundError,
-  type WalletClient,
-  type WriteContractParameters,
+import type {
+  Address,
+  EstimateContractGasParameters,
+  Hash,
+  PublicClient,
+  TransactionReceipt,
+  WalletClient,
+  WriteContractParameters,
 } from 'viem';
 
 export const getWalletAddress = async (walletClient: WalletClient) => {
@@ -59,15 +57,9 @@ export const writeContractUnlessExcessiveGas = async (
 };
 
 export const waitForTransactionConfirmation = async (hash: Hash, publicClient: PublicClient) => {
-  try {
-    const transactionReceipt = await publicClient.waitForTransactionReceipt({ hash });
-    throwIfTransactionReverted(transactionReceipt);
-    return transactionReceipt;
-  } catch (e) {
-    // Workaround for Safe Apps, somehow they don't return the transaction receipt -- TODO: remove when fixed
-    if (e instanceof TransactionNotFoundError || e instanceof TransactionReceiptNotFoundError) return;
-    throw e;
-  }
+  const transactionReceipt = await publicClient.waitForTransactionReceipt({ hash });
+  throwIfTransactionReverted(transactionReceipt);
+  return transactionReceipt;
 };
 
 export const throwIfTransactionReverted = (transactionReceipt: TransactionReceipt) => {

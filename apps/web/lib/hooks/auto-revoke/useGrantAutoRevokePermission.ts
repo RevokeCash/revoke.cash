@@ -9,7 +9,7 @@ import {
   isAutoRevokePermission,
   isValidAutoRevokePermission,
 } from '@revoke.cash/core/auto-revoke/permissions';
-import { isUserRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { isUserRejectionError, parseErrorMessage, SwitchChainHandledError } from '@revoke.cash/core/utils/errors';
 import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ky from 'lib/ky';
@@ -63,7 +63,7 @@ export const useGrantAutoRevokePermission = () => {
       });
     },
     onError: (error) => {
-      if (isUserRejectionError(error)) return;
+      if (isUserRejectionError(error) || error instanceof SwitchChainHandledError) return;
       console.error('Failed to grant permission:', error);
       toast.error(parseErrorMessage(error) || t('account.auto_revoke.permissions.grant_failed'));
     },

@@ -32,7 +32,10 @@ export const walletSupportsEip5792 = async (walletClient: WalletClient, chainId:
 
 export const supportsAtomicBatch = (chainCapabilities?: Capabilities): boolean => {
   const atomicStatus = chainCapabilities?.atomic?.status;
-  return atomicStatus === 'supported' || atomicStatus === 'ready';
+  if (atomicStatus) return atomicStatus === 'supported' || atomicStatus === 'ready';
+
+  // Safe Apps still report the older EIP-5792 draft format
+  return chainCapabilities?.atomicBatch?.supported === true;
 };
 
 export const mapContractTransactionRequestToEip5792Call = (

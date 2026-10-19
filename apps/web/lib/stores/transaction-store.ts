@@ -3,9 +3,9 @@ import {
   isAccountUpgradeRejectionError,
   isBatchSizeError,
   isChainMismatchError,
-  isSwitchChainNotSupportedError,
   isUserRejectionError,
   parseErrorMessage,
+  SwitchChainHandledError,
 } from '@revoke.cash/core/utils/errors';
 import type { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import type { Hash } from 'viem';
@@ -97,7 +97,7 @@ export const wrapTransaction = ({
     } catch (error) {
       const message = parseErrorMessage(error);
       // A chain mismatch means the wallet switched networks mid-flow, so we reset instead of marking reverted
-      if (isUserRejectionError(message) || isSwitchChainNotSupportedError(error) || isChainMismatchError(error)) {
+      if (isUserRejectionError(message) || error instanceof SwitchChainHandledError || isChainMismatchError(error)) {
         updateTransaction(transactionKey, { status: 'not_started' });
         // The batch flows pass no handleTransaction to toast errors, so we rethrow for the caller to surface it
         if (isChainMismatchError(error) && !handleTransaction) throw error;

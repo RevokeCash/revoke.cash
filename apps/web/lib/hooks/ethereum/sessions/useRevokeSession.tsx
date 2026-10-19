@@ -1,8 +1,8 @@
 import { getSessionKey, type OnSessionRevoke, revokeSession, type Session } from '@revoke.cash/core/sessions';
 import { TransactionType } from '@revoke.cash/core/types';
-import { waitForTransactionConfirmation } from '@revoke.cash/core/wallet';
 import { useTransactionStore, wrapTransaction } from 'lib/stores/transaction-store';
 import analytics from 'lib/utils/analytics';
+import { waitForWalletTransactionConfirmation } from 'lib/utils/wallet';
 import { usePublicClient } from 'wagmi';
 import { useEnsureWalletClient } from '../ensureWalletClient';
 import { useHandleTransaction } from '../useHandleTransaction';
@@ -22,7 +22,7 @@ export const useRevokeSession = (session: Session, onRevoke: OnSessionRevoke) =>
       const hash = await revokeSession(session, walletClient, publicClient);
 
       const waitForConfirmation = async () => {
-        const transactionReceipt = await waitForTransactionConfirmation(hash, publicClient);
+        const transactionReceipt = await waitForWalletTransactionConfirmation(hash, publicClient, walletClient);
         onRevoke(session);
         return transactionReceipt;
       };

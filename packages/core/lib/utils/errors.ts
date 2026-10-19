@@ -323,18 +323,6 @@ export const isNetworkError = (error?: string | any): boolean => {
   return false;
 };
 
-export const isSwitchChainNotSupportedError = (error?: string | any): boolean => {
-  if (!error) return false;
-
-  if (typeof error !== 'string') {
-    return (
-      isSwitchChainNotSupportedError(parseErrorMessage(error)) || isSwitchChainNotSupportedError(stringifyError(error))
-    );
-  }
-
-  return error?.toLowerCase()?.includes('does not support programmatic chain switching');
-};
-
 // The wallet's active chain changed between the app's chain switch and the transaction being sent
 export const isChainMismatchError = (error?: string | any): boolean => {
   if (!error) return false;
@@ -421,6 +409,15 @@ export const stringifyError = (error: any, indent?: number): string => {
 };
 
 export type SpamReason = 'whois' | 'symbol' | 'bytecode' | 'balance';
+
+// Thrown once a failed chain switch was already shown to the user (or deliberately not shown, for a rejection),
+// so callers do not show a second error for the same failure
+export class SwitchChainHandledError extends Error {
+  constructor(cause: unknown) {
+    super(parseErrorMessage(cause), { cause });
+    this.name = 'SwitchChainHandledError';
+  }
+}
 
 // Thrown when a transaction was mined but reverted, so callers do not treat its receipt as a success
 export class TransactionRevertedError extends Error {

@@ -5,7 +5,7 @@ import { createViemPublicClientForChain, getChainName } from '@revoke.cash/core/
 import { type PaymentToken, usdCentsToTokenUnits } from '@revoke.cash/core/premium/payment-config';
 import type { PaymentStatus, PendingPayment, PremiumPlan } from '@revoke.cash/core/premium/types';
 import { delay } from '@revoke.cash/core/utils';
-import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { parseErrorMessage, SwitchChainHandledError } from '@revoke.cash/core/utils/errors';
 import { withFallback } from '@revoke.cash/core/utils/promises';
 import { MINUTE, SECOND } from '@revoke.cash/core/utils/time';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -282,7 +282,10 @@ export const useSubscribe = ({
     },
     onError: (error) => {
       setStatus('failed');
-      toast.error(parseErrorMessage(error) || t('premium.checkout.payment_failed'));
+      // A failed chain switch already showed its own error
+      if (!(error instanceof SwitchChainHandledError)) {
+        toast.error(parseErrorMessage(error) || t('premium.checkout.payment_failed'));
+      }
       analytics.track('Subscription Payment Failed', {
         planId: selectedPlan?.id,
         chainId: selectedPaymentChainId,
@@ -301,7 +304,10 @@ export const useSubscribe = ({
     subscribe: () => subscribeMutation.mutate(),
     isSubscribing: status === 'creating' || status === 'paying' || status === 'confirming',
     status,
-    error: subscribeMutation.error ? parseErrorMessage(subscribeMutation.error) : null,
+    error:
+      subscribeMutation.error && !(subscribeMutation.error instanceof SwitchChainHandledError)
+        ? parseErrorMessage(subscribeMutation.error)
+        : null,
     reset,
   };
 };

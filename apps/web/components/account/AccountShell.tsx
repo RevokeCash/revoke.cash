@@ -1,5 +1,6 @@
 'use client';
 
+import { isUserRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import NoticeBanner from 'components/common/NoticeBanner';
 import { useSiweSignIn } from 'lib/hooks/ethereum/siwe/useSiweSignIn';
 import { useAccountSubscriptions } from 'lib/hooks/premium/useAccountSubscriptions';
@@ -13,11 +14,21 @@ interface Props {
 
 const AccountShell = ({ children }: Props) => {
   const t = useTranslations();
-  const { signIn, isLoading: isAuthenticating } = useSiweSignIn();
+  const { signIn, isLoading: isAuthenticating, error: signInError } = useSiweSignIn();
   const { account, isAuthenticated, isError } = useAccountSubscriptions();
 
   if (!isAuthenticated) {
-    return <UnauthenticatedView account={account} signIn={signIn} isAuthenticating={isAuthenticating} />;
+    const signInErrorMessage =
+      signInError && !isUserRejectionError(signInError) ? parseErrorMessage(signInError) : null;
+
+    return (
+      <UnauthenticatedView
+        account={account}
+        signIn={signIn}
+        isAuthenticating={isAuthenticating}
+        errorMessage={signInErrorMessage}
+      />
+    );
   }
 
   return (

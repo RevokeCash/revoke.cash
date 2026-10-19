@@ -6,8 +6,8 @@ import { walletSupportsEip5792 } from '@revoke.cash/core/eip5792';
 import {
   isAccountUpgradeRejectionError,
   isChainMismatchError,
-  isSwitchChainNotSupportedError,
   isUserRejectionError,
+  SwitchChainHandledError,
 } from '@revoke.cash/core/utils/errors';
 import { getFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
@@ -29,7 +29,7 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
 
   // Get chainId from the first allowance (all selected allowances should be from the same chain)
   const chainId = allowances[0]?.chainId ?? 1;
-  const { isPremium } = useAddress();
+  const { address, isPremium } = useAddress();
 
   const { results, getTransaction, updateTransaction } = useTransactionStore();
   const walletCapabilities = useWalletCapabilities(chainId);
@@ -52,12 +52,12 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
 
   const { execute: revoke, loading: isSubmitting } = useAsyncCallback(async (): Promise<void> => {
     try {
-      const walletClient = await ensureWalletClient(chainId);
-
-      if (!(await hasEnoughBalanceForFee(feeDollarAmount, walletClient))) {
+      if (!(await hasEnoughBalanceForFee(feeDollarAmount, address))) {
         toast.error(t('common.toasts.fee_insufficient_balance', { feeDollarAmount, nativeToken }));
         return;
       }
+
+      const walletClient = await ensureWalletClient(chainId);
 
       const supportsEip5792 = walletCapabilities.isLoading
         ? await walletSupportsEip5792(walletClient, chainId)
@@ -81,7 +81,7 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
       }
     } catch (error) {
       // Rejecting the chain switch prompt is intentional, and switch failures already get their own toast
-      if (!isUserRejectionError(error) && !isSwitchChainNotSupportedError(error)) {
+      if (!isUserRejectionError(error) && !(error instanceof SwitchChainHandledError)) {
         if (isChainMismatchError(error)) {
           toast.error(t('common.toasts.chain_mismatch', { chainName: getChainName(chainId) }));
         } else {

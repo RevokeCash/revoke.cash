@@ -10,8 +10,9 @@ import { isTestnetChain } from '@revoke.cash/core/chains';
 import { isErc721 } from '@revoke.cash/core/tokens';
 import type { TransactionSubmitted } from '@revoke.cash/core/types';
 import { parseFixedPointBigInt } from '@revoke.cash/core/utils/formatting';
-import { waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from '@revoke.cash/core/wallet';
+import { writeContractUnlessExcessiveGas } from '@revoke.cash/core/wallet';
 import analytics from 'lib/utils/analytics';
+import { waitForWalletTransactionConfirmation } from 'lib/utils/wallet';
 import type { PublicClient, WalletClient } from 'viem';
 import type { BatchType } from './batch-revoke';
 
@@ -38,7 +39,7 @@ export const revokeErc721Allowance = async (
   const hash = await writeContractUnlessExcessiveGas(publicClient, walletClient, transactionRequest);
 
   const waitForConfirmation = async () => {
-    const transactionReceipt = await waitForTransactionConfirmation(hash, publicClient);
+    const transactionReceipt = await waitForWalletTransactionConfirmation(hash, publicClient, walletClient);
     onUpdate(allowance, undefined);
     return transactionReceipt;
   };
@@ -68,8 +69,7 @@ export const updateErc20Allowance = async (
   const hash = await writeContractUnlessExcessiveGas(publicClient, walletClient, transactionRequest);
 
   const waitForConfirmation = async () => {
-    const transactionReceipt = await waitForTransactionConfirmation(hash, publicClient);
-    if (!transactionReceipt) return;
+    const transactionReceipt = await waitForWalletTransactionConfirmation(hash, publicClient, walletClient);
 
     const lastUpdated = await blocksCache.getTimeLog(publicClient, {
       ...transactionReceipt,

@@ -3,13 +3,10 @@
 import { AggregateDelegatePlatform } from '@revoke.cash/core/delegations/AggregateDelegatePlatform';
 import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
 import { TransactionType } from '@revoke.cash/core/types';
-import {
-  getWalletAddress,
-  waitForTransactionConfirmation,
-  writeContractUnlessExcessiveGas,
-} from '@revoke.cash/core/wallet';
+import { getWalletAddress, writeContractUnlessExcessiveGas } from '@revoke.cash/core/wallet';
 import { useTransactionStore, wrapTransaction } from 'lib/stores/transaction-store';
 import analytics from 'lib/utils/analytics';
+import { waitForWalletTransactionConfirmation } from 'lib/utils/wallet';
 import { usePublicClient } from 'wagmi';
 import { useEnsureWalletClient } from '../ensureWalletClient';
 import { useHandleTransaction } from '../useHandleTransaction';
@@ -42,7 +39,7 @@ export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegatio
       });
 
       const waitForConfirmation = async () => {
-        const receipt = await waitForTransactionConfirmation(hash, publicClient);
+        const receipt = await waitForWalletTransactionConfirmation(hash, publicClient, walletClient);
         onRevoke(delegation);
         return receipt;
       };

@@ -9,9 +9,10 @@ interface Props {
   account: Address | undefined;
   signIn: () => void;
   isAuthenticating: boolean;
+  errorMessage: string | null;
 }
 
-const UnauthenticatedView = ({ account, signIn, isAuthenticating }: Props) => {
+const UnauthenticatedView = ({ account, signIn, isAuthenticating, errorMessage }: Props) => {
   const t = useTranslations();
 
   return (
@@ -19,19 +20,23 @@ const UnauthenticatedView = ({ account, signIn, isAuthenticating }: Props) => {
       <ContentPageHero title={t('common.buttons.my_account')} subtitle={t('account.unauthenticated.description')} />
 
       <div className="w-full max-w-md flex flex-col gap-6">
-        {account ? (
-          <Button
-            style="primary"
-            size="md"
-            onClick={() => signIn()}
-            loading={isAuthenticating}
-            className="w-full justify-center"
-          >
-            {isAuthenticating ? t('common.buttons.authenticating') : t('common.buttons.authenticate_wallet')}
-          </Button>
-        ) : (
-          <ConnectButton style="primary" size="md" className="w-full justify-center" onConnect={signIn} />
-        )}
+        <div className="flex flex-col gap-2">
+          {account ? (
+            <Button
+              style="primary"
+              size="md"
+              onClick={() => signIn()}
+              loading={isAuthenticating}
+              className="w-full justify-center"
+            >
+              {isAuthenticating ? t('common.buttons.authenticating') : t('common.buttons.authenticate_wallet')}
+            </Button>
+          ) : (
+            <ConnectButton style="primary" size="md" className="w-full justify-center" onConnect={signIn} />
+          )}
+
+          {errorMessage && <p className="text-sm text-center text-red-600 dark:text-red-400">{errorMessage}</p>}
+        </div>
 
         <div className="flex flex-col gap-3">
           <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
