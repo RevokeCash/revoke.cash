@@ -47,6 +47,7 @@
     }
   },
   "search": {
-    "placeholder": "Introduce la dirección de tu cartera para comprobar si cumples los requisitos"
+    "placeholder": "Introduce la dirección de tu cartera para comprobar si cumples los requisitos",
+    "temporarily_disabled": "La reclamación del Cold Storage SBT está desactivada temporalmente. Por favor vuelve a intentarlo más tarde."
   }
 }

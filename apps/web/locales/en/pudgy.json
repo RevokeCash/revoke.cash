@@ -47,6 +47,7 @@
     }
   },
   "search": {
-    "placeholder": "Enter your wallet address to check eligibility"
+    "placeholder": "Enter your wallet address to check eligibility",
+    "temporarily_disabled": "Claiming the Cold Storage SBT is temporarily disabled. Please check back later."
   }
 }

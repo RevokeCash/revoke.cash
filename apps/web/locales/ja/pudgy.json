@@ -47,6 +47,7 @@
     }
   },
   "search": {
-    "placeholder": "受け取り資格を確認するには、ウォレットアドレスを入力してください"
+    "placeholder": "受け取り資格を確認するには、ウォレットアドレスを入力してください",
+    "temporarily_disabled": "Cold Storage SBTの受け取りは一時的に停止しています。後でもう一度ご確認ください。"
   }
 }

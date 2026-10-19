@@ -47,6 +47,7 @@
     }
   },
   "search": {
-    "placeholder": "输入您的钱包地址以查看资格"
+    "placeholder": "输入您的钱包地址以查看资格",
+    "temporarily_disabled": "领取 Cold Storage SBT 的功能暂时停用。请稍后再来查看。"
   }
 }
