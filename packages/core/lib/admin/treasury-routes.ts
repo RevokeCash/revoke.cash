@@ -60,8 +60,6 @@ const FEE_ROUTES: Partial<Record<ChainId, TreasuryRoute>> = {
   [ChainId.Songbird]: kraken('SGB', 'Songbird', '1'),
   [ChainId.XDC]: kraken('XDC', 'XDC Network', '70'),
   [ChainId.Etherlink]: kraken('XTZ', 'Etherlink', '15'),
-  // Kraken still lists DATA under its old name, IP on the Story network
-  [ChainId.DataNetwork]: kraken('IP', 'Story', '1'),
   // Meson charges a flat 0.00051 BNB, and the BNB joins the BNB Chain deposit
   [ChainId.OpBNB]: { type: 'bridge', tool: 'Meson', asset: 'BNB', network: 'BNB Chain' },
   // Swapping APE to ETH costs about 0.7% on Symbiosis, and over 2% on Relay and LI.FI
@@ -72,7 +70,6 @@ const FEE_ROUTES: Partial<Record<ChainId, TreasuryRoute>> = {
   [ChainId.Linea]: relayTo('ETH', 'Base'),
   [ChainId.Abstract]: relayTo('ETH', 'Base'),
   [ChainId.Soneium]: relayTo('ETH', 'Base'),
-  [ChainId.Blast]: relayTo('ETH', 'Base'),
   [ChainId.MegaETH]: relayTo('ETH', 'Base'),
   [ChainId.Shape]: relayTo('ETH', 'Base'),
   [ChainId.Mode]: relayTo('ETH', 'Base'),

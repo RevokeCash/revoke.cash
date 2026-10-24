@@ -44,7 +44,6 @@ export enum ChainId {
   Moonriver = 1285,
   Sei = 1329,
   Vana = 1480,
-  DataNetwork = 1514,
   GravityAlpha = 1625,
   Injective = 1776,
   Soneium = 1868,

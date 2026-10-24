@@ -474,17 +474,6 @@
       "decimals": 18
     }
   },
-  "1514": {
-    "name": "Data Network",
-    "explorerUrl": "https://datanetscan.io",
-    "rpcUrl": "https://mainnet.datarpc.io",
-    "infoUrl": "https://datafdn.org/",
-    "nativeCurrency": {
-      "name": "DATA",
-      "symbol": "DATA",
-      "decimals": 18
-    }
-  },
   "1625": {
     "name": "Gravity Alpha Mainnet",
     "explorerUrl": "https://explorer.gravity.xyz",

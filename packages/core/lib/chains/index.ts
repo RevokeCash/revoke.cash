@@ -37,7 +37,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Tempo,
   ChainId.Arc,
   ChainId.PulseChain,
-  ChainId.Blast,
   ChainId.ZkSyncEra,
   ChainId.Fraxtal,
   ChainId.Taiko,
@@ -53,7 +52,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Celo,
   ChainId.Etherlink,
   ChainId.Injective,
-  ChainId.DataNetwork,
   ChainId.XDC,
   ChainId.TAC,
   ChainId.ApeChain,
@@ -340,7 +338,7 @@ export const CHAINS = {
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.Blast]: new Chain({
-    type: SupportType.ETHERSCAN,
+    type: SupportType.UNSUPPORTED,
     chainId: ChainId.Blast,
     name: 'Blast',
     nativeCurrency: ETH,
@@ -350,11 +348,8 @@ export const CHAINS = {
     infoUrl: 'https://blast.io/',
     explorerUrl: 'https://blastscan.io',
     rpc: {
-      main: `https://blast-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      free: 'https://rpc.blast.io',
+      main: 'https://rpc.blast.io',
     },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 212929 } },
-    isOpStack: true,
   }),
   [ChainId.BNBChain]: new Chain({
     type: SupportType.PROVIDER,
@@ -502,22 +497,6 @@ export const CHAINS = {
     rpc: {
       main: 'https://evm.cronos.org',
     },
-  }),
-  [ChainId.DataNetwork]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.DataNetwork,
-    name: 'Data Network',
-    nativeCurrency: { name: 'DATA', symbol: 'DATA', decimals: 18 },
-    nativeTokenCoingeckoId: 'story-2',
-    coingeckoNetworkId: 'story',
-    logoUrl: '/assets/images/vendor/chains/data.svg',
-    explorerUrl: 'https://datanetscan.io',
-    infoUrl: 'https://datafdn.org/',
-    rpc: {
-      main: `https://story-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      free: 'https://mainnet.datarpc.io',
-    },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 340998 } },
   }),
   [ChainId.Doma]: new Chain({
     type: SupportType.BLOCKSCOUT,
