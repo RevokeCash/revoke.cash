@@ -138,6 +138,10 @@
     "expiration": "Caduca {inTime}"
   },
   "premium": {
+    "auto_revoke_upgrade": {
+      "cta": "Solucionarlo",
+      "description": "La Revocación automática no puede ejecutarse en {chains} porque esta cartera no es una smart account de MetaMask allí."
+    },
     "banner": {
       "cta": "Actualizar a Premium",
       "description": "¿Panel de control multicadena?"

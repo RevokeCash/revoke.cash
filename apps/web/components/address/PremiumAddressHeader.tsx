@@ -5,6 +5,7 @@ import WalletHealthSection from 'components/allowances/dashboard/wallet-health/W
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import AddressDisplay from './AddressDisplay';
 import AddressExternalLinks from './AddressExternalLinks';
+import AutoRevokeNotice from './AutoRevokeNotice';
 import ConnectedLabel from './ConnectedLabel';
 import PremiumBadge from './PremiumBadge';
 import SubscriptionExpiryNotice from './SubscriptionExpiryNotice';
@@ -15,6 +16,7 @@ const PremiumAddressHeader = () => {
 
   return (
     <div className="flex flex-col gap-4">
+      <AutoRevokeNotice />
       <SubscriptionExpiryNotice />
       <div className="flex flex-col sm:flex-row sm:justify-between gap-6 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
         <div className="flex flex-col gap-3">

@@ -138,6 +138,10 @@
     "expiration": "{inTime}に期限が切れます"
   },
   "premium": {
+    "auto_revoke_upgrade": {
+      "cta": "修正する",
+      "description": "このウォレットは {chains} で MetaMask のスマートアカウントではないため、自動取り消しを実行できません。"
+    },
     "banner": {
       "cta": "プレミアムにアップグレード",
       "description": "すべてのネットワークを統合的に把握したいですか？"

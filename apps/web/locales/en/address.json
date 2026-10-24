@@ -138,6 +138,10 @@
     "expiration": "Expires {inTime}"
   },
   "premium": {
+    "auto_revoke_upgrade": {
+      "cta": "Fix it",
+      "description": "Auto-Revoking cannot execute on {chains} because this wallet is not a MetaMask smart account there."
+    },
     "banner": {
       "cta": "Upgrade to Premium",
       "description": "Multichain dashboard?"

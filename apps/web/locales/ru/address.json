@@ -138,6 +138,10 @@
     "expiration": "Срок действия истекает {inTime}"
   },
   "premium": {
+    "auto_revoke_upgrade": {
+      "cta": "Исправить",
+      "description": "Автоматический отзыв не может выполняться в сетях {chains}, поскольку в них этот кошелек не является смарт-аккаунтом MetaMask."
+    },
     "banner": {
       "cta": "Перейти на Premium",
       "description": "Мультичейн-панель?"

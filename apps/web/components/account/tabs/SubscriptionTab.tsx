@@ -24,7 +24,7 @@ const SubscriptionTab = () => {
 
   return (
     <div className="w-full flex flex-col gap-4">
-      {setupNeeded && <AutoRevokeSetupBanner />}
+      {setupNeeded && <AutoRevokeSetupBanner account={account!} location="account" />}
       <Card header={<CardTitle title={t('account.subscription.title')} />} className="flex flex-col gap-4">
         <SubscriptionOverview
           account={account!}

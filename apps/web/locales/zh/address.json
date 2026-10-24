@@ -138,6 +138,10 @@
     "expiration": "于 {inTime} 过期"
   },
   "premium": {
+    "auto_revoke_upgrade": {
+      "cta": "立即修复",
+      "description": "此钱包在 {chains} 上不是 MetaMask 智能账户，因此自动撤销无法在这些网络上执行。"
+    },
     "banner": {
       "cta": "升级至 Premium",
       "description": "想要多链仪表盘？"
