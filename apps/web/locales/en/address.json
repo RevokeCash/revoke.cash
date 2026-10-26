@@ -25,6 +25,10 @@
     "title": "Batch Revoke",
     "total": "Total"
   },
+  "compromised_notice": {
+    "title": "This wallet is compromised.",
+    "description": "On {chain}, it is delegated to a known scam contract that steals all funds sent to it, including gas. Its seed phrase or private key has most likely leaked, so revoking approvals will not help. Stop using this wallet and create a new one with a new seed phrase. If someone shared this seed phrase with you, it is a scam."
+  },
   "delegations": {
     "columns": {
       "chain": "Network",

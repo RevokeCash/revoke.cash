@@ -25,6 +25,10 @@
     "title": "Revocación por Lotes",
     "total": "Total"
   },
+  "compromised_notice": {
+    "title": "Esta cartera está comprometida.",
+    "description": "En {chain}, está delegada a un contrato fraudulento conocido que roba todos los fondos que recibe, incluido el gas. Lo más probable es que su frase semilla o clave privada se haya filtrado, así que revocar autorizaciones no te va a ayudar. Deja de usar esta cartera y crea una nueva con una nueva frase semilla. Si alguien compartió esta frase semilla contigo, es una estafa."
+  },
   "delegations": {
     "columns": {
       "chain": "Red",
