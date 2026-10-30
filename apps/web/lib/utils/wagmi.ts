@@ -9,6 +9,7 @@ import {
 import type { Chain } from 'viem';
 import { createConfig } from 'wagmi';
 import { coinbaseWallet, injected, safe, walletConnect } from 'wagmi/connectors';
+import { OATH_WALLETCONNECT_ID } from './walletOptions';
 
 // The Abstract connector always registers itself with this hardcoded id
 export const ABSTRACT_CONNECTOR_ID = 'xyz.abs.privy';
@@ -34,6 +35,9 @@ export const connectors = [
     ? [
         walletConnect({
           projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
+          // The public directory supplies Oath's iOS app and download links.
+          // Keep the full wallet catalog available in the standard modal.
+          qrModalOptions: { explorerRecommendedWalletIds: [OATH_WALLETCONNECT_ID] },
           metadata: {
             name: 'Revoke.cash',
             description: `Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on Ethereum and over ${ROUNDED_DOWN_NETWORK_COUNT} other networks.`,

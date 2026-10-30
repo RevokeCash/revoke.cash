@@ -9,6 +9,7 @@ import Spinner from 'components/common/Spinner';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import analytics from 'lib/utils/analytics';
 import { filterAndSortConnectors, getConnectorName, getWalletIcon, isMobileDevice } from 'lib/utils/wallet';
+import { withOathWalletOption } from 'lib/utils/walletOptions';
 import { useTranslations } from 'next-intl';
 import { type ReactNode, useMemo, useState } from 'react';
 import type { Address } from 'viem';
@@ -77,7 +78,18 @@ const ConnectButton = ({ size, style, className, text, redirect, onClick, onConn
     }
   };
 
-  const sortedConnectors = useMemo(() => filterAndSortConnectors(connectors), [connectors]);
+  const walletOptions = useMemo(
+    () =>
+      withOathWalletOption(
+        filterAndSortConnectors(connectors).map((connector) => ({
+          id: connector.id,
+          name: getConnectorName(connector),
+          icon: getWalletIcon(connector),
+          connector,
+        })),
+      ),
+    [connectors],
+  );
 
   const getDisplayedError = (): string | null => {
     if (!error || isUserRejectionError(error)) return null;
@@ -102,23 +114,16 @@ const ConnectButton = ({ size, style, className, text, redirect, onClick, onConn
 
             <div className="relative">
               <div className="flex flex-col sm:flex-row flex-wrap gap-2 justify-center">
-                {sortedConnectors.map((connector) => (
+                {walletOptions.map(({ id, name, icon, connector }) => (
                   <Button
                     style="secondary"
                     size="none"
                     className="flex justify-start items-center gap-2 p-2 rounded-lg w-full text-lg"
-                    key={`${connector.id} / ${connector.name}`}
+                    key={`${id} / ${name}`}
                     onClick={() => connectAndRedirect(connector)}
                   >
-                    <Logo
-                      src={getWalletIcon(connector)}
-                      alt={getConnectorName(connector)}
-                      size={48}
-                      square
-                      border
-                      className="rounded-md"
-                    />
-                    {getConnectorName(connector)}
+                    <Logo src={icon} alt={name} size={48} square border className="rounded-md" />
+                    {name}
                   </Button>
                 ))}
               </div>
