@@ -58,7 +58,7 @@ const BatchRevokeControls = ({
       <div className="flex flex-col items-center justify-center gap-8">
         <div
           className={twMerge(
-            'flex flex-col items-center justify-center gap-2 transition-opacity',
+            'flex flex-col justify-center gap-2 w-full max-w-xl transition-opacity',
             isRevoking && 'opacity-50',
           )}
         >

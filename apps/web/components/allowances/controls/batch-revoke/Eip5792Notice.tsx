@@ -43,7 +43,7 @@ const Eip5792Notice = ({ chainId, allowanceCount }: Props) => {
   if (!content) return null;
 
   return (
-    <div className="flex items-center justify-center gap-2 text-sm text-zinc-600 dark:text-zinc-300 bg-brand/30 dark:bg-brand/20 text-center py-2 px-4 max-w-xl">
+    <div className="flex items-center justify-center gap-2 text-sm text-zinc-600 dark:text-zinc-300 bg-brand/30 dark:bg-brand/20 text-center py-2 px-4">
       {content}
     </div>
   );
