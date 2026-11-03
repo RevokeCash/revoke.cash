@@ -40,5 +40,5 @@ const getUnderlyingLogsProvider = (chainId: number): BackendLogsProvider | ViemL
 };
 
 export const getLogsProvider = (chainId: number): DivideAndConquerLogsProvider => {
-  return new DivideAndConquerLogsProvider(getUnderlyingLogsProvider(chainId));
+  return new DivideAndConquerLogsProvider(getUnderlyingLogsProvider(chainId), { splitOnRequestSize: true });
 };

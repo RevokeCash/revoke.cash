@@ -265,6 +265,7 @@ export const isLogRequestSizeError = (error?: string | any): boolean => {
   if (lowercaseMessage?.includes('block range too wide')) return true;
   if (lowercaseMessage?.includes('block range exceeds')) return true;
   if (lowercaseMessage?.includes('exceeds the maximum block range')) return true;
+  if (lowercaseMessage?.includes('exceed maximum block range')) return true; // Alchemy BNB Chain ("exceed maximum block range 5000")
   if (lowercaseMessage?.includes('eth_getlogs is limited to')) return true;
   if (lowercaseMessage?.includes('you can make eth_getlogs requests with up to')) return true;
   if (lowercaseMessage?.includes('query exceeds max block range')) return true; // Citrea ("query exceeds max block range 1000")
