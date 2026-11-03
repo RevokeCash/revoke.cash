@@ -200,6 +200,16 @@ export const isTokenContractError = (error?: string | any): boolean => {
   return error.toLowerCase().includes('is a token contract on');
 };
 
+export const isSmartContractError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isSmartContractError(parseErrorMessage(error)) || isSmartContractError(stringifyError(error));
+  }
+
+  return error.toLowerCase().includes('is a smart contract on');
+};
+
 export const isChainUnresponsiveError = (error?: string | any): boolean => {
   if (!error) return false;
 
