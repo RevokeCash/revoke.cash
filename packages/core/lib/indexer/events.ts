@@ -23,7 +23,7 @@ import { disableIndexingForAddress } from '@revoke.cash/core/indexer/register';
 import { throwIfNotErc20, throwIfNotErc721 } from '@revoke.cash/core/tokens';
 import { HOUR, MINUTE, SECOND } from '@revoke.cash/core/utils/time';
 import { getAccountType } from '@revoke.cash/core/wallet';
-import { and, eq, gte, isNull, lte, sql } from 'drizzle-orm';
+import { and, count, eq, gte, isNull, lte, sql } from 'drizzle-orm';
 import type { AnyPgColumn } from 'drizzle-orm/pg-core';
 import type { Address, Hex, PublicClient } from 'viem';
 import { buildTokenEventFilters } from '../events/filters';
@@ -41,6 +41,10 @@ import { mapAsync, mapAsyncSequential } from '../utils/promises';
 // The busiest subscriber wallet had 82,347 transactions on one chain on 2026-10-02, while the Relay solver that a bug once
 // subscribed had over 1 million on 10 chains (17 million on Base)
 const MAX_TRANSACTION_COUNT = 1_000_000;
+
+// The busiest subscriber wallet had 103,627 events on one chain on 2026-10-02, while PancakeSwap Router V2 has about
+// 356 million on BNB Chain
+const MAX_SMART_CONTRACT_EVENT_COUNT = 1_000_000;
 
 // Most chains have RPC limits around 10k blocks, so this should be safe. Some chains might have a lower public RPC
 // limit, which gets handled by the DivideAndConquerLogsProvider.
@@ -158,7 +162,7 @@ export const indexEvents = async (address: Address, chainId: DocumentedChainId):
 
   const addressTopic = addressToTopic(address);
 
-  return runWithRangeReduction(fromBlock, toBlock, async (currentToBlock, rangeReductions) => {
+  const result = await runWithRangeReduction(fromBlock, toBlock, async (currentToBlock, rangeReductions) => {
     const isNarrow = currentToBlock - fromBlock <= NARROW_RANGE_THRESHOLD;
     const logsProvider = getScanLogsProvider(chainId, isNarrow);
     const filters = Object.values(buildTokenEventFilters(address, fromBlock, currentToBlock));
@@ -204,6 +208,45 @@ export const indexEvents = async (address: Address, chainId: DocumentedChainId):
       durationMs: Date.now() - start,
     });
   });
+
+  // Routers and other busy contracts never hit the transaction count check, because a contract's nonce only counts the
+  // contracts it deployed. Only this chain is paused, like for token contracts
+  if (result.logsWritten > 0 && (await isBusySmartContract(address, chainId, addressTopic, publicClient))) {
+    await upsertEventsState(db, address, chainId, {
+      disabledAt: new Date(),
+      lastError: `Address is a smart contract on ${getChainName(chainId)} with too many events`,
+    });
+    return { ...result, isDisabled: true };
+  }
+
+  return result;
+};
+
+const isBusySmartContract = async (
+  address: Address,
+  chainId: DocumentedChainId,
+  addressTopic: Hex,
+  publicClient: PublicClient,
+): Promise<boolean> => {
+  const eventCount = await countAddressEvents(chainId, addressTopic, MAX_SMART_CONTRACT_EVENT_COUNT);
+  if (eventCount < MAX_SMART_CONTRACT_EVENT_COUNT) return false;
+
+  // Wallets without code and EIP-7702 delegated wallets are never paused for their number of events
+  return (await getAccountType(address, publicClient)) === 'smart_contract';
+};
+
+// Every scan filter matches the address on topic1. The count stops at `limit`, so it stays cheap for addresses with
+// millions of events
+const countAddressEvents = async (chainId: DocumentedChainId, addressTopic: Hex, limit: number): Promise<number> => {
+  const limitedEvents = getDb()
+    .select({ blockNumber: indexerEvents.blockNumber })
+    .from(indexerEvents)
+    .where(and(eq(indexerEvents.chainId, chainId), eq(indexerEvents.topic1, addressTopic)))
+    .limit(limit)
+    .as('limited_events');
+
+  const [{ eventCount }] = await getDb().select({ eventCount: count() }).from(limitedEvents);
+  return eventCount;
 };
 
 const isTokenContract = async (address: Address, publicClient: PublicClient): Promise<boolean> => {

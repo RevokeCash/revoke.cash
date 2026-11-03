@@ -50,7 +50,7 @@ export const resetAddressIndexing = async (address: Address): Promise<number> =>
 
 // The chain-scoped counterpart of resetAddressIndexing: re-enables indexing for all address rows
 // on a single chain, for when a chain-wide problem (e.g. a broken RPC) has been resolved. Addresses
-// that were paused for having too much activity or for being a token contract stay paused.
+// that were paused for having too much activity or for being a token or smart contract stay paused.
 export const resetChainIndexing = async (chainId: number): Promise<number> => {
   const updatedRows = await getTransactionalDb()
     .update(indexerEventsState)
@@ -64,6 +64,7 @@ export const resetChainIndexing = async (chainId: number): Promise<number> => {
           and(
             notIlike(indexerEventsState.lastError, 'address has too much activity%'),
             notIlike(indexerEventsState.lastError, 'address is a token contract%'),
+            notIlike(indexerEventsState.lastError, 'address is a smart contract%'),
           ),
         ),
       ),

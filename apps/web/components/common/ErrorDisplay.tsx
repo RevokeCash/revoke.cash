@@ -4,6 +4,7 @@ import { getChainName } from '@revoke.cash/core/chains';
 import {
   isChainUnresponsiveError,
   isRefreshFailedError,
+  isSmartContractError,
   isTokenContractError,
   isTooMuchActivityError,
   isTransientError,
@@ -64,6 +65,10 @@ const getErrorMessage = (
 
   if (isTokenContractError(error) && selectedChainId) {
     return t('common.errors.messages.token_contract', { chainName: getChainName(selectedChainId) });
+  }
+
+  if (isSmartContractError(error) && selectedChainId) {
+    return t('common.errors.messages.smart_contract', { chainName: getChainName(selectedChainId) });
   }
 
   if (isTransientError(error) || isRefreshFailedError(error) || isChainUnresponsiveError(error)) {

@@ -28,6 +28,7 @@ import type { Address } from 'viem';
 import { type CachedAllowanceRow, getCachedAllowances, serializeAllowanceFromRow } from './allowances';
 import {
   failFastIfAddressHasTooMuchActivity,
+  failFastIfAddressIsSmartContract,
   failFastIfAddressIsTokenContract,
   failFastIfAllowanceStateIsBehind,
   failFastIfEventsStateHasNoProgress,
@@ -55,6 +56,7 @@ export const getCachedAddressData = async (address: Address, chainId: Documented
   failFastIfAddressHasTooMuchActivity(eventsState, chainId);
   failFastIfAddressHasTooMuchActivity(allowanceState, chainId);
   failFastIfAddressIsTokenContract(eventsState, chainId);
+  failFastIfAddressIsSmartContract(eventsState, chainId);
 
   failFastIfIndexingIsFailing(eventsState, chainId);
   failFastIfIndexingIsFailing(allowanceState, chainId);

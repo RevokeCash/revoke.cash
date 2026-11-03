@@ -3,6 +3,7 @@ import { recomputeAllowances, recordAllowanceFailure } from '@revoke.cash/core/i
 import { getCachedAddressData } from '@revoke.cash/core/indexer/allowances-read';
 import {
   failFastIfAddressHasTooMuchActivity,
+  failFastIfAddressIsSmartContract,
   failFastIfAddressIsTokenContract,
   failFastIfAllowanceStateIsTooFarBehind,
   failFastIfEventsStateIsBehind,
@@ -48,6 +49,7 @@ export async function POST(req: NextRequest, props: Props) {
     failFastIfAddressHasTooMuchActivity(eventsState, params.chainId);
     failFastIfAddressHasTooMuchActivity(allowanceState, params.chainId);
     failFastIfAddressIsTokenContract(eventsState, params.chainId);
+    failFastIfAddressIsSmartContract(eventsState, params.chainId);
     failFastIfEventsStateIsBehind(eventsState);
     failFastIfAllowanceStateIsTooFarBehind(eventsState, allowanceState);
 

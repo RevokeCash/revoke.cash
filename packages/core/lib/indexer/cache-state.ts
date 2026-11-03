@@ -1,10 +1,16 @@
 import { getDb } from '@revoke.cash/core/db/client';
 import { indexerAllowanceState, indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
 import { isNullish } from '@revoke.cash/core/utils';
-import { isTokenContractError, isTooMuchActivityError } from '@revoke.cash/core/utils/errors';
+import { isSmartContractError, isTokenContractError, isTooMuchActivityError } from '@revoke.cash/core/utils/errors';
 import { and, eq } from 'drizzle-orm';
 import type { Address } from 'viem';
-import { ChainUnresponsiveError, StillIndexingError, TokenContractError, TooMuchActivityError } from './errors';
+import {
+  ChainUnresponsiveError,
+  SmartContractError,
+  StillIndexingError,
+  TokenContractError,
+  TooMuchActivityError,
+} from './errors';
 import { assertIndexerIsNotTooFarBehind } from './progress';
 
 export type EventsState = Pick<
@@ -81,6 +87,12 @@ export const failFastIfAddressHasTooMuchActivity = (state: FailureState, chainId
 export const failFastIfAddressIsTokenContract = (state: EventsState | undefined, chainId: number): void => {
   if (state?.lastError && isTokenContractError(state.lastError)) {
     throw new TokenContractError(chainId);
+  }
+};
+
+export const failFastIfAddressIsSmartContract = (state: EventsState | undefined, chainId: number): void => {
+  if (state?.lastError && isSmartContractError(state.lastError)) {
+    throw new SmartContractError(chainId);
   }
 };
 

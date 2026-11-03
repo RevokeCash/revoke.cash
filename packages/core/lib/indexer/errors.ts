@@ -87,6 +87,30 @@ export class TokenContractError extends ExportableError {
   }
 }
 
+// Thrown by cached read paths when the indexer paused this chain because the address is a smart contract with too
+// many events, such as a DEX router
+export class SmartContractError extends ExportableError {
+  readonly chainId: number;
+
+  constructor(chainId: number) {
+    super(
+      `This address is a smart contract on ${getChainName(chainId)}, not a wallet. It has too much activity, so its approvals are not indexed.`,
+    );
+    this.name = 'SmartContractError';
+    this.chainId = chainId;
+  }
+
+  export() {
+    return {
+      status: 422,
+      body: {
+        message: this.message,
+        details: { chainId: this.chainId },
+      },
+    };
+  }
+}
+
 // Thrown by cached read paths when the background scheduler has repeatedly failed to scan this
 // chain. Surfaces the stored failure instead of returning stale or empty cache data silently.
 export class ChainUnresponsiveError extends ExportableError {
