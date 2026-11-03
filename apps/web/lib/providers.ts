@@ -39,8 +39,6 @@ const getUnderlyingLogsProvider = (chainId: number): BackendLogsProvider | ViemL
   return new ViemLogsProvider(chainId, getChainLogsRpcUrl(chainId));
 };
 
-// Some RPCs only cap smaller block ranges (Alchemy BNB Chain rejects 5,001-10,000 blocks but allows larger ranges),
-// which the events cache hits when it fetches the blocks since the last visit
 export const getLogsProvider = (chainId: number): DivideAndConquerLogsProvider => {
   return new DivideAndConquerLogsProvider(getUnderlyingLogsProvider(chainId), { splitOnRequestSize: true });
 };
