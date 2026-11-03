@@ -140,7 +140,7 @@ export const CHAINS = {
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 23482 } },
   }),
   [ChainId.ApeChain]: new Chain({
-    type: SupportType.ETHERSCAN,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.ApeChain,
     name: 'ApeChain',
     nativeCurrency: { name: 'ApeCoin', symbol: 'APE', decimals: 18 },
