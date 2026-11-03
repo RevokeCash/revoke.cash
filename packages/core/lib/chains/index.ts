@@ -140,7 +140,8 @@ export const CHAINS = {
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 23482 } },
   }),
   [ChainId.ApeChain]: new Chain({
-    type: SupportType.ETHERSCAN,
+    // Etherscan dropped ApeChain and the new ApeScan API needs its own key for getLogs, so logs come from the hosted api.blockscout.com gateway
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.ApeChain,
     name: 'ApeChain',
     nativeCurrency: { name: 'ApeCoin', symbol: 'APE', decimals: 18 },
