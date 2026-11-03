@@ -40,8 +40,4 @@ Because Permit signatures are offchain signatures, they are also often used by s
 
 If you suspect you may have signed a Permit signature on a scam website, you may be able to _cancel_ or _invalidate_ the signature before it gets activated by the scammer. This is generally very hard to do though, since scammers will often try to activate the approval as soon as possible. Once it is activated, it can be revoked from your approvals dashboard, just like regular approvals.
 
-If you want to try cancelling a potential scam signature, you can do so on the _Signatures_ tab on your account page.
-
-::img{src="/assets/images/learn/approvals/what-are-eip2612-permit-signatures/permit-signatures.png" alt="Permit Signatures on Revoke.cash" width="2424" height="720"}
-
-One important thing to note once again is that Permit signatures are offchain, which means that a platform like Revoke.cash can never determine which signatures you've signed. So everything you see on the _Signatures_ tab on Revoke.cash is only a _potential_ signature, and you should only attempt to cancel them if you are very sure that you signed a scam Permit signature. Cancelling signatures needlessly is not dangerous, but it is a waste of gas.
+One important thing to note once again is that Permit signatures are offchain, which means that a platform like Revoke.cash can never determine which signatures you've signed. So the approval from a Permit signature only shows up on your approvals dashboard once the scammer has activated it onchain.
