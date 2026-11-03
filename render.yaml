@@ -1,6 +1,5 @@
 services:
-  # The manager is a public web service so the exploit webhook is reachable from the outside;
-  # Bull Board is behind basic auth and the webhook requires its bearer token.
+  # The manager is a public web service so Bull Board is reachable from the outside; it is behind basic auth.
   - type: web
     name: indexer-manager
     runtime: docker
@@ -27,7 +26,11 @@ services:
         sync: false
       - key: BULL_BOARD_PASSWORD
         sync: false
-      - key: EXPLOIT_WEBHOOK_TOKEN
+      - key: SCAMSNIFFER_API_KEY
+        sync: false
+      - key: COINGECKO_API_KEY
+        sync: false
+      - key: OPENSEA_API_KEY
         sync: false
 
   - type: pserv

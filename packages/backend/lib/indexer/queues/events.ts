@@ -20,6 +20,3 @@ export const catchupEventsJobId = (chainId: number, address: Address, fromBlock:
 
 export const autoRevokeEventsJobId = (chainId: number, address: Address, actionId: string): string =>
   `index-events-auto-revoke-${chainId}-${toLowercaseAddress(address)}-${actionId}`;
-
-export const exploitEventsJobId = (chainId: number, address: Address): string =>
-  `index-events-exploit-${chainId}-${toLowercaseAddress(address)}`;

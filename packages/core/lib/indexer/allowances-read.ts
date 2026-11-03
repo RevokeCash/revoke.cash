@@ -20,6 +20,7 @@ import { processErc721ApprovalEvents, removeLoneRevokeEvents } from '@revoke.cas
 import { DatabaseLogsProvider } from '@revoke.cash/core/events/providers';
 import { formatDatabaseLog } from '@revoke.cash/core/events/providers/DatabaseLogsProvider';
 import { addressToTopic, sortTokenEventsChronologically } from '@revoke.cash/core/events/utils';
+import type { MergedSpenderMetadata, MergedTokenMetadata } from '@revoke.cash/core/labels/merge';
 import { isApprovedTransfersSupportedChain } from '@revoke.cash/core/transfers/config';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
 import { SECOND } from '@revoke.cash/core/utils/time';
@@ -39,7 +40,6 @@ import {
 import {
   getCompleteSpenderMetadata,
   type SpenderMetadataByAddress,
-  type SpenderMetadataRow,
   serializeSpenderMetadata,
 } from './spender-metadata';
 import { resolveAndPersistTimestampsForBlocks } from './timestamps';
@@ -47,7 +47,7 @@ import {
   getCompleteTokenMetadata,
   isUsableTokenMetadata,
   serializeTokenMetadata,
-  type TokenMetadataRow,
+  type TokenMetadataByAddress,
 } from './token-metadata';
 
 export const getCachedAddressData = async (address: Address, chainId: DocumentedChainId): Promise<AddressData> => {
@@ -97,13 +97,13 @@ export const loadEnrichedAddressAllowances = async (
 
 const serializeAllowances = (
   rows: CachedAllowanceRow[],
-  metadataByToken: Map<Address, TokenMetadataRow>,
+  metadataByToken: TokenMetadataByAddress,
   spenderMetadataByAddress: SpenderMetadataByAddress,
 ): TokenAllowanceData[] => {
   return rows
     .map((row) => {
       const tokenMetadata = metadataByToken.get(row.tokenAddress);
-      if (!isCachedAllowanceActive(row) || !tokenMetadata || !isUsableTokenMetadata(tokenMetadata)) return null;
+      if (!isCachedAllowanceActive(row) || !isUsableTokenMetadata(tokenMetadata)) return null;
       return serializeAllowanceFromRow(row, tokenMetadata, spenderMetadataByAddress.get(row.spenderAddress));
     })
     .filter((allowance) => !isNullish(allowance));
@@ -236,7 +236,7 @@ const cleanApprovalEvents = (events: TokenEvent[]): ApprovalTokenEvent[] => {
 
 const serializeHistoryRelevantEvents = (
   events: TokenEvent[],
-  metadataByToken: Map<Address, TokenMetadataRow>,
+  metadataByToken: TokenMetadataByAddress,
   spenderMetadataByAddress: SpenderMetadataByAddress,
 ): EnrichedTokenEvent[] => {
   const sorted = sortTokenEventsChronologically(events).reverse();
@@ -250,8 +250,8 @@ const serializeHistoryRelevantEvents = (
 
 const serializeHistoryEvent = (
   event: TokenEvent,
-  metadata: TokenMetadataRow,
-  spenderMetadata?: SpenderMetadataRow,
+  metadata: MergedTokenMetadata,
+  spenderMetadata?: MergedSpenderMetadata,
 ): EnrichedTokenEvent =>
   ({
     ...event,

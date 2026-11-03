@@ -5,7 +5,7 @@ import { premiumPlans, premiumSubscriptionAddresses, premiumSubscriptions } from
 import { scheduleEventsReindex } from '@revoke.cash/core/indexer/register';
 import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
 import { activeSubscriptionsQuery, isSubscriptionActive } from '@revoke.cash/core/premium/subscriptions';
-import type { SpenderRiskData } from '@revoke.cash/core/whois';
+import type { SpenderData } from '@revoke.cash/core/whois';
 import { and, asc, eq, gt, lte } from 'drizzle-orm';
 import type { Address } from 'viem';
 import { filterUnknownRiskFactors, getRiskLevel, type RiskFactor } from '../../risk';
@@ -382,7 +382,7 @@ export const getPrimaryTrigger = (matchedTriggers: MatchedTrigger[]): MatchedTri
   return 'stale';
 };
 
-export const getRiskFactors = (spenderData: SpenderRiskData | null | undefined): RiskFactor[] =>
+export const getRiskFactors = (spenderData: SpenderData | null | undefined): RiskFactor[] =>
   filterUnknownRiskFactors(spenderData?.riskFactors ?? []);
 
 const shouldMatchRiskScore = (riskFactors: RiskFactor[], sensitivity: RiskSensitivity): boolean => {

@@ -1,3 +1,4 @@
+import { LABEL_CDN_TTL_SECONDS } from '@revoke.cash/core/constants';
 import {
   enrichSpender,
   getCachedSpenderMetadata,
@@ -31,8 +32,8 @@ export async function GET(req: NextRequest, props: Props) {
 
     return NextResponse.json(spenderData, {
       headers: {
-        'Cache-Control': `max-age=${60 * 60}`, // 1 hour browser cache (mostly for localhost)
-        'Vercel-CDN-Cache-Control': `s-maxage=${60 * 60 * 24}`, // 1 day (server CDN cache)
+        'Cache-Control': `max-age=${LABEL_CDN_TTL_SECONDS}`, // Browser cache (mostly for localhost)
+        'Vercel-CDN-Cache-Control': `s-maxage=${LABEL_CDN_TTL_SECONDS}`, // Server CDN cache
       },
     });
   } catch (error) {

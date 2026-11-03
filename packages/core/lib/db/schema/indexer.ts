@@ -218,6 +218,26 @@ export const indexerSpenderMetadata = indexerSchema.table(
   ],
 );
 
+// Results of revoke.cash's own spender checks (on-chain and Webacy). Names, curated risk, exploits and ScamSniffer
+// come from labels.*. Replaces indexer.spender_metadata, which stays until the old code can no longer run.
+export const indexerSpenderChecks = indexerSchema.table(
+  'spender_checks',
+  {
+    chainId: integer('chain_id').notNull(),
+    spenderAddress: lowercaseAddress('spender_address').notNull(),
+    // On-chain check only: 'OpenSea (old)' or 'Scam Delegate'
+    name: text('name'),
+    riskFactors: jsonb('risk_factors').notNull().$type<RiskFactor[]>().default([]),
+    enrichmentError: text('enrichment_error'),
+    enrichedAt: timestamp('enriched_at', { withTimezone: true }),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [primaryKey({ name: 'spender_checks_pkey', columns: [table.chainId, table.spenderAddress] })],
+);
+
 export const indexerAllowances = indexerSchema.table(
   'allowances',
   {

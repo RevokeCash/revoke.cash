@@ -1,6 +1,6 @@
 import { getChainExplorerUrl } from '@revoke.cash/core/chains';
 import { shortenAddress } from '@revoke.cash/core/utils/formatting';
-import type { SpenderData, SpenderRiskData } from '@revoke.cash/core/whois';
+import type { SpenderData } from '@revoke.cash/core/whois';
 import CopyButton from 'components/common/CopyButton';
 import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
@@ -9,7 +9,7 @@ import RiskTooltip from '../wallet-health/RiskTooltip';
 
 interface Props {
   address: Address;
-  spenderData?: SpenderData | SpenderRiskData;
+  spenderData?: SpenderData;
   chainId: number;
 }
 

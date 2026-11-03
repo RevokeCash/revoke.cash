@@ -2,7 +2,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { PERMIT2_CANONICAL_ADDRESS } from '@revoke.cash/core/allowances/permit2';
 import { DUMMY_ADDRESS } from '@revoke.cash/core/constants';
 import type { Nullable } from '@revoke.cash/core/types';
-import type { SpenderRiskData } from '@revoke.cash/core/whois';
+import type { SpenderData } from '@revoke.cash/core/whois';
 import AddressCell from 'components/allowances/dashboard/cells/AddressCell';
 import Button from 'components/common/Button';
 import StatusLabel from 'components/common/StatusLabel';
@@ -13,7 +13,7 @@ import type { Address } from 'viem';
 interface Props {
   address?: Address;
   chainId: number;
-  spenderData?: Nullable<SpenderRiskData>;
+  spenderData?: Nullable<SpenderData>;
   permit2Address?: Address;
   onFilter?: (filterValue: string) => void;
 }

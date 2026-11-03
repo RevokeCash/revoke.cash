@@ -1,9 +1,5 @@
 import type { Address } from 'viem';
 
-export const assertFulfilled = <T>(item: PromiseSettledResult<T>): item is PromiseFulfilledResult<T> => {
-  return item.status === 'fulfilled';
-};
-
 export const toLowercaseAddress = (address: Address): Address => address.toLowerCase() as Address;
 
 export const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));

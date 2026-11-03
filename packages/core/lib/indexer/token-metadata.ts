@@ -1,6 +1,9 @@
 import { createViemPublicClientForChain, type DocumentedChainId } from '@revoke.cash/core/chains';
 import { type DatabaseWriter, getDb } from '@revoke.cash/core/db/client';
 import { indexerEvents, indexerTokenMetadata } from '@revoke.cash/core/db/schema/indexer';
+import { labelsTokens } from '@revoke.cash/core/db/schema/labels';
+import { lowercaseAddressArray } from '@revoke.cash/core/db/types/lowercase-address';
+import { nullableColumn } from '@revoke.cash/core/db/utils';
 import {
   ERC721_APPROVAL_FOR_ALL_TOPIC,
   ERC721_APPROVAL_TOPIC,
@@ -9,6 +12,8 @@ import {
   PERMIT2_LOCKDOWN_TOPIC,
   PERMIT2_PERMIT_TOPIC,
 } from '@revoke.cash/core/events';
+import { type MergedTokenMetadata, mergeTokenMetadata, toPublicTokenLabel } from '@revoke.cash/core/labels/merge';
+import { getTokenLabel } from '@revoke.cash/core/labels/tokens';
 import {
   getTokenMetadata,
   type TokenMetadata,
@@ -20,10 +25,13 @@ import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
 import { and, eq, gte, inArray, isNull, lt, lte, or, type SQL, sql } from 'drizzle-orm';
 import { unionAll } from 'drizzle-orm/pg-core';
 import { type Address, getAddress, type Hex } from 'viem';
-import { isNullish } from '../utils';
+import { deduplicateArray, isNullish } from '../utils';
 
-export type TokenMetadataRow = typeof indexerTokenMetadata.$inferSelect;
-export type TokenMetadataByAddress = Map<Address, TokenMetadataRow>;
+// An enriched token: its computed row exists, so it has a standard (isUsableTokenMetadata)
+export type UsableTokenMetadata = MergedTokenMetadata & { tokenStandard: TokenStandard };
+export type TokenMetadataByAddress = Map<Address, MergedTokenMetadata>;
+
+type TokenRowKind = 'computed' | 'label';
 
 export interface TokenEnrichmentResult {
   durationMs: number;
@@ -40,15 +48,19 @@ export const enrichToken = async (
   const publicClient = createViemPublicClientForChain(chainId);
   const token: TokenReference = { address: tokenAddress, standard };
 
+  // Read before the try, so a database error fails the check and nothing is written
+  const tokenLabel = await getTokenLabel(chainId, tokenAddress);
+  const publicTokenLabel = tokenLabel && toPublicTokenLabel(tokenLabel);
+
   try {
-    const metadata = await getTokenMetadata(token, publicClient, chainId);
+    const metadata = await getTokenMetadata(token, publicClient, chainId, publicTokenLabel);
 
     await upsertTokenMetadata(getDb(), chainId, tokenAddress, {
       tokenStandard: standard,
       symbol: metadata.symbol,
       decimals: metadata.decimals ?? null,
       totalSupply: metadata.totalSupply ?? null,
-      iconUrl: metadata.icon ?? null,
+      iconUrl: metadata.logoUrl ?? null,
       spamReason: null,
       enrichmentError: null,
     });
@@ -123,15 +135,29 @@ export const findUnenrichedTokens = async (params: UnenrichedTokensQuery): Promi
 export const getCachedTokenMetadata = async (
   chainId: DocumentedChainId,
   tokenAddresses: readonly Address[],
-): Promise<Map<Address, TokenMetadataRow>> => {
+): Promise<TokenMetadataByAddress> => {
   if (tokenAddresses.length === 0) return new Map();
-  const rows = await getDb().query.indexerTokenMetadata.findMany({
-    where: and(
-      eq(indexerTokenMetadata.chainId, chainId),
-      inArray(indexerTokenMetadata.tokenAddress, tokenAddresses as Address[]),
-    ),
-  });
-  return new Map(rows.map((row) => [row.tokenAddress, row]));
+
+  const db = getDb();
+
+  // The computed branch goes first, because drizzle decodes every row of a union with the first branch's fields: its
+  // real columns turn the address into a checksummed one, total_supply into a bigint and enriched_at into a Date
+  const rows = await unionAll(
+    selectComputedTokenBranch(db, chainId, tokenAddresses),
+    selectTokenLabelBranch(db, chainId, tokenAddresses),
+  );
+
+  // An address has at most one row in each branch
+  const computedRows = new Map(rows.filter((row) => row.kind === 'computed').map((row) => [row.address, row]));
+  const labelRows = new Map(rows.filter((row) => row.kind === 'label').map((row) => [row.address, row]));
+  const addresses = deduplicateArray(rows.map((row) => row.address));
+
+  return new Map(
+    addresses.map((address) => {
+      const metadata = mergeTokenMetadata(address, computedRows.get(address), labelRows.get(address));
+      return [address, metadata];
+    }),
+  );
 };
 
 export const getCompleteTokenMetadata = async (
@@ -147,20 +173,74 @@ export const getCompleteTokenMetadata = async (
   return getCachedTokenMetadata(chainId, tokenAddresses);
 };
 
-export const isUsableTokenMetadata = (metadata?: TokenMetadataRow): boolean => {
+export const isUsableTokenMetadata = (metadata?: MergedTokenMetadata): metadata is UsableTokenMetadata => {
   if (metadata === undefined) return false;
+  if (isNullish(metadata.tokenStandard)) return false;
   if (isNullish(metadata.enrichedAt)) return false;
   if (!isNullish(metadata.enrichmentError)) return false;
   if (!isNullish(metadata.spamReason)) return false;
   return true;
 };
 
-export const serializeTokenMetadata = (metadata: TokenMetadataRow): TokenMetadata => ({
+export const serializeTokenMetadata = (metadata: MergedTokenMetadata): TokenMetadata => ({
   symbol: metadata.symbol ?? metadata.tokenAddress,
   decimals: metadata.decimals ?? undefined,
   totalSupply: metadata.totalSupply ?? undefined,
-  icon: metadata.iconUrl ?? undefined,
+  logoUrl: metadata.logoUrl ?? undefined,
 });
+
+const selectComputedTokenBranch = (
+  db: DatabaseWriter,
+  chainId: DocumentedChainId,
+  tokenAddresses: readonly Address[],
+) =>
+  db
+    .select({
+      address: indexerTokenMetadata.tokenAddress,
+      kind: sql<TokenRowKind>`'computed'`,
+      // Nullable, because the label branch has NULL here
+      tokenStandard: nullableColumn(indexerTokenMetadata.tokenStandard),
+      symbol: indexerTokenMetadata.symbol,
+      decimals: indexerTokenMetadata.decimals,
+      totalSupply: indexerTokenMetadata.totalSupply,
+      logoUrl: sql<string | null>`NULL::text`,
+      isSpam: sql<boolean | null>`NULL::boolean`,
+      spamReason: indexerTokenMetadata.spamReason,
+      enrichmentError: indexerTokenMetadata.enrichmentError,
+      enrichedAt: indexerTokenMetadata.enrichedAt,
+    })
+    .from(indexerTokenMetadata)
+    .where(
+      and(
+        eq(indexerTokenMetadata.chainId, chainId),
+        sql`${indexerTokenMetadata.tokenAddress} = any(${sql.param(tokenAddresses, lowercaseAddressArray)}::text[])`,
+      ),
+    );
+
+// The read selects no note or timestamps, because the merge does not use them. The untyped NULLs take the types of the
+// computed branch, which include the token_standard and spam_reason enums
+const selectTokenLabelBranch = (db: DatabaseWriter, chainId: DocumentedChainId, tokenAddresses: readonly Address[]) =>
+  db
+    .select({
+      address: labelsTokens.address,
+      kind: sql<TokenRowKind>`'label'`,
+      tokenStandard: sql<null>`NULL`,
+      symbol: labelsTokens.symbol,
+      decimals: labelsTokens.decimals,
+      totalSupply: sql<null>`NULL`,
+      logoUrl: labelsTokens.logoUrl,
+      isSpam: labelsTokens.isSpam,
+      spamReason: sql<null>`NULL`,
+      enrichmentError: sql<null>`NULL`,
+      enrichedAt: sql<null>`NULL`,
+    })
+    .from(labelsTokens)
+    .where(
+      and(
+        eq(labelsTokens.chainId, chainId),
+        sql`${labelsTokens.address} = any(${sql.param(tokenAddresses, lowercaseAddressArray)}::text[])`,
+      ),
+    );
 
 // Check if the token has an ApprovalForAll event OR if its Transfer/Approval events have 4 topic,
 // then it is ERC721, otherwise it is ERC20 (note that we don't differentiate between ERC721 and ERC1155 here)

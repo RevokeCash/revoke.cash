@@ -36,8 +36,21 @@ const nextConfig = {
       { source: '/api/admin/:path*', headers: adminSecurityHeaders },
     ];
   },
+  rewrites: async () => {
+    return [
+      // The public label API keeps its whois path; the routes live under /api/labels
+      { source: '/generated/:path*', destination: '/api/labels/:path*' },
+    ];
+  },
   redirects: async () => {
     return [
+      // whois.revoke.cash serves only the /generated label routes, every other path goes to the site
+      {
+        source: '/:path((?!generated/).*)',
+        has: [{ type: 'host', value: 'whois.revoke.cash' }],
+        destination: 'https://revoke.cash/:path',
+        permanent: false,
+      },
       {
         source: '/:locale(en|es|ja|ru|zh)/faq',
         destination: '/:locale/learn/faq',

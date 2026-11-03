@@ -1,5 +1,5 @@
 import type { AuditAction, AuditActionDetails } from '@revoke.cash/core/audit/actions';
-import { getDb } from '@revoke.cash/core/db/client';
+import { type DatabaseWriter, getDb } from '@revoke.cash/core/db/client';
 import { auditEvents } from '@revoke.cash/core/db/schema/audit';
 import type { Address } from 'viem';
 
@@ -18,15 +18,16 @@ export const recordAuditEvent = async <TAction extends AuditAction>(
   params: RecordAuditEventParams<TAction>,
 ): Promise<void> => {
   try {
-    await getDb().insert(auditEvents).values({
-      action: params.action,
-      actorAddress: params.actorAddress,
-      targetAddress: params.targetAddress,
-      subscriptionId: params.subscriptionId,
-      chainId: params.chainId,
-      details: params.details,
-    });
+    await insertAuditEvent(getDb(), params);
   } catch (error) {
     console.error(`Failed to record audit event '${params.action}':`, error);
   }
+};
+
+// Throws on failure, so a caller can write the audit row in the same transaction as the audited change
+export const insertAuditEvent = async <TAction extends AuditAction>(
+  writer: DatabaseWriter,
+  params: RecordAuditEventParams<TAction>,
+): Promise<void> => {
+  await writer.insert(auditEvents).values(params);
 };

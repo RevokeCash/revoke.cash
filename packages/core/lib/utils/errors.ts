@@ -1,4 +1,5 @@
 import { REVERT_ERRORS_ABI } from '@revoke.cash/core/abis';
+import type { indexerSpamReasonEnum } from '@revoke.cash/core/db/schema/indexer';
 import { BaseError, decodeErrorResult, type Hash, type Hex, isHex, stringify } from 'viem';
 
 // Base class for errors thrown by core that map to a specific HTTP response shape. Subclasses
@@ -419,7 +420,7 @@ export const stringifyError = (error: any, indent?: number): string => {
   }
 };
 
-export type SpamReason = 'whois' | 'symbol' | 'bytecode' | 'balance';
+export type SpamReason = (typeof indexerSpamReasonEnum.enumValues)[number];
 
 // Thrown once a failed chain switch was already shown to the user (or deliberately not shown, for a rejection),
 // so callers do not show a second error for the same failure

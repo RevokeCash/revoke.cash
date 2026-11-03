@@ -18,8 +18,4 @@ export class ConfigService {
   get chains(): readonly number[] {
     return ORDERED_CHAINS;
   }
-
-  get optionalExploitWebhookToken(): string | undefined {
-    return process.env.EXPLOIT_WEBHOOK_TOKEN;
-  }
 }

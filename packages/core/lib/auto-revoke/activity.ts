@@ -7,14 +7,10 @@ import {
   type SpenderMetadataByAddress,
   serializeSpenderMetadata,
 } from '@revoke.cash/core/indexer/spender-metadata';
-import {
-  getCompleteTokenMetadata,
-  serializeTokenMetadata,
-  type TokenMetadataByAddress,
-} from '@revoke.cash/core/indexer/token-metadata';
+import { getCompleteTokenMetadata, type TokenMetadataByAddress } from '@revoke.cash/core/indexer/token-metadata';
 import type { TokenMetadata } from '@revoke.cash/core/tokens';
 import { deduplicateArray } from '@revoke.cash/core/utils';
-import type { SpenderRiskData } from '@revoke.cash/core/whois';
+import type { SpenderData } from '@revoke.cash/core/whois';
 import { and, desc, eq, getTableColumns, inArray, type SQL, sql } from 'drizzle-orm';
 import type { Address, Hash } from 'viem';
 import type { Action, ActionErrorCode, ActionStatus } from './actions';
@@ -28,9 +24,9 @@ export interface AutoRevokeActivityItem {
   chainId: number;
   allowanceType: AllowanceType;
   tokenAddress: Address;
-  tokenMetadata: Pick<TokenMetadata, 'symbol' | 'icon'>;
+  tokenMetadata: Pick<TokenMetadata, 'symbol' | 'logoUrl'>;
   spenderAddress: Address;
-  spenderData?: SpenderRiskData;
+  spenderData?: SpenderData;
   triggerType: Observation['triggerType'];
   status: ActionStatus;
   errorCode: ActionErrorCode | null;
@@ -112,8 +108,7 @@ export const loadMetadataByChain = async (actions: Action[]): Promise<Map<number
 };
 
 export const mapActivityItem = (action: Action, metadata: ChainMetadata | undefined): AutoRevokeActivityItem => {
-  const tokenMetadataRow = metadata?.tokens.get(action.observation.tokenAddress);
-  const tokenMetadata = tokenMetadataRow ? serializeTokenMetadata(tokenMetadataRow) : undefined;
+  const tokenMetadata = metadata?.tokens.get(action.observation.tokenAddress);
 
   return {
     id: action.id,
@@ -122,7 +117,10 @@ export const mapActivityItem = (action: Action, metadata: ChainMetadata | undefi
     chainId: action.observation.chainId,
     allowanceType: action.observation.allowanceType,
     tokenAddress: action.observation.tokenAddress,
-    tokenMetadata: { symbol: tokenMetadata?.symbol ?? action.observation.tokenAddress, icon: tokenMetadata?.icon },
+    tokenMetadata: {
+      symbol: tokenMetadata?.symbol ?? action.observation.tokenAddress,
+      logoUrl: tokenMetadata?.logoUrl ?? undefined,
+    },
     spenderAddress: action.observation.spenderAddress,
     spenderData: serializeSpenderMetadata(metadata?.spenders.get(action.observation.spenderAddress)),
     triggerType: action.observation.triggerType,

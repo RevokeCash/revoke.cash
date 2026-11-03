@@ -1,11 +1,10 @@
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import { isNullish } from '@revoke.cash/core/utils';
-import type { SpenderRiskData } from '@revoke.cash/core/whois';
+import type { SpenderData } from '@revoke.cash/core/whois';
 import type { Address, Hex } from 'viem';
-import type { SpenderDataSource } from '../SpenderDataSource';
 
-export class OnchainSpenderRiskDataSource implements SpenderDataSource {
-  async getSpenderData(address: Address, chainId: number): Promise<SpenderRiskData | null> {
+export class OnchainSpenderCheck {
+  async getSpenderData(address: Address, chainId: number): Promise<SpenderData | null> {
     const publicClient = createViemPublicClientForChain(chainId);
     if (!publicClient) return null;
 

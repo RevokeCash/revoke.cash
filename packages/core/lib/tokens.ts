@@ -1,8 +1,10 @@
 import { ERC20_ABI, ERC721_ABI } from '@revoke.cash/core/abis';
 import { ChainId } from '@revoke.cash/core/chains/ids';
-import { WHOIS_BASE_URL } from '@revoke.cash/core/constants';
+import { SITE_URL } from '@revoke.cash/core/constants';
+import type { indexerTokenStandardEnum } from '@revoke.cash/core/db/schema/indexer';
 import { type TokenEvent, TokenEventType } from '@revoke.cash/core/events';
 import ky from '@revoke.cash/core/ky';
+import type { PublicTokenLabel } from '@revoke.cash/core/labels/merge';
 import type { Nullable } from '@revoke.cash/core/types';
 import { formatFixedPointBigInt } from '@revoke.cash/core/utils/formatting';
 import { withFallback } from '@revoke.cash/core/utils/promises';
@@ -26,7 +28,7 @@ export interface TokenData {
 export interface TokenMetadata {
   // name: string;
   symbol: string;
-  icon?: string;
+  logoUrl?: string;
   decimals?: number;
   totalSupply?: bigint;
   // Price will be loaded separately (undefined until loaded, null if no price available)
@@ -35,14 +37,7 @@ export interface TokenMetadata {
 
 export type TokenBalance = bigint | 'Unknown';
 
-export type TokenStandard = 'erc20' | 'erc721';
-
-interface TokenFromList {
-  symbol: string;
-  decimals?: number;
-  logoURI?: string;
-  isSpam?: boolean;
-}
+export type TokenStandard = (typeof indexerTokenStandardEnum.enumValues)[number];
 
 export const isSpamTokenSymbol = (symbol: string) => {
   const spamRegexes = [
@@ -61,23 +56,16 @@ export const isSpamTokenSymbol = (symbol: string) => {
   return spamRegexes.some((regex) => regex.test(symbol));
 };
 
-const getTokenMetadataFromMapping = async (
-  address: Address,
-  chainId: number,
-): Promise<(TokenMetadata & { isSpam?: boolean }) | undefined> => {
+// The label that revoke.cash serves at /api/labels (public at /generated). It fails open: without a label the spam
+// checks run. The URL is absolute, because the Pudgy claim route runs this on the server (through getTokenEvents).
+export const fetchTokenLabel = async (address: Address, chainId: number): Promise<PublicTokenLabel | undefined> => {
   try {
-    const metadata = await ky
-      .get(`${WHOIS_BASE_URL}/tokens/${chainId}/${getAddress(address)}.json`)
-      .json<TokenFromList>();
+    const label = await ky
+      .get(`${SITE_URL}/api/labels/tokens/${chainId}/${getAddress(address)}.json`)
+      .json<PublicTokenLabel>();
 
-    if (!metadata || Object.keys(metadata).length === 0) return undefined;
-
-    return {
-      symbol: metadata.symbol,
-      decimals: metadata.decimals === undefined ? undefined : Number(metadata.decimals),
-      icon: metadata.logoURI,
-      isSpam: metadata.isSpam,
-    };
+    if (!label || Object.keys(label).length === 0) return undefined;
+    return label;
   } catch {
     return undefined;
   }
@@ -87,56 +75,60 @@ export const getTokenMetadata = async (
   token: TokenReference,
   publicClient: PublicClient,
   chainId: number,
+  tokenLabel: PublicTokenLabel | undefined,
 ): Promise<TokenMetadata> => {
-  const metadataFromMapping = await getTokenMetadataFromMapping(token.address, chainId);
-  // Whois-flagged spam short-circuits before any RPC — no need to spend reads on a token we'll throw out anyway.
-  if (metadataFromMapping?.isSpam) throw new SpamError('whois');
+  // Label-flagged spam short-circuits before any RPC, so no reads are spent on a token we'll throw out anyway.
+  if (tokenLabel?.isSpam) throw new SpamError('whois');
 
   if (isErc721(token)) {
     const [symbol] = await Promise.all([
-      metadataFromMapping?.symbol ??
+      tokenLabel?.symbol ??
         withFallback(
           publicClient.readContract({ address: token.address, abi: ERC721_ABI, functionName: 'name' }),
           token.address,
         ),
       throwIfNotErc721(token.address, publicClient),
-      metadataFromMapping ? undefined : throwIfSpamBytecode(token.address, publicClient),
-      // metadataFromMapping ? undefined : throwIfPhantomBalance(token.address, publicClient),
+      tokenLabel ? undefined : throwIfSpamBytecode(token.address, publicClient),
+      // tokenLabel ? undefined : throwIfPhantomBalance(token.address, publicClient),
     ]);
 
-    if (!metadataFromMapping && isSpamTokenSymbol(symbol)) throw new SpamError('symbol');
-    return { ...metadataFromMapping, symbol, price: null, decimals: 0 };
+    if (!tokenLabel && isSpamTokenSymbol(symbol)) throw new SpamError('symbol');
+
+    return { symbol, logoUrl: tokenLabel?.logoURI, price: null, decimals: 0 };
   }
 
   const [totalSupply, symbol, decimals] = await Promise.all([
     publicClient.readContract({ address: token.address, abi: ERC20_ABI, functionName: 'totalSupply' }),
-    metadataFromMapping?.symbol ??
+    tokenLabel?.symbol ??
       withFallback(
         publicClient.readContract({ address: token.address, abi: ERC20_ABI, functionName: 'symbol' }),
         token.address,
       ),
-    metadataFromMapping?.decimals ??
+    tokenLabel?.decimals ??
       publicClient.readContract({ address: token.address, abi: ERC20_ABI, functionName: 'decimals' }),
     // TODO: I'm temporarily disabling this check because of false positives on Sei network
     // Make sure to add this back when we have a solution for Sei
-    metadataFromMapping || chainId === ChainId.Sei ? undefined : throwIfNotErc20(token.address, publicClient), // Don't check if we have metadata from the mapping
-    metadataFromMapping ? undefined : throwIfPhantomBalance(token.address, publicClient),
-    metadataFromMapping ? undefined : throwIfSpamBytecode(token.address, publicClient),
+    tokenLabel || chainId === ChainId.Sei ? undefined : throwIfNotErc20(token.address, publicClient), // Don't check if we have a label
+    tokenLabel ? undefined : throwIfPhantomBalance(token.address, publicClient),
+    tokenLabel ? undefined : throwIfSpamBytecode(token.address, publicClient),
   ]);
 
-  if (!metadataFromMapping && isSpamTokenSymbol(symbol)) throw new SpamError('symbol');
+  if (!tokenLabel && isSpamTokenSymbol(symbol)) throw new SpamError('symbol');
 
   // Price will be loaded separately via useTokenPrice hook
-  return { ...metadataFromMapping, totalSupply, symbol: String(symbol), decimals, price: null };
+  return { totalSupply, symbol: String(symbol), decimals, logoUrl: tokenLabel?.logoURI, price: null };
 };
 
 export const getTokenMetadataUnknown = async (
   address: Address,
   publicClient: PublicClient,
 ): Promise<TokenMetadata | undefined> => {
+  const chainId = publicClient.chain!.id;
+  const tokenLabel = await fetchTokenLabel(address, chainId);
+
   const results = await Promise.allSettled([
-    getTokenMetadata({ address, standard: 'erc20' }, publicClient, publicClient.chain!.id),
-    getTokenMetadata({ address, standard: 'erc721' }, publicClient, publicClient.chain!.id),
+    getTokenMetadata({ address, standard: 'erc20' }, publicClient, chainId, tokenLabel),
+    getTokenMetadata({ address, standard: 'erc721' }, publicClient, chainId, tokenLabel),
   ]);
 
   return results.reduce(
