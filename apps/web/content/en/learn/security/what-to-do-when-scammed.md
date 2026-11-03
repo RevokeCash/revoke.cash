@@ -64,7 +64,7 @@ Because multiple assets are stolen in one go, it is easy to confuse this kind of
 
 ### What can be done?
 
-Once this kind of signature has been signed, there is one thing you can do to _prevent_ it from activating: _cancel signatures_ on the Revoke.cash Signatures page. However, the time window to cancel these signatures is very small, and once your assets have been stolen, there is no way to get them back.
+Once this kind of signature has been signed, there is one thing you can do to _prevent_ it from activating: revoke your approvals to the affected contract, such as OpenSea, Blur or Permit2, on Revoke.cash. The signature only works while these approvals are active. However, the time window to do this is very small, and once your assets have been stolen, there is no way to get them back.
 
 Because this is a "one and done" event, you can continue to use your wallet without needing to take any further action. However, it is important to follow the prevention steps below to ensure that this does not happen again in the future.
 
