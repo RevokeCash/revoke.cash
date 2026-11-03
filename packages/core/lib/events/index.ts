@@ -4,7 +4,7 @@ import { ADDRESS_ZERO, DUMMY_ADDRESS } from '@revoke.cash/core/constants';
 import type { TokenMetadata } from '@revoke.cash/core/tokens';
 import type { Nullable } from '@revoke.cash/core/types';
 import { isNullish } from '@revoke.cash/core/utils';
-import type { SpenderRiskData } from '@revoke.cash/core/whois';
+import type { SpenderData } from '@revoke.cash/core/whois';
 import { type Address, decodeEventLog, getAbiItem, type Hash, type Hex, toEventSelector } from 'viem';
 import { logSorterChronological, toEventTimeLog } from './utils';
 
@@ -66,7 +66,7 @@ export interface Erc20ApprovalEvent extends BaseTokenEvent {
   type: TokenEventType.APPROVAL_ERC20;
   payload: {
     spender: Address;
-    spenderData?: Nullable<SpenderRiskData>;
+    spenderData?: Nullable<SpenderData>;
     amount: bigint;
   };
 }
@@ -76,7 +76,7 @@ export interface Erc721ApprovalEvent extends BaseTokenEvent {
   payload: {
     spender: Address;
     oldSpender?: Address;
-    spenderData?: Nullable<SpenderRiskData>;
+    spenderData?: Nullable<SpenderData>;
     tokenId: bigint;
   };
 }
@@ -85,7 +85,7 @@ export interface Erc721ApprovalForAllEvent extends BaseTokenEvent {
   type: TokenEventType.APPROVAL_FOR_ALL;
   payload: {
     spender: Address;
-    spenderData?: Nullable<SpenderRiskData>;
+    spenderData?: Nullable<SpenderData>;
     approved: boolean;
   };
 }
@@ -94,7 +94,7 @@ export interface Permit2Event extends BaseTokenEvent {
   type: TokenEventType.PERMIT2;
   payload: {
     spender: Address;
-    spenderData?: Nullable<SpenderRiskData>;
+    spenderData?: Nullable<SpenderData>;
     permit2Address: Address;
     amount: bigint;
     expiration: number;
@@ -109,7 +109,7 @@ export interface Erc20TransferEvent extends BaseTokenEvent {
     amount: bigint;
     // These fields are set if the trace-classifier detects that it is an *approved* transfer
     spender?: Address;
-    spenderData?: Nullable<SpenderRiskData>;
+    spenderData?: Nullable<SpenderData>;
     permit2Address?: Address;
   };
 }
@@ -122,7 +122,7 @@ export interface Erc721TransferEvent extends BaseTokenEvent {
     tokenId: bigint;
     // These fields are set if the trace-classifier detects that it is an *approved* transfer
     spender?: Address;
-    spenderData?: Nullable<SpenderRiskData>;
+    spenderData?: Nullable<SpenderData>;
     permit2Address?: Address;
   };
 }

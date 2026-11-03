@@ -56,7 +56,7 @@ Auto-Revoking is driven by the same indexing infrastructure that powers the Prem
 - **Risk score**: the spender is flagged as risky, at or above your configured sensitivity.
 - **Stale**: the approval is older than your configured threshold, 180 days by default.
 
-The exploit path is the time-critical one. Our [exploit list](https://github.com/RevokeCash/approval-exploit-list) is public on GitHub, and the moment a new exploit is added, a webhook fires into the indexer and every wallet with a live allowance to the exploited spenders is immediately re-evaluated with fresh on-chain data. Matches become queued revoke actions, with exploit-triggered actions jumping to the front while others get a short cooling-off delay.
+The exploit path is the time-critical one. Our [exploit list](https://github.com/RevokeCash/approval-exploit-list) is public on GitHub, and the moment we add a new exploit, every protected wallet with a live allowance to the exploited spenders is rescanned and re-evaluated with fresh on-chain data within minutes. Matches become queued revoke actions, with exploit-triggered actions jumping to the front while others get a short cooling-off delay.
 
 ## The Two-Lane Executor
 

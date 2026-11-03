@@ -13,11 +13,9 @@
     "start": "yarn env next start",
     "analyze": "ANALYZE=true yarn build",
     "typecheck": "tsc --noEmit",
-    "lint:checksums": "yarn tsx scripts/lint-checksums.ts && git rm -r --cached -q data && git add --all data",
     "test": "yarn test:mocha && yarn test:cypress",
     "test:cypress": "cypress run",
     "test:mocha": "yarn env mocha test/**/*.test.ts --",
-    "exploits:update": "yarn tsx scripts/update-exploits.ts ../../../approval-exploit-list ../../../whois",
     "tsx": "yarn env tsx"
   },
   "dependencies": {

@@ -7,7 +7,6 @@ import { AllowancesSchedulerModule } from './allowances/allowances.scheduler.mod
 import { AllowancesWorkerModule } from './allowances/allowances.worker.module';
 import { AutoRevokeSchedulerModule } from './auto-revoke/auto-revoke.scheduler.module';
 import { AutoRevokeEvaluatorWorkerModule } from './auto-revoke/auto-revoke-evaluator.worker.module';
-import { ExploitWebhookModule } from './auto-revoke/exploit-webhook.module';
 import { BullBoardModule } from './bull-board/bull-board.module';
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
@@ -40,8 +39,7 @@ export class AppModule {
       isManager ? TokenMetadataSchedulerModule : TokenMetadataWorkerModule,
       isManager ? SpenderMetadataSchedulerModule : SpenderMetadataWorkerModule,
       isManager ? TransferDetailsSchedulerModule : TransferDetailsWorkerModule,
-      isManager ? ExploitWebhookModule : AutoRevokeEvaluatorWorkerModule,
-      ...(isManager ? [AutoRevokeSchedulerModule, BullBoardModule] : []),
+      ...(isManager ? [AutoRevokeSchedulerModule, BullBoardModule] : [AutoRevokeEvaluatorWorkerModule]),
     ];
 
     return {

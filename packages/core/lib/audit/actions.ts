@@ -1,5 +1,6 @@
 // Pure audit action definitions with no database imports, so client components can import them.
 import type { AutoRevokeRules } from '@revoke.cash/core/auto-revoke/evaluation/rules';
+import type { SpenderLabel, TokenLabel } from '@revoke.cash/core/labels/merge';
 import type { ProcessRefundOutcome } from '@revoke.cash/core/premium/refunds';
 
 // Each entry maps an audit action to the details stored in its jsonb column. Identifying context
@@ -26,6 +27,32 @@ export interface AuditActionDetails {
   admin_chain_indexing_reset: { resetAddressCount: number };
   admin_auto_revoke_action_retried: { actionId: string };
   admin_impersonation_started: Record<string, never>;
+  admin_spender_label_changed: {
+    before: SpenderLabelAuditValues | null;
+    after: SpenderLabelAuditValues | null;
+    reason: string;
+  };
+  admin_token_label_changed: {
+    before: TokenLabelAuditValues | null;
+    after: TokenLabelAuditValues | null;
+    reason: string;
+  };
+  admin_exploit_changed: {
+    slug: string;
+    reason: string;
+    before: ExploitAuditValues | null;
+    after: ExploitAuditValues | null;
+  };
+}
+
+export type SpenderLabelAuditValues = Pick<SpenderLabel, 'name' | 'riskFactors'>;
+
+export type TokenLabelAuditValues = Pick<TokenLabel, 'symbol' | 'decimals' | 'logoUrl' | 'isSpam' | 'note'>;
+
+// The addresses stay in approval-exploit-list's git history
+export interface ExploitAuditValues {
+  fixed: boolean;
+  addressCount: number;
 }
 
 export type AuditAction = keyof AuditActionDetails;
@@ -52,6 +79,9 @@ export const AUDIT_ACTIONS = [
   'admin_chain_indexing_reset',
   'admin_auto_revoke_action_retried',
   'admin_impersonation_started',
+  'admin_spender_label_changed',
+  'admin_token_label_changed',
+  'admin_exploit_changed',
 ] as const satisfies readonly AuditAction[];
 
 // Compile-time check: errors if any AuditActionDetails key is missing from AUDIT_ACTIONS.

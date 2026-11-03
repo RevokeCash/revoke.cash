@@ -1,11 +1,9 @@
 import { AUTO_REVOKE_SUPPORTED_CHAINS, isAutoRevokeSupportedChain } from '@revoke.cash/core/auto-revoke/config';
 import { createViemPublicClientForChain, getChainCoingeckoAssetPlatformId } from '@revoke.cash/core/chains';
 import { getDb } from '@revoke.cash/core/db/client';
-import { indexerAllowanceState, indexerAllowances } from '@revoke.cash/core/db/schema/indexer';
-import type { Exploit } from '@revoke.cash/core/exploits';
+import { indexerAllowanceState } from '@revoke.cash/core/db/schema/indexer';
 import { loadEnrichedAddressAllowances } from '@revoke.cash/core/indexer/allowances-read';
 import { isAllowanceCacheFresh } from '@revoke.cash/core/indexer/cache-state';
-import { addSpenderRiskFactor } from '@revoke.cash/core/indexer/spender-metadata';
 import { activeSubscriptionsQuery } from '@revoke.cash/core/premium/subscriptions';
 import { getNftFloorPricesUsd, getTokenPricesUsd } from '@revoke.cash/core/prices';
 import { getTokenBalances, isErc721, type TokenBalance, type TokenReference } from '@revoke.cash/core/tokens';
@@ -173,26 +171,4 @@ const recordLastEvaluatedAt = async (address: Address, chainId: number, computed
         or(isNull(indexerAllowanceState.lastEvaluatedAt), lt(indexerAllowanceState.lastEvaluatedAt, computedAt)),
       ),
     );
-};
-
-// Record the exploit as a spender risk factor so the normal evaluation detects it like any other
-// risk, then return every address with allowances to the exploit's spenders. The caller pushes each
-// one back through the indexing pipeline so it is re-evaluated against freshly indexed allowances.
-export const prepareExploitEvaluation = async (exploit: Exploit): Promise<AddressOnChain[]> => {
-  if (exploit.addresses.length === 0) return [];
-
-  await addSpenderRiskFactor(exploit.addresses, { type: 'exploit', source: 'whois', data: exploit.name });
-
-  const affectedAddresses = getDb()
-    .selectDistinct({ address: indexerAllowances.address, chainId: indexerAllowances.chainId })
-    .from(indexerAllowances)
-    .where(
-      or(
-        ...exploit.addresses.map(({ chainId, address }) =>
-          and(eq(indexerAllowances.chainId, chainId), eq(indexerAllowances.spenderAddress, address)),
-        ),
-      ),
-    );
-
-  return affectedAddresses;
 };

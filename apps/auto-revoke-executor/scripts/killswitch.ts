@@ -22,6 +22,7 @@
 // It is idempotent: cold delegations already disabled on-chain are skipped (before any signing),
 // so it is safe to re-run (e.g. after topping up gas on a chain that failed).
 import { readFileSync } from 'node:fs';
+import { parseArgs } from 'node:util';
 import {
   createExecution,
   type Delegation,
@@ -34,7 +35,7 @@ import type { ColdDelegationRegistry } from '@revoke.cash/core/auto-revoke/execu
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import { type Address, getAddress, type Hash, type Hex, type PublicClient, serializeTransaction } from 'viem';
 import { buildColdSmartAccount, DISABLE_DELEGATION_SIGNATURE, signColdDelegation } from './cold-account';
-import { DEFAULT_DELEGATIONS_PATH, DEFAULT_DERIVATION_PATH, describeChain, parseFlags } from './delegations';
+import { DEFAULT_DELEGATIONS_PATH, DEFAULT_DERIVATION_PATH, describeChain } from './delegations';
 import { connectLedgerColdSigner, type LedgerColdSigner } from './ledger-cold-signer';
 
 interface ColdDelegationEntry {
@@ -44,7 +45,7 @@ interface ColdDelegationEntry {
 }
 
 const main = async (): Promise<void> => {
-  const options = parseOptions(process.argv.slice(2));
+  const options = parseOptions();
   const entries = readDelegationEntries(options);
 
   console.log(`Disabling ${entries.length} cold delegation(s) from ${options.inputPath}`);
@@ -166,14 +167,22 @@ interface KillswitchOptions {
   delegate?: Address;
 }
 
-const parseOptions = (args: string[]): KillswitchOptions => {
-  const flags = parseFlags(args);
+// Throws on an unknown option, so a misspelled --delegate or --chains never disables every delegation
+const parseOptions = (): KillswitchOptions => {
+  const { values } = parseArgs({
+    options: {
+      in: { type: 'string', default: DEFAULT_DELEGATIONS_PATH },
+      path: { type: 'string', default: DEFAULT_DERIVATION_PATH },
+      chains: { type: 'string' },
+      delegate: { type: 'string' },
+    },
+  });
 
   return {
-    inputPath: flags.get('in') ?? DEFAULT_DELEGATIONS_PATH,
-    derivationPath: flags.get('path') ?? DEFAULT_DERIVATION_PATH,
-    chainIds: flags.has('chains') ? flags.get('chains')!.split(',').map(Number) : undefined,
-    delegate: flags.has('delegate') ? getAddress(flags.get('delegate')!) : undefined,
+    inputPath: values.in,
+    derivationPath: values.path,
+    chainIds: values.chains?.split(',').map(Number),
+    delegate: values.delegate === undefined ? undefined : getAddress(values.delegate),
   };
 };
 

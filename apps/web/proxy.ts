@@ -8,7 +8,7 @@ export const config = {
   matcher: [
     // Match any path starting with /address
     '/address/(.*)',
-    // Do not match non-page URLs (/_next, /_vercel, /monitoring, /api, /admin + URLs with a . in them)
-    '/((?!_next|_vercel|monitoring|api|admin|.*\\..*$).*)',
+    // Do not match non-page URLs (/_next, /_vercel, /monitoring, /api, /admin, /generated + URLs with a . in them)
+    '/((?!_next|_vercel|monitoring|api|admin|generated|.*\\..*$).*)',
   ],
 };

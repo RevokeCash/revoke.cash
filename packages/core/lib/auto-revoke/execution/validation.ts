@@ -64,7 +64,7 @@ export const checkExecutionEligibility = async (observation: Observation): Promi
     return { failure: { status: 'skipped', errorCode: 'token_metadata_unusable' } };
 
   const spenderMetadata = spenderMetadataByAddress.get(observation.spenderAddress);
-  const allowance = serializeAllowanceFromRow(row, tokenMetadata!, spenderMetadata);
+  const allowance = serializeAllowanceFromRow(row, tokenMetadata, spenderMetadata);
 
   const matchedTriggers = getMatchedTriggers(allowance, rules);
   if (matchedTriggers.length === 0) {

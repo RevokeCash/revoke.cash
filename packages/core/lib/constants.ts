@@ -1,5 +1,3 @@
-export const WHOIS_BASE_URL = 'https://whois.revoke.cash/generated';
-
 export const CHROME_EXTENSION_URL =
   'https://chrome.google.com/webstore/detail/revokecash/nmniboccheadcclilkfkonokbcoceced';
 export const FIREFOX_EXTENSION_URL = 'https://addons.mozilla.org/en-US/firefox/addon/revoke-cash/';
@@ -45,9 +43,13 @@ export const WEBACY_API_KEY = process.env.WEBACY_API_KEY ?? process.env.NEXT_PUB
 export const FAIRSIDE_API_KEY = process.env.FAIRSIDE_API_KEY ?? process.env.NEXT_PUBLIC_FAIRSIDE_API_KEY;
 export const COINGECKO_API_KEY = process.env.COINGECKO_API_KEY ?? process.env.NEXT_PUBLIC_COINGECKO_API_KEY;
 export const COINGECKO_API_BASE_URL = 'https://pro-api.coingecko.com/api/v3';
+export const SCAMSNIFFER_API_KEY = process.env.SCAMSNIFFER_API_KEY;
+export const OPENSEA_API_KEY = process.env.OPENSEA_API_KEY;
 
 export const CRISP_WEBSITE_ID = process.env.CRISP_WEBSITE_ID ?? process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID;
 
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ??
   (process.env.NODE_ENV === 'production' ? 'https://revoke.cash' : 'http://localhost:3000');
+
+export const LABEL_CDN_TTL_SECONDS = 15 * 60;

@@ -19,6 +19,7 @@
     "allow-scripts": "cd ../.. && yarn run allow-scripts",
     "typecheck": "tsc --noEmit",
     "check-chain-data": "tsx scripts/check-chain-data.ts",
+    "labels": "yarn env tsx scripts/labels/index.ts",
     "db:generate": "yarn env drizzle-kit generate",
     "db:migrate": "yarn env drizzle-kit migrate",
     "db:push": "yarn env drizzle-kit push",
@@ -34,14 +35,12 @@
     "dexie": "^4.4.5",
     "drizzle-orm": "^0.45.2",
     "ky": "^2.0.2",
-    "md5": "^2.3.0",
     "p-queue": "^9.3.3",
     "viem": "^2.55.19",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^2.21.0",
-    "@types/md5": "^2.3.6",
     "drizzle-kit": "^0.31.10",
     "tsx": "^4.23.12",
     "typescript": "^6.0.3"

@@ -1,6 +1,6 @@
 import { ADDRESS_ZERO, WEBACY_API_KEY } from '@revoke.cash/core/constants';
 import { type DatabaseWriter, getDb } from '@revoke.cash/core/db/client';
-import { indexerEvents, indexerSpenderMetadata } from '@revoke.cash/core/db/schema/indexer';
+import { indexerEvents, indexerSpenderChecks } from '@revoke.cash/core/db/schema/indexer';
 import {
   ERC721_APPROVAL_FOR_ALL_TOPIC,
   ERC721_APPROVAL_TOPIC,
@@ -9,44 +9,36 @@ import {
   PERMIT2_PERMIT_TOPIC,
 } from '@revoke.cash/core/events';
 import { addressToTopic } from '@revoke.cash/core/events/utils';
+import {
+  getRiskFactorKey,
+  type MergedSpenderMetadata,
+  mergeSpenderRows,
+  type SpenderCheck,
+} from '@revoke.cash/core/labels/merge';
+import { getSpenderRows } from '@revoke.cash/core/labels/spenders';
 import type { RiskFactor } from '@revoke.cash/core/risk';
-import type { AddressOnChain } from '@revoke.cash/core/types';
-import { isNullish } from '@revoke.cash/core/utils';
+import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
 import { DAY } from '@revoke.cash/core/utils/time';
-import type { SpenderRiskData } from '@revoke.cash/core/whois';
-import {
-  AggregateSpenderDataSource,
-  AggregationType,
-} from '@revoke.cash/core/whois/spender/AggregateSpenderDataSource';
-import { WhoisSpenderDataSource } from '@revoke.cash/core/whois/spender/label/WhoisSpenderDataSource';
-import { OnchainSpenderRiskDataSource } from '@revoke.cash/core/whois/spender/risk/OnchainSpenderRiskDataSource';
-import { ScamSnifferRiskDataSource } from '@revoke.cash/core/whois/spender/risk/ScamSnifferRiskDataSource';
-import { WebacySpenderRiskDataSource } from '@revoke.cash/core/whois/spender/risk/WebacySpenderRiskDataSource';
+import type { SpenderData } from '@revoke.cash/core/whois';
+import { OnchainSpenderCheck } from '@revoke.cash/core/whois/spender/risk/OnchainSpenderCheck';
+import { WebacySpenderCheck } from '@revoke.cash/core/whois/spender/risk/WebacySpenderCheck';
 import { and, eq, gte, inArray, isNull, lt, lte, or, type SQL, sql } from 'drizzle-orm';
 import { unionAll } from 'drizzle-orm/pg-core';
 import { type Address, getAddress, type Hex } from 'viem';
 
-const SPENDER_DATA_SOURCE = new AggregateSpenderDataSource({
-  aggregationType: AggregationType.PARALLEL_COMBINED,
-  sources: [
-    new WhoisSpenderDataSource(),
-    new OnchainSpenderRiskDataSource(),
-    new ScamSnifferRiskDataSource(),
-    new WebacySpenderRiskDataSource(WEBACY_API_KEY),
-  ],
-});
+// Only revoke.cash's own checks. Names, curated risk, exploits and ScamSniffer are labels.* rows, joined at read time.
+const SPENDER_CHECKS = [new OnchainSpenderCheck(), new WebacySpenderCheck(WEBACY_API_KEY)];
 
 export const SPENDER_METADATA_STALE_AFTER_MS = 1 * DAY;
 
-export const isSpenderMetadataFresh = (metadata?: SpenderMetadataRow): boolean => {
+export const isSpenderMetadataFresh = (metadata?: MergedSpenderMetadata): boolean => {
   if (isNullish(metadata?.enrichedAt)) return false;
   return metadata.enrichedAt.getTime() >= Date.now() - SPENDER_METADATA_STALE_AFTER_MS;
 };
 
-export type SpenderMetadataRow = typeof indexerSpenderMetadata.$inferSelect;
-export type SpenderMetadataByAddress = Map<Address, SpenderMetadataRow>;
+export type SpenderMetadataByAddress = Map<Address, MergedSpenderMetadata>;
 
 export interface SpenderEnrichmentResult {
   durationMs: number;
@@ -67,22 +59,40 @@ export const enrichSpender = async (chainId: number, spenderAddress: Address): P
   const db = getDb();
 
   try {
-    const spenderData = await SPENDER_DATA_SOURCE.getSpenderData(spenderAddress, chainId);
+    const { name, riskFactors } = await checkSpender(spenderAddress, chainId);
 
-    await upsertSpenderMetadata(db, chainId, spenderAddress, {
-      name: spenderData?.name ?? null,
-      riskFactors: spenderData?.riskFactors ?? [],
-      enrichmentError: null,
-    });
+    await upsertSpenderCheck(db, chainId, spenderAddress, { name, riskFactors, enrichmentError: null });
 
     return { durationMs: Date.now() - start, outcome: 'enriched' };
   } catch (error) {
-    await upsertSpenderMetadata(db, chainId, spenderAddress, {
+    await upsertSpenderCheck(db, chainId, spenderAddress, {
       enrichmentError: parseErrorMessage(error),
     });
 
     return { durationMs: Date.now() - start, outcome: 'error' };
   }
+};
+
+// A rejected or empty check adds nothing. The first check that sets a name wins (today only the on-chain check does).
+const checkSpender = async (
+  spenderAddress: Address,
+  chainId: number,
+): Promise<Pick<SpenderCheck, 'name' | 'riskFactors'>> => {
+  const settlements = await Promise.allSettled(
+    SPENDER_CHECKS.map((check) => check.getSpenderData(spenderAddress, chainId)),
+  );
+
+  const results = settlements.flatMap((settlement) =>
+    settlement.status === 'fulfilled' && settlement.value ? [settlement.value] : [],
+  );
+
+  return {
+    name: results.find((result) => !isNullish(result.name))?.name ?? null,
+    riskFactors: deduplicateArray(
+      results.flatMap((result) => result.riskFactors ?? []),
+      getRiskFactorKey,
+    ),
+  };
 };
 
 export const findUnenrichedSpenders = async (params: UnenrichedSpendersQuery): Promise<Address[]> => {
@@ -116,15 +126,15 @@ export const findUnenrichedSpenders = async (params: UnenrichedSpendersQuery): P
     .selectDistinct({ spenderAddress: observed.spender })
     .from(observed)
     .leftJoin(
-      indexerSpenderMetadata,
-      and(eq(indexerSpenderMetadata.chainId, chainId), eq(indexerSpenderMetadata.spenderAddress, observed.spender)),
+      indexerSpenderChecks,
+      and(eq(indexerSpenderChecks.chainId, chainId), eq(indexerSpenderChecks.spenderAddress, observed.spender)),
     )
     .where(
       and(
         sql`${observed.spender} <> ${ADDRESS_ZERO}`,
         or(
-          isNull(indexerSpenderMetadata.enrichedAt),
-          !isNullish(staleBefore) ? lt(indexerSpenderMetadata.enrichedAt, staleBefore) : undefined,
+          isNull(indexerSpenderChecks.enrichedAt),
+          !isNullish(staleBefore) ? lt(indexerSpenderChecks.enrichedAt, staleBefore) : undefined,
         ),
       ),
     );
@@ -134,20 +144,14 @@ export const findUnenrichedSpenders = async (params: UnenrichedSpendersQuery): P
   return rows.map((row) => getAddress(row.spenderAddress));
 };
 
+// One statement for the check rows, labels, exploits and ScamSniffer, merged per spender
 export const getCachedSpenderMetadata = async (
   chainId: number,
   spenderAddresses: readonly Address[],
 ): Promise<SpenderMetadataByAddress> => {
-  if (spenderAddresses.length === 0) return new Map();
+  const rowsBySpender = await getSpenderRows(chainId, spenderAddresses);
 
-  const rows = await getDb().query.indexerSpenderMetadata.findMany({
-    where: and(
-      eq(indexerSpenderMetadata.chainId, chainId),
-      inArray(indexerSpenderMetadata.spenderAddress, spenderAddresses as Address[]),
-    ),
-  });
-
-  return new Map(rows.map((row) => [row.spenderAddress, row]));
+  return new Map([...rowsBySpender].map(([spenderAddress, rows]) => [spenderAddress, mergeSpenderRows(rows)]));
 };
 
 export const getCompleteSpenderMetadata = async (
@@ -163,7 +167,7 @@ export const getCompleteSpenderMetadata = async (
   return getCachedSpenderMetadata(chainId, spenderAddresses);
 };
 
-export const serializeSpenderMetadata = (metadata?: SpenderMetadataRow): SpenderRiskData | undefined => {
+export const serializeSpenderMetadata = (metadata?: MergedSpenderMetadata): SpenderData | undefined => {
   if (isNullish(metadata?.enrichedAt)) return undefined;
 
   return {
@@ -172,37 +176,13 @@ export const serializeSpenderMetadata = (metadata?: SpenderMetadataRow): Spender
   };
 };
 
-export const addSpenderRiskFactor = async (targets: AddressOnChain[], riskFactor: RiskFactor): Promise<void> => {
-  if (targets.length === 0) return;
-
-  const enrichedAt = new Date();
-  const riskFactorJson = JSON.stringify([riskFactor]);
-
-  await getDb()
-    .insert(indexerSpenderMetadata)
-    .values(
-      targets.map(({ chainId, address }) => ({
-        chainId,
-        spenderAddress: address,
-        enrichedAt,
-        riskFactors: [riskFactor],
-      })),
-    )
-    // The set / setWhere SQL statements make sure that the new riskFactor is appended only if it's not already present.
-    .onConflictDoUpdate({
-      target: [indexerSpenderMetadata.chainId, indexerSpenderMetadata.spenderAddress],
-      set: { enrichedAt, riskFactors: sql`${indexerSpenderMetadata.riskFactors} || ${riskFactorJson}::jsonb` },
-      setWhere: sql`not (${indexerSpenderMetadata.riskFactors} @> ${riskFactorJson}::jsonb)`,
-    });
-};
-
 type UpsertValues = Partial<{
   name: string | null;
   riskFactors: RiskFactor[];
   enrichmentError: string | null;
 }>;
 
-const upsertSpenderMetadata = async (
+const upsertSpenderCheck = async (
   writer: DatabaseWriter,
   chainId: number,
   spenderAddress: Address,
@@ -211,10 +191,10 @@ const upsertSpenderMetadata = async (
   const enrichedAt = new Date();
 
   await writer
-    .insert(indexerSpenderMetadata)
+    .insert(indexerSpenderChecks)
     .values({ chainId, spenderAddress, enrichedAt, ...values })
     .onConflictDoUpdate({
-      target: [indexerSpenderMetadata.chainId, indexerSpenderMetadata.spenderAddress],
+      target: [indexerSpenderChecks.chainId, indexerSpenderChecks.spenderAddress],
       set: { enrichedAt, ...values },
     });
 };

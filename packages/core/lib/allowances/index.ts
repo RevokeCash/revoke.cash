@@ -20,7 +20,7 @@ import { isRevertedError, isTransientError, parseErrorMessage, stringifyError } 
 import { formatFixedPointBigInt } from '@revoke.cash/core/utils/formatting';
 import { bigintMin, calculateFiatValue } from '@revoke.cash/core/utils/math';
 import { throwIfExcessiveGas } from '@revoke.cash/core/wallet';
-import type { SpenderRiskData } from '@revoke.cash/core/whois';
+import type { SpenderData } from '@revoke.cash/core/whois';
 import { type Address, maxUint256, type PublicClient, type WriteContractParameters } from 'viem';
 import { getPermit2AllowancesFromApprovals, preparePermit2Approve } from './permit2';
 
@@ -51,7 +51,7 @@ export interface BaseAllowance {
   type: AllowanceType;
   spender: Address;
   // Spender data will be loaded separately (undefined until loaded, null if no data available)
-  spenderData?: Nullable<SpenderRiskData>;
+  spenderData?: Nullable<SpenderData>;
   lastUpdated: ResolvedTimeLog;
   revokeError?: string;
   preparedRevoke?: WriteContractParameters;

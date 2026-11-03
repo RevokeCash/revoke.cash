@@ -3,10 +3,10 @@
 import { getChainName } from '@revoke.cash/core/chains';
 import { getEip7702DelegatedAddress } from '@revoke.cash/core/eip7702';
 import { isNullish } from '@revoke.cash/core/utils';
-import { getSpenderData } from '@revoke.cash/core/whois';
 import { useQuery } from '@tanstack/react-query';
 import Button from 'components/common/Button';
 import NoticeBanner from 'components/common/NoticeBanner';
+import { getSpenderDataQuery } from 'lib/hooks/ethereum/useSpenderData';
 import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
@@ -30,9 +30,7 @@ const CompromisedWalletNotice = ({ address, chainId }: Props) => {
   });
 
   const { data: delegateData } = useQuery({
-    queryKey: ['spenderData', chainId, delegatedAddress],
-    queryFn: () => getSpenderData(delegatedAddress!, chainId),
-    staleTime: Number.POSITIVE_INFINITY,
+    ...getSpenderDataQuery(chainId, delegatedAddress!),
     enabled: !isNullish(delegatedAddress),
   });
 

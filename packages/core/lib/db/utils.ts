@@ -1,4 +1,5 @@
 import { type Column, eq, type GetColumnData, isNull, type SQL, sql } from 'drizzle-orm';
+import type { AnyPgColumn } from 'drizzle-orm/pg-core';
 import type { DatabaseWriter } from './client';
 
 // Serializes concurrent transactions on the same key: the advisory lock is acquired for the
@@ -31,3 +32,12 @@ export const eqOrIsNull = <TColumn extends Column>(
 ): SQL => {
   return value === null ? isNull(column) : eq(column, value);
 };
+
+// The proposed row's value of a column in an ON CONFLICT DO UPDATE set
+export const excluded = <TColumn extends AnyPgColumn>(column: TColumn) =>
+  sql<TColumn['_']['data']>`excluded.${sql.identifier(column.name)}`;
+
+// A column of the first branch of a union, typed as nullable because a later branch selects NULL in its place. It keeps
+// the column's decoder.
+export const nullableColumn = <TColumn extends AnyPgColumn>(column: TColumn): SQL<TColumn['_']['data'] | null> =>
+  sql`${column}`.mapWith(column);

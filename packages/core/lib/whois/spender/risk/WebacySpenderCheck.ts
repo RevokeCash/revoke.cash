@@ -1,12 +1,11 @@
 import { ChainId } from '@revoke.cash/core/chains/ids';
 import { RequestQueue } from '@revoke.cash/core/request-queue';
 import type { RiskFactor } from '@revoke.cash/core/risk';
-import type { SpenderRiskData } from '@revoke.cash/core/whois';
+import type { SpenderData } from '@revoke.cash/core/whois';
 import ky from 'ky';
 import type { Address } from 'viem';
-import type { SpenderDataSource } from '../SpenderDataSource';
 
-export class WebacySpenderRiskDataSource implements SpenderDataSource {
+export class WebacySpenderCheck {
   private queue: RequestQueue;
 
   constructor(private apiKey?: string) {
@@ -14,9 +13,7 @@ export class WebacySpenderRiskDataSource implements SpenderDataSource {
     this.queue = new RequestQueue(`webacy:${apiKey}`, { interval: 1000, intervalCap: 30 });
   }
 
-  async getSpenderData(address: Address, chainId: number): Promise<SpenderRiskData | null> {
-    if (!this.apiKey) throw new Error('Webacy API key is not set');
-
+  async getSpenderData(address: Address, chainId: number): Promise<SpenderData | null> {
     const chainIdentifiers: Record<number, string> = {
       [ChainId.Ethereum]: 'eth',
       [ChainId.Polygon]: 'pol',

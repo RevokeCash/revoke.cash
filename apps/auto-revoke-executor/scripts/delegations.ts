@@ -25,12 +25,3 @@ export const parseExecutionLane = (value: string): ExecutionLane => {
   }
   return value;
 };
-
-export const parseFlags = (args: string[]): Map<string, string> => {
-  return new Map(
-    args.map((arg) => {
-      const [key, value] = arg.replace(/^--/, '').split('=');
-      return [key, value ?? 'true'] as const;
-    }),
-  );
-};

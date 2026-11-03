@@ -43,25 +43,3 @@ export const getRiskLevel = (riskFactors: RiskFactor[]): RiskLevel => {
 
   return 'medium';
 };
-
-// Normalise risk factors to match the format of other risk data sources (TODO: Remove once this is live and whois sources are updated)
-export const normaliseRiskData = (riskData: any, sourceOverride: string) => {
-  if (!riskData) return null;
-
-  const riskFactors = (riskData?.riskFactors ?? []).map((riskFactor: any) => {
-    if (typeof riskFactor === 'string') {
-      const [type, source] = riskFactor.includes('blocklist_') ? riskFactor.split('_') : [riskFactor, sourceOverride];
-      return { type, source };
-    }
-    return riskFactor;
-  });
-
-  const exploitRiskFactors = (riskData?.exploits ?? []).flatMap((exploit: string) => {
-    if (typeof exploit === 'string') {
-      return [{ type: 'exploit', source: sourceOverride, data: exploit }];
-    }
-    return [];
-  });
-
-  return { ...riskData, riskFactors: [...riskFactors, ...exploitRiskFactors] };
-};

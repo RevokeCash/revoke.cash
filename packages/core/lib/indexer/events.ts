@@ -9,7 +9,7 @@ import {
 import { getChainActivity } from '@revoke.cash/core/chains/events';
 import { type DatabaseTransaction, type DatabaseWriter, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { indexerEvents, indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
-import { acquireAdvisoryLock } from '@revoke.cash/core/db/utils';
+import { acquireAdvisoryLock, excluded } from '@revoke.cash/core/db/utils';
 import { ERC721_TRANSFER_TOPIC, type Filter, type Log } from '@revoke.cash/core/events';
 import {
   DivideAndConquerLogsProvider,
@@ -23,8 +23,7 @@ import { disableIndexingForAddress } from '@revoke.cash/core/indexer/register';
 import { throwIfNotErc20, throwIfNotErc721 } from '@revoke.cash/core/tokens';
 import { HOUR, MINUTE, SECOND } from '@revoke.cash/core/utils/time';
 import { getAccountType } from '@revoke.cash/core/wallet';
-import { and, count, eq, gte, isNull, lte, sql } from 'drizzle-orm';
-import type { AnyPgColumn } from 'drizzle-orm/pg-core';
+import { and, count, eq, gte, isNull, lte } from 'drizzle-orm';
 import type { Address, Hex, PublicClient } from 'viem';
 import { buildTokenEventFilters } from '../events/filters';
 import { chunkArray, deduplicateArray, isNullish } from '../utils';
@@ -435,9 +434,6 @@ const toEventsCacheRow = (chainId: number, log: Log) => ({
 });
 
 type EventsCacheRow = ReturnType<typeof toEventsCacheRow>;
-
-const excluded = <TColumn extends AnyPgColumn>(column: TColumn) =>
-  sql<TColumn['_']['data']>`excluded.${sql.identifier(column.name)}`;
 
 // Reorg-safe mark: flag every event in this filter's block range with `reorged = true`
 // This flag will be set to `false` again if the event is re-added in the same scan

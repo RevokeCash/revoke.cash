@@ -32,6 +32,7 @@
 // account still needs to be deployed.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
+import { parseArgs } from 'node:util';
 import { type Delegation, getSmartAccountsEnvironment } from '@metamask/smart-accounts-kit';
 import { AUTO_REVOKE_SUPPORTED_CHAINS, isAutoRevokeSupportedChain } from '@revoke.cash/core/auto-revoke/config';
 import type {
@@ -55,7 +56,6 @@ import {
   describeChain,
   PRIVATE_KEY_ENV_BY_LANE,
   parseExecutionLane,
-  parseFlags,
 } from './delegations';
 import { connectLedgerColdSigner, type LedgerColdSigner } from './ledger-cold-signer';
 
@@ -68,7 +68,7 @@ interface CeremonyOptions {
 }
 
 const main = async (): Promise<void> => {
-  const options = parseOptions(process.argv.slice(2));
+  const options = parseOptions();
   const hotAccount = loadHotAccount(options.lane);
   const registry = readExistingRegistry(options.outputPath);
   const walletDelegations = claimWalletDelegations(registry, hotAccount.address);
@@ -156,15 +156,21 @@ const ensureColdDeployed = async (
   console.log(`    cold smart account deployed (tx ${hash})`);
 };
 
-const parseOptions = (args: string[]): CeremonyOptions => {
-  const flags = parseFlags(args);
-  const lane = parseExecutionLane(flags.get('lane') ?? 'normal');
+// Throws on an unknown option, so a misspelled flag never falls back to a default
+const parseOptions = (): CeremonyOptions => {
+  const { values } = parseArgs({
+    options: {
+      lane: { type: 'string', default: 'normal' },
+      all: { type: 'boolean', default: false },
+      chains: { type: 'string' },
+      out: { type: 'string', default: DEFAULT_DELEGATIONS_PATH },
+      path: { type: 'string', default: DEFAULT_DERIVATION_PATH },
+      force: { type: 'boolean', default: false },
+    },
+  });
 
-  const chainIds = flags.has('all')
-    ? [...AUTO_REVOKE_SUPPORTED_CHAINS]
-    : flags.has('chains')
-      ? flags.get('chains')!.split(',').map(Number)
-      : [];
+  const lane = parseExecutionLane(values.lane);
+  const chainIds = values.all ? [...AUTO_REVOKE_SUPPORTED_CHAINS] : (values.chains?.split(',').map(Number) ?? []);
 
   if (chainIds.length === 0) {
     throw new Error('Specify chains with --chains=<id,id,...> or run against every supported chain with --all');
@@ -175,13 +181,7 @@ const parseOptions = (args: string[]): CeremonyOptions => {
     throw new Error(`Unsupported auto-revoke chain(s): ${unsupported.join(', ')}`);
   }
 
-  return {
-    lane,
-    chainIds,
-    outputPath: flags.get('out') ?? DEFAULT_DELEGATIONS_PATH,
-    derivationPath: flags.get('path') ?? DEFAULT_DERIVATION_PATH,
-    force: flags.has('force'),
-  };
+  return { lane, chainIds, outputPath: values.out, derivationPath: values.path, force: values.force };
 };
 
 const loadHotAccount = (lane: ExecutionLane): PrivateKeyAccount => {

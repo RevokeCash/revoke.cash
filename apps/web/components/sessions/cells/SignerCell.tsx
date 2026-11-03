@@ -1,9 +1,9 @@
 import type { Session } from '@revoke.cash/core/sessions';
 import { isNullish } from '@revoke.cash/core/utils';
 import { YEAR } from '@revoke.cash/core/utils/time';
-import { getSpenderData } from '@revoke.cash/core/whois';
 import { useQuery } from '@tanstack/react-query';
 import Loader from 'components/common/Loader';
+import { getSpenderDataQuery } from 'lib/hooks/ethereum/useSpenderData';
 import { useMemo } from 'react';
 import AddressCell from '../../allowances/dashboard/cells/AddressCell';
 
@@ -13,12 +13,10 @@ interface Props {
 
 const SignerCell = ({ session }: Props) => {
   // TODO: Expose this data to react-table
+  const signer = session.payload?.sessionSpec.signer;
   const { data: signerData, isLoading } = useQuery({
-    queryKey: ['signerData', session.payload?.sessionSpec.signer, session.chainId],
-    queryFn: () => getSpenderData(session.payload!.sessionSpec.signer, session.chainId),
-    // Chances of this data changing while the user is on the page are very slim
-    staleTime: Number.POSITIVE_INFINITY,
-    enabled: !isNullish(session.payload?.sessionSpec.signer),
+    ...getSpenderDataQuery(session.chainId, signer!),
+    enabled: !isNullish(signer),
   });
 
   // Add non-spender-specific risk factors (TODO: set up a proper system for this)
@@ -34,15 +32,11 @@ const SignerCell = ({ session }: Props) => {
     return factors;
   }, [session?.payload, signerData?.riskFactors]);
 
-  if (!session.payload?.sessionSpec.signer) return null;
+  if (!signer) return null;
 
   return (
     <Loader isLoading={isLoading}>
-      <AddressCell
-        address={session.payload.sessionSpec.signer}
-        spenderData={signerData ? { name: signerData.name, riskFactors } : undefined}
-        chainId={session.chainId}
-      />
+      <AddressCell address={signer} spenderData={{ name: signerData?.name, riskFactors }} chainId={session.chainId} />
     </Loader>
   );
 };

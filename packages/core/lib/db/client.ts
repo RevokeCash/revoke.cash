@@ -6,9 +6,17 @@ import * as auditSchema from './schema/audit';
 import * as autoRevokeSchema from './schema/auto-revoke';
 import * as batchRevokesSchema from './schema/batch-revokes';
 import * as indexerSchema from './schema/indexer';
+import * as labelsSchema from './schema/labels';
 import * as premiumSchema from './schema/premium';
 
-const schema = { ...premiumSchema, ...batchRevokesSchema, ...autoRevokeSchema, ...indexerSchema, ...auditSchema };
+const schema = {
+  ...premiumSchema,
+  ...batchRevokesSchema,
+  ...autoRevokeSchema,
+  ...indexerSchema,
+  ...auditSchema,
+  ...labelsSchema,
+};
 
 const getDatabaseUrl = () => {
   const databaseUrl = process.env.DATABASE_URL;

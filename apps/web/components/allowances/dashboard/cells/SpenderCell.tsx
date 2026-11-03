@@ -30,7 +30,7 @@ const SpenderCell = ({ allowance }: Props) => {
     <Loader isLoading={isLoading} className="h-6">
       <AddressCell
         address={allowance.payload.spender}
-        spenderData={spenderData ? { name: spenderData.name, riskFactors } : undefined}
+        spenderData={{ name: spenderData?.name, riskFactors }}
         chainId={allowance.chainId}
       />
     </Loader>

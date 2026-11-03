@@ -1,3 +1,4 @@
+import { ChainId } from '@revoke.cash/core/chains/ids';
 import { Selectors, TEST_URL } from 'cypress/support/utils';
 
 // This depends on me keeping these domains registered
@@ -18,8 +19,16 @@ const REVERSE_RESOLUTION_FIXTURES = [
   ['0xc6fED32F84fca103E946eB21Ad16fD7887a3CEc5', 'coconaut.avax'],
 ];
 
-// This depends on me keeping open approvals to these spenders
+// This depends on me keeping open approvals to these spenders. Permit2 comes from an all-chains label (chain 0),
+// OpenSea, Uniswap and SushiSwap from chain labels and 'OpenSea (old)' from the name of revoke.cash's own spender check
 const LABEL_FIXTURES = ['OpenSea', 'OpenSea (old)', 'Permit2', 'Uniswap', 'SushiSwap'];
+
+const PERMIT2_ADDRESS = '0x000000000022D473030F116dDEE9F6B43aC78BA3';
+const USDT_ADDRESS = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
+
+const getLabelUrl = (labelType: 'spenders' | 'tokens', chainId: number, address: string) => {
+  return `${TEST_URL}/generated/${labelType}/${chainId}/${address}.json`;
+};
 
 describe('whois', () => {
   describe('Name resolution', () => {
@@ -52,6 +61,49 @@ describe('whois', () => {
       cy.visit(`${TEST_URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, { timeout: 10_000 });
       LABEL_FIXTURES.forEach((label) => {
         cy.contains(label, { timeout: 60_000 }).should('exist');
+      });
+    });
+  });
+
+  describe('Public label routes', () => {
+    it('should return the USDT token label', () => {
+      cy.request(getLabelUrl('tokens', ChainId.Ethereum, USDT_ADDRESS)).then((response) => {
+        expect(response.status).to.equal(200);
+        expect(response.body.symbol).to.be.a('string').and.not.be.empty;
+        expect(response.body.decimals).to.equal(6);
+        expect(response.body.logoURI).to.be.a('string').and.not.be.empty;
+      });
+    });
+
+    [ChainId.Ethereum, ChainId.KasplexZkEVM].forEach((chainId) => {
+      it(`should return the Permit2 spender label on chain ${chainId}`, () => {
+        cy.request(getLabelUrl('spenders', chainId, PERMIT2_ADDRESS)).then((response) => {
+          expect(response.status).to.equal(200);
+          expect(response.body.name).to.equal('Permit2');
+        });
+      });
+    });
+
+    it('should return the same body for a lowercase path', () => {
+      cy.request(getLabelUrl('tokens', ChainId.Ethereum, USDT_ADDRESS)).then((checksummedResponse) => {
+        cy.request(getLabelUrl('tokens', ChainId.Ethereum, USDT_ADDRESS.toLowerCase())).then((lowercaseResponse) => {
+          expect(lowercaseResponse.status).to.equal(200);
+          expect(lowercaseResponse.body).to.deep.equal(checksummedResponse.body);
+        });
+      });
+    });
+
+    it('should return an empty object for a random address', () => {
+      const randomAddress = `0x${Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join('')}`;
+      cy.request(getLabelUrl('spenders', ChainId.Ethereum, randomAddress)).then((response) => {
+        expect(response.status).to.equal(200);
+        expect(response.body).to.deep.equal({});
+      });
+    });
+
+    it('should allow requests from any origin', () => {
+      cy.request(getLabelUrl('spenders', ChainId.Ethereum, PERMIT2_ADDRESS)).then((response) => {
+        expect(response.headers['access-control-allow-origin']).to.equal('*');
       });
     });
   });

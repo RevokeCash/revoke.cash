@@ -22,6 +22,7 @@ import {
 } from '@revoke.cash/core/events';
 import { DatabaseLogsProvider } from '@revoke.cash/core/events/providers';
 import { addressToTopic, sortTokenEventsChronologically } from '@revoke.cash/core/events/utils';
+import type { MergedSpenderMetadata } from '@revoke.cash/core/labels/merge';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
 import { and, eq, inArray, sql } from 'drizzle-orm';
@@ -30,8 +31,8 @@ import { isNullish } from '../utils';
 import { findAffectedTokens } from './affected-tokens';
 import { ChainUnresponsiveError } from './errors';
 import { REORG_DEPTH } from './events';
-import { type SpenderMetadataRow, serializeSpenderMetadata } from './spender-metadata';
-import { serializeTokenMetadata, type TokenMetadataRow } from './token-metadata';
+import { serializeSpenderMetadata } from './spender-metadata';
+import { serializeTokenMetadata, type UsableTokenMetadata } from './token-metadata';
 
 export interface RecomputeAllowancesResult {
   skipped: boolean;
@@ -170,8 +171,8 @@ export const getCachedAllowances = async (
 
 export const serializeAllowanceFromRow = (
   row: CachedAllowanceRow,
-  metadata: TokenMetadataRow,
-  spenderMetadata?: SpenderMetadataRow,
+  metadata: UsableTokenMetadata,
+  spenderMetadata?: MergedSpenderMetadata,
 ): TokenAllowanceData => ({
   token: { address: row.tokenAddress, standard: metadata.tokenStandard },
   metadata: serializeTokenMetadata(metadata),
@@ -182,7 +183,7 @@ export const serializeAllowanceFromRow = (
 
 const serializeAllowancePayloadFromRow = (
   row: CachedAllowanceRow,
-  spenderMetadata?: SpenderMetadataRow,
+  spenderMetadata?: MergedSpenderMetadata,
 ): AllowancePayload => {
   return {
     type: row.allowanceType,

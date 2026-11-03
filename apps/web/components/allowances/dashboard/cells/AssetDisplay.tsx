@@ -23,7 +23,7 @@ const AssetDisplay = ({ asset, showChainOverlay = false }: Props) => {
   return (
     <div className="flex items-center gap-2 text-base w-48 lg:w-56">
       <ChainOverlayLogo
-        src={asset.metadata.icon}
+        src={asset.metadata.logoUrl}
         alt={asset.metadata.symbol}
         placeholderText={asset.metadata.symbol}
         chainId={showChainOverlay ? asset.chainId : undefined}

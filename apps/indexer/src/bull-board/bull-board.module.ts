@@ -2,10 +2,7 @@ import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 import { ExpressAdapter } from '@bull-board/express';
 import { BullBoardModule as BullBoardModuleBase } from '@bull-board/nestjs';
 import { Module } from '@nestjs/common';
-import {
-  AUTO_REVOKE_EVALUATE_QUEUE_NAME,
-  AUTO_REVOKE_EXPLOIT_QUEUE_NAME,
-} from '@revoke.cash/backend/auto-revoke/evaluation-queue';
+import { AUTO_REVOKE_EVALUATE_QUEUE_NAME } from '@revoke.cash/backend/auto-revoke/evaluation-queue';
 import { AUTO_REVOKE_EXECUTE_QUEUE_NAME } from '@revoke.cash/backend/auto-revoke/queue';
 import { ALLOWANCES_QUEUE_NAME } from '@revoke.cash/backend/indexer/queues/allowances';
 import { EVENTS_QUEUE_NAME } from '@revoke.cash/backend/indexer/queues/events';
@@ -32,7 +29,6 @@ const BULL_BOARD_ROUTE = '/queues';
     TokenMetadataSchedulerModule,
     SpenderMetadataSchedulerModule,
     TransferDetailsSchedulerModule,
-    QueueModule.register({ name: AUTO_REVOKE_EXPLOIT_QUEUE_NAME }),
     QueueModule.register({ name: AUTO_REVOKE_EVALUATE_QUEUE_NAME }),
     QueueModule.register({ name: AUTO_REVOKE_EXECUTE_QUEUE_NAME }),
     BullBoardModuleBase.forRoot({
@@ -51,7 +47,6 @@ const BULL_BOARD_ROUTE = '/queues';
       { name: TOKEN_METADATA_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Token Metadata' } },
       { name: SPENDER_METADATA_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Spender Metadata' } },
       { name: TRANSFER_DETAILS_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Transfer Details' } },
-      { name: AUTO_REVOKE_EXPLOIT_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Auto-Revoke Exploit' } },
       {
         name: AUTO_REVOKE_EVALUATE_QUEUE_NAME,
         adapter: BullMQAdapter,

@@ -12,20 +12,12 @@ import {
 } from '@revoke.cash/core/constants';
 import type { RiskFactor } from '@revoke.cash/core/risk';
 import type { Nullable } from '@revoke.cash/core/types';
-import {
-  AggregateSpenderDataSource,
-  AggregationType,
-} from '@revoke.cash/core/whois/spender/AggregateSpenderDataSource';
-import { BackendSpenderDataSource } from '@revoke.cash/core/whois/spender/BackendSpenderDataSource';
 import { UNSTOPPABLE_TLDS } from '@revoke.cash/core/whois/unstoppable-tlds';
+import ky from 'ky';
 import { type Address, getAddress, isAddress, type PublicClient } from 'viem';
 import { namehash, normalize } from 'viem/ens';
 
-export interface SpenderData extends SpenderRiskData {
-  name: string;
-}
-
-export interface SpenderRiskData {
+export interface SpenderData {
   name?: string;
   riskFactors?: Array<RiskFactor>;
 }
@@ -44,16 +36,10 @@ const GlobalClients = {
   AVALANCHE: createViemPublicClientForChain(ChainId.Avalanche, 'https://api.avax.network/ext/bc/C/rpc')!,
 } as const;
 
-export const getSpenderData = async (
-  address: Address,
-  chainId: number,
-): Promise<Nullable<SpenderData | SpenderRiskData>> => {
-  const source = new AggregateSpenderDataSource({
-    aggregationType: AggregationType.PARALLEL_COMBINED,
-    sources: [new BackendSpenderDataSource()],
-  });
-
-  return source.getSpenderData(address, chainId);
+// No catch: a failed request (a 403 without an API session, a 5xx) reaches React Query as an error, so it is not cached
+// as an empty result
+export const getSpenderData = async (address: Address, chainId: number): Promise<Nullable<SpenderData>> => {
+  return ky.get(`/api/${chainId}/spender/${getAddress(address)}`).json<Nullable<SpenderData>>();
 };
 
 export const lookupEnsName = async (address?: Address): Promise<string | null> => {

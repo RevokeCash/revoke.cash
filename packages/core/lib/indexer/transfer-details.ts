@@ -1,11 +1,6 @@
 import { getChainConfig } from '@revoke.cash/core/chains';
 import { getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
-import {
-  indexerEvents,
-  indexerEventsState,
-  indexerTokenMetadata,
-  indexerTransferDetails,
-} from '@revoke.cash/core/db/schema/indexer';
+import { indexerEvents, indexerEventsState, indexerTransferDetails } from '@revoke.cash/core/db/schema/indexer';
 import { ERC721_APPROVAL_FOR_ALL_TOPIC, ERC721_APPROVAL_TOPIC, ERC721_TRANSFER_TOPIC } from '@revoke.cash/core/events';
 import { formatDatabaseLog } from '@revoke.cash/core/events/providers/DatabaseLogsProvider';
 import { addressToTopic } from '@revoke.cash/core/events/utils';
@@ -18,8 +13,9 @@ import {
 import { createTraceClient, type TraceCallFrame } from '@revoke.cash/core/transfers/trace-client';
 import { isNullish } from '@revoke.cash/core/utils';
 import { DAY, HOUR } from '@revoke.cash/core/utils/time';
-import { and, eq, exists, gt, inArray, isNotNull, isNull, like, lt, or, sql } from 'drizzle-orm';
+import { and, eq, exists, gt, inArray, isNull, like, lt, or, sql } from 'drizzle-orm';
 import type { Address, Hash } from 'viem';
+import { getCachedTokenMetadata } from './token-metadata';
 
 export interface ClassifyTransactionResult {
   chainId: number;
@@ -173,22 +169,12 @@ const findUnclassifiedTransactionTransfers = async (chainId: number, transaction
 };
 
 const findSpamTokens = async (chainId: number, rows: EventRow[]): Promise<Address[]> => {
-  const db = getDb();
-  const spamTokenRows = await db
-    .select({ tokenAddress: indexerTokenMetadata.tokenAddress })
-    .from(indexerTokenMetadata)
-    .where(
-      and(
-        eq(indexerTokenMetadata.chainId, chainId),
-        inArray(
-          indexerTokenMetadata.tokenAddress,
-          rows.map((row) => row.address),
-        ),
-        isNotNull(indexerTokenMetadata.spamReason),
-      ),
-    );
+  const tokenAddresses = rows.map((row) => row.address);
+  const metadataByToken = await getCachedTokenMetadata(chainId, tokenAddresses);
 
-  return spamTokenRows.map((row) => row.tokenAddress);
+  return [...metadataByToken.values()]
+    .filter((metadata) => !isNullish(metadata.spamReason))
+    .map((metadata) => metadata.tokenAddress);
 };
 
 const ownerTokenPairKey = (row: EventRow): string => `${row.address}|${row.topic1}`;

@@ -141,6 +141,13 @@
       "when": 1790969673721,
       "tag": "0019_indexer_events_topic1_block_number",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1793397994142,
+      "tag": "0020_labels",
+      "breakpoints": true
     }
   ]
 }
