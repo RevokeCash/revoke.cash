@@ -33,7 +33,6 @@ export enum ChainId {
   WorldChain = 480,
   Rollux = 570,
   Astar = 592,
-  Matchain = 698,
   FlowEVM = 747,
   Stable = 988,
   HyperEVM = 999,
