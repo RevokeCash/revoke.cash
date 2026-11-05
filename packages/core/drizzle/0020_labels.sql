@@ -1,5 +1,6 @@
 CREATE SCHEMA "labels";
 --> statement-breakpoint
+CREATE TYPE "labels"."address_type" AS ENUM('spender', 'token');--> statement-breakpoint
 CREATE TABLE "labels"."exploit_addresses" (
 	"slug" text NOT NULL,
 	"chain_id" integer NOT NULL,
@@ -17,6 +18,13 @@ CREATE TABLE "labels"."exploits" (
 	"fixed" boolean DEFAULT false NOT NULL,
 	"article_urls" text[] DEFAULT '{}' NOT NULL,
 	CONSTRAINT "exploits_slug_format" CHECK ("labels"."exploits"."slug" ~ '^[a-z0-9]+(-[a-z0-9]+)*$')
+);
+--> statement-breakpoint
+CREATE TABLE "labels"."requests" (
+	"address_type" "labels"."address_type" NOT NULL,
+	"chain_id" integer NOT NULL,
+	"address" text NOT NULL,
+	"requested_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "labels"."scamsniffer_blocklist" (
@@ -55,6 +63,7 @@ CREATE TABLE "labels"."tokens" (
 --> statement-breakpoint
 ALTER TABLE "labels"."exploit_addresses" ADD CONSTRAINT "exploit_addresses_slug_exploits_slug_fk" FOREIGN KEY ("slug") REFERENCES "labels"."exploits"("slug") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
 CREATE INDEX "idx_exploit_addresses_chain_address" ON "labels"."exploit_addresses" USING btree ("chain_id","address");--> statement-breakpoint
+CREATE INDEX "idx_requests_requested_at" ON "labels"."requests" USING brin ("requested_at");--> statement-breakpoint
 
 -- ScamSniffer false positives. The daily sync never touches rows with false_positive = true, and a third
 -- false positive is one more row in the next pending migration.

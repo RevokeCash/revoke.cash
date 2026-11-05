@@ -19,7 +19,7 @@ import type { Address } from 'viem';
 export const maxDuration = 10;
 
 export async function GET(_request: NextRequest, props: GeneratedLabelRouteProps) {
-  return handleGeneratedLabelRequest(props, getPublicSpenderLabel, 'Error fetching spender label');
+  return handleGeneratedLabelRequest(props, 'spender', getPublicSpenderLabel);
 }
 
 const getPublicSpenderLabel = async (chainId: number, address: Address) => {

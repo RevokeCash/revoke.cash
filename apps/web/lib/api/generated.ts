@@ -1,13 +1,14 @@
 import { LABEL_CDN_TTL_SECONDS } from '@revoke.cash/core/constants';
 import { MAX_CHAIN_ID, type PublicTokenLabel } from '@revoke.cash/core/labels/merge';
+import { type LabelAddressType, recordLabelRequest } from '@revoke.cash/core/labels/requests';
 import type { AddressOnChain } from '@revoke.cash/core/types';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { SpenderData } from '@revoke.cash/core/whois';
-import { NextResponse } from 'next/server';
+import { after, NextResponse } from 'next/server';
 import { type Address, getAddress } from 'viem';
 
-// Parsing and headers of the /generated/spenders and /generated/tokens routes. Their contract is documented at the top
-// of both route files.
+// Parsing, headers and request counting of the /generated/spenders and /generated/tokens routes. Their contract is
+// documented at the top of both route files.
 
 export interface GeneratedLabelRouteProps {
   params: Promise<{ chainId: string; file: string }>;
@@ -32,8 +33,8 @@ const ERROR_HEADERS = {
 
 export const handleGeneratedLabelRequest = async (
   props: GeneratedLabelRouteProps,
+  addressType: LabelAddressType,
   getPublicLabel: GetPublicLabel,
-  errorMessage: string,
 ): Promise<NextResponse> => {
   const key = parseGeneratedLabelKey(await props.params);
   if (!key) return NextResponse.json({}, { status: 404, headers: PUBLIC_LABEL_HEADERS });
@@ -43,8 +44,10 @@ export const handleGeneratedLabelRequest = async (
 
   try {
     const publicLabel = await getPublicLabel(key.chainId, key.address);
+    after(() => recordLabelRequest(addressType, key.chainId, key.address));
     return NextResponse.json(publicLabel ?? {}, { headers: PUBLIC_LABEL_HEADERS });
   } catch (error) {
+    const errorMessage = `Error fetching ${addressType} label`;
     console.error(errorMessage, parseErrorMessage(error), error);
     return NextResponse.json({ message: errorMessage }, { status: 503, headers: ERROR_HEADERS });
   }

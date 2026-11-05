@@ -15,8 +15,11 @@ import {
 import { MAX_TOKEN_DECIMALS } from '../../labels/merge';
 import { lowercaseAddress } from '../types/lowercase-address';
 
-// Labels and risk facts that people or feeds supply. What revoke.cash computes itself lives in the indexer schema.
+// Labels and risk facts that people or feeds supply, and the request log of the label routes. What revoke.cash computes
+// itself lives in the indexer schema.
 export const labelsSchema = pgSchema('labels');
+
+export const labelsAddressTypeEnum = labelsSchema.enum('address_type', ['spender', 'token']);
 
 // The risk types of labels.spenders.risk_factors. Named exploits are not stored here; labels.exploit_addresses owns
 // them. 'exploit' exists only for the imported whois factors that have no exploit name.
@@ -122,4 +125,18 @@ export const labelsScamSnifferBlocklist = labelsSchema.table(
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [check('scamsniffer_blocklist_hash_format', sql`${table.addressHash} ~ '^[0-9a-f]{32}$'`)],
+);
+
+// One row per lookup of a label route, to count over any period the most requested addresses without a label and the
+// labels that nobody requests. The routes sit behind a 15-minute CDN cache, so only CDN misses get a row.
+export const labelsRequests = labelsSchema.table(
+  'requests',
+  {
+    addressType: labelsAddressTypeEnum('address_type').notNull(),
+    chainId: integer('chain_id').notNull(),
+    address: lowercaseAddress('address').notNull(),
+    requestedAt: timestamp('requested_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  // BRIN: rows arrive in requested_at order, so a tiny index serves every period filter
+  (table) => [index('idx_requests_requested_at').using('brin', table.requestedAt)],
 );
