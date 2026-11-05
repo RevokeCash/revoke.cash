@@ -2199,6 +2199,61 @@
       },
       "isRLSEnabled": false
     },
+    "labels.requests": {
+      "name": "requests",
+      "schema": "labels",
+      "columns": {
+        "address_type": {
+          "name": "address_type",
+          "type": "address_type",
+          "typeSchema": "labels",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "chain_id": {
+          "name": "chain_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "address": {
+          "name": "address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "requested_at": {
+          "name": "requested_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "idx_requests_requested_at": {
+          "name": "idx_requests_requested_at",
+          "columns": [
+            {
+              "expression": "requested_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "brin",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "labels.scamsniffer_blocklist": {
       "name": "scamsniffer_blocklist",
       "schema": "labels",
@@ -3223,6 +3278,14 @@
         "signature_authorized",
         "other",
         "unknown"
+      ]
+    },
+    "labels.address_type": {
+      "name": "address_type",
+      "schema": "labels",
+      "values": [
+        "spender",
+        "token"
       ]
     },
     "premium.payment_status": {

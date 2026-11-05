@@ -5,11 +5,12 @@ import {
   isSpenderMetadataFresh,
   serializeSpenderMetadata,
 } from '@revoke.cash/core/indexer/spender-metadata';
+import { recordLabelRequest } from '@revoke.cash/core/labels/requests';
 import { addressSchema, supportedChainIdSchema } from '@revoke.cash/core/schemas';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
-import { type NextRequest, NextResponse } from 'next/server';
+import { after, type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 interface Props {
@@ -29,6 +30,7 @@ export async function GET(req: NextRequest, props: Props) {
     });
     const { params } = await parseRequest(req, props, schemas);
     const spenderData = await getSpenderData(params.chainId, params.address);
+    after(() => recordLabelRequest('spender', params.chainId, params.address));
 
     return NextResponse.json(spenderData, {
       headers: {
