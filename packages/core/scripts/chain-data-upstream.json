@@ -353,17 +353,6 @@
       "decimals": 18
     }
   },
-  "698": {
-    "name": "Matchain",
-    "explorerUrl": "https://matchscan.io",
-    "rpcUrl": "https://rpc.matchain.io",
-    "infoUrl": "https://www.matchain.io",
-    "nativeCurrency": {
-      "name": "BNB",
-      "symbol": "BNB",
-      "decimals": 18
-    }
-  },
   "747": {
     "name": "Flow EVM Mainnet",
     "explorerUrl": "https://evm.flowscan.io",

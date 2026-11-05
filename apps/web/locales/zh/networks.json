@@ -46,7 +46,6 @@
     "linea": "Linea 是以太坊的第 2 层（Layer 2）扩展解决方案，由 MetaMask 和 Infura 背后的公司 Consensys 开发。Linea 基于 zkEVM 创新技术，使其在费用极低的同时还能保证强大的安全性。Linea 是最早使用这项技术的项目之一，背靠该领域最大的公司之一，规模很可能会继续增长。",
     "manta-pacific": "Manta Pacific 是以太坊的第 2 层（Layer 2）扩展解决方案。采用 Optimism 的开源 OP Stack 构建，与 Optimism 一样，使用了 Optimistic Rollup 技术。Manta Pacific 通过 Celestia 的数据可用性解决方案扩展了该技术，可提供比基础的 Optimistic Rollup 解决方案更低的汽油费。",
     "mantle": "Mantle 是以太坊的第 2 层（Layer 2）扩展解决方案，提供比第 1 层（L1）更便宜、更快捷的交易。Mantle 使用模块化架构，采用了 Optimistic Rollup 技术，并结合了改进后的数据可用性解决方案。虽然 Mantle 是兼容 EVM 的第 2 层（Layer 2）链，但可以使用自己的原生代币来支付第 2 层的汽油费。",
-    "matchain": "Matchain 是在 BNB 链上进行结算的第 2 层（Layer 2）区块链，使用 BNB 作为其原生 Gas 代币。它专注于构建去中心化身份和 AI 驱动的数据基础设施，目标是让用户保有对自己数据的主权，并为应用开发者提供模块化的数据原语。",
     "megaeth": "MegaETH 是以太坊的第 2 层（Layer 2）扩展解决方案，结合了 zkEVM 和 Optimistic Rollup 技术，可以降低成本并缩短 Optimistic Rollup 漫长的挑战期。它专注于提供高吞吐量，区块时间低于 10 毫秒。",
     "metis": "Metis 是以太坊的第 2 层（Layer 2）扩展解决方案，最初是 Optimism 的分支，但自 2021 年成立以来一直朝着自己的方向发展。Metis 通过为创建多个互联链提供支持，以支持创建去中心化自治公司（DAC）。虽然 Metis 是兼容 EVM 的第 2 层链，但可以使用自己的原生代币来支付第 2 层的汽油费。",
     "mode": "Mode 是以太坊的第 2 层（Layer 2）扩展解决方案。Mode 基于 Optimism 的 OP Stack，因此与 Optimism 一样，采用了 Optimistic Rollup 技术。Mode 向开发者奖励部分排序器（Sequencer）收入，并奖励用户推荐行为，希望借此促进网络使用量增长。",

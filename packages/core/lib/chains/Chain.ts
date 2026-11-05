@@ -257,6 +257,9 @@ export class Chain {
     const transportOverrides: Record<number, any> = {
       // Kasplex's RPC does not handle batch requests properly
       [ChainId.KasplexZkEVM]: { batch: false },
+      // Etherlink's RPC applies its 1,000-block eth_getLogs limit to the sum of all ranges in a batch, so split log
+      // requests keep failing and multiply until the RPC rate-limits us
+      [ChainId.Etherlink]: { batch: false },
     };
 
     const shouldUseDeployless = () => {

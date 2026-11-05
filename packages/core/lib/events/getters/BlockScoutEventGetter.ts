@@ -1,5 +1,6 @@
 import { BLOCKSCOUT_SUPPORTED_CHAINS, getChainApiKey, getChainApiUrl } from '@revoke.cash/core/chains';
 import { EventDataSourceOutOfSyncError, LatestBlockUnavailableError } from '@revoke.cash/core/events/errors';
+import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { Hex } from 'viem';
 import { createExplorerClients, EtherscanEventGetter } from './EtherscanEventGetter';
 import type { EventGetter } from './EventGetter';
@@ -33,13 +34,15 @@ export class BlockScoutEventGetter extends EtherscanEventGetter implements Event
 
     const latestBlockPromise = client.get(apiUrl, { searchParams }).json<LatestBlockResponse>();
 
-    const indexingStatusPromise = client.get(`${apiUrl}/v2/main-page/indexing-status`).json<IndexingStatusResponse>();
+    const indexingStatusPromise = client
+      .get(`${apiUrl}/v2/main-page/indexing-status`, { searchParams: prepareIndexingStatusQuery(apiKey) })
+      .json<IndexingStatusResponse>();
 
     const [latestBlock, indexingStatus] = await Promise.allSettled([latestBlockPromise, indexingStatusPromise]);
 
     if (latestBlock.status !== 'fulfilled') {
       console.log(`${apiUrl}?${new URLSearchParams(searchParams).toString()}`);
-      throw new LatestBlockUnavailableError(chainId);
+      throw new LatestBlockUnavailableError(chainId, parseErrorMessage(latestBlock.reason));
     }
 
     // Note: if the API does not support indexing status, we simply do not apply the check and assume the data is synced
@@ -55,7 +58,7 @@ export class BlockScoutEventGetter extends EtherscanEventGetter implements Event
     if (!blockNumber) {
       console.log(latestBlock.value);
       console.log(`${apiUrl}?${new URLSearchParams(searchParams).toString()}`);
-      throw new LatestBlockUnavailableError(chainId);
+      throw new LatestBlockUnavailableError(chainId, `unexpected response ${JSON.stringify(latestBlock.value)}`);
     }
 
     return blockNumber;
@@ -70,6 +73,14 @@ const prepareGetLatestBlockQuery = (apiKey?: string) => {
     action: 'eth_block_number',
     apiKey,
   };
+
+  // Remove 'undefined' values from the query
+  return JSON.parse(JSON.stringify(query));
+};
+
+// The hosted Blockscout API (api.blockscout.com) rejects v2 requests without an 'apikey' parameter
+const prepareIndexingStatusQuery = (apiKey?: string) => {
+  const query = { apikey: apiKey };
 
   // Remove 'undefined' values from the query
   return JSON.parse(JSON.stringify(query));

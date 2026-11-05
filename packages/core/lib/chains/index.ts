@@ -84,7 +84,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Fuse,
   ChainId.Shape,
   ChainId.Gensyn,
-  ChainId.Matchain,
   ChainId.KasplexZkEVM,
   ChainId.Mythos,
   ChainId.Animechain,
@@ -459,7 +458,7 @@ export const CHAINS = {
     infoUrl: 'https://citrea.xyz',
     logoUrl: '/assets/images/vendor/chains/citrea.svg',
     explorerUrl: 'https://explorer.mainnet.citrea.xyz',
-    etherscanCompatibleApiUrl: 'https://explorer.mainnet.citrea.xyz/api',
+    etherscanCompatibleApiUrl: 'https://explorer-api.mainnet.citrea.xyz/api',
     rpc: {
       main: `https://citrea-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://rpc.mainnet.citrea.xyz',
@@ -948,21 +947,6 @@ export const CHAINS = {
       free: 'https://rpc.mantle.xyz',
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 304717 } },
-  }),
-  [ChainId.Matchain]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.Matchain,
-    name: 'Matchain',
-    nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
-    nativeTokenCoingeckoId: 'binancecoin',
-    coingeckoNetworkId: 'matchain',
-    logoUrl: '/assets/images/vendor/chains/matchain.svg',
-    infoUrl: 'https://www.matchain.io',
-    explorerUrl: 'https://matchscan.io',
-    rpc: {
-      main: 'https://rpc.matchain.io',
-    },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.MegaETH]: new Chain({
     type: SupportType.ETHERSCAN,

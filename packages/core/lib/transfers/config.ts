@@ -5,7 +5,6 @@ import { ChainId } from '@revoke.cash/core/chains/ids';
 export const APPROVED_TRANSFERS_UNSUPPORTED_CHAINS: number[] = [
   // No trace support found on any configured or known endpoint (probed 2026-08-02)
   ChainId.Etherlink,
-  ChainId.Matchain,
   ChainId.Oasys,
   ChainId.Rollux,
   ChainId.XDC, // dRPC serves XDC but without debug/trace methods
