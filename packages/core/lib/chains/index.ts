@@ -560,7 +560,8 @@ export const CHAINS = {
     explorerUrl: 'https://explorer.etherlink.com',
     infoUrl: 'https://etherlink.com',
     rpc: {
-      main: 'https://node.mainnet.etherlink.com',
+      main: `https://lb.drpc.live/etherlink/${DRPC_API_KEY}`,
+      free: 'https://node.mainnet.etherlink.com',
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 33899 } },
   }),
