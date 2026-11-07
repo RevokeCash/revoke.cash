@@ -13,6 +13,7 @@ export const APPROVED_TRANSFERS_UNSUPPORTED_CHAINS: number[] = [
   ChainId.Shido,
   ChainId.PulseChain, // no debug_traceTransaction (only parity-style trace methods)
   ChainId.Taiko, // traces fail on recent transactions (only sufficiently old ones succeed)
+  ChainId.BOB, // rpc.gobob.xyz requires an API key for debug methods (probed 2026-11-06)
   // ZKsync-stack nodes ignore withLog, so their traces never contain the frame logs extraction requires
   ChainId.ZkSyncEra,
   ChainId.Abstract,
@@ -39,6 +40,8 @@ export const TRACE_SUPPORTED_FROM_BLOCK: Record<number, number> = {
   [ChainId.Boba]: 1_149_019,
   // Mantle v2 (Tectonic) migration: same legacy-backend situation as pre-Bedrock Optimism
   [ChainId.Mantle]: 61_171_947,
+  // L2 migration: L1-era blocks are served by a legacy celo-blockchain backend whose tracer returns no frame logs
+  [ChainId.Celo]: 31_056_500,
 };
 
 // Trace calls are rate-budgeted per PROVIDER, not per chain
