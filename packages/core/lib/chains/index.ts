@@ -147,7 +147,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'apechain',
     coingeckoAssetPlatformId: 'apechain',
     logoUrl: '/assets/images/vendor/chains/apechain.svg',
-    explorerUrl: 'https://apescan.io',
+    explorerUrl: 'https://apechain.blockscout.com',
     infoUrl: 'https://apechain.com',
     rpc: {
       main: `https://apechain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
@@ -203,8 +203,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.Arbitrum,
   }),
   [ChainId.Arc]: new Chain({
-    // explorer.arc.io's own API sits behind a Cloudflare challenge, so logs come from the hosted api.blockscout.com gateway
-    type: SupportType.BLOCKSCOUT,
+    type: SupportType.ETHERSCAN,
     chainId: ChainId.Arc,
     name: 'Arc',
     // Native USDC has 18 decimals; the ERC-20 interface at 0x3600000000000000000000000000000000000000 has 6
@@ -213,7 +212,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'arc',
     logoUrl: '/assets/images/vendor/chains/arc.svg',
     infoUrl: 'https://www.arc.io',
-    explorerUrl: 'https://explorer.arc.io',
+    explorerUrl: 'https://arc.etherscan.io',
     rpc: {
       main: `https://arc-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://rpc.mainnet.arc.io',
@@ -229,10 +228,10 @@ export const CHAINS = {
     coingeckoNetworkId: 'astr',
     logoUrl: '/assets/images/vendor/chains/astar.svg',
     infoUrl: 'https://astar.network/',
-    explorerUrl: 'https://blockscout.com/astar',
+    explorerUrl: 'https://astar.blockscout.com',
     rpc: {
       main: `https://astar-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      free: 'https://evm.astar.network',
+      free: 'https://rpc.astar.network',
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 761794 } },
   }),
@@ -345,7 +344,7 @@ export const CHAINS = {
     coingeckoAssetPlatformId: 'blast',
     logoUrl: '/assets/images/vendor/chains/blast.jpg',
     infoUrl: 'https://blast.io/',
-    explorerUrl: 'https://blastscan.io',
+    explorerUrl: 'https://blastexplorer.io',
     rpc: {
       main: 'https://rpc.blast.io',
     },
@@ -408,7 +407,7 @@ export const CHAINS = {
     nativeCurrency: ETH,
     coingeckoNetworkId: 'boba',
     logoUrl: '/assets/images/vendor/chains/boba.jpg',
-    explorerUrl: 'https://bobascan.com',
+    explorerUrl: 'https://blockscout.boba.network',
     infoUrl: 'https://boba.network',
     rpc: {
       main: `https://boba-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
@@ -573,7 +572,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'fantom',
     coingeckoNetworkId: 'ftm',
     logoUrl: '/assets/images/vendor/chains/fantom.svg',
-    explorerUrl: 'https://ftmscan.com',
+    explorerUrl: 'https://explorer.fantom.network',
     infoUrl: 'https://fantom.foundation',
     rpc: {
       main: 'https://rpc.ftm.tools',
@@ -604,7 +603,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'flow',
     coingeckoNetworkId: 'flow-evm',
     logoUrl: '/assets/images/vendor/chains/flow.png',
-    explorerUrl: 'https://evm.flowscan.io',
+    explorerUrl: 'https://evm.flow.com',
     infoUrl: 'https://developers.flow.com/evm/about',
     rpc: {
       main: `https://flow-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
@@ -850,7 +849,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'kaia',
     coingeckoAssetPlatformId: 'klay-token',
     logoUrl: '/assets/images/vendor/chains/kaia.svg',
-    explorerUrl: 'https://kaiascope.com',
+    explorerUrl: 'https://kaiascan.io',
     infoUrl: 'https://kaia.io',
     rpc: {
       main: 'https://public-en.node.kaia.io',
@@ -1023,7 +1022,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'moonbeam',
     coingeckoNetworkId: 'glmr',
     logoUrl: '/assets/images/vendor/chains/moonbeam.svg',
-    explorerUrl: 'https://moonbeam.moonscan.io',
+    explorerUrl: 'https://moonbeam.subscan.io',
     infoUrl: 'https://moonbeam.network/networks/moonbeam/',
     rpc: {
       main: 'https://rpc.api.moonbeam.network',
@@ -1037,7 +1036,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'moonriver',
     coingeckoNetworkId: 'movr',
     logoUrl: '/assets/images/vendor/chains/moonriver.svg',
-    explorerUrl: 'https://moonriver.moonscan.io',
+    explorerUrl: 'https://moonriver.subscan.io',
     infoUrl: 'https://moonbeam.network/networks/moonriver/',
     rpc: {
       main: 'https://rpc.api.moonriver.moonbeam.network',
@@ -1050,7 +1049,7 @@ export const CHAINS = {
     nativeCurrency: ETH,
     coingeckoNetworkId: 'morph-l2',
     logoUrl: '/assets/images/vendor/chains/morph.svg',
-    explorerUrl: 'https://explorer.morphl2.io',
+    explorerUrl: 'https://explorer.morph.network',
     infoUrl: 'https://morphl2.io',
     etherscanCompatibleApiUrl: 'https://explorer-api.morphl2.io/api',
     rpc: {
@@ -1088,7 +1087,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.mainnet.oasys.games',
     },
-    explorerUrl: 'https://scan.oasys.games',
+    explorerUrl: 'https://explorer.oasys.games',
     etherscanCompatibleApiUrl: 'https://scan.oasys.games/api',
   }),
   [ChainId.OpBNB]: new Chain({
@@ -1232,7 +1231,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.pulsechain.com',
     },
-    explorerUrl: 'https://otherscan.pulsechain.box',
+    explorerUrl: 'https://pulsescanner.io',
     etherscanCompatibleApiUrl: 'https://api.scan.pulsechain.com/api',
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 14353601 } },
   }),
@@ -1259,7 +1258,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'robinhood',
     coingeckoAssetPlatformId: 'robinhood',
     logoUrl: '/assets/images/vendor/chains/robinhood.png',
-    explorerUrl: 'https://robinhoodchain.blockscout.com',
+    explorerUrl: 'https://robin.etherscan.io',
     infoUrl: 'https://docs.robinhood.com/chain',
     rpc: {
       main: `https://robinhood-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
@@ -1386,7 +1385,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'somnia',
     logoUrl: '/assets/images/vendor/chains/somnia.png',
     infoUrl: 'https://somnia.network',
-    explorerUrl: 'https://mainnet.somnia.w3us.site',
+    explorerUrl: 'https://explorer.somnia.network',
     etherscanCompatibleApiUrl: 'https://mainnet.somnia.w3us.site/api',
     rpc: {
       main: 'https://api.infra.mainnet.somnia.network',
@@ -1465,7 +1464,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'tac',
     logoUrl: '/assets/images/vendor/chains/tac.svg',
     infoUrl: 'https://tac.build/',
-    explorerUrl: 'https://tac.blockscout.com',
+    explorerUrl: 'https://explorer.tac.build',
     rpc: {
       main: `https://lb.drpc.live/tac/${DRPC_API_KEY}`,
       free: 'https://rpc.tac.build',
@@ -1573,7 +1572,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'world-chain',
     logoUrl: '/assets/images/vendor/chains/worldchain.svg',
     infoUrl: 'https://world.org/world-chain',
-    explorerUrl: 'https://worldchain-mainnet.explorer.alchemy.com',
+    explorerUrl: 'https://worldscan.org',
     rpc: {
       main: `https://worldchain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://worldchain-mainnet.g.alchemy.com/public',
@@ -1605,7 +1604,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'zetachain',
     logoUrl: '/assets/images/vendor/chains/zetachain.svg',
     infoUrl: 'https://zetachain.com/docs',
-    explorerUrl: 'https://zetachain.blockscout.com',
+    explorerUrl: 'https://zetascan.com',
     rpc: {
       main: `https://zetachain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://zetachain-evm.blockpi.network/v1/rpc/public',
