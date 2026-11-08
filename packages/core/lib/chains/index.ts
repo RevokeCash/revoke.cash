@@ -1232,7 +1232,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.pulsechain.com',
     },
-    explorerUrl: 'https://otherscan.pulsechain.box',
+    explorerUrl: 'https://pulsescanner.io',
     etherscanCompatibleApiUrl: 'https://api.scan.pulsechain.com/api',
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 14353601 } },
   }),
