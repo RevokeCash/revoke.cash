@@ -288,9 +288,10 @@ export const isChainHeightError = (error?: string | any): boolean => {
   const lowercaseMessage = error?.toLowerCase();
   if (lowercaseMessage?.includes('block range extends beyond current head')) return true; // geth, reth, Erigon, Nimbus
   if (lowercaseMessage?.includes('block not found: chain-height')) return true; // Covalent
-  if (lowercaseMessage?.includes('block not found for eth_getLogs')) return true; // Etherscan
+  if (lowercaseMessage?.includes('block not found for eth_getlogs')) return true; // Etherscan
   if (lowercaseMessage?.includes('outside the requested range')) return true; // HyperSync ("server returned next_block N outside the requested range")
   if (lowercaseMessage?.includes('invalid block range params')) return true;
+  if (lowercaseMessage?.includes('is not within the indexed range')) return true; // Flow EVM Gateway
   return false;
 };
 
