@@ -33,6 +33,9 @@ export const labelsSpenders = labelsSchema.table(
     chainId: integer('chain_id').notNull(),
     address: lowercaseAddress('address').notNull(),
     name: text('name'),
+    // What this contract does in the project of `name`, e.g. 'Swap Router' or 'EIP7702 Delegator'. For our own
+    // understanding: only the labels CLI and the admin audit log show it.
+    contractRole: text('contract_role'),
     // Served as {type, source: 'whois', data}
     riskFactors: jsonb('risk_factors').notNull().$type<Array<{ type: SpenderRiskType; data?: string }>>().default([]),
   },

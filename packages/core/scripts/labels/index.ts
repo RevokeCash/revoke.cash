@@ -26,6 +26,7 @@ import {
   labelsExploitAddresses,
   labelsExploits,
   labelsScamSnifferBlocklist,
+  labelsSpenders,
   SPENDER_RISK_TYPES,
 } from '@revoke.cash/core/db/schema/labels';
 import type { Exploit } from '@revoke.cash/core/exploits';
@@ -44,17 +45,17 @@ import {
   MAX_TOKEN_DECIMALS,
   type SpenderLabel,
   type SpenderLabelRiskFactor,
+  type SpenderLabelWithRole,
   type SpenderRiskType,
   type TokenLabel,
 } from '@revoke.cash/core/labels/merge';
 import { scamSnifferAddressHash } from '@revoke.cash/core/labels/scamsniffer';
-import { getCuratedSpenderRows } from '@revoke.cash/core/labels/spenders';
 import { getTokenLabel } from '@revoke.cash/core/labels/tokens';
 import type { RiskFactor } from '@revoke.cash/core/risk';
 import type { AddressOnChain } from '@revoke.cash/core/types';
 import { deduplicateArray } from '@revoke.cash/core/utils';
 import { mapAsyncSequential } from '@revoke.cash/core/utils/promises';
-import { and, asc, desc, eq } from 'drizzle-orm';
+import { and, asc, desc, eq, inArray } from 'drizzle-orm';
 import { type Address, getAddress, isAddress } from 'viem';
 import {
   EXPLOIT_LIST_CLONE_PATH,
@@ -76,8 +77,8 @@ import { deleteTokenLabel, editTokenLabel, type TokenLabelFields } from './token
 
 const USAGE = `Usage (from the repo root):
   yarn labels get <chainId> <address>
-  yarn labels spender set <chainId|all> <address> [--name <name>|none] [--risk <type>[=<data>]]... [--risk none]
-                          --reason <reason>
+  yarn labels spender set <chainId|all> <address> [--name <name>|none] [--contract-role <role>|none]
+                          [--risk <type>[=<data>]]... [--risk none] --reason <reason>
   yarn labels spender delete <chainId|all> <address> --reason <reason>
   yarn labels token set <chainId> <address> [--symbol <symbol>] [--decimals <0-${MAX_TOKEN_DECIMALS}>] [--logo-url <url>]
                         [--spam true|false|none] [--note <note>] --reason <reason>
@@ -87,6 +88,9 @@ const USAGE = `Usage (from the repo root):
   get          read-only: the merged spender and token views, the rows of every label table and the last 10
                audit events of the address
   all          chain id 0: the spender label applies on every chain
+  --contract-role
+               what the contract does in the project, e.g. 'Swap Router'. For our own understanding: only this CLI
+               and the admin audit log show it.
   --risk       one risk factor per --risk: a type (deprecated, unsafe or blocklist), or a type and its data as
                type=data. Together they replace the whole set. A named exploit goes through exploit set.
   none         clears the field (for every option above that takes a value)
@@ -97,6 +101,7 @@ const USAGE = `Usage (from the repo root):
 const OPTIONS = {
   reason: { type: 'string' },
   name: { type: 'string' },
+  'contract-role': { type: 'string' },
   risk: { type: 'string', multiple: true },
   symbol: { type: 'string' },
   decimals: { type: 'string' },
@@ -110,7 +115,7 @@ type OptionName = keyof typeof OPTIONS;
 
 const COMMAND_OPTIONS = {
   get: [],
-  'spender set': ['name', 'risk', 'reason'],
+  'spender set': ['name', 'contract-role', 'risk', 'reason'],
   'spender delete': ['reason'],
   'token set': ['symbol', 'decimals', 'logo-url', 'spam', 'note', 'reason'],
   'token delete': ['reason'],
@@ -148,6 +153,7 @@ const EMPTY_TOKEN_VALUES: TokenLabelAuditValues = {
 
 const SPENDER_COLUMNS = [
   ['name', 'name'],
+  ['contractRole', 'contract_role'],
   ['riskFactors', 'risk_factors'],
 ] as const satisfies ReadonlyArray<readonly [keyof SpenderLabelAuditValues, string]>;
 
@@ -158,7 +164,12 @@ interface WriteOptions {
 
 type Command =
   | ({ kind: 'get' } & AddressOnChain)
-  | ({ kind: 'spender set'; spenderName?: string | null; riskFactors?: SpenderLabelRiskFactor[] } & AddressOnChain &
+  | ({
+      kind: 'spender set';
+      spenderName?: string | null;
+      contractRole?: string | null;
+      riskFactors?: SpenderLabelRiskFactor[];
+    } & AddressOnChain &
       WriteOptions)
   | ({ kind: 'spender delete' } & AddressOnChain & WriteOptions)
   | ({ kind: 'token set'; fields: TokenLabelFields } & AddressOnChain & WriteOptions)
@@ -201,7 +212,7 @@ const printAddressLabels = async ({ chainId, address }: CommandOf<'get'>): Promi
   const [
     spenderMetadata,
     tokenMetadata,
-    curatedSpenderRows,
+    spenderLabels,
     spenderChecks,
     tokenLabel,
     exploitMemberships,
@@ -210,7 +221,11 @@ const printAddressLabels = async ({ chainId, address }: CommandOf<'get'>): Promi
   ] = await Promise.all([
     getCachedSpenderMetadata(chainId, [address]),
     getCachedTokenMetadata(chainId as DocumentedChainId, [address]),
-    getCuratedSpenderRows(chainId, address),
+    getDb()
+      .select()
+      .from(labelsSpenders)
+      .where(and(inArray(labelsSpenders.chainId, [chainId, ALL_CHAINS_CHAIN_ID]), eq(labelsSpenders.address, address)))
+      .orderBy(desc(labelsSpenders.chainId)),
     getDb()
       .select()
       .from(indexerSpenderChecks)
@@ -239,10 +254,7 @@ const printAddressLabels = async ({ chainId, address }: CommandOf<'get'>): Promi
   console.log(`Address ${address} on ${formatChain(chainId)}`);
   printSection('Merged spender view (getCachedSpenderMetadata)', spenderMetadata.get(address));
   printSection('Merged token view (getCachedTokenMetadata)', tokenMetadata.get(address));
-  printSection(
-    'labels.spenders rows (this chain and chain id 0)',
-    [curatedSpenderRows.chainLabel, curatedSpenderRows.allChainsLabel].filter((label) => label !== undefined),
-  );
+  printSection('labels.spenders rows (this chain and chain id 0)', spenderLabels);
   printSection('indexer.spender_checks row', spenderChecks[0]);
   printSection('labels.tokens row', tokenLabel);
   printSection('labels.exploit_addresses memberships (every chain)', exploitMemberships);
@@ -258,10 +270,11 @@ const planSpenderSet = async (command: CommandOf<'spender set'>): Promise<WriteP
   const { chainId, address } = command;
   const before = await getSpenderLabel(chainId, address);
 
-  const after: SpenderLabel = {
+  const after: SpenderLabelWithRole = {
     chainId,
     address,
     name: command.spenderName === undefined ? (before?.name ?? null) : command.spenderName,
+    contractRole: command.contractRole === undefined ? (before?.contractRole ?? null) : command.contractRole,
     riskFactors: command.riskFactors ?? before?.riskFactors ?? [],
   };
 
@@ -452,8 +465,8 @@ const applyWritePlan = async (databaseHost: string, plan: WritePlan): Promise<bo
 const insertSpenderAuditEvent = async (
   transaction: DatabaseTransaction,
   command: CommandOf<'spender set'> | CommandOf<'spender delete'>,
-  before: SpenderLabel | undefined,
-  after: SpenderLabel | undefined,
+  before: SpenderLabelWithRole | undefined,
+  after: SpenderLabelWithRole | undefined,
 ): Promise<void> => {
   await insertAuditEvent(transaction, {
     action: 'admin_spender_label_changed',
@@ -482,8 +495,8 @@ const insertTokenAuditEvent = async (
 const printSpenderPlan = async (
   chainId: number,
   address: Address,
-  before: SpenderLabel | undefined,
-  after: SpenderLabel | undefined,
+  before: SpenderLabelWithRole | undefined,
+  after: SpenderLabelWithRole | undefined,
 ): Promise<void> => {
   const mergedMetadata = (await getCachedSpenderMetadata(chainId, [address])).get(address);
   const mergedRiskFactors = mergedMetadata?.riskFactors ?? [];
@@ -559,7 +572,7 @@ const printRowDiff = <TValues extends object>(
     const afterText = after && formatValue(after[key]);
     const isChanged = before && after && beforeText !== afterText;
     console.log(
-      `  ${columnName.padEnd(12)} ${isChanged ? `${beforeText} -> ${afterText}` : (beforeText ?? afterText)}`,
+      `  ${columnName.padEnd(13)} ${isChanged ? `${beforeText} -> ${afterText}` : (beforeText ?? afterText)}`,
     );
   });
 };
@@ -635,9 +648,11 @@ const printSection = (title: string, value: unknown): void => {
 
 // The exact row of this chain id, not the chain id 0 row that also applies to it. Its risk factors are in the stored
 // form, so the diff, the audit row and the comparisons see the same key order as the new values.
-const getSpenderLabel = async (chainId: number, address: Address): Promise<SpenderLabel | undefined> => {
-  const { chainLabel, allChainsLabel } = await getCuratedSpenderRows(chainId, address);
-  const label = [chainLabel, allChainsLabel].find((label) => label?.chainId === chainId);
+const getSpenderLabel = async (chainId: number, address: Address): Promise<SpenderLabelWithRole | undefined> => {
+  const [label] = await getDb()
+    .select()
+    .from(labelsSpenders)
+    .where(and(eq(labelsSpenders.chainId, chainId), eq(labelsSpenders.address, address)));
   return label && { ...label, riskFactors: toStoredRiskFactors(label.riskFactors) };
 };
 
@@ -649,8 +664,8 @@ const toTokenValues = (label: TokenLabel): TokenLabelAuditValues => ({
   note: label.note,
 });
 
-const toSpenderAuditValues = (label: SpenderLabel | undefined): SpenderLabelAuditValues | null => {
-  return label ? { name: label.name, riskFactors: label.riskFactors } : null;
+const toSpenderAuditValues = (label: SpenderLabelWithRole | undefined): SpenderLabelAuditValues | null => {
+  return label ? { name: label.name, contractRole: label.contractRole, riskFactors: label.riskFactors } : null;
 };
 
 // The addresses stay in the clone's git history
@@ -658,8 +673,12 @@ const toExploitAuditValues = (exploit: Exploit | undefined): ExploitAuditValues 
   return exploit ? { fixed: exploit.fixed, addressCount: exploit.addresses.length } : null;
 };
 
-const haveSameSpenderValues = (before: SpenderLabel, after: SpenderLabel): boolean => {
-  return before.name === after.name && haveSameRiskFactors(before.riskFactors, after.riskFactors);
+const haveSameSpenderValues = (before: SpenderLabelWithRole, after: SpenderLabelWithRole): boolean => {
+  return (
+    before.name === after.name &&
+    before.contractRole === after.contractRole &&
+    haveSameRiskFactors(before.riskFactors, after.riskFactors)
+  );
 };
 
 const haveSameRiskFactors = (before: SpenderLabelRiskFactor[], after: SpenderLabelRiskFactor[]): boolean => {
@@ -701,11 +720,17 @@ const parseCommand = (): Command => {
       return { kind, ...parseAddressOperands(kind, operands, false) };
     case 'spender set': {
       const spenderName = values.name === undefined ? undefined : parseClearableText(values.name, 'name');
+      const contractRoleText = values['contract-role'];
+      const contractRole =
+        contractRoleText === undefined ? undefined : parseClearableText(contractRoleText, 'contract-role');
       const riskFactors = values.risk === undefined ? undefined : parseRiskFactors(values.risk);
-      if (spenderName === undefined && riskFactors === undefined) return exitWithUsage('Pass --name, --risk or both');
+      if (spenderName === undefined && contractRole === undefined && riskFactors === undefined) {
+        return exitWithUsage('Pass at least one of --name, --contract-role and --risk');
+      }
       return {
         kind,
         spenderName,
+        contractRole,
         riskFactors,
         ...parseAddressOperands(kind, operands, true),
         ...parseWriteOptions(values),

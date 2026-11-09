@@ -148,6 +148,13 @@
       "when": 1793397994142,
       "tag": "0020_labels",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1794176921323,
+      "tag": "0021_labels_spender_contract_role",
+      "breakpoints": true
     }
   ]
 }

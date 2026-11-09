@@ -1,0 +1,1 @@
+ALTER TABLE "labels"."spenders" ADD COLUMN "contract_role" text;

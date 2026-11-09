@@ -2,18 +2,22 @@
 import type { DatabaseWriter } from '@revoke.cash/core/db/client';
 import { labelsSpenders } from '@revoke.cash/core/db/schema/labels';
 import { excluded } from '@revoke.cash/core/db/utils';
-import type { SpenderLabel, SpenderLabelRiskFactor } from '@revoke.cash/core/labels/merge';
+import type { SpenderLabelRiskFactor, SpenderLabelWithRole } from '@revoke.cash/core/labels/merge';
 import { deduplicateArray } from '@revoke.cash/core/utils';
 import { and, eq } from 'drizzle-orm';
 import type { Address } from 'viem';
 
-export const setSpenderLabel = async (writer: DatabaseWriter, label: SpenderLabel): Promise<void> => {
+export const setSpenderLabel = async (writer: DatabaseWriter, label: SpenderLabelWithRole): Promise<void> => {
   await writer
     .insert(labelsSpenders)
     .values(label)
     .onConflictDoUpdate({
       target: [labelsSpenders.chainId, labelsSpenders.address],
-      set: { name: excluded(labelsSpenders.name), riskFactors: excluded(labelsSpenders.riskFactors) },
+      set: {
+        name: excluded(labelsSpenders.name),
+        contractRole: excluded(labelsSpenders.contractRole),
+        riskFactors: excluded(labelsSpenders.riskFactors),
+      },
     });
 };
 

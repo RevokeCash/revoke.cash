@@ -25,7 +25,10 @@ export const MAX_SYMBOL_LENGTH = 100;
 export const MAX_LOGO_URL_LENGTH = 2_048;
 
 // One labels.spenders row
-export type SpenderLabel = typeof labelsSpenders.$inferSelect;
+export type SpenderLabelWithRole = typeof labelsSpenders.$inferSelect;
+
+// What the app reads of a labels.spenders row: contract_role is only for the labels CLI
+export type SpenderLabel = Omit<SpenderLabelWithRole, 'contractRole'>;
 
 // One element of labels.spenders.risk_factors: a risk factor without its source, which is always 'whois'
 export type SpenderLabelRiskFactor = SpenderLabel['riskFactors'][number];

@@ -1,6 +1,6 @@
 // Pure audit action definitions with no database imports, so client components can import them.
 import type { AutoRevokeRules } from '@revoke.cash/core/auto-revoke/evaluation/rules';
-import type { SpenderLabel, TokenLabel } from '@revoke.cash/core/labels/merge';
+import type { SpenderLabelWithRole, TokenLabel } from '@revoke.cash/core/labels/merge';
 import type { ProcessRefundOutcome } from '@revoke.cash/core/premium/refunds';
 
 // Each entry maps an audit action to the details stored in its jsonb column. Identifying context
@@ -45,7 +45,7 @@ export interface AuditActionDetails {
   };
 }
 
-export type SpenderLabelAuditValues = Pick<SpenderLabel, 'name' | 'riskFactors'>;
+export type SpenderLabelAuditValues = Pick<SpenderLabelWithRole, 'name' | 'contractRole' | 'riskFactors'>;
 
 export type TokenLabelAuditValues = Pick<TokenLabel, 'symbol' | 'decimals' | 'logoUrl' | 'isSpam' | 'note'>;
 
