@@ -54,7 +54,21 @@ const AutoRevokeSectionContent = ({
   return (
     <div className="flex flex-col gap-4">
       {connectedWalletNeedsUpgrade && !isPreview && (
-        <NoticeBanner style="warning">{t('account.auto_revoke.permissions.account_not_upgraded_banner')}</NoticeBanner>
+        <NoticeBanner
+          style="warning"
+          action={
+            <Href
+              href="https://support.metamask.io/configure/accounts/switch-to-or-revert-from-a-smart-account"
+              external
+              underline="always"
+              className="text-sm"
+            >
+              {t('common.buttons.learn_more')}
+            </Href>
+          }
+        >
+          {t('account.auto_revoke.permissions.account_not_upgraded_banner')}
+        </NoticeBanner>
       )}
 
       {connectedWalletNeedsSetup && supportsAutoRevoke && !isPreview && (

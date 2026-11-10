@@ -8,7 +8,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 
 const Prose = ({ children, className, ...props }: Props) => {
   const classes = twMerge(
-    'prose prose-zinc dark:prose-invert max-w-none',
+    'prose prose-zinc dark:prose-invert max-w-none wrap-break-word',
     'prose-h1:text-4xl md:prose-h1:text-5xl prose-h1:font-semibold prose-h1:tracking-tight prose-h1:m-0 prose-h1:font-heading',
     'prose-h2:text-3xl prose-h2:font-semibold prose-h2:m-0 prose-h2:mb-2 prose-h2:font-heading',
     'prose-h3:text-xl prose-h3:font-semibold prose-h3:m-0 prose-h3:mb-1 prose-h3:font-heading',

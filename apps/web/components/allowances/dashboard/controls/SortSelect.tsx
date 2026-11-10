@@ -77,12 +77,13 @@ const SortSelect = ({ onSortChange, sortableColumns = DEFAULT_SORTABLE_COLUMNS, 
       return <div className="flex items-center gap-1">{sortDisplay}</div>;
     }
 
+    // Long translations end with an ellipsis on narrow screens. The open menu shows the full text
     return (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 min-w-0">
         <div>{t('address.sorting.label')}</div>
         {isMounted && (
-          <Label className="flex items-center gap-1 bg-zinc-200 text-zinc-800 dark:bg-zinc-700 dark:text-zinc-200">
-            {sortDisplay}
+          <Label className="flex items-center gap-1 min-w-0 bg-zinc-200 text-zinc-800 dark:bg-zinc-700 dark:text-zinc-200">
+            <span className="truncate">{sortDisplay}</span>
           </Label>
         )}
       </div>

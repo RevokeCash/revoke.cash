@@ -41,7 +41,10 @@ const useTooltip = ({
     placement,
     open,
     onOpenChange: setOpen,
-    whileElementsMounted: autoUpdate,
+    // A scroll event fires before scroll-driven animations update, so a control in a moved table row is measured
+    // at the wrong position unless the tooltip position is calculated in the next animation frame
+    whileElementsMounted: (reference, floating, update) =>
+      autoUpdate(reference, floating, () => requestAnimationFrame(update)),
     middleware: [
       offset(12),
       flip({

@@ -45,7 +45,9 @@ const Table = <TMeta extends object, T extends RowData>({
 
   const classes = {
     container: 'relative border border-zinc-200 dark:border-zinc-800 rounded-xl',
-    scrollContainer: 'overflow-x-scroll whitespace-nowrap scrollbar-hide',
+    // overflow-y-hidden stops the moved header and footer rows from making the table scroll vertically
+    scrollContainer:
+      'overflow-x-scroll overflow-y-hidden whitespace-nowrap scrollbar-hide rounded-t-xl table-position-timeline',
     table: 'w-full border-collapse allowances-table',
     label: 'flex flex-col justify-center items-center w-full empty:hidden',
   };
@@ -70,8 +72,8 @@ const Table = <TMeta extends object, T extends RowData>({
             )}
           </table>
         </div>
-        <ScrollFade side="left" visible={canScrollLeft} className="rounded-l-xl" />
-        <ScrollFade side="right" visible={canScrollRight} className="rounded-r-xl" />
+        <ScrollFade side="left" visible={canScrollLeft} className="z-3 rounded-l-xl" />
+        <ScrollFade side="right" visible={canScrollRight} className="z-3 rounded-r-xl" />
         <div className={classes.label}>
           {!loading && !error && table?.getRowModel()?.rows?.length === 0 && !isNullish(emptyChildren) && (
             <EmptyState>{emptyChildren}</EmptyState>

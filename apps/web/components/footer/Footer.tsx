@@ -83,11 +83,11 @@ const Footer = () => {
         <div className="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800 flex flex-col md:flex-row items-center gap-4 justify-between">
           <div className="flex flex-col gap-px text-center md:text-left">
             <div className="text-sm text-zinc-600 dark:text-zinc-400">&copy; 2026 Revoke.cash</div>
-            <ul className="flex justify-center md:justify-start items-center gap-1 text-sm">
+            <ul className="flex flex-wrap justify-center md:justify-start items-center gap-x-4 gap-y-px sm:gap-x-1 text-sm">
               <FooterLink href="/acknowledgements">{t('common.footer.acknowledgements')}</FooterLink>
-              <span className="text-zinc-400">•</span>
+              <span className="max-sm:hidden text-zinc-400">•</span>
               <FooterLink href="/privacy-policy">{t('common.footer.privacy')}</FooterLink>
-              <span className="text-zinc-400">•</span>
+              <span className="max-sm:hidden text-zinc-400">•</span>
               <FooterLink href="/terms">{t('common.footer.terms')}</FooterLink>
             </ul>
             <div className="flex justify-center md:justify-start items-center gap-1 text-xs text-zinc-500 dark:text-zinc-500">

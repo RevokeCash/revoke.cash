@@ -32,18 +32,13 @@ const NoticeBanner = ({ style, icon, action, children, className }: Props) => {
   const Icon = icon ?? defaultIcons[style];
 
   return (
-    <div
-      className={twMerge(
-        'rounded-lg border p-4 flex flex-wrap items-center justify-between gap-3',
-        styleClasses[style],
-        className,
-      )}
-    >
-      <div className="flex items-center gap-3">
-        <Icon className={twMerge('h-6 w-6 shrink-0', iconClasses[style])} />
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">{children}</p>
+    <div className={twMerge('rounded-lg border p-4 flex items-start gap-3', styleClasses[style], className)}>
+      <Icon className={twMerge('h-6 w-6 shrink-0', iconClasses[style])} />
+      {/* The action wraps below the text at the same left edge. From sm up it stays beside text of at least 20rem */}
+      <div className="flex-1 min-h-6 flex flex-wrap items-center gap-3">
+        <p className="grow sm:basis-80 text-sm text-zinc-600 dark:text-zinc-400">{children}</p>
+        {action}
       </div>
-      {action}
     </div>
   );
 };

@@ -47,9 +47,9 @@ const AutoRevokeChainToggle = ({
       <div className="flex items-center gap-1.5">
         {needsAccountUpgrade && (
           <WithHoverTooltip tooltip={t('account.auto_revoke.permissions.account_not_upgraded')}>
-            <span>
+            <button type="button" aria-label="Smart account upgrade needed" className="flex">
               <ExclamationCircleIcon className="h-5 w-5 text-yellow-500" />
-            </span>
+            </button>
           </WithHoverTooltip>
         )}
         {disabledTooltipKey ? <WithHoverTooltip tooltip={t(disabledTooltipKey)}>{toggle}</WithHoverTooltip> : toggle}

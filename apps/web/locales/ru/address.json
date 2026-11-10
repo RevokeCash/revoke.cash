@@ -143,8 +143,9 @@
   },
   "premium": {
     "auto_revoke_upgrade": {
-      "cta": "Исправить",
-      "description": "Автоматический отзыв не может выполняться в сетях {chains}, поскольку в них этот кошелек не является смарт-аккаунтом MetaMask."
+      "cta": "Как исправить",
+      "description": "Автоматический отзыв не защищает этот кошелек {count, plural, one {в сети} other {в сетях}} {chains}. Переключите его на смарт-аккаунт в MetaMask.",
+      "more_chains": "еще {count}"
     },
     "banner": {
       "cta": "Перейти на Premium",
