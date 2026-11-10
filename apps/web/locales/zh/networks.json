@@ -25,6 +25,7 @@
     "citrea": "Citrea 是通过零知识技术增强比特币能力的 Rollup。它完全兼容 EVM，允许开发人员部署以太坊智能合约，同时使用比特币作为结算层和数据可用性层。Citrea 的原生代币是 cBTC，它是比特币在 Citrea 网络上的一种表示形式。",
     "core": "CORE 是第 1 层（Layer 1）区块链，采用了名为中本聪+（Satoshi Plus）的全新共识机制，该机制在利用比特币哈希率的同时还融合了工作量证明（PoW）和委托权益证明（DPoS）的特色。除了提供自己的区块链网络，CORE DAO 还致力于将中本聪+（Satoshi Plus）技术推广至其他区块链。",
     "doma": "Doma 是第 2 层（Layer 2）区块链，将域名带到链上，使其可以被代币化、交易并在 DeFi 应用中用作抵押品。域名还可以被分割为代表部分所有权的代币。Doma 采用 Optimism 的 OP Stack 构建，因此与 Optimism 一样，使用了 Optimistic Rollup 技术。",
+    "elysium": "Elysium 是由流动性质押协议 Kinetiq 背后的团队为 Hyperliquid 生态系统创建的第 2 层（Layer 2）区块链。它使用 HYPE 作为其原生 Gas 代币，该代币以 1:1 的比例从 HyperEVM 跨链而来。Elysium 采用 Arbitrum 的 Orbit 框架构建，并在 HyperEVM 上进行结算，专为需要比 HyperEVM 更高容量的交易应用、发射平台和 AMM 而设计。",
     "ethereum": "以太坊创建于 2015 年，是最早的智能合约区块链，也是最受欢迎的去中心化金融（DeFi）和非同质化代币（NFT）区块链平台，拥有最多的用户和开发人员。许多较新的区块链是建立在以太坊虚拟机（EVM）之上的，与以太坊钱包和工具兼容。",
     "etherlink": "Etherlink 是构建在 Tezos 区块链上、兼容 EVM 的第 2 层（Layer 2）Rollup。它将 Tezos 的安全性与完整的以太坊兼容性相结合，具备低费用和快速交易终结两大特点，并使用 XTZ 作为其原生代币。",
     "flare": "Flare 是第 1 层（Layer 1）区块链，旨在提供源自链下的高完整性数据。Flare 有两个原生数据采集协议，可为合约开发者提供其他区块链和互联网上的数据以便在智能合约应用中使用。维护 Flare 共识的验证者也将决定这些数据采集协议的共识。",

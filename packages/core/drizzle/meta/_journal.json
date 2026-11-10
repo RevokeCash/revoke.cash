@@ -155,6 +155,13 @@
       "when": 1794176921323,
       "tag": "0021_labels_spender_contract_role",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1794341890889,
+      "tag": "0022_indexer_elysium_partition",
+      "breakpoints": true
     }
   ]
 }

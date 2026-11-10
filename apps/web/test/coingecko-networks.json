@@ -274,7 +274,7 @@
     {
       "id": "elysium",
       "type": "network",
-      "attributes": { "name": "Elysium", "coingecko_asset_platform_id": "elysium" }
+      "attributes": { "name": "Elysium", "coingecko_asset_platform_id": "elysium-kinetiq" }
     },
     {
       "id": "ton",

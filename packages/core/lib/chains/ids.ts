@@ -89,6 +89,7 @@ export enum ChainId {
   Chiliz = 88888,
   Doma = 97477,
   Plume = 98866,
+  Elysium = 99901,
   Taiko = 167000,
   KasplexZkEVM = 202555,
   ArbitrumSepolia = 421614,

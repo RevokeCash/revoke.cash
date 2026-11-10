@@ -947,6 +947,17 @@
       "decimals": 18
     }
   },
+  "99901": {
+    "name": "Elysium",
+    "explorerUrl": "https://elysium.kinetiq.xyz",
+    "rpcUrl": "https://rpc.elysium.kinetiq.xyz",
+    "infoUrl": "https://elysium.kinetiq.xyz",
+    "nativeCurrency": {
+      "name": "HYPE",
+      "symbol": "HYPE",
+      "decimals": 18
+    }
+  },
   "167000": {
     "name": "Taiko",
     "status": "active",
