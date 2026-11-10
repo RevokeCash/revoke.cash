@@ -56,6 +56,7 @@ const ChainDelegationSection = ({ chainData, onRevoke, defaultExpanded }: Props)
     <CollapsibleCard
       isExpanded={isExpanded}
       canExpand={canExpand}
+      stickyHeader={canExpand}
       onToggle={toggleExpanded}
       className={twMerge(
         chainData.status === 'error'

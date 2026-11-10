@@ -30,6 +30,14 @@ export async function GET(req: NextRequest) {
     });
     await parseRequest(req, undefined, readSchemas);
 
+    const permissions = await getPermissionsByAddress(siweAddress);
+
+    // A flagged wallet is re-checked before responding, so the warning clears on the first visit after the user upgraded
+    if (permissions.some((permission) => permission.isActive && !permission.accountUpgraded)) {
+      await recheckAccountUpgradedForAddress(siweAddress);
+      return NextResponse.json(await getPermissionsByAddress(siweAddress));
+    }
+
     // Off the critical path: re-check the wallet's smart account code after responding, so a
     // permission flagged account_not_upgraded recovers when the user upgraded and comes back.
     after(() =>
@@ -38,7 +46,6 @@ export async function GET(req: NextRequest) {
       }),
     );
 
-    const permissions = await getPermissionsByAddress(siweAddress);
     return NextResponse.json(permissions);
   } catch (error) {
     return handleApiRouteError(error, { errorMessage: 'Failed to fetch permissions' });

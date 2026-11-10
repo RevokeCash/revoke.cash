@@ -120,6 +120,7 @@ const ChainAllowanceSection = ({
     <CollapsibleCard
       isExpanded={canExpand && isExpanded}
       canExpand={canExpand}
+      stickyHeader={canExpand}
       onToggle={toggleExpanded}
       className={twMerge(
         status === 'error'

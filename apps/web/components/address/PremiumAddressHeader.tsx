@@ -24,7 +24,7 @@ const PremiumAddressHeader = () => {
             <AddressDisplay
               address={address}
               domainName={domainName}
-              className="text-3xl font-bold"
+              className="text-2xl sm:text-3xl font-bold"
               copyButtonClassName="text-zinc-500 dark:text-zinc-400"
               withCopyButton
               withTooltip

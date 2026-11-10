@@ -5,6 +5,7 @@ import FaqItem from 'components/faq/FaqItem';
 import ArticleMeta from 'components/learn/ArticleMeta';
 import type { ContentMeta } from 'lib/types';
 import Image from 'next/image';
+import { cloneElement } from 'react';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import javascript from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
@@ -13,6 +14,7 @@ import remarkDirective from 'remark-directive';
 import remarkDirectiveRehype from 'remark-directive-rehype';
 import remarkGfm from 'remark-gfm';
 import Href from './Href';
+import MarkdownTable from './MarkdownTable';
 import Prose from './Prose';
 import YouTubeEmbed from './YouTubeEmbed';
 
@@ -50,8 +52,8 @@ const MarkdownProse = ({ content, meta, className, directives = true }: Props) =
       );
     },
     // Add a nofollow attribute to these links (can only take a link as child)
-    nofollow: (props: any) => {
-      return { ...props.children, props: { ...props.children.props, rel: 'nofollow' } };
+    nofollow: ({ children }: any) => {
+      return cloneElement(children, { rel: 'nofollow' });
     },
     p: ({ children }) => {
       return <p>{children}</p>;
@@ -76,6 +78,8 @@ const MarkdownProse = ({ content, meta, className, directives = true }: Props) =
         </p>
       );
     },
+    // Wide tables scroll sideways inside their own box instead of making the whole page scroll on phones
+    table: ({ children }) => <MarkdownTable>{children}</MarkdownTable>,
     // <pre> is handled by the code component (SyntaxHighlighter)
     pre: ({ children }) => <>{children}</>,
     code({ node, inline, className, children, ...props }: any) {

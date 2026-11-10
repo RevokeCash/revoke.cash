@@ -100,10 +100,36 @@
   scrollbar-width: none; /* Firefox */
 }
 
-.fade-video {
-  width: 600px;
-  height: auto;
+/* position: sticky cannot follow the window here because the horizontal scroll container of a table
+   is also the scrollport of its header. So the cells of the header rows (thead and the tfoot below it)
+   move by the distance that the table has scrolled past the top of the window, or past a sticky card
+   header when --table-header-top is set. 100000px only has to be larger than any table. */
+@supports (animation-range: exit-crossing 0px) {
+  @media screen {
+    .table-position-timeline {
+      view-timeline: --table-position block;
+      view-timeline-inset: var(--table-header-top, 0px) 0px;
+    }
 
+    .table-header-follows-window {
+      animation: table-header-follows-window linear both;
+      animation-timeline: --table-position;
+      animation-range: exit-crossing 0px exit-crossing 100000px;
+    }
+  }
+}
+
+@keyframes table-header-follows-window {
+  from {
+    translate: 0 0;
+  }
+
+  to {
+    translate: 0 100000px;
+  }
+}
+
+.fade-video {
   -webkit-mask-image:
     linear-gradient(to right, transparent, black 5%, black 95%, transparent),
     linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);

@@ -30,7 +30,9 @@ const AddressDisplay = ({
     <Component className={classes}>
       {withTooltip ? (
         <WithHoverTooltip tooltip={address}>
-          <span>{domainName ?? shortenAddress(address, 6)}</span>
+          <span className={domainName ? 'min-w-0 wrap-break-word' : undefined}>
+            {domainName ?? shortenAddress(address, 6)}
+          </span>
         </WithHoverTooltip>
       ) : (
         (domainName ?? shortenAddress(address, 6))

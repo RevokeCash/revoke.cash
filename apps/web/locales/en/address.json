@@ -143,8 +143,9 @@
   },
   "premium": {
     "auto_revoke_upgrade": {
-      "cta": "Fix it",
-      "description": "Auto-Revoking cannot execute on {chains} because this wallet is not a MetaMask smart account there."
+      "cta": "How to fix",
+      "description": "Auto-Revoking is not protecting this wallet on {chains}. Switch it to a smart account in MetaMask.",
+      "more_chains": "{count} more"
     },
     "banner": {
       "cta": "Upgrade to Premium",

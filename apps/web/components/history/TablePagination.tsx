@@ -24,6 +24,8 @@ const TablePagination = <TMeta extends object, T extends RowData>({ table, class
   const pageCount = Math.max(table.getPageCount(), 1);
   const pageSize = table.state.pagination.pageSize;
   const totalRows = table.getRowCount();
+  const firstRowOnPage = Math.min(pageIndex * pageSize + 1, totalRows);
+  const lastRowOnPage = Math.min((pageIndex + 1) * pageSize, totalRows);
 
   const unfilteredRowCount = table.getPreFilteredRowModel().rows.length;
   if (unfilteredRowCount <= PAGINATION_ROW_THRESHOLD && pageCount <= 1) return null;
@@ -33,23 +35,27 @@ const TablePagination = <TMeta extends object, T extends RowData>({ table, class
   return (
     <div className={twMerge('flex flex-wrap items-center justify-between gap-3 px-4 py-3', className)}>
       <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
-        <span>
+        <span className="max-sm:sr-only">
           <RichText>
             {(tags) =>
               t.rich('common.pagination.showing', {
                 ...tags,
-                start: Math.min(pageIndex * pageSize + 1, totalRows),
-                end: Math.min((pageIndex + 1) * pageSize, totalRows),
+                start: firstRowOnPage,
+                end: lastRowOnPage,
                 total: totalRows,
               })
             }
           </RichText>
         </span>
+        {/* Phones show digits, the page size, Previous and Next. The page size label fits on the same row from 375px in every language */}
+        <span aria-hidden="true" className="sm:hidden whitespace-nowrap">
+          {firstRowOnPage}-{lastRowOnPage} / {totalRows}
+        </span>
       </div>
 
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-2 text-sm">
-          <span className="text-zinc-600 dark:text-zinc-400">{t('common.pagination.show')}</span>
+          <span className="max-[375px]:hidden text-zinc-600 dark:text-zinc-400">{t('common.pagination.show')}</span>
           <Select
             aria-label="Select Page Size"
             size="sm"
@@ -66,6 +72,7 @@ const TablePagination = <TMeta extends object, T extends RowData>({ table, class
             onClick={() => table.setPageIndex(0)}
             disabled={!canPreviousPage}
             aria-label="First page"
+            className="max-sm:hidden"
           >
             {t('common.pagination.first')}
           </Button>
@@ -80,7 +87,7 @@ const TablePagination = <TMeta extends object, T extends RowData>({ table, class
             <ChevronLeftIcon className="w-4 h-4" />
           </Button>
 
-          <span className="flex items-center gap-1 px-3 py-1 text-sm text-zinc-600 dark:text-zinc-400 font-monosans whitespace-nowrap">
+          <span className="flex max-sm:hidden items-center gap-1 px-3 py-1 text-sm text-zinc-600 dark:text-zinc-400 font-monosans whitespace-nowrap">
             <RichText>
               {(tags) => t.rich('common.pagination.page', { ...tags, page: pageIndex + 1, total: pageCount })}
             </RichText>
@@ -102,6 +109,7 @@ const TablePagination = <TMeta extends object, T extends RowData>({ table, class
             onClick={() => table.setPageIndex(pageCount - 1)}
             disabled={!canNextPage}
             aria-label="Last page"
+            className="max-sm:hidden"
           >
             {t('common.pagination.last')}
           </Button>

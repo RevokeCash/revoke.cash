@@ -1,6 +1,7 @@
 import { isNullish } from '@revoke.cash/core/utils';
 import { flexRender, type ReactTable, type RowData } from '@tanstack/react-table';
 import type { AppTableFeatures } from 'lib/utils/table';
+import { HEADER_CELL_CLASSES } from './TableHeader';
 
 interface Props<TMeta extends object, T extends RowData> {
   table: ReactTable<AppTableFeatures<TMeta>, T>;
@@ -15,11 +16,12 @@ const TableFooter = <TMeta extends object, T extends RowData>({ table }: Props<T
   if (footers.length === 0) return null;
 
   return (
-    <tfoot className="table-row-group">
+    // Renders directly below the header and follows the window with it, see TableHeader
+    <tfoot className="table-row-group [overflow-anchor:none]">
       {table.getFooterGroups().map((footerGroup) => (
         <tr key={footerGroup.id} className="border-b border-zinc-200 dark:border-zinc-800 h-10">
           {footerGroup.headers.map((header) => (
-            <th key={header.id} className="text-left px-2 first:pl-4 last:pr-4 whitespace-nowrap">
+            <th key={header.id} className={HEADER_CELL_CLASSES}>
               {header.isPlaceholder ? null : flexRender(header.column.columnDef.footer, header.getContext())}
             </th>
           ))}

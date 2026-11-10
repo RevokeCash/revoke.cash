@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-// Tracked with JS rather than CSS scroll-driven animations because those are unsupported in Safari and Firefox
+// Tracked with JS rather than CSS scroll-driven animations because those are only supported from Safari 26 and Firefox 159
 export const useScrollFades = <T extends HTMLElement>() => {
   const scrollContainerRef = useRef<T>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);

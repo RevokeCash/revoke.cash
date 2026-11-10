@@ -14,6 +14,9 @@ export const useAddressAutoRevokePermissions = (address: Address, enabled: boole
     queryKey: getAddressPermissionsQueryKey(address),
     queryFn: async () => ky.get('/api/auto-revoke/permissions').json<AutoRevokePermission[]>(),
     enabled,
+    // Coming back from MetaMask after the smart account upgrade clears the warning without a reload
+    refetchOnWindowFocus: (query) =>
+      Boolean(query.state.data?.some((permission) => permission.isActive && !permission.accountUpgraded)),
   });
 
   return {

@@ -1,4 +1,4 @@
-# Acknowledgements
+# Acknowledge&shy;ments
 
 Revoke.cash is a free and open-source public good. Our mission to provide essential web3 security tools is made possible through funding from leading organizations, data partnerships, and robust technical infrastructure. This page recognizes the people and organisations that enable our work.
 
