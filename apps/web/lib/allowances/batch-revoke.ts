@@ -15,15 +15,19 @@ export const trackBatchRevoke = (
   batchType: BatchType,
   sponsor: string | null,
 ) => {
-  analytics.track('Batch Revoked', {
-    chainId,
-    address,
-    allowances: allowances.filter((a) => !isNullish(a)).length,
-    feeDollarAmount: Number(feeDollarAmount),
-    batchType,
-    isTestnet: isTestnetChain(chainId),
-    sponsor,
-  });
+  analytics.track(
+    'Batch Revoked',
+    {
+      chainId,
+      address,
+      allowances: allowances.filter((a) => !isNullish(a)).length,
+      feeDollarAmount: Number(feeDollarAmount),
+      batchType,
+      isTestnet: isTestnetChain(chainId),
+      sponsor,
+    },
+    { crisp: true },
+  );
 };
 
 export const recordBatchRevoke = async (

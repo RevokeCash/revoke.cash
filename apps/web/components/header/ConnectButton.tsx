@@ -57,7 +57,7 @@ const ConnectButton = ({ size, style, className, text, redirect, onClick, onConn
         accounts: [account],
       } = await connectAsync({ connector });
 
-      analytics.track('Wallet Connected', { wallet: getConnectorName(connector) });
+      analytics.track('Wallet Connected', { wallet: getConnectorName(connector) }, { crisp: true });
       handleClose();
 
       if (account && redirect) {
@@ -69,11 +69,15 @@ const ConnectButton = ({ size, style, className, text, redirect, onClick, onConn
     } catch (connectionError) {
       if (isUserRejectionError(connectionError)) return;
 
-      analytics.track('Wallet Connection Failed', {
-        wallet: getConnectorName(connector),
-        message: parseErrorMessage(connectionError),
-        isMobile: isMobileDevice(),
-      });
+      analytics.track(
+        'Wallet Connection Failed',
+        {
+          wallet: getConnectorName(connector),
+          message: parseErrorMessage(connectionError),
+          isMobile: isMobileDevice(),
+        },
+        { crisp: true, crispColor: 'orange' },
+      );
     }
   };
 

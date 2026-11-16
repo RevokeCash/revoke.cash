@@ -7,14 +7,18 @@ import {
   isAccountUpgradeRejectionError,
   isChainMismatchError,
   isUserRejectionError,
+  parseErrorMessage,
   SwitchChainHandledError,
 } from '@revoke.cash/core/utils/errors';
 import { getFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
+import analytics from 'lib/utils/analytics';
+import { getConnectorName } from 'lib/utils/wallet';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
+import { useConnection } from 'wagmi';
 import { isTransactionStatusLoadingState, useTransactionStore } from '../../stores/transaction-store';
 import { useEnsureWalletClient } from './ensureWalletClient';
 import { useFeePayment } from './useFeePayment';
@@ -30,6 +34,7 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
   // Get chainId from the first allowance (all selected allowances should be from the same chain)
   const chainId = allowances[0]?.chainId ?? 1;
   const { address, isPremium } = useAddress();
+  const { connector } = useConnection();
 
   const { results, getTransaction, updateTransaction } = useTransactionStore();
   const walletCapabilities = useWalletCapabilities(chainId);
@@ -82,6 +87,16 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
     } catch (error) {
       // Rejecting the chain switch prompt is intentional, and switch failures already get their own toast
       if (!isUserRejectionError(error) && !(error instanceof SwitchChainHandledError)) {
+        analytics.track(
+          'Batch Revoke Failed',
+          {
+            chainId,
+            allowances: allowances.length,
+            wallet: connector ? getConnectorName(connector) : undefined,
+            message: parseErrorMessage(error),
+          },
+          { crisp: true, crispColor: 'red' },
+        );
         if (isChainMismatchError(error)) {
           toast.error(t('common.toasts.chain_mismatch', { chainName: getChainName(chainId) }));
         } else {

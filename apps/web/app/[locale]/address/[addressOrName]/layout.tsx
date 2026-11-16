@@ -1,7 +1,9 @@
-import { getActivePremiumEntitlementsWithSingleRetry } from '@revoke.cash/core/premium/entitlements';
-import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
+import {
+  getActivePremiumEntitlementsWithSingleRetry,
+  summarizeEntitlements,
+} from '@revoke.cash/core/premium/entitlements';
 import { getAddressAndDomainName } from '@revoke.cash/core/whois';
-import CrispPremiumPageSync from 'app/CrispPremiumPageSync';
+import CrispViewedAddress from 'app/CrispViewedAddress';
 import SharedLayout from 'app/layouts/SharedLayout';
 import AddressPageExperience from 'components/address/AddressPageExperience';
 import { AddressIdentityContextProvider } from 'lib/hooks/page-context/AddressIdentityContext';
@@ -31,13 +33,7 @@ const AddressPageLayout = async ({ params, children }: Props) => {
 
   // The address page falls back to the free experience when the entitlement lookup fails
   const entitlements = await getActivePremiumEntitlementsWithSingleRetry(address).catch(() => []);
-  const isPremium = entitlements.length > 0;
-  const isUltimate = entitlements.some((entitlement) => isUltimatePlan(entitlement));
-
-  const premiumEndsAt = entitlements
-    .filter((entitlement) => entitlement.ownerAddress.toLowerCase() === address.toLowerCase())
-    .map((entitlement) => entitlement.endsAt)
-    .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())[0];
+  const { isPremium, isUltimate, ownEndsAt } = summarizeEntitlements(address, entitlements);
 
   return (
     <SharedLayout searchBar>
@@ -47,12 +43,12 @@ const AddressPageLayout = async ({ params, children }: Props) => {
           domainName={domainName}
           isPremium={isPremium}
           isUltimate={isUltimate}
-          premiumEndsAt={premiumEndsAt}
+          premiumEndsAt={ownEndsAt ?? undefined}
         >
           <NextIntlClientProvider
             messages={{ common: messages.common, address: messages.address, exploits: messages.exploits }}
           >
-            <CrispPremiumPageSync />
+            <CrispViewedAddress />
             <AddressPageExperience>{children}</AddressPageExperience>
           </NextIntlClientProvider>
         </AddressIdentityContextProvider>

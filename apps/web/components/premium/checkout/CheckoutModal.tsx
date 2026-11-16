@@ -80,7 +80,11 @@ const CheckoutModal = ({ tier, open, setOpen, onTierChange, source }: Props) => 
     if (!isAuthenticated) {
       const signedInAddress = await signIn().catch(() => null);
       if (!signedInAddress) {
-        analytics.track('Subscription Sign In Failed', { planId: selectedPlan.id, source });
+        analytics.track(
+          'Subscription Sign In Failed',
+          { planId: selectedPlan.id, source },
+          { crisp: true, crispColor: 'orange' },
+        );
         return;
       }
     }

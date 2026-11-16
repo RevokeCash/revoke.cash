@@ -30,12 +30,16 @@ export const useRevokeSession = (session: Session, onRevoke: OnSessionRevoke) =>
       return { hash, confirmation: waitForConfirmation() };
     },
     trackTransaction: () => {
-      analytics.track('Session Revoked', {
-        chainId: session.chainId,
-        account: session.account,
-        validatorAddress: session.validatorAddress,
-        sessionHash: session.payload.sessionHash,
-      });
+      analytics.track(
+        'Session Revoked',
+        {
+          chainId: session.chainId,
+          account: session.account,
+          validatorAddress: session.validatorAddress,
+          sessionHash: session.payload.sessionHash,
+        },
+        { crisp: true },
+      );
     },
     updateTransaction,
     handleTransaction,

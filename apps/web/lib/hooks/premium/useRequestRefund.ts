@@ -16,7 +16,7 @@ export const useRequestRefund = (ownerAddress: Address) => {
       return ky.post(`/api/premium/payments/${paymentId}/refund`, { json: { reason } }).json<{ id: string }>();
     },
     onSuccess: (_refundRequest, { paymentId }) => {
-      analytics.track('Subscription Cancelled', { account: ownerAddress, paymentId });
+      analytics.track('Subscription Cancelled', { account: ownerAddress, paymentId }, { crisp: true });
       queryClient.invalidateQueries({ queryKey: getSubscriptionsQueryKey(ownerAddress) });
       toast.success(t('account.subscription.cancellation.success'));
     },

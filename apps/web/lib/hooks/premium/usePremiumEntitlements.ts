@@ -20,6 +20,7 @@ export const usePremiumEntitlements = (address: Address | undefined, enabled: bo
     isUltimate: query.data?.isUltimate ?? false,
     ownTier: query.data?.ownTier ?? null,
     grantedTier: query.data?.grantedTier ?? null,
+    ownEndsAt: query.data?.ownEndsAt ?? null,
     isLoading: query.isLoading,
     isError: query.isError,
   };

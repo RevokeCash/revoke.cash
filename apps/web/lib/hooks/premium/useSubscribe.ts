@@ -156,7 +156,11 @@ export const useSubscribe = ({
           setStatus('confirmed');
           invalidatePremiumStatus();
           toast.success(t('premium.checkout.payment_confirmed'));
-          analytics.track('Subscription Purchased', { paymentId: pendingPayment.paymentId, resumed: true });
+          analytics.track(
+            'Subscription Purchased',
+            { paymentId: pendingPayment.paymentId, resumed: true },
+            { crisp: true, crispColor: 'green' },
+          );
         } else {
           // expired or failed — no action needed, user can try again
           setStatus('idle');
@@ -179,7 +183,11 @@ export const useSubscribe = ({
         clearPendingPayment();
 
         if (resumedStatus.status === 'confirmed') {
-          analytics.track('Subscription Purchased', { paymentId: pendingPayment.paymentId, resumed: true });
+          analytics.track(
+            'Subscription Purchased',
+            { paymentId: pendingPayment.paymentId, resumed: true },
+            { crisp: true, crispColor: 'green' },
+          );
           return resumedStatus;
         }
       }
@@ -239,13 +247,18 @@ export const useSubscribe = ({
 
       displayTransactionSubmittedToast(payment.chainId, hash);
 
-      analytics.track('Subscription Payment Sent', {
-        paymentId: payment.paymentId,
-        planId: payment.planId,
-        chainId: payment.chainId,
-        tokenSymbol: payment.token.symbol,
-        transactionHash: hash,
-      });
+      analytics.track(
+        'Subscription Payment Sent',
+        {
+          paymentId: payment.paymentId,
+          planId: payment.planId,
+          chainId: payment.chainId,
+          tokenSymbol: payment.token.symbol,
+          amountUsd: payment.amountUsdCents / 100,
+          transactionHash: hash,
+        },
+        { crisp: true },
+      );
 
       // Persist payment ID so polling can resume after a page refresh or tab reopen
       savePendingPayment(payment.paymentId, ownerAddress, payment.expiresAt);
@@ -265,13 +278,17 @@ export const useSubscribe = ({
         throw new Error(errorMessage);
       }
 
-      analytics.track('Subscription Purchased', {
-        paymentId: payment.paymentId,
-        planId: payment.planId,
-        chainId: payment.chainId,
-        tokenSymbol: payment.token.symbol,
-        amountUsd: payment.amountUsdCents / 100,
-      });
+      analytics.track(
+        'Subscription Purchased',
+        {
+          paymentId: payment.paymentId,
+          planId: payment.planId,
+          chainId: payment.chainId,
+          tokenSymbol: payment.token.symbol,
+          amountUsd: payment.amountUsdCents / 100,
+        },
+        { crisp: true, crispColor: 'green' },
+      );
 
       return finalStatus;
     },
@@ -286,12 +303,16 @@ export const useSubscribe = ({
       if (!(error instanceof SwitchChainHandledError)) {
         toast.error(parseErrorMessage(error) || t('premium.checkout.payment_failed'));
       }
-      analytics.track('Subscription Payment Failed', {
-        planId: selectedPlan?.id,
-        chainId: selectedPaymentChainId,
-        tokenSymbol: selectedPaymentToken?.symbol,
-        error: parseErrorMessage(error),
-      });
+      analytics.track(
+        'Subscription Payment Failed',
+        {
+          planId: selectedPlan?.id,
+          chainId: selectedPaymentChainId,
+          tokenSymbol: selectedPaymentToken?.symbol,
+          error: parseErrorMessage(error),
+        },
+        { crisp: true, crispColor: 'red' },
+      );
     },
   });
 

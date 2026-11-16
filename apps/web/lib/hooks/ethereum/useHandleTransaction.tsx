@@ -10,14 +10,18 @@ import {
   SwitchChainHandledError,
 } from '@revoke.cash/core/utils/errors';
 import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
+import analytics from 'lib/utils/analytics';
+import { getConnectorName } from 'lib/utils/wallet';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 import { stringify } from 'viem';
+import { useConnection } from 'wagmi';
 import { useWalletErrorMessage } from './useWalletErrorMessage';
 
 export const useHandleTransaction = (chainId: number) => {
   const t = useTranslations();
   const getWalletErrorMessage = useWalletErrorMessage();
+  const { connector } = useConnection();
 
   const checkError = (e: any, type: TransactionType): void => {
     const parsedMessage = parseErrorMessage(e);
@@ -29,6 +33,12 @@ export const useHandleTransaction = (chainId: number) => {
 
     // Chain switch failures already get their own toast in useSwitchChain
     if (e instanceof SwitchChainHandledError) return;
+
+    analytics.track(
+      'Transaction Failed',
+      { type, chainId, wallet: connector ? getConnectorName(connector) : undefined, message: parsedMessage },
+      { crisp: true, crispColor: 'red' },
+    );
 
     // The wallet's active chain changed between the chain switch and the transaction being sent
     if (isChainMismatchError(e)) {
