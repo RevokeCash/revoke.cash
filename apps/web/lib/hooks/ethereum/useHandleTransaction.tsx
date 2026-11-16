@@ -10,6 +10,7 @@ import {
   SwitchChainHandledError,
 } from '@revoke.cash/core/utils/errors';
 import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
+import { addCrispEvent, formatCrispChain } from 'lib/utils/crisp';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 import { stringify } from 'viem';
@@ -29,6 +30,8 @@ export const useHandleTransaction = (chainId: number) => {
 
     // Chain switch failures already get their own toast in useSwitchChain
     if (e instanceof SwitchChainHandledError) return;
+
+    addCrispEvent('Transaction failed', { type, chain: formatCrispChain(chainId), message: parsedMessage }, 'red');
 
     // The wallet's active chain changed between the chain switch and the transaction being sent
     if (isChainMismatchError(e)) {

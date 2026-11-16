@@ -13,6 +13,7 @@ import { displayTransactionSubmittedToast } from 'components/common/TransactionS
 import { useEnsureWalletClient } from 'lib/hooks/ethereum/ensureWalletClient';
 import ky from 'lib/ky';
 import analytics from 'lib/utils/analytics';
+import { addCrispEvent, formatCrispChain } from 'lib/utils/crisp';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -246,6 +247,14 @@ export const useSubscribe = ({
         tokenSymbol: payment.token.symbol,
         transactionHash: hash,
       });
+      addCrispEvent('Payment sent', {
+        paymentId: payment.paymentId,
+        plan: payment.planId,
+        chain: formatCrispChain(payment.chainId),
+        token: payment.token.symbol,
+        amountUsd: payment.amountUsdCents / 100,
+        transactionHash: hash,
+      });
 
       // Persist payment ID so polling can resume after a page refresh or tab reopen
       savePendingPayment(payment.paymentId, ownerAddress, payment.expiresAt);
@@ -272,6 +281,7 @@ export const useSubscribe = ({
         tokenSymbol: payment.token.symbol,
         amountUsd: payment.amountUsdCents / 100,
       });
+      addCrispEvent('Payment confirmed', { paymentId: payment.paymentId, plan: payment.planId }, 'green');
 
       return finalStatus;
     },
@@ -292,6 +302,16 @@ export const useSubscribe = ({
         tokenSymbol: selectedPaymentToken?.symbol,
         error: parseErrorMessage(error),
       });
+      addCrispEvent(
+        'Payment failed',
+        {
+          plan: selectedPlan?.id,
+          chain: formatCrispChain(selectedPaymentChainId),
+          token: selectedPaymentToken?.symbol,
+          message: parseErrorMessage(error),
+        },
+        'red',
+      );
     },
   });
 

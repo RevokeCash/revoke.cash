@@ -37,7 +37,13 @@ export async function GET(req: NextRequest, props: Props) {
       });
     } catch (error) {
       console.error('Error checking premium entitlement', error);
-      return NextResponse.json({ isPremium: false, isUltimate: false, ownTier: null, grantedTier: null });
+      return NextResponse.json({
+        isPremium: false,
+        isUltimate: false,
+        ownTier: null,
+        grantedTier: null,
+        ownEndsAt: null,
+      });
     }
   } catch (error) {
     return handleApiRouteError(error);

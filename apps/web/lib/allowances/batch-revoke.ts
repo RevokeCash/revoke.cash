@@ -3,6 +3,7 @@ import { isTestnetChain } from '@revoke.cash/core/chains';
 import { isNullish } from '@revoke.cash/core/utils';
 import ky from 'lib/ky';
 import analytics from 'lib/utils/analytics';
+import { addCrispEvent, formatCrispChain } from 'lib/utils/crisp';
 import type { Address } from 'viem';
 
 export type BatchType = 'eip5792' | 'queued';
@@ -22,6 +23,14 @@ export const trackBatchRevoke = (
     feeDollarAmount: Number(feeDollarAmount),
     batchType,
     isTestnet: isTestnetChain(chainId),
+    sponsor,
+  });
+
+  addCrispEvent('Batch revoke', {
+    chain: formatCrispChain(chainId),
+    allowances: allowances.filter((allowance) => !isNullish(allowance)).length,
+    method: batchType,
+    fee: feeDollarAmount,
     sponsor,
   });
 };

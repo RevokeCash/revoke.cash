@@ -8,6 +8,7 @@ import Modal from 'components/common/Modal';
 import Spinner from 'components/common/Spinner';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import analytics from 'lib/utils/analytics';
+import { addCrispEvent } from 'lib/utils/crisp';
 import { filterAndSortConnectors, getConnectorName, getWalletIcon, isMobileDevice } from 'lib/utils/wallet';
 import { useTranslations } from 'next-intl';
 import { type ReactNode, useMemo, useState } from 'react';
@@ -58,6 +59,7 @@ const ConnectButton = ({ size, style, className, text, redirect, onClick, onConn
       } = await connectAsync({ connector });
 
       analytics.track('Wallet Connected', { wallet: getConnectorName(connector) });
+      addCrispEvent('Wallet connected', { wallet: getConnectorName(connector), address: account });
       handleClose();
 
       if (account && redirect) {
@@ -74,6 +76,11 @@ const ConnectButton = ({ size, style, className, text, redirect, onClick, onConn
         message: parseErrorMessage(connectionError),
         isMobile: isMobileDevice(),
       });
+      addCrispEvent(
+        'Wallet connection failed',
+        { wallet: getConnectorName(connector), message: parseErrorMessage(connectionError) },
+        'orange',
+      );
     }
   };
 

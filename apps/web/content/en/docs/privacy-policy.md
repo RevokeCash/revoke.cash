@@ -1,6 +1,6 @@
 # Privacy Policy
 
-_Last updated July 15, 2026_
+_Last updated November 16, 2026_
 
 This privacy policy for Revoke.cash (**Company**, **We**, **Us**, or **Our**), describes how and why we might collect, store, use, and/or share (**Process**) your information when you use our services (**Services**), such as when you:
 
@@ -40,7 +40,7 @@ Reading this privacy policy will help you understand your privacy rights and cho
 
    _In Short: We use service providers that process a limited amount of personal information on our behalf, and some third parties might collect information through our Services._
 
-   We use third-party service providers ('processors') to perform parts of our Services on our behalf, such as hosting and database providers (Vercel, Neon, Render), usage analytics (Mixpanel), and customer support chat (Crisp). These providers process personal information on our behalf and on our instructions, such as: your cryptocurrency wallet address, your subscription and payment activity, the contents of support conversations you start with us, your ENS domain name and/or device and usage information, such as your IP address, browser and device characteristics, operating system, language preferences, referring URLs, device name, country, location, information about how and when you use our Services, and other technical information.
+   We use third-party service providers ('processors') to perform parts of our Services on our behalf, such as hosting and database providers (Vercel, Neon, Render), usage analytics (Mixpanel), and customer support chat (Crisp). These providers process personal information on our behalf and on our instructions, such as: your cryptocurrency wallet address, the wallet addresses you look up, your subscription and payment activity, the contents of support conversations you start with us, your ENS domain name and/or device and usage information, such as your IP address, browser and device characteristics, operating system, language preferences, referring URLs, device name, country, location, information about how and when you use our Services, and other technical information.
 
    The categories of third parties we may share personal information with are as follows:
 

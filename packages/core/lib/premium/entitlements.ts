@@ -62,6 +62,8 @@ export interface EntitlementSummary {
   isUltimate: boolean;
   ownTier: PremiumPlanTier | null;
   grantedTier: PremiumPlanTier | null;
+  // Only the end of the address's own subscriptions, so the summary does not reveal when someone else's ends
+  ownEndsAt: string | null;
 }
 
 // Collapses an address's entitlements into the tier levels the checkout needs, split by whether
@@ -79,7 +81,13 @@ export const summarizeEntitlements = (address: Address, entitlements: PremiumEnt
     isUltimate: highestTier(entitlements) === 'ultimate',
     ownTier: highestTier(ownEntitlements),
     grantedTier: highestTier(grantedEntitlements),
+    ownEndsAt: latestEndsAt(ownEntitlements),
   };
+};
+
+const latestEndsAt = (entitlements: PremiumEntitlement[]): string | null => {
+  const endDates = entitlements.map((entitlement) => entitlement.endsAt);
+  return endDates.sort((a, b) => new Date(b).getTime() - new Date(a).getTime())[0] ?? null;
 };
 
 const highestTier = (entitlements: PremiumEntitlement[]): PremiumPlanTier | null => {

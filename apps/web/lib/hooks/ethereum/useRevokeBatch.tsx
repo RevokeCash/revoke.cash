@@ -7,10 +7,12 @@ import {
   isAccountUpgradeRejectionError,
   isChainMismatchError,
   isUserRejectionError,
+  parseErrorMessage,
   SwitchChainHandledError,
 } from '@revoke.cash/core/utils/errors';
 import { getFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
+import { addCrispEvent, formatCrispChain } from 'lib/utils/crisp';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
@@ -82,6 +84,11 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
     } catch (error) {
       // Rejecting the chain switch prompt is intentional, and switch failures already get their own toast
       if (!isUserRejectionError(error) && !(error instanceof SwitchChainHandledError)) {
+        addCrispEvent(
+          'Batch revoke failed',
+          { chain: formatCrispChain(chainId), allowances: allowances.length, message: parseErrorMessage(error) },
+          'red',
+        );
         if (isChainMismatchError(error)) {
           toast.error(t('common.toasts.chain_mismatch', { chainName: getChainName(chainId) }));
         } else {
