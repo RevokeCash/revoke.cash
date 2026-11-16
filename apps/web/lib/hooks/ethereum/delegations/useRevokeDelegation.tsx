@@ -47,13 +47,17 @@ export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegatio
       return { hash, confirmation: waitForConfirmation() };
     },
     trackTransaction: () => {
-      analytics.track('Delegation Revoked', {
-        chainId: delegation.chainId,
-        delegator: delegation.delegator,
-        delegate: delegation.delegate,
-        type: delegation.type,
-        platform: delegation.platform,
-      });
+      analytics.track(
+        'Delegation Revoked',
+        {
+          chainId: delegation.chainId,
+          delegator: delegation.delegator,
+          delegate: delegation.delegate,
+          type: delegation.type,
+          platform: delegation.platform,
+        },
+        { crisp: true },
+      );
     },
     updateTransaction,
     handleTransaction,

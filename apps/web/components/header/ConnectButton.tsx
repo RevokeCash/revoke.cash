@@ -8,7 +8,6 @@ import Modal from 'components/common/Modal';
 import Spinner from 'components/common/Spinner';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import analytics from 'lib/utils/analytics';
-import { addCrispEvent } from 'lib/utils/crisp';
 import { filterAndSortConnectors, getConnectorName, getWalletIcon, isMobileDevice } from 'lib/utils/wallet';
 import { useTranslations } from 'next-intl';
 import { type ReactNode, useMemo, useState } from 'react';
@@ -58,8 +57,7 @@ const ConnectButton = ({ size, style, className, text, redirect, onClick, onConn
         accounts: [account],
       } = await connectAsync({ connector });
 
-      analytics.track('Wallet Connected', { wallet: getConnectorName(connector) });
-      addCrispEvent('Wallet connected', { wallet: getConnectorName(connector), address: account });
+      analytics.track('Wallet Connected', { wallet: getConnectorName(connector) }, { crisp: true });
       handleClose();
 
       if (account && redirect) {
@@ -71,15 +69,14 @@ const ConnectButton = ({ size, style, className, text, redirect, onClick, onConn
     } catch (connectionError) {
       if (isUserRejectionError(connectionError)) return;
 
-      analytics.track('Wallet Connection Failed', {
-        wallet: getConnectorName(connector),
-        message: parseErrorMessage(connectionError),
-        isMobile: isMobileDevice(),
-      });
-      addCrispEvent(
-        'Wallet connection failed',
-        { wallet: getConnectorName(connector), message: parseErrorMessage(connectionError) },
-        'orange',
+      analytics.track(
+        'Wallet Connection Failed',
+        {
+          wallet: getConnectorName(connector),
+          message: parseErrorMessage(connectionError),
+          isMobile: isMobileDevice(),
+        },
+        { crisp: true, crispColor: 'orange' },
       );
     }
   };

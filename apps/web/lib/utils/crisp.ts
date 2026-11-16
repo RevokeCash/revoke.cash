@@ -8,8 +8,7 @@ const PENDING_EVENTS_STORAGE_KEY = 'crisp_pending_events';
 const MAX_PENDING_EVENTS = 10;
 const MAX_EVENT_VALUE_LENGTH = 300;
 
-type CrispEventData = Record<string, string | number | null | undefined>;
-type CrispEventColor = 'blue' | 'green' | 'orange' | 'red';
+export type CrispEventColor = 'blue' | 'green' | 'orange' | 'red';
 
 interface CrispEvent {
   name: string;
@@ -17,7 +16,8 @@ interface CrispEvent {
   color: CrispEventColor;
 }
 
-export const addCrispEvent = (name: string, data: CrispEventData, color: CrispEventColor = 'blue') => {
+// Use analytics.track() with the crisp option instead, so the event also goes to Mixpanel
+export const addCrispEvent = (name: string, data: Record<string, unknown>, color: CrispEventColor = 'blue') => {
   if (isNullish(CRISP_WEBSITE_ID) || typeof window === 'undefined') return;
 
   // Crisp shows the time it receives an event, which is later than the real time for events that waited
@@ -50,12 +50,19 @@ const pushEvent = (event: CrispEvent) => {
   Crisp.session.pushEvent(event.name, event.data, event.color as EventsColors);
 };
 
-const formatEventData = (data: CrispEventData): Record<string, string | number> => {
+const formatEventData = (data: Record<string, unknown>): Record<string, string | number> => {
   return Object.fromEntries(
     Object.entries(data)
-      .filter((entry): entry is [string, string | number] => !isNullish(entry[1]))
-      .map(([key, value]) => [key, typeof value === 'string' ? value.slice(0, MAX_EVENT_VALUE_LENGTH) : value]),
+      .filter(([, value]) => !isNullish(value))
+      .map(([key, value]) => [key, formatEventValue(key, value)]),
   );
+};
+
+// Crisp only shows strings and numbers well, and a chain ID is easier to read with the chain name
+const formatEventValue = (key: string, value: unknown): string | number => {
+  if (key === 'chainId' && typeof value === 'number') return formatCrispChain(value) ?? value;
+  if (typeof value === 'number') return value;
+  return String(value).slice(0, MAX_EVENT_VALUE_LENGTH);
 };
 
 // Storage access throws when the browser blocks site data, and the events are not worth breaking the caller for

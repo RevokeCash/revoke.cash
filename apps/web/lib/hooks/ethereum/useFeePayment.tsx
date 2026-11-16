@@ -99,7 +99,7 @@ export const useFeePayment = (chainId: number) => {
 
     if (isTestnetChain(chainId)) return;
 
-    analytics.track('Fee Paid', { address, chainId, dollarAmount, transactionHash });
+    analytics.track('Fee Paid', { address, chainId, dollarAmount, transactionHash }, { crisp: true });
   };
 
   return { prepareFeePayment, hasEnoughBalanceForFee, sendFeePayment, nativeToken, trackFeePaid };
