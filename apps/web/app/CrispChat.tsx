@@ -18,6 +18,9 @@ import { useConnection } from 'wagmi';
  * Sends the user's wallet, premium status and viewed addresses to Crisp, but only once the user opens the chat.
  * The keys describe the last connected wallet and the last viewed address page, so a page without a wallet or
  * without an address does not clear what Crisp already has.
+ *
+ * The Crisp client turns every data value that Number() can parse into a number, and Number() reads a 0x address as
+ * a hex number. So addresses only go to Crisp inside a URL or in a list of more than one address.
  */
 const CrispChat = () => {
   const { address: account, connector, chainId } = useConnection();
@@ -36,7 +39,7 @@ const CrispChat = () => {
 
     if (account) {
       Crisp.session.setData({
-        wallet_address: account,
+        wallet_address: getAddressPageUrl(account),
         wallet_verified: isAuthenticated,
         wallet_ens: domainName ?? '',
         wallet_app: connector ? getConnectorName(connector) : '',
@@ -61,7 +64,7 @@ const CrispChat = () => {
       const isOwnAddress = Boolean(account && isAddressEqual(viewedAddress.address, account));
 
       Crisp.session.setData({
-        viewed_address: viewedAddress.address,
+        viewed_address: getAddressPageUrl(viewedAddress.address),
         viewed_ens: viewedAddress.domainName ?? '',
         viewed_is_own: isOwnAddress,
         viewed_premium: viewedAddress.premiumTier ?? 'none',
@@ -128,13 +131,15 @@ const CrispChat = () => {
   return null;
 };
 
-// The newest addresses come first, followed by the ones that Crisp already has from earlier chats
+// The newest addresses come first, followed by the ones that Crisp already has from earlier chats. A single address
+// is the same as viewed_address, and Crisp would turn it into a number, so the list needs at least two addresses.
 const mergeRecentAddresses = (recentAddresses: Address[], sentAddresses: unknown): string => {
   const previousAddresses = typeof sentAddresses === 'string' ? sentAddresses.split(', ').filter(Boolean) : [];
-  const uniqueAddresses = [...new Set([...recentAddresses, ...previousAddresses])];
-  return uniqueAddresses.slice(0, MAX_RECENT_ADDRESSES).join(', ');
+  const uniqueAddresses = [...new Set([...recentAddresses, ...previousAddresses])].slice(0, MAX_RECENT_ADDRESSES);
+  return uniqueAddresses.length > 1 ? uniqueAddresses.join(', ') : '';
 };
 
+const getAddressPageUrl = (address: Address) => `${SITE_URL}/address/${address}`;
 const getAdminLookupUrl = (address: Address) => `${SITE_URL}/admin/lookup/${address}`;
 
 export default CrispChat;
