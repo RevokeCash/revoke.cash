@@ -85,8 +85,9 @@ export async function POST(req: NextRequest) {
         .post(PUDGY_API_URL, { json: { receiver: address }, headers: { 'x-api-key': PUDGY_API_KEY } })
         .json<PudgyApiResponse>();
     } catch (error) {
-      console.error('Pudgy Penguins API error:', error);
+      // Only the message: the ky error object holds the request headers, which include the API key
       const message = `Pudgy Penguins API error: ${parseErrorMessage(error)}`;
+      console.error(message);
       throw new ApiError(500, message, { status: 'failed', message });
     }
 

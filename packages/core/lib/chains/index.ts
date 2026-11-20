@@ -521,7 +521,6 @@ export const CHAINS = {
     nativeCurrency: { name: 'HYPE', symbol: 'HYPE', decimals: 18 },
     nativeTokenCoingeckoId: 'hyperliquid',
     coingeckoNetworkId: 'elysium',
-    coingeckoAssetPlatformId: 'elysium-kinetiq',
     logoUrl: '/assets/images/vendor/chains/elysium.svg',
     explorerUrl: 'https://elysium.kinetiq.xyz',
     infoUrl: 'https://elysium.kinetiq.xyz',
@@ -1395,7 +1394,7 @@ export const CHAINS = {
     },
   }),
   [ChainId.Somnia]: new Chain({
-    type: SupportType.BLOCKSCOUT,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId.Somnia,
     name: 'Somnia',
     nativeCurrency: { name: 'Somnia Mainnet', symbol: 'SOMI', decimals: 18 },
@@ -1404,7 +1403,6 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/somnia.png',
     infoUrl: 'https://somnia.network',
     explorerUrl: 'https://explorer.somnia.network',
-    etherscanCompatibleApiUrl: 'https://mainnet.somnia.w3us.site/api',
     rpc: {
       main: 'https://api.infra.mainnet.somnia.network',
     },

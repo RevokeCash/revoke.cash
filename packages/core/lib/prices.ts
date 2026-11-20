@@ -7,7 +7,7 @@ import { COINGECKO_API_BASE_URL, COINGECKO_API_KEY } from '@revoke.cash/core/con
 import ky from '@revoke.cash/core/ky';
 import { RequestQueue } from '@revoke.cash/core/request-queue';
 import { chunkArray, deduplicateArray, isNullish } from '@revoke.cash/core/utils';
-import { ExportableError } from '@revoke.cash/core/utils/errors';
+import { ExportableError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { MINUTE } from '@revoke.cash/core/utils/time';
 import { Redis } from '@upstash/redis';
 import { type Address, getAddress, isAddress } from 'viem';
@@ -201,7 +201,8 @@ const fetchTokenPricesFromCoinGecko = async (
       }),
     );
   } catch (error) {
-    console.error('Failed to fetch token prices from CoinGecko', error);
+    // Only the message: the ky error object holds the request headers, which include the CoinGecko API key
+    console.error('Failed to fetch token prices from CoinGecko:', parseErrorMessage(error));
     throw new PriceError(503, 'Token prices are temporarily unavailable');
   }
 };
@@ -269,7 +270,8 @@ const fetchNftFloorPricesFromCoinGecko = async (assetPlatformId: string): Promis
         .flatMap(({ address, floorPriceUsd }) => (isNullish(floorPriceUsd) ? [] : [[address, floorPriceUsd]])),
     );
   } catch (error) {
-    console.error('Failed to fetch NFT floor prices from CoinGecko', error);
+    // Only the message: the ky error object holds the request headers, which include the CoinGecko API key
+    console.error('Failed to fetch NFT floor prices from CoinGecko:', parseErrorMessage(error));
     throw new PriceError(503, 'NFT floor prices are temporarily unavailable');
   }
 };
