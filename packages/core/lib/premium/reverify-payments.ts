@@ -2,13 +2,10 @@ import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import { getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { premiumPayments } from '@revoke.cash/core/db/schema/premium';
 import { HOUR } from '@revoke.cash/core/utils/time';
-import { and, eq, gte, inArray, isNotNull, lte, ne } from 'drizzle-orm';
+import { and, gte, inArray, isNotNull, lte } from 'drizzle-orm';
 import { type Hash, TransactionReceiptNotFoundError } from 'viem';
-import { SUBSCRIPTIONS_ADDRESS } from '../constants';
-import { isSupportedPaymentChainId } from './payment-config';
 import type { PremiumPaymentRecord } from './payments';
 import { transitionPaymentAndRebuild } from './subscriptions';
-import { findMatchingTransferTxHash } from './verify-payment';
 
 // We do not wait for confirmations before marking a payment as confirmed. Instead we re-verify recently confirmed
 // payments and reverse their effects if they are no longer present on-chain
@@ -18,7 +15,6 @@ const REVERIFICATION_GRACE_HOURS = 1;
 interface ReverifyRecentPaymentsResult {
   checked: number;
   intact: number;
-  rematched: number;
   reversed: number;
   reconfirmed: number;
   errors: number;
@@ -40,7 +36,6 @@ export const reverifyRecentPayments = async (): Promise<ReverifyRecentPaymentsRe
   const result: ReverifyRecentPaymentsResult = {
     checked: recentPayments.length,
     intact: 0,
-    rematched: 0,
     reversed: 0,
     reconfirmed: 0,
     errors: 0,
@@ -60,7 +55,7 @@ export const reverifyRecentPayments = async (): Promise<ReverifyRecentPaymentsRe
   return result;
 };
 
-type ReverificationOutcome = 'intact' | 'rematched' | 'reversed' | 'reconfirmed';
+type ReverificationOutcome = 'intact' | 'reversed' | 'reconfirmed';
 
 const reverifyPayment = async (payment: PremiumPaymentRecord): Promise<ReverificationOutcome> => {
   const transferExists = await isTransactionStillOnChain(payment.chainId, payment.matchedTxHash!);
@@ -73,17 +68,6 @@ const reverifyPayment = async (payment: PremiumPaymentRecord): Promise<Reverific
   }
 
   if (transferExists) return 'intact';
-
-  // The recorded transaction is gone. If an equivalent transfer exists under a different hash
-  // (re-sent, or re-included differently after the reorg), re-match it instead of reversing.
-  const replacementTxHash = await findReplacementTxHash(payment);
-  if (replacementTxHash) {
-    await getDb()
-      .update(premiumPayments)
-      .set({ matchedTxHash: replacementTxHash })
-      .where(and(eq(premiumPayments.id, payment.id), eq(premiumPayments.status, 'confirmed')));
-    return 'rematched';
-  }
 
   const reversalSucceeded = await transitionPaymentInTransaction(payment.id, 'confirmed', 'reversed');
   return reversalSucceeded ? 'reversed' : 'intact';
@@ -108,19 +92,4 @@ const isTransactionStillOnChain = async (chainId: number, txHash: Hash): Promise
     if (error instanceof TransactionReceiptNotFoundError) return false;
     throw error;
   }
-};
-
-const findReplacementTxHash = async (payment: PremiumPaymentRecord): Promise<Hash | null> => {
-  if (!isSupportedPaymentChainId(payment.chainId)) return null;
-
-  const matchedTxHash = await findMatchingTransferTxHash(payment, payment.ownerAddress, SUBSCRIPTIONS_ADDRESS);
-  if (!matchedTxHash) return null;
-
-  // A transfer already credited to another payment cannot be reused (unique index on the hash)
-  const existingTxUse = await getDb().query.premiumPayments.findFirst({
-    where: and(eq(premiumPayments.matchedTxHash, matchedTxHash), ne(premiumPayments.id, payment.id)),
-    columns: { id: true },
-  });
-
-  return existingTxUse ? null : matchedTxHash;
 };

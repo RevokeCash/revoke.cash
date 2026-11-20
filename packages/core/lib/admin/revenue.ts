@@ -231,8 +231,9 @@ export const deriveByPlan = (data: RevenueData, fromIso: string, toExclusiveIso:
   return [...byPlan.values()].sort((a, b) => b.totalUsdCents - a.totalUsdCents);
 };
 
-// The payments table is both quote and payment (pending rows are short-lived quotes), so status
-// counts by quote day form a conversion funnel. All statuses count here, not just confirmed.
+// The payments table is both quote and payment. A pending row is a quote that can still be paid, for up to 48 hours
+// (PREMIUM_PAYMENT_WINDOW_HOURS), and a repeated checkout for the same owner, chain, token and amount reuses that row.
+// Status counts by quote day thus form a conversion funnel. All statuses count here, not just confirmed.
 export interface PaymentFunnelPoint<Bucket extends RevenueBucket> {
   bucket: Bucket;
   pending: number;

@@ -1,16 +1,14 @@
 import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
-import { getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
+import { getTransactionalDb } from '@revoke.cash/core/db/client';
 import { autoRevokeActions, autoRevokeObservations } from '@revoke.cash/core/db/schema/auto-revoke';
 import { indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
 import { premiumPayments, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
 import { acquireAdvisoryLock } from '@revoke.cash/core/db/utils';
-import type { PaymentStatusResponse } from '@revoke.cash/core/premium/payments';
 import { getPremiumPlanById } from '@revoke.cash/core/premium/plans';
 import {
   findOrCreateSubscriptionForOwner,
   rebuildSubscriptionFromPayments,
 } from '@revoke.cash/core/premium/subscriptions';
-import { reconcilePaymentByOwner } from '@revoke.cash/core/premium/verify-payment';
 import { and, eq, inArray, isNull, notIlike, or } from 'drizzle-orm';
 import { type Address, zeroAddress } from 'viem';
 
@@ -74,32 +72,6 @@ export const resetChainIndexing = async (chainId: number): Promise<number> => {
   return updatedRows.length;
 };
 
-// The reconcile cron only touches pending payments, so an expired quote whose transfer landed
-// late is never rescanned. The admin reconcile revives it to pending first; the regular
-// reconciliation then either confirms it against a matching transfer (with the usual row lock
-// and unique matched-tx-hash protections) or flips it back to expired.
-export const reconcilePaymentAsAdmin = async (
-  paymentId: string,
-): Promise<(PaymentStatusResponse & { ownerAddress: Address }) | null> => {
-  const payment = await getDb().query.premiumPayments.findFirst({
-    where: eq(premiumPayments.id, paymentId),
-    columns: { ownerAddress: true, status: true },
-  });
-  if (!payment) return null;
-
-  if (payment.status === 'expired') {
-    await getTransactionalDb()
-      .update(premiumPayments)
-      .set({ status: 'pending' })
-      .where(and(eq(premiumPayments.id, paymentId), eq(premiumPayments.status, 'expired')));
-  }
-
-  const paymentStatus = await reconcilePaymentByOwner(paymentId, payment.ownerAddress);
-  if (!paymentStatus) return null;
-
-  return { ...paymentStatus, ownerAddress: payment.ownerAddress };
-};
-
 export interface GrantSubscriptionParams {
   ownerAddress: Address;
   planId: string;
@@ -152,7 +124,6 @@ export const grantSubscriptionAsAdmin = async (
         amountUsdCents: 0,
         status: 'confirmed',
         expiresAt: now,
-        scanFromBlock: 0n,
         confirmedAt: now,
         grantedBy: params.grantedBy,
         grantReason: params.reason,

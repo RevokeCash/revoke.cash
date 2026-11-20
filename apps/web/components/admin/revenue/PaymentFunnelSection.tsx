@@ -85,7 +85,7 @@ const PaymentFunnelSection = ({ range }: Props) => {
       header={
         <CardTitle
           title="Payment funnel"
-          subtitle="Subscription payment quotes per UTC month in the selected period, by final status; reversed payments need attention"
+          subtitle="Subscription payment quotes per UTC month in the selected period, by current status; reversed payments need attention"
         />
       }
       className="p-0"

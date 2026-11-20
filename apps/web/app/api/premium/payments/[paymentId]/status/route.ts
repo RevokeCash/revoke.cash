@@ -1,4 +1,4 @@
-import { reconcilePaymentByOwner } from '@revoke.cash/core/premium/verify-payment';
+import { getPaymentStatus } from '@revoke.cash/core/premium/incoming-transfers';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest, props: Props) {
     const { params } = await parseRequest(req, props, schemas);
     const { paymentId } = params;
 
-    const status = await reconcilePaymentByOwner(paymentId, siweAddress);
+    const status = await getPaymentStatus(paymentId, siweAddress);
     if (!status) {
       return NextResponse.json({ message: 'Payment not found' }, { status: 404 });
     }

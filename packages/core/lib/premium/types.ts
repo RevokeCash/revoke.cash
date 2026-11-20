@@ -14,5 +14,4 @@ export interface PendingPayment {
   token: PaymentToken;
   recipientAddress: Address;
   amountUsdCents: number;
-  expiresAt: string;
 }

@@ -27,6 +27,7 @@ interface Props {
   onPay: () => void;
   isPaying: boolean;
   errorMessage: string | null;
+  noticeMessage: string | null;
   showPaymentHelp: boolean;
 }
 
@@ -40,6 +41,7 @@ const CheckoutForm = ({
   onPay,
   isPaying,
   errorMessage,
+  noticeMessage,
   showPaymentHelp,
 }: Props) => {
   const t = useTranslations();
@@ -155,6 +157,8 @@ const CheckoutForm = ({
       )}
 
       {errorMessage && <p className="text-sm text-red-600 dark:text-red-400">{errorMessage}</p>}
+
+      {noticeMessage && <p className="text-sm text-zinc-600 dark:text-zinc-400">{noticeMessage}</p>}
 
       {showPaymentHelp && <PaymentHelpNote />}
     </>

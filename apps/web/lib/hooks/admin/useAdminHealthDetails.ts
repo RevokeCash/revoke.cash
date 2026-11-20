@@ -6,7 +6,6 @@ import type {
   FeeVerificationProblemKind,
   FeeVerificationProblemRow,
   IndexerProblemGroup,
-  StuckPendingPaymentRow,
 } from '@revoke.cash/core/admin/health';
 import { useAdminQuery } from 'lib/hooks/admin/useAdminQuery';
 
@@ -28,14 +27,6 @@ export const useAdminIndexerProblems = (enabled: boolean) => {
   return useAdminQuery<IndexerProblemGroup[]>(
     ['admin', 'health', 'indexer-problems'],
     '/api/admin/health/indexer-problems',
-    { enabled },
-  );
-};
-
-export const useAdminStuckPayments = (enabled: boolean) => {
-  return useAdminQuery<StuckPendingPaymentRow[]>(
-    ['admin', 'health', 'stuck-payments'],
-    '/api/admin/health/stuck-payments',
     { enabled },
   );
 };

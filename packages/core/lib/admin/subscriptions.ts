@@ -251,9 +251,7 @@ export interface AdminPayment {
   tokenSymbol: string;
   txHash: Hash | null;
   vatRegion: string | null;
-  scanFromBlock: string;
   createdAt: string;
-  expiresAt: string;
   confirmedAt: string | null;
   planId: string;
   planName: string;
@@ -384,9 +382,7 @@ export const getAdminSubscription = async (subscriptionId: string): Promise<Admi
         tokenSymbol: payment.tokenSymbol,
         txHash: payment.matchedTxHash,
         vatRegion: payment.vatRegion,
-        scanFromBlock: payment.scanFromBlock.toString(),
         createdAt: payment.createdAt.toISOString(),
-        expiresAt: payment.expiresAt.toISOString(),
         confirmedAt: payment.confirmedAt?.toISOString() ?? null,
         planId: payment.plan.id,
         planName: payment.plan.name,

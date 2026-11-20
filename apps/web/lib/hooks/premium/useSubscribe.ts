@@ -2,7 +2,11 @@
 
 import { ERC20_ABI } from '@revoke.cash/core/abis';
 import { createViemPublicClientForChain, getChainName } from '@revoke.cash/core/chains';
-import { type PaymentToken, usdCentsToTokenUnits } from '@revoke.cash/core/premium/payment-config';
+import {
+  type PaymentToken,
+  PREMIUM_PAYMENT_WINDOW_HOURS,
+  usdCentsToTokenUnits,
+} from '@revoke.cash/core/premium/payment-config';
 import type { PaymentStatus, PendingPayment, PremiumPlan } from '@revoke.cash/core/premium/types';
 import { delay } from '@revoke.cash/core/utils';
 import { parseErrorMessage, SwitchChainHandledError } from '@revoke.cash/core/utils/errors';
@@ -20,7 +24,7 @@ import { type Address, isAddressEqual } from 'viem';
 import { getPremiumEntitlementsQueryKey } from './usePremiumEntitlements';
 import { getSubscriptionsQueryKey } from './usePremiumSubscriptions';
 
-export type SubscribeStatus = 'idle' | 'creating' | 'paying' | 'confirming' | 'confirmed' | 'failed';
+export type SubscribeStatus = 'idle' | 'creating' | 'paying' | 'confirming' | 'confirmed' | 'unconfirmed' | 'failed';
 
 interface UseSubscribeParams {
   ownerAddress: Address;
@@ -31,19 +35,20 @@ interface UseSubscribeParams {
 }
 
 const PENDING_PAYMENT_STORAGE_KEY = 'revoke_pending_payment';
+const PAYMENT_STATUS_POLL_DURATION = 15 * MINUTE;
 
 interface PendingPaymentData {
   paymentId: string;
   ownerAddress: string;
-  expiresAt: number;
+  pollUntil: number;
 }
 
-const savePendingPayment = (paymentId: string, ownerAddress: string, expiresAt: string) => {
+const savePendingPayment = (paymentId: string, ownerAddress: string, pollUntil: number) => {
   try {
     const data: PendingPaymentData = {
       paymentId,
       ownerAddress: ownerAddress.toLowerCase(),
-      expiresAt: new Date(expiresAt).getTime(),
+      pollUntil,
     };
     localStorage.setItem(PENDING_PAYMENT_STORAGE_KEY, JSON.stringify(data));
   } catch {}
@@ -62,8 +67,8 @@ const loadPendingPayment = (ownerAddress: string): PendingPaymentData | null => 
 
     const data: PendingPaymentData = JSON.parse(raw);
 
-    // Don't resume polling for expired payments
-    if (data.expiresAt <= Date.now()) {
+    // Don't resume polling after the poll deadline
+    if (!data.pollUntil || data.pollUntil <= Date.now()) {
       localStorage.removeItem(PENDING_PAYMENT_STORAGE_KEY);
       return null;
     }
@@ -102,23 +107,14 @@ const hasSufficientTokenBalance = async (
   return balance >= usdCentsToTokenUnits(plan.priceUsdCents, paymentToken.decimals);
 };
 
-const pollPaymentStatus = async (paymentId: string, expiresAt: number): Promise<PaymentStatus> => {
-  // The transfer was already submitted, so an expired quote can still confirm once the
-  // transaction lands; keep polling through a grace window anchored at the quote's expiry.
-  const keepPollingExpiredUntil = expiresAt + 10 * MINUTE;
+const pollPaymentStatus = async (paymentId: string, pollUntil: number): Promise<PaymentStatus> => {
+  const status = await ky.get(`/api/premium/payments/${paymentId}/status`).json<PaymentStatus>();
 
-  const poll = async (): Promise<PaymentStatus> => {
-    const status = await ky.get(`/api/premium/payments/${paymentId}/status`).json<PaymentStatus>();
+  if (status.status !== 'pending' || Date.now() >= pollUntil) return status;
 
-    const canStillSettle = status.status === 'expired' && Date.now() < keepPollingExpiredUntil;
-    if (status.status !== 'pending' && !canStillSettle) return status;
-
-    // Wait 5 seconds before polling again
-    await delay(5 * SECOND);
-    return poll();
-  };
-
-  return poll();
+  // Wait 5 seconds before polling again
+  await delay(5 * SECOND);
+  return pollPaymentStatus(paymentId, pollUntil);
 };
 
 export const useSubscribe = ({
@@ -148,7 +144,7 @@ export const useSubscribe = ({
 
     setStatus('confirming');
 
-    pollPaymentStatus(pendingPayment.paymentId, pendingPayment.expiresAt)
+    pollPaymentStatus(pendingPayment.paymentId, pendingPayment.pollUntil)
       .then((finalStatus) => {
         clearPendingPayment();
 
@@ -161,8 +157,11 @@ export const useSubscribe = ({
             { paymentId: pendingPayment.paymentId, resumed: true },
             { crisp: true, crispColor: 'green' },
           );
+        } else if (finalStatus.status === 'pending') {
+          // Not a failure: the server confirms the payment when the transfer arrives later
+          setStatus('unconfirmed');
         } else {
-          // expired or failed — no action needed, user can try again
+          // Any other status ends this checkout; the user can start a new one
           setStatus('idle');
         }
       })
@@ -179,7 +178,7 @@ export const useSubscribe = ({
       const pendingPayment = loadPendingPayment(ownerAddress);
       if (pendingPayment) {
         setStatus('confirming');
-        const resumedStatus = await pollPaymentStatus(pendingPayment.paymentId, pendingPayment.expiresAt);
+        const resumedStatus = await pollPaymentStatus(pendingPayment.paymentId, pendingPayment.pollUntil);
         clearPendingPayment();
 
         if (resumedStatus.status === 'confirmed') {
@@ -190,6 +189,9 @@ export const useSubscribe = ({
           );
           return resumedStatus;
         }
+
+        // The earlier transfer can still arrive, so a second transfer must not start here
+        if (resumedStatus.status === 'pending') return resumedStatus;
       }
 
       // Step 1: Create payment
@@ -260,22 +262,23 @@ export const useSubscribe = ({
         { crisp: true },
       );
 
+      const pollUntil = Date.now() + PAYMENT_STATUS_POLL_DURATION;
+
       // Persist payment ID so polling can resume after a page refresh or tab reopen
-      savePendingPayment(payment.paymentId, ownerAddress, payment.expiresAt);
+      savePendingPayment(payment.paymentId, ownerAddress, pollUntil);
 
       // Step 3: Poll for confirmation
       setStatus('confirming');
 
-      const finalStatus = await pollPaymentStatus(payment.paymentId, new Date(payment.expiresAt).getTime());
+      const finalStatus = await pollPaymentStatus(payment.paymentId, pollUntil);
 
       clearPendingPayment();
 
+      // Not a failure: the server confirms the payment when the transfer arrives later
+      if (finalStatus.status === 'pending') return finalStatus;
+
       if (finalStatus.status !== 'confirmed') {
-        const errorMessage =
-          finalStatus.status === 'expired'
-            ? t('premium.checkout.payment_expired', { token: payment.token.symbol })
-            : t('premium.checkout.payment_status_error', { status: finalStatus.status });
-        throw new Error(errorMessage);
+        throw new Error(t('premium.checkout.payment_status_error', { status: finalStatus.status }));
       }
 
       analytics.track(
@@ -292,7 +295,12 @@ export const useSubscribe = ({
 
       return finalStatus;
     },
-    onSuccess: () => {
+    onSuccess: (finalStatus) => {
+      if (finalStatus.status === 'pending') {
+        setStatus('unconfirmed');
+        return;
+      }
+
       setStatus('confirmed');
       invalidatePremiumStatus();
       toast.success(t('premium.checkout.payment_confirmed'));
@@ -328,6 +336,10 @@ export const useSubscribe = ({
     error:
       subscribeMutation.error && !(subscribeMutation.error instanceof SwitchChainHandledError)
         ? parseErrorMessage(subscribeMutation.error)
+        : null,
+    notice:
+      status === 'unconfirmed'
+        ? t('premium.checkout.payment_not_received', { hours: PREMIUM_PAYMENT_WINDOW_HOURS })
         : null,
     reset,
   };

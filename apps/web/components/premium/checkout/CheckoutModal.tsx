@@ -45,7 +45,7 @@ const CheckoutModal = ({ tier, open, setOpen, onTierChange, source }: Props) => 
   const paymentOptions = usePaymentOptionSelection(open, selectedPlan, account);
   const { signIn, isLoading: isSigningIn, error: signInError } = useSiweSignIn();
 
-  const { subscribe, isSubscribing, status, error, reset } = useSubscribe({
+  const { subscribe, isSubscribing, status, error, notice, reset } = useSubscribe({
     ownerAddress: account!,
     selectedPlan,
     selectedPaymentChainId: paymentOptions.selectedPaymentChainId,
@@ -53,7 +53,8 @@ const CheckoutModal = ({ tier, open, setOpen, onTierChange, source }: Props) => 
     isAuthenticated,
   });
 
-  // Reopening the modal after a completed or failed attempt starts a fresh checkout
+  // Reopening the modal after a completed or failed attempt starts a fresh checkout. An unconfirmed attempt keeps its
+  // notice, because that notice tells the user not to pay a second time.
   const wasOpen = useRef(open);
   useEffect(() => {
     const justOpened = open && !wasOpen.current;
@@ -75,7 +76,7 @@ const CheckoutModal = ({ tier, open, setOpen, onTierChange, source }: Props) => 
       hasSufficientBalance: paymentOptions.selectedBalance === null ? undefined : paymentOptions.hasSufficientBalance,
     });
 
-    if (status === 'failed') reset();
+    if (status === 'failed' || status === 'unconfirmed') reset();
 
     if (!isAuthenticated) {
       const signedInAddress = await signIn().catch(() => null);
@@ -154,7 +155,8 @@ const CheckoutModal = ({ tier, open, setOpen, onTierChange, source }: Props) => 
                 onPay={handlePay}
                 isPaying={isSigningIn || isSubscribing}
                 errorMessage={errorMessage}
-                showPaymentHelp={status === 'failed'}
+                noticeMessage={notice}
+                showPaymentHelp={status === 'failed' || status === 'unconfirmed'}
               />
             )}
           </>

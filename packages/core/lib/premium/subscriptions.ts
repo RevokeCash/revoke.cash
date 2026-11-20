@@ -408,7 +408,7 @@ export const transitionPaymentAndRebuild = async (
   fromStatus: 'confirmed' | 'reversed',
   toStatus: 'confirmed' | 'reversed' | 'refunded',
 ): Promise<boolean> => {
-  // Lock the payment row so a concurrent reconciliation or sweep cannot interleave
+  // Lock the payment row so that the re-verification cron and a refund cannot change the same payment at the same time
   const [lockedPayment] = await trx
     .select({
       status: premiumPayments.status,

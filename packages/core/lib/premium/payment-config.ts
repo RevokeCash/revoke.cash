@@ -9,9 +9,7 @@ export interface PaymentToken {
   decimals: number;
 }
 
-export const PREMIUM_PAYMENT_TTL_MINUTES = 10;
-export const PREMIUM_MAX_PENDING_PAYMENTS_PER_USER = 10;
-export const PREMIUM_LATE_SETTLEMENT_HOURS = 48;
+export const PREMIUM_PAYMENT_WINDOW_HOURS = 48;
 
 export const REFUND_WINDOW_DAYS = 17;
 export const REFUND_DEADLINE_DAYS = 14;

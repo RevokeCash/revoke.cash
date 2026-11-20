@@ -15,7 +15,7 @@ import EvaluationBacklogPanel from './EvaluationBacklogPanel';
 import FeeVerificationPanel from './FeeVerificationPanel';
 import IndexerProblemsPanel from './IndexerProblemsPanel';
 import RefundRequestsPanel from './refunds/RefundRequestsPanel';
-import StuckPaymentsPanel from './StuckPaymentsPanel';
+import UnmatchedTransfersPanel from './UnmatchedTransfersPanel';
 
 // blocked_budget is the gas budget working as designed, so only failures are a problem
 const PROBLEM_ACTION_STATUSES: ActionStatus[] = ['failed'];
@@ -47,7 +47,7 @@ type HealthPanel =
   | 'indexer-due'
   | 'evaluation-backlog'
   | 'indexer-failing'
-  | 'stuck-payments'
+  | 'unmatched-transfers'
   | 'pending-refunds'
   | 'fee-verification-pending'
   | 'fee-verification-failed';
@@ -145,11 +145,11 @@ const HealthSection = () => {
               onClick={() => togglePanel('indexer-failing')}
             />
             <HealthTile
-              label="Payments stuck pending"
-              value={data.pendingPaymentsPastExpiryCount}
-              status={data.pendingPaymentsPastExpiryCount > 0 ? 'warning' : 'neutral'}
-              isOpen={openPanel === 'stuck-payments'}
-              onClick={() => togglePanel('stuck-payments')}
+              label="Unmatched transfers"
+              value={data.unmatchedTransferCount}
+              status={data.unmatchedTransferCount > 0 ? 'warning' : 'neutral'}
+              isOpen={openPanel === 'unmatched-transfers'}
+              onClick={() => togglePanel('unmatched-transfers')}
             />
             <HealthTile
               label="Pending refunds"
@@ -177,7 +177,7 @@ const HealthSection = () => {
           <DueIndexerScansPanel isOpen={openPanel === 'indexer-due'} />
           <EvaluationBacklogPanel isOpen={openPanel === 'evaluation-backlog'} />
           <IndexerProblemsPanel isOpen={openPanel === 'indexer-failing'} />
-          <StuckPaymentsPanel isOpen={openPanel === 'stuck-payments'} />
+          <UnmatchedTransfersPanel isOpen={openPanel === 'unmatched-transfers'} />
           <RefundRequestsPanel isOpen={openPanel === 'pending-refunds'} />
           <FeeVerificationPanel kind="pending" isOpen={openPanel === 'fee-verification-pending'} />
           <FeeVerificationPanel kind="failed" isOpen={openPanel === 'fee-verification-failed'} />

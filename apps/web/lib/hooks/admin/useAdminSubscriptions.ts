@@ -102,26 +102,3 @@ export const useGrantSubscription = () => {
     },
   });
 };
-
-export const useReconcilePayment = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (paymentId: string) =>
-      ky
-        .post(`/api/admin/payments/${paymentId}/reconcile`)
-        .json<{ paymentId: string; status: string; matchedTxHash: string | null }>(),
-    onSuccess: (result) => {
-      queryClient.invalidateQueries({ queryKey: ['admin', 'subscriptions'] });
-      queryClient.invalidateQueries({ queryKey: ['admin', 'audit'] });
-      if (result.status === 'confirmed') {
-        toast.success('Payment confirmed against a matching transfer');
-      } else {
-        toast.warn(`No matching transfer found, payment is now ${result.status}`);
-      }
-    },
-    onError: (error) => {
-      toast.error(parseErrorMessage(error) || 'Failed to reconcile payment');
-    },
-  });
-};

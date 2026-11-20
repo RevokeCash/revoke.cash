@@ -1,18 +1,11 @@
-import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import { getDb } from '@revoke.cash/core/db/client';
 import { premiumPayments, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
 import { ExportableError } from '@revoke.cash/core/utils/errors';
-import { MINUTE } from '@revoke.cash/core/utils/time';
-import { and, count, eq, gt } from 'drizzle-orm';
+import { HOUR } from '@revoke.cash/core/utils/time';
+import { and, eq, gt, sql } from 'drizzle-orm';
 import type { Address } from 'viem';
 import { SUBSCRIPTIONS_ADDRESS } from '../constants';
-import {
-  getPaymentToken,
-  type PaymentTokenSymbol,
-  PREMIUM_MAX_PENDING_PAYMENTS_PER_USER,
-  PREMIUM_PAYMENT_TTL_MINUTES,
-  type PremiumPaymentChainId,
-} from './payment-config';
+import { getPaymentToken, type PaymentTokenSymbol, PREMIUM_PAYMENT_WINDOW_HOURS } from './payment-config';
 import { getPremiumPlanById } from './plans';
 
 interface CreatePaymentParams {
@@ -83,21 +76,12 @@ export const createPayment = async ({ ownerAddress, planId, chainId, tokenSymbol
     throw new PremiumPaymentError('Cannot renew with a lower-tier plan. Please select the same plan or upgrade.');
   }
 
-  const [{ count: pendingCount }] = await db
-    .select({ count: count() })
-    .from(premiumPayments)
-    .where(and(eq(premiumPayments.ownerAddress, ownerAddress), eq(premiumPayments.status, 'pending')));
+  const now = new Date();
+  const expiresAt = new Date(now.getTime() + PREMIUM_PAYMENT_WINDOW_HOURS * HOUR);
 
-  if (pendingCount >= PREMIUM_MAX_PENDING_PAYMENTS_PER_USER) {
-    throw new PremiumPaymentError('Too many pending payments. Please wait for existing ones to expire.');
-  }
-
-  const publicClient = createViemPublicClientForChain(chainId as PremiumPaymentChainId);
-  const currentBlock = await publicClient.getBlockNumber();
-
-  const expiresAt = new Date(Date.now() + PREMIUM_PAYMENT_TTL_MINUTES * MINUTE);
-
-  const [insertedPayment] = await db
+  // An incoming transfer confirms the pending payment with the same owner, chain, token and amount. At most one such
+  // payment can be pending (partial unique index), so a repeated checkout renews the pending payment that exists.
+  const [payment] = await db
     .insert(premiumPayments)
     .values({
       planId: plan.id,
@@ -110,23 +94,30 @@ export const createPayment = async ({ ownerAddress, planId, chainId, tokenSymbol
       amountUsdCents: plan.priceUsdCents,
       status: 'pending',
       expiresAt,
-      scanFromBlock: currentBlock,
       vatRegion,
+    })
+    .onConflictDoUpdate({
+      target: [
+        premiumPayments.ownerAddress,
+        premiumPayments.chainId,
+        premiumPayments.tokenAddress,
+        premiumPayments.amountUsdCents,
+      ],
+      targetWhere: sql`${premiumPayments.status} = 'pending'`,
+      set: { planId: plan.id, planVersion: plan.version, vatRegion, expiresAt, createdAt: now },
     })
     .returning({
       id: premiumPayments.id,
       chainId: premiumPayments.chainId,
       amountUsdCents: premiumPayments.amountUsdCents,
-      expiresAt: premiumPayments.expiresAt,
     });
 
   return {
-    paymentId: insertedPayment.id,
+    paymentId: payment.id,
     planId: plan.id,
-    chainId: insertedPayment.chainId,
+    chainId: payment.chainId,
     token: paymentToken,
     recipientAddress: SUBSCRIPTIONS_ADDRESS,
-    amountUsdCents: insertedPayment.amountUsdCents,
-    expiresAt: insertedPayment.expiresAt.toISOString(),
+    amountUsdCents: payment.amountUsdCents,
   };
 };

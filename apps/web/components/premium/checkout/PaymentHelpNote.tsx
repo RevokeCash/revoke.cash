@@ -6,7 +6,7 @@ import Href from 'components/common/Href';
 import { Crisp } from 'crisp-sdk-web';
 import { useTranslations } from 'next-intl';
 
-// Shown after a failed payment; points to live chat when Crisp is configured, Discord otherwise
+// Shown after a failed or unconfirmed payment; points to live chat when Crisp is configured, Discord otherwise
 const PaymentHelpNote = () => {
   const t = useTranslations();
 

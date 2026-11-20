@@ -8,7 +8,6 @@ import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import HistoryChainCell from 'components/history/cells/HistoryChainCell';
 import type { AppTableFeatures } from 'lib/utils/table';
 import PaymentStatusBadge from './PaymentStatusBadge';
-import ReconcilePaymentButton from './ReconcilePaymentButton';
 
 const columnHelper = createColumnHelper<AppTableFeatures, AdminPayment>();
 
@@ -67,23 +66,5 @@ export const columns = columnHelper.columns([
     id: 'transaction',
     header: 'Transaction',
     cell: (info) => <TransactionHashCell chainId={info.row.original.chainId} transactionHash={info.getValue()} />,
-  }),
-  columnHelper.accessor('expiresAt', {
-    id: 'expiry',
-    header: 'Expiry',
-    cell: (info) => (
-      <span className="text-sm text-zinc-600 dark:text-zinc-400 font-monosans">
-        {formatDateNormalised(new Date(info.getValue()))}
-      </span>
-    ),
-  }),
-  columnHelper.display({
-    id: 'actions',
-    header: () => null,
-    cell: (info) => (
-      <div className="flex justify-end">
-        <ReconcilePaymentButton payment={info.row.original} />
-      </div>
-    ),
   }),
 ]);

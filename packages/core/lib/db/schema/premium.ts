@@ -6,6 +6,7 @@ import {
   foreignKey,
   index,
   integer,
+  numeric,
   pgSchema,
   primaryKey,
   text,
@@ -49,6 +50,8 @@ export const premiumPlans = premiumSchema.table(
     primaryKey({ name: 'plans_pkey', columns: [table.id, table.version] }),
     index('idx_plans_active').on(table.isActive),
     uniqueIndex('idx_plans_active_by_id_unique').on(table.id).where(sql`${table.isActive} IS TRUE`),
+    // An incoming transfer is matched to a payment by its amount, so two active plans cannot share a price
+    uniqueIndex('idx_plans_active_by_price_unique').on(table.priceUsdCents).where(sql`${table.isActive} IS TRUE`),
   ],
 );
 
@@ -67,7 +70,6 @@ export const premiumPayments = premiumSchema.table(
     amountUsdCents: integer('amount_usd_cents').notNull(),
     status: premiumPaymentStatusEnum('status').notNull(),
     expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
-    scanFromBlock: bigint('scan_from_block', { mode: 'bigint' }).notNull(),
     matchedTxHash: text('matched_tx_hash').$type<Hash>(),
     vatRegion: char('vat_region', { length: 2 }),
     grantedBy: lowercaseAddress('granted_by'),
@@ -88,8 +90,12 @@ export const premiumPayments = premiumSchema.table(
     }),
     index('idx_payments_owner').on(table.ownerAddress),
     index('idx_payments_status').on(table.status),
-    index('idx_payments_chain_scan_start').on(table.chainId, table.scanFromBlock),
     index('idx_payments_subscription').on(table.subscriptionId),
+    // An incoming transfer confirms the pending payment with the same owner, chain, token and amount, so at most one
+    // such payment can be pending
+    uniqueIndex('idx_payments_pending_unique')
+      .on(table.ownerAddress, table.chainId, table.tokenAddress, table.amountUsdCents)
+      .where(sql`${table.status} = 'pending'`),
     uniqueIndex('idx_payments_matched_tx_hash_unique')
       .on(table.matchedTxHash)
       .where(sql`${table.matchedTxHash} IS NOT NULL`),
@@ -105,6 +111,29 @@ export const premiumTransferScanCursors = premiumSchema.table('transfer_scan_cur
     .defaultNow()
     .$onUpdate(() => new Date()),
 });
+
+// Transfers of a payment token to the subscriptions address that did not confirm a payment. They are only shown to the
+// admin and never credit a subscription.
+export const premiumUnmatchedTransfers = premiumSchema.table(
+  'unmatched_transfers',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    chainId: integer('chain_id').notNull(),
+    transactionHash: text('transaction_hash').$type<Hash>().notNull(),
+    logIndex: integer('log_index').notNull(),
+    tokenAddress: lowercaseAddress('token_address').notNull(),
+    tokenSymbol: text('token_symbol').notNull(),
+    tokenDecimals: integer('token_decimals').notNull(),
+    senderAddress: lowercaseAddress('sender_address').notNull(),
+    amount: numeric('amount', { mode: 'bigint' }).notNull(),
+    note: text('note'),
+    dismissedAt: timestamp('dismissed_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex('idx_unmatched_transfers_transfer_unique').on(table.chainId, table.transactionHash, table.logIndex),
+  ],
+);
 
 export const premiumSubscriptions = premiumSchema.table(
   'subscriptions',

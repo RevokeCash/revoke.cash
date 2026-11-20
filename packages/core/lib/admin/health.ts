@@ -7,18 +7,18 @@ import { type DatabaseWriter, getDb } from '@revoke.cash/core/db/client';
 import { autoRevokeActions, autoRevokePermissions } from '@revoke.cash/core/db/schema/auto-revoke';
 import { batchRevokes } from '@revoke.cash/core/db/schema/batch-revokes';
 import { indexerAllowanceState, indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
-import { premiumPayments, premiumTransferScanCursors } from '@revoke.cash/core/db/schema/premium';
+import { premiumTransferScanCursors } from '@revoke.cash/core/db/schema/premium';
 import { FAIL_FAST_FAILURE_THRESHOLD } from '@revoke.cash/core/indexer/cache-state';
 import { PREMIUM_PAYMENT_CHAIN_IDS } from '@revoke.cash/core/premium/payment-config';
 import { getPendingRefundRequestCount } from '@revoke.cash/core/premium/refunds';
 import { activeSubscriptionsQuery } from '@revoke.cash/core/premium/subscriptions';
-import { DAY, MINUTE } from '@revoke.cash/core/utils/time';
+import { getOpenUnmatchedTransferCount } from '@revoke.cash/core/premium/unmatched-transfers';
+import { DAY } from '@revoke.cash/core/utils/time';
 import {
   and,
   asc,
   count,
   desc,
-  eq,
   exists,
   gte,
   inArray,
@@ -61,8 +61,8 @@ export interface AdminHealth {
   notUpgradedWalletCount: number;
   // Failing events scan and allowance recompute rows of subscribed addresses
   indexerFailingCount: number;
-  // Pending payments past their quote expiry that the reconcile cron has not yet touched
-  pendingPaymentsPastExpiryCount: number;
+  // Transfers to the subscriptions address that confirmed no payment and that the admin has not dismissed yet
+  unmatchedTransferCount: number;
   // Refund requests (EU right of withdrawal) awaiting manual processing; refunds are due within 14 days
   pendingRefundRequestCount: number;
   // Paid batch revokes whose fee transaction the verification cron has not yet confirmed or rejected
@@ -70,10 +70,6 @@ export interface AdminHealth {
   // Paid batch revokes reported in the last 7 days whose fee transaction failed verification
   feeVerificationFailedCount: number;
 }
-
-// Pending payments are expired by the reconcile cron (every 5 minutes), so anything pending
-// well past its expiry indicates a reconciliation backlog or a broken cron.
-const PENDING_PAYMENT_GRACE_MS = 15 * MINUTE;
 
 // Completed actions only count within this window, so one past failure does not keep the failed chip red forever
 const RECENT_ACTION_WINDOW_MS = 7 * DAY;
@@ -127,12 +123,6 @@ const feeVerificationProblemConditions = (kind: FeeVerificationProblemKind) =>
         gte(batchRevokes.timestamp, new Date(Date.now() - FEE_VERIFICATION_FAILED_WINDOW)),
       );
 
-const stuckPendingPaymentConditions = () =>
-  and(
-    eq(premiumPayments.status, 'pending'),
-    lt(premiumPayments.expiresAt, new Date(Date.now() - PENDING_PAYMENT_GRACE_MS)),
-  );
-
 export const getAdminHealth = async (): Promise<AdminHealth> => {
   const db = getDb();
 
@@ -145,7 +135,7 @@ export const getAdminHealth = async (): Promise<AdminHealth> => {
     [notUpgradedWalletRow],
     [indexerEventsFailingRow],
     [indexerAllowancesFailingRow],
-    [pendingPaymentsRow],
+    unmatchedTransferCount,
     refunds,
     [feeVerificationPendingRow],
     [feeVerificationFailedRow],
@@ -179,7 +169,7 @@ export const getAdminHealth = async (): Promise<AdminHealth> => {
       .select({ count: count() })
       .from(indexerAllowanceState)
       .where(indexingFailingConditions(db, indexerAllowanceState)),
-    db.select({ count: count() }).from(premiumPayments).where(stuckPendingPaymentConditions()),
+    getOpenUnmatchedTransferCount(),
     getPendingRefundRequestCount(),
     db.select({ count: count() }).from(batchRevokes).where(feeVerificationProblemConditions('pending')),
     db.select({ count: count() }).from(batchRevokes).where(feeVerificationProblemConditions('failed')),
@@ -206,7 +196,7 @@ export const getAdminHealth = async (): Promise<AdminHealth> => {
     stuckSubmittedCount: stuckSubmittedRow.count,
     notUpgradedWalletCount: notUpgradedWalletRow.count,
     indexerFailingCount: indexerEventsFailingRow.count + indexerAllowancesFailingRow.count,
-    pendingPaymentsPastExpiryCount: pendingPaymentsRow.count,
+    unmatchedTransferCount,
     pendingRefundRequestCount: refunds,
     feeVerificationPendingCount: feeVerificationPendingRow.count,
     feeVerificationFailedCount: feeVerificationFailedRow.count,
@@ -319,40 +309,6 @@ const aggregateAddresses = (column: AnyPgColumn) =>
   sql<string[]>`array_agg(${column} order by ${column})`.mapWith((addresses: string[]) =>
     addresses.map((address) => getAddress(address)),
   );
-
-export interface StuckPendingPaymentRow {
-  id: string;
-  ownerAddress: Address;
-  subscriptionId: string | null;
-  chainId: number;
-  amountUsdCents: number;
-  createdAt: string;
-  expiresAt: string;
-}
-
-export const getStuckPendingPaymentRows = async (): Promise<StuckPendingPaymentRow[]> => {
-  const db = getDb();
-
-  const rows = await db
-    .select({
-      id: premiumPayments.id,
-      ownerAddress: premiumPayments.ownerAddress,
-      subscriptionId: premiumPayments.subscriptionId,
-      chainId: premiumPayments.chainId,
-      amountUsdCents: premiumPayments.amountUsdCents,
-      createdAt: premiumPayments.createdAt,
-      expiresAt: premiumPayments.expiresAt,
-    })
-    .from(premiumPayments)
-    .where(stuckPendingPaymentConditions())
-    .orderBy(asc(premiumPayments.expiresAt));
-
-  return rows.map((row) => ({
-    ...row,
-    createdAt: row.createdAt.toISOString(),
-    expiresAt: row.expiresAt.toISOString(),
-  }));
-};
 
 export interface FeeVerificationProblemRow {
   id: number;

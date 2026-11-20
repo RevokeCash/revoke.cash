@@ -20,7 +20,9 @@ export interface AuditActionDetails {
   auto_revoke_rules_source_switched: { subscriptionId: string | null };
   admin_refund_processed: { refundRequestId: string; refundTxHash: string; outcome: ProcessRefundOutcome };
   admin_refund_dismissed: { refundRequestId: string };
+  // No longer written: kept so that the events recorded before the reconcile action was removed still show
   admin_payment_reconciled: { paymentId: string; status: string };
+  admin_unmatched_transfer_dismissed: { unmatchedTransferId: string; transactionHash: string; note: string | null };
   admin_subscription_granted: { paymentId: string; planId: string; durationDays: number; reason: string | null };
   admin_subscription_rebuilt: Record<string, never>;
   admin_indexing_reset: { resetChainCount: number };
@@ -73,6 +75,7 @@ export const AUDIT_ACTIONS = [
   'admin_refund_processed',
   'admin_refund_dismissed',
   'admin_payment_reconciled',
+  'admin_unmatched_transfer_dismissed',
   'admin_subscription_granted',
   'admin_subscription_rebuilt',
   'admin_indexing_reset',
